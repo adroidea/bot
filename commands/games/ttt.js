@@ -17,7 +17,7 @@ module.exports = {
             required: false
         }
     ],
-    runSlash(client, interaction) {
+    runInteraction(client, interaction) {
         const game = new TicTacToe({language: 'fr', commandOptionName: 'user'});
         game.handleInteraction(interaction);
     }

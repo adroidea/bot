@@ -12,6 +12,9 @@ module.exports = {
         } else if (args[0] === 'guildMemberRemove') {
             client.emit('guildMemberRemove', message.member);
             message.react('👍');
+        } else if (args[0] === 'guildCreate') {
+            client.emit('guildCreate', message.guild);
+            message.react('👍');
         }
     },
     options: [{
@@ -26,9 +29,13 @@ module.exports = {
             {
                 name: 'guildMemberRemove',
                 value: 'guildMemberRemove'
+            },
+            {
+                name: 'guildCreate',
+                value: 'guildCreate'
             }]
     }],
-    runSlash(client, interaction) {
+    runInteraction(client, interaction) {
         const evtChoices = interaction.options.getString('event');
         if (evtChoices === 'guildMemberAdd') {
             client.emit('guildMemberAdd', interaction.member);
@@ -36,6 +43,9 @@ module.exports = {
         } else if (evtChoices === 'guildMemberRemove') {
             client.emit('guildMemberRemove', interaction.member);
             interaction.reply({content: 'Event guildMemberRemove emmited', ephemeral: true});
+        } else if (evtChoices === 'guildCreate') {
+            client.emit('guildCreate', interaction.guild);
+            interaction.reply({content: 'Event guildCreate emmited', ephemeral: true});
         }
     }
 };

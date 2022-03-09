@@ -1,33 +1,35 @@
 const {MessageEmbed} = require('discord.js');
+const {type} = require('../users/userInfo');
 
 module.exports = {
     name: 'ping',
     description: 'get the ping of the bot',
-    run(client, message, args) {
+
+    async run(client, message) {
+        const sentMessage = await message.channel.send('Pong !');
+
         const embed = new MessageEmbed()
+            .setThumbnail(client.user.displayAvatarURL())
             .setTitle('🏓 Pong !')
             .setURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
-            .setThumbnail(client.user.displayAvatarURL())
-            .addFields(
-                {name: 'Bot Latency', value: `\` ${client.ws.ping}ms\``, inline: true},
-                {name: 'Uptime', value: ` <t:${parseInt(client.readyTimestamp / 1000)}:R>`, inline: true}
-            )
+            .addField('Latence bot', `\`\`\`${sentMessage.createdTimestamp - message.createdTimestamp}ms\`\`\``, true)
+            .addField('Latence api', `\`\`\`${client.ws.ping}ms\`\`\``, true)
             .setFooter({text: message.author.username, iconURL: message.author.displayAvatarURL()})
             .setTimestamp();
-        message.channel.send({embeds: [embed]});
+        sentMessage.edit({content: ' ', embeds: [embed]})
 
     },
-    runSlash(client, interaction) {
+    async runInteraction(client, interaction) {
+        const sentMessage = await interaction.reply({content:'Pong !', fetchReply:'true'});
+
         const embed = new MessageEmbed()
+            .setThumbnail(client.user.displayAvatarURL())
             .setTitle('🏓 Pong !')
             .setURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
-            .setThumbnail(client.user.displayAvatarURL())
-            .addFields(
-                {name: 'Bot Latency', value: `\` ${client.ws.ping}ms\``, inline: true},
-                {name: 'Uptime', value: ` <t:${parseInt(client.readyTimestamp / 1000)}:R>`, inline: true}
-            )
-            .setFooter({text: interaction.user.username, iconURL: interaction.user.displayAvatarURL()})
+            .addField('Latence bot', `\`\`\`${sentMessage.createdTimestamp - interaction.createdTimestamp}ms\`\`\``, true)
+            .addField('Latence api', `\`\`\`${client.ws.ping}ms\`\`\``, true)
+            .setFooter({text:interaction.user.username, iconURL: interaction.user.displayAvatarURL()})
             .setTimestamp();
-        interaction.reply({embeds: [embed]});
+        interaction.editReply({content: ' ', embeds: [embed]})
     }
 };

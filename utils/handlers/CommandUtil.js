@@ -6,7 +6,7 @@ module.exports = async client => {
     (await pGlob(`${process.cwd()}/commands/*/*.js`)).map(async cmdFile => {
         const cmd = require(cmdFile);
 
-        if(!cmd.name || !cmd.description) {
+        if(!cmd.name || (!cmd.description && cmd.type !== 'USER') ) {
             return console.log(`-----\nNot initialised Command:\n Possible reasons :\n 1. Double check the name\n 2. A description is required \n File : ${cmdFile}\n-----`)
         }
 
