@@ -4,6 +4,9 @@ const TicTacToe = require('discord-tictactoe');
 module.exports = {
     name: 'pfc',
     description: 'Start a Rock Paper Scissors game',
+    category: 'games',
+    usage: 'pfc [choice]',
+    exemples: ['pfc p', 'pfc c', 'pfc f'],
     isPlayerOneWinner(playerOneChoice, playerTwoChoice) {
         return (playerOneChoice === 'p' && playerTwoChoice === 'c') || (playerOneChoice === 'f' && playerTwoChoice === 'p') || (playerOneChoice === 'c' && playerTwoChoice === 'f');
     },
@@ -18,7 +21,7 @@ module.exports = {
         } else if (!this.isPlayerOneWinner(choice, possibleChoices[botChoice])) {
             typeMessage.reply(`Ah dommage pour toi ! J'ai joué ${emoteChoice[botChoice]} !On réessaie ?`);
         } else if (this.isPlayerOneWinner(choice, possibleChoices[botChoice])) {
-            typeMessage.reply(  `J'ai joué ${emoteChoice[botChoice]} !Bravo à toi ! On réessaie ?`);
+            typeMessage.reply(`J'ai joué ${emoteChoice[botChoice]} !Bravo à toi ! On réessaie ?`);
         } else {
             typeMessage.reply('Tu dois choisir entre 🗿 (p), 🍁 (f) ou ✂ (c) !');
         }

@@ -4,7 +4,9 @@ const {type} = require('../users/userInfo');
 module.exports = {
     name: 'ping',
     description: 'get the ping of the bot',
-
+    category: "utils",
+    usage:'ping',
+    exemples:['ping'],
     async run(client, message) {
         const sentMessage = await message.channel.send('Pong !');
 

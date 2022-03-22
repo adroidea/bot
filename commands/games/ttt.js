@@ -4,6 +4,9 @@ const TicTacToe = require('discord-tictactoe');
 module.exports = {
     name: 'ttt',
     description: 'get the ping of the bot',
+    category: 'games',
+    usage: 'ttt <user>',
+    exemples: ['ttt','ttt @adan_ea'],
     run(client, message) {
         const game = new TicTacToe({language: 'fr'});
         game.handleMessage(message);

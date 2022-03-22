@@ -2,6 +2,9 @@ const Minesweeper = require('discord.js-minesweeper');
 module.exports = {
     name: 'demineur',
     description: 'Start a minesweeper game',
+    category: 'games',
+    usage: 'demineur [row] [col] [mines]',
+    exemples: ['demineur 10 10 25'],
     gameHandle(typeMessage, rows, columns, mines) {
         if (!rows) {
             return typeMessage.reply(':warning: Please select a correct amount of rows.');
@@ -24,7 +27,7 @@ module.exports = {
             zeroFirstCell: true
         });
         const matrix = minesweeper.start();
-        if(!matrix || matrix.length > 2000) {
+        if (!matrix || matrix.length > 2000) {
             return typeMessage.reply(':warning: Please change the number of rows, columns or mines.');
         }
         return matrix
@@ -40,12 +43,12 @@ module.exports = {
         description: 'Choose the number of rows',
         type: 'NUMBER',
         required: true
-    },{
+    }, {
         name: 'columns',
         description: 'Choose the number of columns',
         type: 'NUMBER',
         required: true
-    },{
+    }, {
         name: 'mines',
         description: 'Choose the number of mines',
         type: 'NUMBER',
