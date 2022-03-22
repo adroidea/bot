@@ -1,6 +1,9 @@
 module.exports = {
     name: 'emit',
     description: 'Emmit a new event if an admin needs to try a command or something',
+    category: 'admin',
+    usage: 'emit [event]',
+    exemples: ['emit guildMemberAdd'],
     run(client, message, args) {
         if (!args[0] || !args[0].match(/^(guildMemberAdd|guildMemberRemove)$/)) {
             return message.reply('Please enter a correct event.');
