@@ -5,6 +5,7 @@ module.exports = {
     name: 'ttt',
     description: 'get the ping of the bot',
     category: 'games',
+    permissions:['SEND_MESSAGES'],
     usage: 'ttt <user>',
     exemples: ['ttt','ttt @adan_ea'],
     run(client, message) {
@@ -21,6 +22,7 @@ module.exports = {
         }
     ],
     runInteraction(client, interaction) {
+        const target = interaction.options.getMember('member');
         const game = new TicTacToe({language: 'fr', commandOptionName: 'user'});
         game.handleInteraction(interaction);
     }

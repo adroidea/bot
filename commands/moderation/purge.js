@@ -2,6 +2,7 @@ module.exports = {
     name: 'purge',
     description: 'Bulk Delete a specified amount of messages in a channel or from a user',
     category: 'moderation',
+    permissions: ['MANAGE_MESSAGES'],
     usage: 'purge [amount] <@target>',
     exemples: ['purge 10', 'purge 100 @adan_ea'],
     options: [{

@@ -15,7 +15,7 @@ let IsLiveMemory = false;
 async function run(client) {
     await twitch.getStreams({channel: 'adroid_ea'}).then(async data => {
         const r = data.data[0];
-
+        let liveChannel = client.guilds.cache.get('605053128148254724');
         if (r !== undefined) {
             if (r.type === 'live') {
                 if (IsLiveMemory === false || IsLiveMemory === undefined) {
@@ -30,21 +30,19 @@ async function run(client) {
                         content: `<@&930051152987430952> ${r.user_name} is live ! Join them for some ${r.game_name}`,
                         embeds: [embed]
                     });
-                    await client.guilds.cache.get('605053128148254724').setIcon('https://cdn.discordapp.com/attachments/771934231647223848/946326723593633792/Peace_was_never_an_option.png');
+                    await liveChannel.setIcon('https://cdn.discordapp.com/attachments/771934231647223848/946326723593633792/Peace_was_never_an_option.png');
                     IsLiveMemory = true;
                 }
             } else {
                 if (IsLiveMemory === true) {
-                    await client.guilds.cache.get('605053128148254724').setIcon('https://cdn.discordapp.com/attachments/771934231647223848/938389858802606160/jpp_jean-pierre.png');
+                    await liveChannel.setIcon('https://cdn.discordapp.com/attachments/771934231647223848/938389858802606160/jpp_jean-pierre.png');
                     IsLiveMemory = false;
-                    sleep(900000);
                 }
             }
         } else {
             if (IsLiveMemory === true) {
-                await client.guilds.cache.get('605053128148254724').setIcon('https://cdn.discordapp.com/attachments/771934231647223848/938389858802606160/jpp_jean-pierre.png');
+                await liveChannel.setIcon('https://cdn.discordapp.com/attachments/771934231647223848/938389858802606160/jpp_jean-pierre.png');
                 IsLiveMemory = false;
-                sleep(900000);
             }
         }
     });
@@ -56,7 +54,7 @@ module.exports = {
     async execute(client) {
         while (true) {
             await run(client);
-            await sleep(15000);
+            await sleep(60000);
         }
     }
 };

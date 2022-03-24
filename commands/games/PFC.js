@@ -5,6 +5,7 @@ module.exports = {
     name: 'pfc',
     description: 'Start a Rock Paper Scissors game',
     category: 'games',
+    permissions:['SEND_MESSAGES'],
     usage: 'pfc [choice]',
     exemples: ['pfc p', 'pfc c', 'pfc f'],
     isPlayerOneWinner(playerOneChoice, playerTwoChoice) {

@@ -7,6 +7,7 @@ module.exports = {
             if (!cmd) {
                 return interaction.reply('This command doesn\'t exist !');
             }
+            if(!interaction.member.permissions.has([cmd.permissions])) return interaction.reply({content : 'You are not allowed to use this command.', ephemeral: true});
             cmd.runInteraction(client, interaction);
         }
     }

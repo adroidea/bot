@@ -10,6 +10,7 @@ module.exports = {
     name: 'helpea',
     description: 'Create a help command with everything to know about this bot',
     category: 'utils',
+    permissions:['SEND_MESSAGES'],
     usage: 'help',
     exemples: ['help', 'help'],
     run(client, message, args) {

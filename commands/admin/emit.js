@@ -2,6 +2,7 @@ module.exports = {
     name: 'emit',
     description: 'Emmit a new event if an admin needs to try a command or something',
     category: 'admin',
+    permissions: ['ADMINISTRATOR'],
     usage: 'emit [event]',
     exemples: ['emit guildMemberAdd'],
     run(client, message, args) {
