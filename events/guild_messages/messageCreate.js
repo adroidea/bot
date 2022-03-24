@@ -58,6 +58,7 @@ module.exports = {
         }
 
         let cmd = client.commands.get(cmdName);
+        if(!message.member.permissions.has([cmd.permissions])) return message.reply('You are not allowed to use this command.')
         if (cmd) {
             cmd.run(client, message, args);
         }

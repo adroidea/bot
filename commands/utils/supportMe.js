@@ -3,9 +3,10 @@ const {MessageEmbed} = require('discord.js');
 module.exports = {
     name: 'support',
     description: 'Show a message that gives you the opportunity to support the author of this bot',
-    category: "utils",
-    usage:'support',
-    exemples:['support'],
+    category: 'utils',
+    permissions: ['ADMINISTRATOR'],
+    usage: 'support',
+    exemples: ['support'],
     runInteraction(client, interaction) {
         const embed = new MessageEmbed()
             .setColor('#FFFF00')

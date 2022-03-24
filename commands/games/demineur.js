@@ -3,6 +3,7 @@ module.exports = {
     name: 'demineur',
     description: 'Start a minesweeper game',
     category: 'games',
+    permissions:['SEND_MESSAGES'],
     usage: 'demineur [row] [col] [mines]',
     exemples: ['demineur 10 10 25'],
     gameHandle(typeMessage, rows, columns, mines) {

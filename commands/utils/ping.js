@@ -5,6 +5,7 @@ module.exports = {
     name: 'ping',
     description: 'get the ping of the bot',
     category: "utils",
+    permissions:['SEND_MESSAGES'],
     usage:'ping',
     exemples:['ping'],
     async run(client, message) {
