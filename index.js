@@ -4,8 +4,8 @@ dotenv.config();
 const mongoose = require('mongoose');
 const client = new Client({intents: 32767});
 
-client.commands = new Collection();
-['CommandUtil', 'EventUtil'].forEach(handler => {
+['commands', 'buttons'].forEach(x => client[x] = new Collection());
+['CommandUtil', 'EventUtil', 'ButtonUtil'].forEach(handler => {
     require(`./utils/handlers/${handler}`)(client);
 });
 
