@@ -25,7 +25,7 @@ module.exports = async client => {
         });
 
         nbCmd++;
-        await client.commands.set(cmd.name, cmd);
+        client.commands.set(cmd.name, cmd);
         //console.log(`Loaded Commands : ${cmd.name}`);
     });
     if (nbCmd !== 0) await console.log(`${nbCmd} commands loaded.`);
