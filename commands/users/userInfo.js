@@ -4,7 +4,7 @@ module.exports = {
     name: 'userinfo',
     type: 'USER',
     category: 'users',
-    permissions:['SEND_MESSAGES'],
+    permissions: ['SEND_MESSAGES'],
     async runInteraction(client, interaction) {
         const member = await interaction.guild.members.fetch(interaction.targetId);
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);

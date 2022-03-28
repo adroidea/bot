@@ -4,11 +4,10 @@ dotenv.config();
 const mongoose = require('mongoose');
 const client = new Client({intents: 32767});
 
-['commands'].forEach(x => client[x] = new Collection());
+client.commands = new Collection();
 ['CommandUtil', 'EventUtil'].forEach(handler => {
     require(`./utils/handlers/${handler}`)(client);
 });
-
 
 process.on('exit', code => {
     console.log(`Process stoped with the code ${code}`);
