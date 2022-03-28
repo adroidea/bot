@@ -35,9 +35,9 @@ module.exports = {
                 noArgsEmbed.addField(`❄ ${category.replace(/(^\w|\s\w)/g, firstLetter => firstLetter.toUpperCase())} :`,
                     ` \`\`${client.commands.filter(cmd => cmd.category === category.toLowerCase()).map(cmd => cmd.name).join(' | ')}\`\``);
             }
-            noArgsEmbed.addField('----------------------', `**\`${prefix}help <commande>\` For more informations.**`)
+            noArgsEmbed.addField('----------------------', `**\`/helpea <commande>\` For more informations.**`)
                 .setFooter({
-                    text: `( ) = alias | < > = optionnel | [ ] = requis | (Il ne faut pas les inclure dans vos commandes)`
+                    text: `( ) = alias | < > = optional | [ ] = required | (don't put them in the commands)`
                 });
             return interaction.reply({embeds: [noArgsEmbed], ephemeral: true});
         }
@@ -53,8 +53,8 @@ module.exports = {
 
 ${cmd.description ? cmd.description : contextDescription[`${cmd.name}`]}
 
-How to : ${prefix}${cmd.usage}
-Exemples : ${prefix}${cmd.exemples.join(` | ${prefix}`)}
+How to : /${cmd.usage}
+Exemples : /${cmd.exemples.join(` | /`)}
 
 ------------
 ( ) = alias | < > = optional | [ ] = required | (Don't include them in your commands)

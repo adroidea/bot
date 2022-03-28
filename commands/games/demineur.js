@@ -7,18 +7,6 @@ module.exports = {
     usage: 'demineur [row] [col] [mines]',
     exemples: ['demineur 10 10 25'],
     gameHandle(typeMessage, rows, columns, mines) {
-        if (!rows) {
-            return typeMessage.reply(':warning: Please select a correct amount of rows.');
-        }
-
-        if (!columns) {
-            return typeMessage.reply(':warning: Please select a correct amount of columns.');
-        }
-
-        if (!mines) {
-            return typeMessage.reply(':warning: Please select a correct amount of mines.');
-        }
-
         const minesweeper = new Minesweeper({
             rows: rows,
             columns: columns,
@@ -29,11 +17,14 @@ module.exports = {
         });
         const matrix = minesweeper.start();
         if (!matrix || matrix.length > 2000) {
-            return typeMessage.reply(':warning: Please change the number of rows, columns or mines.');
+            return typeMessage.reply({
+                content: ':warning: Please change the number of rows, columns or mines.',
+                ephemeral: true
+            });
         }
         return matrix
             ? typeMessage.reply(matrix)
-            : typeMessage.reply(':warning: You have provided invalid data.');
+            : typeMessage.reply({content: ':warning: You have provided invalid data.', ephemeral: true});
     },
 
     options: [{
