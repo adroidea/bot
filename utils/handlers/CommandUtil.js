@@ -19,14 +19,14 @@ module.exports = async client => {
 
         cmd.permissions.forEach(permission => {
             if (!permissionList.includes(permission)) {
-                nbFailedEvents++;
+                nbFailedCmd++;
                 return console.log(`-----\nNot initialised Command: Double check the permissions, this one in particular : ${permission} \n File : ${cmdFile}\n-----`);
             }
         });
 
         nbCmd++;
-        client.commands.set(cmd.name, cmd);
-        //console.log(`Loaded Commands : ${cmd.name}`);
+        await client.commands.set(cmd.name, cmd);
+
     });
     if (nbCmd !== 0) await console.log(`${nbCmd} commands loaded.`);
     if (nbFailedCmd !== 0) await console.log(`Failed to load ${nbFailedCmd} commands`);

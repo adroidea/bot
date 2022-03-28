@@ -3,7 +3,7 @@ module.exports = {
     name: 'demineur',
     description: 'Start a minesweeper game',
     category: 'games',
-    permissions:['SEND_MESSAGES'],
+    permissions: ['SEND_MESSAGES'],
     usage: 'demineur [row] [col] [mines]',
     exemples: ['demineur 10 10 25'],
     gameHandle(typeMessage, rows, columns, mines) {
@@ -36,9 +36,6 @@ module.exports = {
             : typeMessage.reply(':warning: You have provided invalid data.');
     },
 
-    async run(client, message, args) {
-        await this.gameHandle(message, parseInt(args[0]), parseInt(args[1]), parseInt(args[2]));
-    },
     options: [{
         name: 'rows',
         description: 'Choose the number of rows',

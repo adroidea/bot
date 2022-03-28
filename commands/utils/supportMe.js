@@ -47,8 +47,7 @@ module.exports = {
             .setFooter({
                 text: `NB : Pour les sub et les cheers de bits, pensez à bien passer sur pc pour les acheter`,
                 iconURL: interaction.member.user.avatarURL()
-            })
-            .setTimestamp();
+            });
         interaction.reply({embeds: [embed]});
     }
 };

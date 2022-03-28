@@ -34,7 +34,10 @@ module.exports = {
                 }
             });
             await interaction.channel.bulkDelete(filteredTargetMessages, true).then(messages => {
-                interaction.reply({content: `${messages.size} messages deleted from ${target.username}!`, ephemeral: true});
+                interaction.reply({
+                    content: `${messages.size} messages deleted from ${target.username}!`,
+                    ephemeral: true
+                });
             });
         } else {
             await interaction.channel.bulkDelete(amountToDelete, true).then(messages => {

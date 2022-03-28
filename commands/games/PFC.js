@@ -1,6 +1,3 @@
-const TicTacToe = require('discord-tictactoe');
-
-
 module.exports = {
     name: 'pfc',
     description: 'Start a Rock Paper Scissors game',
