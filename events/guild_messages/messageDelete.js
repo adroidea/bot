@@ -3,7 +3,7 @@ module.exports = {
     name: 'messageDelete',
     once: false,
     async execute(client, message) {
-        const logChannel = client.channels.cache.get('949252153225150524');
+        const logChannel = client.channels.cache.get('816172869339185163');
         if (message.content !== null) {
             if (!message.author.bot) {
                 const embed = new MessageEmbed()

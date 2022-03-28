@@ -3,7 +3,7 @@ module.exports = {
     name: 'messageUpdate',
     once: false,
     async execute(client, oldMessage, newMessage) {
-        const logChannel = client.channels.cache.get('949252153225150524');
+        const logChannel = client.channels.cache.get('816172869339185163');
 
         if (oldMessage.content !== null && newMessage.content !== null) {
             if (!newMessage.author.bot) {

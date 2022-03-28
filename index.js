@@ -20,12 +20,4 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 process.on('warning', (...args) => console.log(...args));
 
-mongoose.connect(process.env.DATABASE_URI, {
-    autoIndex: false,
-    maxPoolSize: 10,
-    serverSelectionTimeoutMS: 5000,
-    family: 4
-}).then(() => console.log('Successfully connected to the database'))
-    .catch(error => console.log('Error while connecting to the database : ', error));
-
 client.login(process.env.DISCORD_TOKEN);

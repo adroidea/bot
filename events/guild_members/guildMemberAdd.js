@@ -4,7 +4,7 @@ module.exports = {
     name: 'guildMemberAdd',
     once: false,
     async execute(client, member) {
-        const logChannel = client.channels.cache.get('949252153225150524');
+        const logChannel = client.channels.cache.get('814621178223394818');
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);
         const embed = new MessageEmbed()
             .setAuthor({name: `${member.user.id}`, iconURL: member.user.avatarURL()})
