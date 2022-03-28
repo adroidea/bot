@@ -10,15 +10,33 @@ async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let IsLiveMemory = false;
+let IsLiveAdanMemory = false;
+
+
+async function addRole(client, streamer, memberId) {
+    twitch.getStreams({channel: streamer}).then(async data => {
+        let roleId = '948895921482113024';
+        const r = data.data[0];
+        let streamer = await client.guilds.cache.get('814621177770541076').members.cache.get(memberId);
+        if (r !== undefined) {
+            if (r.type === 'live') {
+                if (streamer.roles.cache.get(roleId) === undefined) streamer.roles.add(roleId);
+            } else {
+                if (streamer.roles.cache.get(roleId) !== undefined) streamer.roles.remove(roleId);
+            }
+        } else{
+            if (streamer.roles.cache.get(roleId) !== undefined) streamer.roles.remove(roleId);
+        }
+    });
+}
 
 async function run(client) {
     await twitch.getStreams({channel: 'adroid_ea'}).then(async data => {
         const r = data.data[0];
-        let liveChannel = client.guilds.cache.get('605053128148254724');
+        let liveChannel = client.guilds.cache.get('814621177770541076');
         if (r !== undefined) {
             if (r.type === 'live') {
-                if (IsLiveMemory === false || IsLiveMemory === undefined) {
+                if (IsLiveAdanMemory === false || IsLiveAdanMemory === undefined) {
                     const embed = new MessageEmbed()
                         .setTitle(`${r.title}`)
                         .setURL(`https://twitch.tv/${r.user_name}`)
@@ -26,27 +44,67 @@ async function run(client) {
                         .addField(`**Game**`, r.game_name, false)
                         .setImage(r.getThumbnailUrl())
                         .setColor('#b02020');
-                    const sentMessage = client.channels.cache.get('949252153225150524').send({
+                    const sentMessage = client.channels.cache.get('856293901237616640').send({
                         content: `<@&930051152987430952> ${r.user_name} is live ! Join them for some ${r.game_name}`,
                         embeds: [embed]
                     });
-                    await liveChannel.setIcon('https://cdn.discordapp.com/attachments/771934231647223848/946326723593633792/Peace_was_never_an_option.png');
-                    IsLiveMemory = true;
+                    await liveChannel.setIcon('https://cdn.discordapp.com/attachments/763373900171313162/957985745258315836/icone-discord-live.png');
+                    IsLiveAdanMemory = true;
                 }
             } else {
-                if (IsLiveMemory === true) {
-                    await liveChannel.setIcon('https://cdn.discordapp.com/attachments/771934231647223848/938389858802606160/jpp_jean-pierre.png');
-                    IsLiveMemory = false;
+                if (IsLiveAdanMemory === true) {
+                    await liveChannel.setIcon('https://cdn.discordapp.com/attachments/763373900171313162/957985780322664449/icone-discord.png');
+                    IsLiveAdanMemory = false;
                 }
             }
         } else {
-            if (IsLiveMemory === true) {
-                await liveChannel.setIcon('https://cdn.discordapp.com/attachments/771934231647223848/938389858802606160/jpp_jean-pierre.png');
-                IsLiveMemory = false;
+            if (IsLiveAdanMemory === true) {
+                await liveChannel.setIcon('https://cdn.discordapp.com/attachments/763373900171313162/957985780322664449/icone-discord.png');
+                IsLiveAdanMemory = false;
             }
         }
     });
-};
+
+}
+
+const streamers = [
+    {
+        streamer: 'boukx',
+        memberId: '285380909090471936'
+    },
+    {
+        streamer: 'COBALtv',
+        memberId: '164431044542464000'
+    },
+    {
+        streamer: 'flolleli',
+        memberId: '212242024005369856'
+    },
+    {
+        streamer: 'igua30',
+        memberId: '728570505107341313'
+    },
+    {
+        streamer: 'LeMondeDlaure',
+        memberId: '360671572299743232'
+    },
+    {
+        streamer: 'LaZerLZ',
+        memberId: '180050877925687296'
+    },
+    {
+        streamer: 'nathwolf',
+        memberId: '283732823838294025'
+    },
+    {
+        streamer: 'Usishiiire',
+        memberId: '538079101077028868'
+    },
+    {
+        streamer: 'Zennf_',
+        memberId: '159638700316164096'
+    }
+]
 
 module.exports = {
     name: 'ready',
@@ -54,7 +112,10 @@ module.exports = {
     async execute(client) {
         while (true) {
             await run(client);
-            await sleep(60000);
+            for (let streamer of streamers) {
+                await addRole(client, streamer.streamer, streamer.memberId);
+            }
+            await sleep(10000);
         }
     }
 };
