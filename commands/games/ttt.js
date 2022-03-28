@@ -16,8 +16,7 @@ module.exports = {
         }
     ],
     runInteraction(client, interaction) {
-        const target = interaction.options.getMember('member');
-        const game = new TicTacToe({language: 'fr', commandOptionName: 'user'});
+        const game = new TicTacToe({language: 'fr'});
         game.handleInteraction(interaction);
     }
 };
