@@ -9,12 +9,6 @@ module.exports = {
             }
             if(!interaction.member.permissions.has([cmd.permissions])) return interaction.reply({content : 'You are not allowed to use this command.', ephemeral: true});
             cmd.runInteraction(client, interaction);
-        } else if(interaction.isButton()) {
-            const btn = client.buttons.get(interaction.customId);
-            if (!btn) {
-                return interaction.reply('This button doesn\'t exist !');
-                btn.runInteraction(client, interaction);
-            }
         }
     }
 };
