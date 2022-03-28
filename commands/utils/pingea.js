@@ -2,25 +2,14 @@ const {MessageEmbed} = require('discord.js');
 const {type} = require('../users/userInfo');
 
 module.exports = {
-    name: 'ping',
+    name: 'pingea',
     description: 'get the ping of the bot',
     category: "utils",
     permissions:['SEND_MESSAGES'],
     usage:'ping',
     exemples:['ping'],
     async run(client, message) {
-        const sentMessage = await message.channel.send('Pong !');
-
-        const embed = new MessageEmbed()
-            .setThumbnail(client.user.displayAvatarURL())
-            .setTitle('🏓 Pong !')
-            .setURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
-            .addField('Latence bot', `\`\`\`${sentMessage.createdTimestamp - message.createdTimestamp}ms\`\`\``, true)
-            .addField('Latence api', `\`\`\`${client.ws.ping}ms\`\`\``, true)
-            .setFooter({text: message.author.username, iconURL: message.author.displayAvatarURL()})
-            .setTimestamp();
-        sentMessage.edit({content: ' ', embeds: [embed]})
-
+        message.reply('This command doesn\'t exist, please use /pingea');
     },
     async runInteraction(client, interaction) {
         const sentMessage = await interaction.reply({content:'Pong !', fetchReply:'true'});

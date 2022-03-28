@@ -3,7 +3,7 @@ const TicTacToe = require('discord-tictactoe');
 
 module.exports = {
     name: 'ttt',
-    description: 'get the ping of the bot',
+    description: 'Start a tic tac toe game against an AI',
     category: 'games',
     permissions:['SEND_MESSAGES'],
     usage: 'ttt <user>',

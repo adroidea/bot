@@ -5,7 +5,7 @@ module.exports = {
     name: 'pfc',
     description: 'Start a Rock Paper Scissors game',
     category: 'games',
-    permissions:['SEND_MESSAGES'],
+    permissions: ['SEND_MESSAGES'],
     usage: 'pfc [choice]',
     exemples: ['pfc p', 'pfc c', 'pfc f'],
     isPlayerOneWinner(playerOneChoice, playerTwoChoice) {
@@ -15,22 +15,21 @@ module.exports = {
         let botChoice = Math.floor(Math.random() * 3);
         let possibleChoices = ['p', 'f', 'c'];
         let emoteChoice = ['🗿', '🍁', '✂'];
-        if (!choice) {
-            typeMessage.reply('Tu dois choisir entre 🗿 (p), 🍁 (f) ou ✂ (c) !');
-        } else if (choice === possibleChoices[botChoice]) {
-            typeMessage.reply(` J'ai joué ${emoteChoice[botChoice]} ! C'est une égalité ! On réessaie ?`);
+        if (choice === possibleChoices[botChoice]) {
+            typeMessage.reply({
+                content: ` J'ai joué ${emoteChoice[botChoice]} ! C'est une égalité ! On réessaie ?`, ephemeral: true
+            });
         } else if (!this.isPlayerOneWinner(choice, possibleChoices[botChoice])) {
-            typeMessage.reply(`Ah dommage pour toi ! J'ai joué ${emoteChoice[botChoice]} !On réessaie ?`);
+            typeMessage.reply({
+                content: `Ah dommage pour toi ! J'ai joué ${emoteChoice[botChoice]} ! On réessaie ?`, ephemeral: true
+            });
         } else if (this.isPlayerOneWinner(choice, possibleChoices[botChoice])) {
-            typeMessage.reply(`J'ai joué ${emoteChoice[botChoice]} !Bravo à toi ! On réessaie ?`);
+            typeMessage.reply({
+                content: `J'ai joué ${emoteChoice[botChoice]} ! Bravo à toi ! On réessaie ?`, ephemeral: true
+            });
         } else {
-            typeMessage.reply('Tu dois choisir entre 🗿 (p), 🍁 (f) ou ✂ (c) !');
+            typeMessage.reply({content: 'Tu dois choisir entre 🗿 (p), 🍁 (f) ou ✂ (c) !', ephemeral: true});
         }
-    },
-
-    async run(client, message, args) {
-        let choice = args[0];
-        await this.gameHandle(message, choice);
     },
     options: [{
         name: 'choice',
