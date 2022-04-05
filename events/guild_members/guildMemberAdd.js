@@ -9,7 +9,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setAuthor({name: `${member.user.id}`, iconURL: member.user.avatarURL()})
             .setThumbnail(member.user.avatarURL())
-            .setTitle(`<a:pikahi:771014674203934751> Bienvenue sur le serveur ${member.user.tag} !`)
+            .setTitle(`<a:pikaHi:960872476718551070> Bienvenue sur le serveur ${member.user.tag} !`)
             .setDescription(`Bonjour à toi ! Surtout n'oublie pas, le bon sens est une règle, veille à respecter ce qui devrait être évident !
              Nous souhaitons que ton expérience parmi nous soit aussi plaisante que possible, et nous nous y emploierons constamment.`)
             .addFields(

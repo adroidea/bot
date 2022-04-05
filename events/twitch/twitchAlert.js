@@ -13,7 +13,7 @@ async function sleep(ms) {
 let IsLiveAdanMemory = false;
 
 
-async function addRole(client, streamer, memberId) {
+async function editStreamingRole(client, streamer, memberId) {
     twitch.getStreams({channel: streamer}).then(async data => {
         let roleId = '948895921482113024';
         const r = data.data[0];
@@ -31,7 +31,7 @@ async function addRole(client, streamer, memberId) {
 }
 
 async function run(client) {
-    await twitch.getStreams({channel: 'adroid_ea'}).then(async data => {
+    await twitch.getStreams({channel: 'adan_ea'}).then(async data => {
         const r = data.data[0];
         let liveChannel = client.guilds.cache.get('814621177770541076');
         if (r !== undefined) {
@@ -85,12 +85,12 @@ const streamers = [
         memberId: '728570505107341313'
     },
     {
-        streamer: 'LeMondeDlaure',
-        memberId: '360671572299743232'
-    },
-    {
         streamer: 'LaZerLZ',
         memberId: '180050877925687296'
+    },
+    {
+        streamer: 'LeMondeDlaure',
+        memberId: '360671572299743232'
     },
     {
         streamer: 'nathwolf',
@@ -113,9 +113,9 @@ module.exports = {
         while (true) {
             await run(client);
             for (let streamer of streamers) {
-                await addRole(client, streamer.streamer, streamer.memberId);
+                await editStreamingRole(client, streamer.streamer, streamer.memberId);
             }
-            await sleep(10000);
+            await sleep(15000);
         }
     }
 };
