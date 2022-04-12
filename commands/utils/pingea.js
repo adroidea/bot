@@ -3,7 +3,7 @@ const {type} = require('../users/userInfo');
 
 module.exports = {
     name: 'pingea',
-    description: 'get the ping of the bot',
+    description: 'Renvoie le ping du bot',
     category: "utils",
     permissions: ['SEND_MESSAGES'],
     usage: 'ping',

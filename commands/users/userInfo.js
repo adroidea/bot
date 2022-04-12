@@ -12,24 +12,24 @@ module.exports = {
             .setAuthor({name: `${member.user.tag} (${member.user.id})`, iconURL: member.user.displayAvatarURL()})
             .setImage(member.user.displayAvatarURL())
             .addFields(
-                {name: '❄ Name', value: `${member.displayName}`, inline: true},
-                {name: '❄ Moderator', value: `${member.kickable ? '🔴' : '🟢'}`, inline: true},
+                {name: '❄ Nom', value: `${member.displayName}`, inline: true},
+                {name: '❄ Moderateur', value: `${member.kickable ? '🔴' : '🟢'}`, inline: true},
                 {name: '❄ Bot', value: `${member.user.bot ? '🟢' : '🔴'}`, inline: true},
                 {
                     name: '❄ Roles',
                     value: `${member.roles.cache.map(role => role).join(' ').replace('@everyone', '\u200B')}`
                 },
                 {
-                    name: '❄ Created',
+                    name: '❄ Création',
                     value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:f> (<t:${parseInt(member.user.createdTimestamp / 1000)}:R>)`
                 },
                 {
-                    name: '❄ Joined',
+                    name: '❄ Arrivée',
                     value: `<t:${parseInt(member.joinedTimestamp / 1000)}:f> (<t:${parseInt(member.joinedTimestamp / 1000)}:R>)`
                 }
             )
             .setFooter({
-                text: 'I see you stalking but you still are handsome !',
+                text: 'Même si tu stalk les profils t\'es un turbo bg !',
                 iconURL: interaction.user.displayAvatarURL()
             })
             .setColor(randomColor)

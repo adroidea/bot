@@ -1,10 +1,10 @@
 module.exports = {
     name: 'pfc',
-    description: 'Start a Rock Paper Scissors game',
-    category: 'games',
+    description: 'Commence une partie de Pierre Feuille Ciseau.',
+    category: 'jeux',
     permissions: ['SEND_MESSAGES'],
     usage: 'pfc [choice]',
-    exemples: ['pfc p', 'pfc c', 'pfc f'],
+    exemples: ['pfc p', 'pfc f', 'pfc c'],
     isPlayerOneWinner(playerOneChoice, playerTwoChoice) {
         return (playerOneChoice === 'p' && playerTwoChoice === 'c') || (playerOneChoice === 'f' && playerTwoChoice === 'p') || (playerOneChoice === 'c' && playerTwoChoice === 'f');
     },
@@ -29,23 +29,23 @@ module.exports = {
         }
     },
     options: [{
-        name: 'choice',
-        description: 'Choose the element to play',
+        name: 'choix',
+        description: 'Choisis l\'élément à jouer',
         type: 'STRING',
         required: true,
         choices: [{
             name: 'pierre',
             value: 'p'
         }, {
-            name: 'ciseaux',
-            value: 'c'
-        }, {
             name: 'feuille',
             value: 'f'
+        }, {
+            name: 'ciseaux',
+            value: 'c'
         }]
     }],
     runInteraction(client, interaction) {
-        const choice = interaction.options.getString('choice');
+        const choice = interaction.options.getString('choix');
         this.gameHandle(interaction, choice);
     }
 };
