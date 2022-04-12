@@ -12,7 +12,6 @@ async function sleep(ms) {
 
 let IsLiveAdanMemory = false;
 
-
 async function editStreamingRole(client, streamer, memberId) {
     twitch.getStreams({channel: streamer}).then(async data => {
         let roleId = '948895921482113024';
@@ -24,7 +23,7 @@ async function editStreamingRole(client, streamer, memberId) {
             } else {
                 if (streamer.roles.cache.get(roleId) !== undefined) streamer.roles.remove(roleId);
             }
-        } else{
+        } else {
             if (streamer.roles.cache.get(roleId) !== undefined) streamer.roles.remove(roleId);
         }
     });
@@ -64,7 +63,6 @@ async function run(client) {
             }
         }
     });
-
 }
 
 const streamers = [
@@ -73,7 +71,7 @@ const streamers = [
         memberId: '285380909090471936'
     },
     {
-        streamer: 'COBALtv',
+        streamer: 'cobaltv',
         memberId: '164431044542464000'
     },
     {
@@ -85,11 +83,11 @@ const streamers = [
         memberId: '728570505107341313'
     },
     {
-        streamer: 'LaZerLZ',
+        streamer: 'Lazerlz',
         memberId: '180050877925687296'
     },
     {
-        streamer: 'LeMondeDlaure',
+        streamer: 'lemondedlaure',
         memberId: '360671572299743232'
     },
     {
@@ -97,14 +95,14 @@ const streamers = [
         memberId: '283732823838294025'
     },
     {
-        streamer: 'Usishiiire',
+        streamer: 'usishiiire',
         memberId: '538079101077028868'
     },
     {
-        streamer: 'Zennf_',
+        streamer: 'zennf_',
         memberId: '159638700316164096'
     }
-]
+];
 
 module.exports = {
     name: 'ready',

@@ -1,10 +1,10 @@
 const Minesweeper = require('discord.js-minesweeper');
 module.exports = {
     name: 'demineur',
-    description: 'Start a minesweeper game',
-    category: 'games',
+    description: 'Démarre une partie de Démineur',
+    category: 'jeux',
     permissions: ['SEND_MESSAGES'],
-    usage: 'demineur [row] [col] [mines]',
+    usage: 'demineur [lignes] [col] [mines]',
     exemples: ['demineur 10 10 25'],
     gameHandle(typeMessage, rows, columns, mines) {
         const minesweeper = new Minesweeper({
@@ -18,28 +18,28 @@ module.exports = {
         const matrix = minesweeper.start();
         if (!matrix || matrix.length > 2000) {
             return typeMessage.reply({
-                content: ':warning: Please change the number of rows, columns or mines.',
+                content: ':warning: Merci de mettre un nombre valide de lignes, colonnes ou mines.',
                 ephemeral: true
             });
         }
         return matrix
             ? typeMessage.reply(matrix)
-            : typeMessage.reply({content: ':warning: You have provided invalid data.', ephemeral: true});
+            : typeMessage.reply({content: ':warning: Données invalides, veuillez rééssayer.', ephemeral: true});
     },
 
     options: [{
         name: 'rows',
-        description: 'Choose the number of rows',
+        description: 'Nombre de lignes',
         type: 'NUMBER',
         required: true
     }, {
         name: 'columns',
-        description: 'Choose the number of columns',
+        description: 'Nombre de colonnes',
         type: 'NUMBER',
         required: true
     }, {
         name: 'mines',
-        description: 'Choose the number of mines',
+        description: 'Nombre de mines',
         type: 'NUMBER',
         required: true
     }],

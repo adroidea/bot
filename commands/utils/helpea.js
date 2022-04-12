@@ -7,19 +7,19 @@ const contextDescription = {
 
 module.exports = {
     name: 'helpea',
-    description: 'Create a help command with everything to know about this bot',
+    description: 'Affiche un message avec toutes les commandes du bot',
     category: 'utils',
     permissions: ['SEND_MESSAGES'],
     usage: 'help',
     exemples: ['help', 'help'],
     options: [{
-        name: 'command',
-        description: 'The command you need help with',
+        name: 'commande',
+        description: 'La méchante commande qui te pose souci',
         type: 'STRING',
         required: false
     }],
     async runInteraction(client, interaction) {
-        const cmdName = interaction.options.getString('command');
+        const cmdName = interaction.options.getString('commande');
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);
         if (!cmdName) {
             const noArgsEmbed = new MessageEmbed()
@@ -28,7 +28,7 @@ module.exports = {
                     iconURL: interaction.member.user.displayAvatarURL()
                 })
                 .setThumbnail('https://cdn.discordapp.com/attachments/763373898779197481/887604870578843668/Zw.png')
-                .setTitle(`❄ Here is a list of all the commands available !`)
+                .setTitle(`❄ Voici toutes les commandes du bot !`)
                 .setDescription('----------------------')
                 .setColor(randomColor);
             for (const category of cmdFolder) {
@@ -37,28 +37,27 @@ module.exports = {
             }
             noArgsEmbed.addField('----------------------', `**\`/helpea <commande>\` For more informations.**`)
                 .setFooter({
-                    text: `( ) = alias | < > = optional | [ ] = required | (don't put them in the commands)`
+                    text: `( ) = alias | < > = optionnel | [ ] = requis | (Don't include them in your commands)`
                 });
             return interaction.reply({embeds: [noArgsEmbed], ephemeral: true});
         }
         const cmd = client.commands.get(cmdName);
         if (!cmd) return interaction.reply({
-            content: 'This command does not exist or you typed it wrong, please try again.',
+            content: 'Cette commande n\'existe pas ou vous avez fait une typo.',
             ephemeral: true
         });
         return interaction.reply({
             content: `
 \`\`\`makefile
-[Help: Command: -> ${cmd.name}]
+[Help: Commande: -> ${cmd.name}]
 
 ${cmd.description ? cmd.description : contextDescription[`${cmd.name}`]}
 
-How to : /${cmd.usage}
+Comment l'utiliser : /${cmd.usage}
 Exemples : /${cmd.exemples.join(` | /`)}
 
 ------------
-( ) = alias | < > = optional | [ ] = required | (Don't include them in your commands)
-Most commands also have /commands included, prefer using them.
+( ) = alias | < > = optionnel | [ ] = requis | (Don't include them in your commands)
 \`\`\`
         `, ephemeral: true
         });

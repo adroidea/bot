@@ -2,16 +2,16 @@ const TicTacToe = require('discord-tictactoe');
 
 module.exports = {
     name: 'ttt',
-    description: 'Start a tic tac toe game against an AI',
-    category: 'games',
+    description: 'Commence une partie de TicTacToe contre le bot ou un joueur ',
+    category: 'jeux',
     permissions: ['SEND_MESSAGES'],
     usage: 'ttt <user>',
     exemples: ['ttt', 'ttt @adan_ea'],
     options: [
         {
-            name: 'opponent',
+            name: 'adversaire',
             type: 'USER',
-            description: 'Mention the opponent to play against',
+            description: 'Choisir votre adversaire',
             required: false
         }
     ],
