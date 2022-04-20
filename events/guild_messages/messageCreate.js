@@ -9,7 +9,7 @@ module.exports = {
         if (!message.author.bot) {
             let randomReact = Math.random();
             switch (true) {
-                case /\bAllo\b/gmi.test(message.content) :
+                case /\bAllo\b/gi.test(message.content) :
                     return message.reply('https://cdn.discordapp.com/attachments/771934231647223848/932926764253052949/oui_allo_jegoutte.jpg');
                 case /hello there/gmi.test(message.content) :
                     return message.reply('https://tenor.com/view/hello-there-general-kenobi-star-wars-grevious-gif-17774326');
@@ -33,9 +33,9 @@ module.exports = {
                     }
                     return;
                 default:
-                    if (random > 0.9 && message.author.id === '264026835493322753') {
+                    if (randomReact > 0.9 && message.author.id === '264026835493322753') {
                         return message.reply(`https://www.youtube.com/watch?v=dQw4w9WgXcQ`);
-                    } else if (random > 0.99) {
+                    } else if (randomReact > 0.99) {
                         return message.reply(`https://www.youtube.com/watch?v=dQw4w9WgXcQ`);
                     }
                     return;

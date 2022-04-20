@@ -15,7 +15,6 @@
     "discord.js-minesweeper": "^1.1.0",
     "dotenv": "^16.0.0",
     "glob": "^7.2.0",
-    "mongoose": "^6.2.4",
     "node-twitch": "^0.4.5"
   }
 }
