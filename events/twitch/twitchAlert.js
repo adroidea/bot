@@ -49,6 +49,7 @@ async function run(client) {
                     });
                     await liveChannel.setIcon('https://cdn.discordapp.com/attachments/763373900171313162/957985745258315836/icone-discord-live.png');
                     IsLiveAdanMemory = true;
+                    await sleep(900000);
                 }
             } else {
                 if (IsLiveAdanMemory === true) {
@@ -113,7 +114,7 @@ module.exports = {
             for (let streamer of streamers) {
                 await editStreamingRole(client, streamer.streamer, streamer.memberId);
             }
-            await sleep(15000);
+            await sleep(60000);
         }
     }
 };

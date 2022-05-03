@@ -33,9 +33,7 @@ module.exports = {
                     }
                     return;
                 default:
-                    if (randomReact > 0.9 && message.author.id === '264026835493322753') {
-                        return message.reply(`https://www.youtube.com/watch?v=dQw4w9WgXcQ`);
-                    } else if (randomReact > 0.99) {
+                    if (randomReact > 0.99) {
                         return message.reply(`https://www.youtube.com/watch?v=dQw4w9WgXcQ`);
                     }
                     return;
