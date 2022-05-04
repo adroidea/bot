@@ -113,6 +113,7 @@ module.exports = {
             await run(client);
             for (let streamer of streamers) {
                 await editStreamingRole(client, streamer.streamer, streamer.memberId);
+                await sleep(10000);
             }
             await sleep(60000);
         }

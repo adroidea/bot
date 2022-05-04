@@ -11,11 +11,13 @@ module.exports = {
                         {name: `${message.author.id}`, iconURL: message.author.avatarURL()}
                     )
                     .setDescription(`Message supprimé par ${message.author.username} dans <#${message.channelId}>, [voir le salon](${message.url})`)
-                    .addField(`Message supprimé :`, message.content, false)
+                    .addField(`Message supprimé :`, ('❄ ' + message.content ), false)
                     .setFooter({text: `Message supprimé.`})
                     .setColor('#b02020')
                     .setTimestamp();
-
+                if (message.attachments.size > 0)
+                    embed.setImage(message.attachments.first()?.url);
+                
                 await logChannel.send({embeds: [embed]});
             }
         }

@@ -5,9 +5,8 @@ module.exports = {
     async execute(client, oldMessage, newMessage) {
         const logChannel = client.channels.cache.get('816172869339185163');
 
-        if (oldMessage.content !== null && newMessage.content !== null) {
+        if (oldMessage.content !== null && newMessage.content !== null && oldMessage.content !== newMessage.content) {
             if (!newMessage.author.bot) {
-
                 const embed = new MessageEmbed()
                     .setAuthor({name: `<@${newMessage.author.id}>`, iconURL: newMessage.author.avatarURL()})
                     .setDescription(`Message edité dans <#${oldMessage.channelId}>, [voir le message](${oldMessage.url})`)
