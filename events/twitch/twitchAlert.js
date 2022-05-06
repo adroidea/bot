@@ -100,6 +100,10 @@ const streamers = [
         memberId: '538079101077028868'
     },
     {
+        streamer: 'yookie_tv',
+        memberId: '131172720296722433'
+    },
+    {
         streamer: 'zennf_',
         memberId: '159638700316164096'
     }
