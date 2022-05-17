@@ -18,31 +18,39 @@ module.exports = {
         const matrix = minesweeper.start();
         if (!matrix || matrix.length > 2000) {
             return typeMessage.reply({
-                content: ':warning: Merci de mettre un nombre valide de lignes, colonnes ou mines.',
+                content:
+                    ':warning: Merci de mettre un nombre valide de lignes, colonnes ou mines.',
                 ephemeral: true
             });
         }
         return matrix
             ? typeMessage.reply(matrix)
-            : typeMessage.reply({ content: ':warning: Données invalides, veuillez rééssayer.', ephemeral: true });
+            : typeMessage.reply({
+                  content: ':warning: Données invalides, veuillez rééssayer.',
+                  ephemeral: true
+              });
     },
 
-    options: [{
-        name: 'rows',
-        description: 'Nombre de lignes',
-        type: 'NUMBER',
-        required: true
-    }, {
-        name: 'columns',
-        description: 'Nombre de colonnes',
-        type: 'NUMBER',
-        required: true
-    }, {
-        name: 'mines',
-        description: 'Nombre de mines',
-        type: 'NUMBER',
-        required: true
-    }],
+    options: [
+        {
+            name: 'rows',
+            description: 'Nombre de lignes',
+            type: 'NUMBER',
+            required: true
+        },
+        {
+            name: 'columns',
+            description: 'Nombre de colonnes',
+            type: 'NUMBER',
+            required: true
+        },
+        {
+            name: 'mines',
+            description: 'Nombre de mines',
+            type: 'NUMBER',
+            required: true
+        }
+    ],
     runInteraction(client, interaction) {
         const rows = interaction.options.getNumber('rows');
         const columns = interaction.options.getNumber('columns');

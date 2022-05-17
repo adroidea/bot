@@ -16,15 +16,20 @@ async function editStreamingRole(client, streamer, memberId) {
     twitch.getStreams({ channel: streamer }).then(async data => {
         let roleId = '948895921482113024';
         const r = data.data[0];
-        let streamer = await client.guilds.cache.get('814621177770541076').members.cache.get(memberId);
+        let streamer = await client.guilds.cache
+            .get('814621177770541076')
+            .members.cache.get(memberId);
         if (r !== undefined) {
             if (r.type === 'live') {
-                if (streamer.roles.cache.get(roleId) === undefined) streamer.roles.add(roleId);
+                if (streamer.roles.cache.get(roleId) === undefined)
+                    streamer.roles.add(roleId);
             } else {
-                if (streamer.roles.cache.get(roleId) !== undefined) streamer.roles.remove(roleId);
+                if (streamer.roles.cache.get(roleId) !== undefined)
+                    streamer.roles.remove(roleId);
             }
         } else {
-            if (streamer.roles.cache.get(roleId) !== undefined) streamer.roles.remove(roleId);
+            if (streamer.roles.cache.get(roleId) !== undefined)
+                streamer.roles.remove(roleId);
         }
     });
 }
@@ -35,31 +40,44 @@ async function run(client) {
         let liveChannel = client.guilds.cache.get('814621177770541076');
         if (r !== undefined) {
             if (r.type === 'live') {
-                if (IsLiveAdanMemory === false || IsLiveAdanMemory === undefined) {
+                if (
+                    IsLiveAdanMemory === false ||
+                    IsLiveAdanMemory === undefined
+                ) {
                     const embed = new MessageEmbed()
                         .setTitle(`${r.title}`)
                         .setURL(`https://twitch.tv/${r.user_name}`)
-                        .setDescription(`**${r.user_name} is live for ${r.viewer_count} viewers !**`)
+                        .setDescription(
+                            `**${r.user_name} is live for ${r.viewer_count} viewers !**`
+                        )
                         .addField(`**Game**`, r.game_name, false)
                         .setImage(r.getThumbnailUrl())
                         .setColor('#b02020');
-                    const sentMessage = client.channels.cache.get('856293901237616640').send({
-                        content: `<@&930051152987430952> ${r.user_name} is live ! Join them for some ${r.game_name}`,
-                        embeds: [embed]
-                    });
-                    await liveChannel.setIcon('https://cdn.discordapp.com/attachments/763373900171313162/957985745258315836/icone-discord-live.png');
+                    const sentMessage = client.channels.cache
+                        .get('856293901237616640')
+                        .send({
+                            content: `<@&930051152987430952> ${r.user_name} is live ! Join them for some ${r.game_name}`,
+                            embeds: [embed]
+                        });
+                    await liveChannel.setIcon(
+                        'https://cdn.discordapp.com/attachments/763373900171313162/957985745258315836/icone-discord-live.png'
+                    );
                     IsLiveAdanMemory = true;
                     await sleep(900000);
                 }
             } else {
                 if (IsLiveAdanMemory === true) {
-                    await liveChannel.setIcon('https://cdn.discordapp.com/attachments/763373900171313162/957985780322664449/icone-discord.png');
+                    await liveChannel.setIcon(
+                        'https://cdn.discordapp.com/attachments/763373900171313162/957985780322664449/icone-discord.png'
+                    );
                     IsLiveAdanMemory = false;
                 }
             }
         } else {
             if (IsLiveAdanMemory === true) {
-                await liveChannel.setIcon('https://cdn.discordapp.com/attachments/763373900171313162/957985780322664449/icone-discord.png');
+                await liveChannel.setIcon(
+                    'https://cdn.discordapp.com/attachments/763373900171313162/957985780322664449/icone-discord.png'
+                );
                 IsLiveAdanMemory = false;
             }
         }
@@ -116,7 +134,11 @@ module.exports = {
         while (true) {
             await run(client);
             for (let streamer of streamers) {
-                await editStreamingRole(client, streamer.streamer, streamer.memberId);
+                await editStreamingRole(
+                    client,
+                    streamer.streamer,
+                    streamer.memberId
+                );
                 await sleep(10000);
             }
             await sleep(60000);
