@@ -29,9 +29,7 @@ module.exports = {
                 .setFooter({ text: `ID: ${newMember.id}` })
                 .setTimestamp();
 
-            await logChannel
-                .send({ embeds: [embed] })
-                .catch(error => message.reply("une erreur c'est produite."));
+            await logChannel.send({ embeds: [embed] });
         }
     }
 };

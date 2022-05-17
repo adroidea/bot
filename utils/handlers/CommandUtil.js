@@ -1,5 +1,6 @@
 const { promisify } = require('util');
 const { glob } = require('glob');
+const Logger = require('../Logger');
 const pGlob = promisify(glob);
 let nbCmd = 0;
 let nbFailedCmd = 0;
@@ -8,34 +9,58 @@ module.exports = async client => {
     (await pGlob(`${process.cwd()}/commands/*/*.js`)).map(async cmdFile => {
         const cmd = require(cmdFile);
 
-        if (!cmd.name || (!cmd.description && cmd.type !== 'USER')) {
+        if (!cmd.name) {
             nbFailedCmd++;
-            return console.log(
-                `-----\nNot initialised Command:\n Possible reasons :\n 1. Double check the name\n 2. A description is required \n File : ${cmdFile}\n-----`
+            return Logger.warn(
+                `Not initialised Command: NAME required but missing.\nFile : ${cmdFile}`
+            );
+        }
+        if (!cmd.category) {
+            nbFailedCmd++;
+            return Logger.warn(
+                `Not initialised Command: CATEGORY required but missing.\nFile : ${cmdFile}`
+            );
+        }
+        if (!cmd.examples && cmd.type !== 'USER') {
+            nbFailedCmd++;
+            return Logger.warn(
+                `Not initialised Command: EXAMPLES required but missing.\nFile : ${cmdFile}`
+            );
+        }
+        if (!cmd.description && cmd.type !== 'USER') {
+            nbFailedCmd++;
+            return Logger.warn(
+                `Not initialised Command: DESCRIPTION required but missing.\nFile : ${cmdFile}`
             );
         }
         if (!cmd.permissions) {
             nbFailedCmd++;
-            return console.log(
-                `-----\nNot initialised Command:\n Permissions required but missing. \n File : ${cmdFile}\n-----`
+            return Logger.warn(
+                `Not initialised Command:\n PERMISSIONS required but missing.\nFile : ${cmdFile}`
             );
         }
 
         cmd.permissions.forEach(permission => {
             if (!permissionList.includes(permission)) {
                 nbFailedCmd++;
-                return console.log(
-                    `-----\nNot initialised Command: Double check the permissions, this one in particular : ${permission} \n File : ${cmdFile}\n-----`
+                return Logger.typo(
+                    `Not initialised Command: PERMISSION ${permission} unknown.\nFile : ${cmdFile}`
                 );
             }
         });
 
+        if (!cmd.usage && cmd.type !== 'USER') {
+            nbFailedCmd++;
+            return Logger.warn(
+                `Not initialised Command:\n USAGE required but missing.\nFile : ${cmdFile}`
+            );
+        }
         nbCmd++;
         await client.commands.set(cmd.name, cmd);
     });
-    if (nbCmd !== 0) await console.log(`${nbCmd} commands loaded.`);
+    if (nbCmd !== 0) await Logger.info(`${nbCmd} commands loaded.`);
     if (nbFailedCmd !== 0)
-        await console.log(`Failed to load ${nbFailedCmd} commands`);
+        await Logger.warn(`Failed to load ${nbFailedCmd} commands.`);
 };
 
 const permissionList = [

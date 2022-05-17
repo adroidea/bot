@@ -5,7 +5,7 @@ module.exports = {
     category: 'moderation',
     permissions: ['MANAGE_MESSAGES'],
     usage: 'purge [montant] <@cible>',
-    exemples: ['purge 10', 'purge 100 @adan_ea'],
+    examples: ['purge 10', 'purge 100 @adan_ea'],
     options: [
         {
             name: 'montant',

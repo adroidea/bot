@@ -6,7 +6,7 @@ module.exports = {
     category: 'utils',
     permissions: ['SEND_MESSAGES'],
     usage: 'ping',
-    exemples: ['ping'],
+    examples: ['ping'],
     async runInteraction(client, interaction) {
         const sentMessage = await interaction.reply({
             content: 'Pong !',

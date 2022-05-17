@@ -6,13 +6,13 @@ module.exports = {
             const cmd = client.commands.get(interaction.commandName);
             if (!cmd) {
                 return interaction.reply({
-                    content: "This command doesn't exist !",
+                    content: "Cette commande n'existe pas !",
                     ephemeral: true
                 });
             }
             if (!interaction.member.permissions.has([cmd.permissions]))
                 return interaction.reply({
-                    content: 'You are not allowed to use this command.',
+                    content: "Tu n'as pas le droit d'utiliser cette commande !",
                     ephemeral: true
                 });
             cmd.runInteraction(client, interaction);

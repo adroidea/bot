@@ -4,7 +4,7 @@ module.exports = {
     category: 'jeux',
     permissions: ['SEND_MESSAGES'],
     usage: 'pfc [choice]',
-    exemples: ['pfc p', 'pfc f', 'pfc c'],
+    examples: ['pfc p', 'pfc f', 'pfc c'],
     isPlayerOneWinner(playerOneChoice, playerTwoChoice) {
         return (
             (playerOneChoice === 'p' && playerTwoChoice === 'c') ||

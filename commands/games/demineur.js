@@ -5,7 +5,7 @@ module.exports = {
     category: 'jeux',
     permissions: ['SEND_MESSAGES'],
     usage: 'demineur [lignes] [col] [mines]',
-    exemples: ['demineur 10 10 25'],
+    examples: ['demineur 10 10 25'],
     gameHandle(typeMessage, rows, columns, mines) {
         const minesweeper = new Minesweeper({
             rows: rows,

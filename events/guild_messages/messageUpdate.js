@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const { OWNER_ID } = require('../../utils/config');
 module.exports = {
     name: 'messageUpdate',
     once: false,
@@ -10,7 +11,7 @@ module.exports = {
             newMessage.content !== null &&
             oldMessage.content !== newMessage.content
         ) {
-            if (!newMessage.author.bot || message.author.id !== OWNER_ID) {
+            if (!newMessage.author.bot && newMessage.author.id !== OWNER_ID) {
                 const embed = new MessageEmbed()
                     .setAuthor({
                         name: `<@${newMessage.author.id}>`,
@@ -34,11 +35,7 @@ module.exports = {
                     .setFooter({ text: `Message modifié.` })
                     .setColor('#b02020')
                     .setTimestamp();
-                await logChannel
-                    .send({ embeds: [embed] })
-                    .catch(error =>
-                        message.reply("une erreur c'est produite.")
-                    );
+                await logChannel.send({ embeds: [embed] });
             }
         }
     }

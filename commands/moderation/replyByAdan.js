@@ -2,6 +2,8 @@ module.exports = {
     name: 'reply',
     description: 'No desc.',
     category: 'No categ.',
+    usage: 'Would you like to know',
+    examples: 'Idk man',
     permissions: ['ADMINISTRATOR'],
     options: [
         {

@@ -6,7 +6,7 @@ module.exports = {
     category: 'jeux',
     permissions: ['SEND_MESSAGES'],
     usage: 'ttt <user>',
-    exemples: ['ttt', 'ttt @adan_ea'],
+    examples: ['ttt', 'ttt @adan_ea'],
     options: [
         {
             name: 'adversaire',
