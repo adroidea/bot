@@ -6,7 +6,7 @@ module.exports = {
     async execute(client, message) {
         const logChannel = client.channels.cache.get('816172869339185163');
         if (message.content !== null) {
-            if (!message.author.bot || message.author.id !== OWNER_ID) {
+            if (message.author.id !== OWNER_ID && !message.author.bot) {
                 const embed = new MessageEmbed()
                     .setAuthor({
                         name: `${message.author.id}`,

@@ -11,7 +11,7 @@ module.exports = {
     category: 'utils',
     permissions: ['SEND_MESSAGES'],
     usage: 'help',
-    exemples: ['help', 'help'],
+    examples: ['help', 'help'],
     options: [
         {
             name: 'commande',
@@ -74,7 +74,7 @@ module.exports = {
 ${cmd.description ? cmd.description : contextDescription[`${cmd.name}`]}
 
 Comment l'utiliser : /${cmd.usage}
-Exemples : /${cmd.exemples.join(` | /`)}
+Exemples : /${cmd.examples.join(` | /`)}
 
 ------------
 ( ) = alias | < > = optionnel | [ ] = requis | (Don't include them in your commands)

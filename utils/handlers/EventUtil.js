@@ -1,5 +1,6 @@
 const { promisify } = require('util');
 const { glob } = require('glob');
+const Logger = require('../Logger');
 
 const pGlob = promisify(glob);
 
@@ -10,10 +11,16 @@ module.exports = async client => {
     (await pGlob(`${process.cwd()}/events/*/*.js`)).map(async eventFile => {
         const event = require(eventFile);
 
-        if (!eventList.includes(event.name) || !event.name) {
+        if (!event.name) {
             nbFailedEvents++;
-            return console.log(
-                `-----\nNot initialised Event: Double check the name\n File : ${eventFile}\n-----`
+            return Logger.warn(
+                `Not initialised Event: NAME required but missing\nFile : ${eventFile}`
+            );
+        }
+        if (!eventList.includes(event.name)) {
+            nbFailedEvents++;
+            return Logger.typo(
+                `Not initialised Event: EVENT ${event.name} unknown.\nFile : ${eventFile}`
             );
         }
 
@@ -27,9 +34,9 @@ module.exports = async client => {
 
         nbEvents++;
     });
-    if (nbEvents !== 0) await console.log(`${nbEvents} events loaded. `);
+    if (nbEvents !== 0) await Logger.info(`${nbEvents} events loaded. `);
     if (nbFailedEvents !== 0)
-        await console.log(`Failed to load ${nbFailedEvents} events. `);
+        await Logger.warn(`Failed to load ${nbFailedEvents} events. `);
 };
 
 const eventList = [
