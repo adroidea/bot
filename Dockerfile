@@ -5,8 +5,9 @@ WORKDIR /usr/src/bot
 
 COPY package.json /usr/src/bot
 RUN npm install
+RUN npm install pm2 -g
 
 COPY . /usr/src/bot
 RUN ln -snf /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo Europe/Paris > /etc/timezone
 
-CMD ["npm", "start"] 
+CMD ["pm2-runtime", "index.js"]
