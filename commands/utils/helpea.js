@@ -1,5 +1,5 @@
-const {MessageEmbed} = require('discord.js');
-const {readdirSync} = require('fs');
+const { MessageEmbed } = require('discord.js');
+const { readdirSync } = require('fs');
 const cmdFolder = readdirSync('./commands');
 const contextDescription = {
     userInfo: 'Shows informations about a user'
@@ -39,7 +39,7 @@ module.exports = {
                 .setFooter({
                     text: `( ) = alias | < > = optionnel | [ ] = requis | (Don't include them in your commands)`
                 });
-            return interaction.reply({embeds: [noArgsEmbed], ephemeral: true});
+            return interaction.reply({ embeds: [noArgsEmbed], ephemeral: true });
         }
         const cmd = client.commands.get(cmdName);
         if (!cmd) return interaction.reply({

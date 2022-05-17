@@ -16,7 +16,7 @@ module.exports = {
         }
     ],
     runInteraction(client, interaction) {
-        const game = new TicTacToe({language: 'fr'});
+        const game = new TicTacToe({ language: 'fr' });
         game.handleInteraction(interaction);
     }
 };

@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'userinfo',
@@ -9,12 +9,12 @@ module.exports = {
         const member = await interaction.guild.members.fetch(interaction.targetId);
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);
         const embed = new MessageEmbed()
-            .setAuthor({name: `${member.user.tag} (${member.user.id})`, iconURL: member.user.displayAvatarURL()})
+            .setAuthor({ name: `${member.user.tag} (${member.user.id})`, iconURL: member.user.displayAvatarURL() })
             .setImage(member.user.displayAvatarURL())
             .addFields(
-                {name: '❄ Nom', value: `${member.displayName}`, inline: true},
-                {name: '❄ Moderateur', value: `${member.kickable ? '🔴' : '🟢'}`, inline: true},
-                {name: '❄ Bot', value: `${member.user.bot ? '🟢' : '🔴'}`, inline: true},
+                { name: '❄ Nom', value: `${member.displayName}`, inline: true },
+                { name: '❄ Moderateur', value: `${member.kickable ? '🔴' : '🟢'}`, inline: true },
+                { name: '❄ Bot', value: `${member.user.bot ? '🟢' : '🔴'}`, inline: true },
                 {
                     name: '❄ Roles',
                     value: `${member.roles.cache.map(role => role).join(' ').replace('@everyone', '\u200B')}`
@@ -34,6 +34,6 @@ module.exports = {
             })
             .setColor(randomColor)
             .setTimestamp();
-        interaction.reply({embeds: [embed], ephemeral: true});
+        interaction.reply({ embeds: [embed], ephemeral: true });
     }
 };

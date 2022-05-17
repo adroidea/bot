@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'guildMemberRemove',
@@ -14,13 +14,13 @@ module.exports = {
             .setTitle(`${member.user.tag} nous a quitté!`)
             .setDescription(`Weaklings Die. Big Deal.`)
             .addFields(
-                {name: '❄ Création :', value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true},
-                {name: '❄ Rejoint :', value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true},
-                {name: '❄ Nombre de membres :', value: `${member.guild.memberCount}`, inline: false}
+                { name: '❄ Création :', value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
+                { name: '❄ Rejoint :', value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
+                { name: '❄ Nombre de membres :', value: `${member.guild.memberCount}`, inline: false }
             )
-            .setFooter({text: 'So long partner.', iconURL: member.user.avatarURL()})
+            .setFooter({ text: 'So long partner.', iconURL: member.user.avatarURL() })
             .setTimestamp()
             .setColor(randomColor);
-        await logChannel.send({embeds: [embed]});
+        await logChannel.send({ embeds: [embed] });
     }
 };

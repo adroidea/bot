@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const TwitchApi = require('node-twitch').default;
 
 const twitch = new TwitchApi({
@@ -13,7 +13,7 @@ async function sleep(ms) {
 let IsLiveAdanMemory = false;
 
 async function editStreamingRole(client, streamer, memberId) {
-    twitch.getStreams({channel: streamer}).then(async data => {
+    twitch.getStreams({ channel: streamer }).then(async data => {
         let roleId = '948895921482113024';
         const r = data.data[0];
         let streamer = await client.guilds.cache.get('814621177770541076').members.cache.get(memberId);
@@ -30,7 +30,7 @@ async function editStreamingRole(client, streamer, memberId) {
 }
 
 async function run(client) {
-    await twitch.getStreams({channel: 'adan_ea'}).then(async data => {
+    await twitch.getStreams({ channel: 'adan_ea' }).then(async data => {
         const r = data.data[0];
         let liveChannel = client.guilds.cache.get('814621177770541076');
         if (r !== undefined) {

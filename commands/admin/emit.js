@@ -14,26 +14,26 @@ module.exports = {
             name: 'guildMemberAdd',
             value: 'guildMemberAdd'
         },
-            {
-                name: 'guildMemberRemove',
-                value: 'guildMemberRemove'
-            },
-            {
-                name: 'guildCreate',
-                value: 'guildCreate'
-            }]
+        {
+            name: 'guildMemberRemove',
+            value: 'guildMemberRemove'
+        },
+        {
+            name: 'guildCreate',
+            value: 'guildCreate'
+        }]
     }],
     runInteraction(client, interaction) {
         const evtChoices = interaction.options.getString('event');
         if (evtChoices === 'guildMemberAdd') {
             client.emit('guildMemberAdd', interaction.member);
-            interaction.reply({content: 'Event guildMemberAdd emmited', ephemeral: true});
+            interaction.reply({ content: 'Event guildMemberAdd emmited', ephemeral: true });
         } else if (evtChoices === 'guildMemberRemove') {
             client.emit('guildMemberRemove', interaction.member);
-            interaction.reply({content: 'Event guildMemberRemove emmited', ephemeral: true});
+            interaction.reply({ content: 'Event guildMemberRemove emmited', ephemeral: true });
         } else if (evtChoices === 'guildCreate') {
             client.emit('guildCreate', interaction.guild);
-            interaction.reply({content: 'Event guildCreate emmited', ephemeral: true});
+            interaction.reply({ content: 'Event guildCreate emmited', ephemeral: true });
         }
     }
 };
