@@ -12,12 +12,14 @@ module.exports = {
     permissions: ['SEND_MESSAGES'],
     usage: 'help',
     exemples: ['help', 'help'],
-    options: [{
-        name: 'commande',
-        description: 'La méchante commande qui te pose souci',
-        type: 'STRING',
-        required: false
-    }],
+    options: [
+        {
+            name: 'commande',
+            description: 'La méchante commande qui te pose souci',
+            type: 'STRING',
+            required: false
+        }
+    ],
     async runInteraction(client, interaction) {
         const cmdName = interaction.options.getString('commande');
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);
@@ -27,25 +29,43 @@ module.exports = {
                     name: `${interaction.member.user.username}`,
                     iconURL: interaction.member.user.displayAvatarURL()
                 })
-                .setThumbnail('https://cdn.discordapp.com/attachments/763373898779197481/887604870578843668/Zw.png')
+                .setThumbnail(
+                    'https://cdn.discordapp.com/attachments/763373898779197481/887604870578843668/Zw.png'
+                )
                 .setTitle(`❄ Voici toutes les commandes du bot !`)
                 .setDescription('----------------------')
                 .setColor(randomColor);
             for (const category of cmdFolder) {
-                noArgsEmbed.addField(`❄ ${category.replace(/(^\w|\s\w)/g, firstLetter => firstLetter.toUpperCase())} :`,
-                    ` \`\`${client.commands.filter(cmd => cmd.category === category.toLowerCase()).map(cmd => cmd.name).join(' | ')}\`\``);
+                noArgsEmbed.addField(
+                    `❄ ${category.replace(/(^\w|\s\w)/g, firstLetter =>
+                        firstLetter.toUpperCase()
+                    )} :`,
+                    ` \`\`${client.commands
+                        .filter(cmd => cmd.category === category.toLowerCase())
+                        .map(cmd => cmd.name)
+                        .join(' | ')}\`\``
+                );
             }
-            noArgsEmbed.addField('----------------------', `**\`/helpea <commande>\` For more informations.**`)
+            noArgsEmbed
+                .addField(
+                    '----------------------',
+                    `**\`/helpea <commande>\` For more informations.**`
+                )
                 .setFooter({
                     text: `( ) = alias | < > = optionnel | [ ] = requis | (Don't include them in your commands)`
                 });
-            return interaction.reply({ embeds: [noArgsEmbed], ephemeral: true });
+            return interaction.reply({
+                embeds: [noArgsEmbed],
+                ephemeral: true
+            });
         }
         const cmd = client.commands.get(cmdName);
-        if (!cmd) return interaction.reply({
-            content: 'Cette commande n\'existe pas ou vous avez fait une typo.',
-            ephemeral: true
-        });
+        if (!cmd)
+            return interaction.reply({
+                content:
+                    "Cette commande n'existe pas ou vous avez fait une typo.",
+                ephemeral: true
+            });
         return interaction.reply({
             content: `
 \`\`\`makefile
@@ -59,7 +79,8 @@ Exemples : /${cmd.exemples.join(` | /`)}
 ------------
 ( ) = alias | < > = optionnel | [ ] = requis | (Don't include them in your commands)
 \`\`\`
-        `, ephemeral: true
+        `,
+            ephemeral: true
         });
     }
 };

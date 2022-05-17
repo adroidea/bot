@@ -8,11 +8,18 @@ module.exports = {
         if (message.content !== null) {
             if (!message.author.bot || message.author.id !== OWNER_ID) {
                 const embed = new MessageEmbed()
-                    .setAuthor(
-                        { name: `${message.author.id}`, iconURL: message.author.avatarURL() }
+                    .setAuthor({
+                        name: `${message.author.id}`,
+                        iconURL: message.author.avatarURL()
+                    })
+                    .setDescription(
+                        `Message supprimé par ${message.author.username} dans <#${message.channelId}>, [voir le salon](${message.url})`
                     )
-                    .setDescription(`Message supprimé par ${message.author.username} dans <#${message.channelId}>, [voir le salon](${message.url})`)
-                    .addField(`Message supprimé :`, ('❄ ' + message.content), false)
+                    .addField(
+                        `Message supprimé :`,
+                        '❄ ' + message.content,
+                        false
+                    )
                     .setFooter({ text: `Message supprimé.` })
                     .setColor('#b02020')
                     .setTimestamp();

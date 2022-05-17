@@ -6,7 +6,11 @@ module.exports = {
     usage: 'pfc [choice]',
     exemples: ['pfc p', 'pfc f', 'pfc c'],
     isPlayerOneWinner(playerOneChoice, playerTwoChoice) {
-        return (playerOneChoice === 'p' && playerTwoChoice === 'c') || (playerOneChoice === 'f' && playerTwoChoice === 'p') || (playerOneChoice === 'c' && playerTwoChoice === 'f');
+        return (
+            (playerOneChoice === 'p' && playerTwoChoice === 'c') ||
+            (playerOneChoice === 'f' && playerTwoChoice === 'p') ||
+            (playerOneChoice === 'c' && playerTwoChoice === 'f')
+        );
     },
     gameHandle(typeMessage, choice) {
         let botChoice = Math.floor(Math.random() * 3);
@@ -14,36 +18,50 @@ module.exports = {
         let emoteChoice = ['🗿', '🍁', '✂'];
         if (choice === possibleChoices[botChoice]) {
             typeMessage.reply({
-                content: ` J'ai joué ${emoteChoice[botChoice]} ! C'est une égalité ! On réessaie ?`, ephemeral: true
+                content: ` J'ai joué ${emoteChoice[botChoice]} ! C'est une égalité ! On réessaie ?`,
+                ephemeral: true
             });
-        } else if (!this.isPlayerOneWinner(choice, possibleChoices[botChoice])) {
+        } else if (
+            !this.isPlayerOneWinner(choice, possibleChoices[botChoice])
+        ) {
             typeMessage.reply({
-                content: `Ah dommage pour toi ! J'ai joué ${emoteChoice[botChoice]} ! On réessaie ?`, ephemeral: true
+                content: `Ah dommage pour toi ! J'ai joué ${emoteChoice[botChoice]} ! On réessaie ?`,
+                ephemeral: true
             });
         } else if (this.isPlayerOneWinner(choice, possibleChoices[botChoice])) {
             typeMessage.reply({
-                content: `J'ai joué ${emoteChoice[botChoice]} ! Bravo à toi ! On réessaie ?`, ephemeral: true
+                content: `J'ai joué ${emoteChoice[botChoice]} ! Bravo à toi ! On réessaie ?`,
+                ephemeral: true
             });
         } else {
-            typeMessage.reply({ content: 'Tu dois choisir entre 🗿 (p), 🍁 (f) ou ✂ (c) !', ephemeral: true });
+            typeMessage.reply({
+                content: 'Tu dois choisir entre 🗿 (p), 🍁 (f) ou ✂ (c) !',
+                ephemeral: true
+            });
         }
     },
-    options: [{
-        name: 'choix',
-        description: 'Choisis l\'élément à jouer',
-        type: 'STRING',
-        required: true,
-        choices: [{
-            name: 'pierre',
-            value: 'p'
-        }, {
-            name: 'feuille',
-            value: 'f'
-        }, {
-            name: 'ciseaux',
-            value: 'c'
-        }]
-    }],
+    options: [
+        {
+            name: 'choix',
+            description: "Choisis l'élément à jouer",
+            type: 'STRING',
+            required: true,
+            choices: [
+                {
+                    name: 'pierre',
+                    value: 'p'
+                },
+                {
+                    name: 'feuille',
+                    value: 'f'
+                },
+                {
+                    name: 'ciseaux',
+                    value: 'c'
+                }
+            ]
+        }
+    ],
     runInteraction(client, interaction) {
         const choice = interaction.options.getString('choix');
         this.gameHandle(interaction, choice);
