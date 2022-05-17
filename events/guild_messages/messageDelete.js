@@ -13,7 +13,7 @@ module.exports = {
                         iconURL: message.author.avatarURL()
                     })
                     .setDescription(
-                        `Message supprimé par ${message.author.username} dans <#${message.channelId}>, [voir le salon](${message.url})`
+                        `Message supprimé de ${message.author.username} dans <#${message.channelId}>, [voir le salon](${message.url})`
                     )
                     .addField(
                         `Message supprimé :`,
