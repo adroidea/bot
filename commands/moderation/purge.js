@@ -11,12 +11,12 @@ module.exports = {
         type: 'NUMBER',
         required: true
     },
-        {
-            name: 'cible',
-            description: 'La victime de cette suppression de masse',
-            type: 'USER',
-            required: false
-        }],
+    {
+        name: 'cible',
+        description: 'La victime de cette suppression de masse',
+        type: 'USER',
+        required: false
+    }],
     async runInteraction(client, interaction) {
         const amountToDelete = interaction.options.getNumber('montant');
         if (amountToDelete > 100 || amountToDelete < 0) return interaction.reply('Merci de choisir un nombre entre 1 et 100');
@@ -41,7 +41,7 @@ module.exports = {
             });
         } else {
             await interaction.channel.bulkDelete(amountToDelete, true).then(messages => {
-                interaction.reply({content: `${messages.size} messages supprimés !`, ephemeral: true});
+                interaction.reply({ content: `${messages.size} messages supprimés !`, ephemeral: true });
             });
         }
     }

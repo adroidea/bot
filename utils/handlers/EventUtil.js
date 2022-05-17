@@ -1,5 +1,5 @@
-const {promisify} = require('util');
-const {glob} = require('glob');
+const { promisify } = require('util');
+const { glob } = require('glob');
 
 const pGlob = promisify(glob);
 

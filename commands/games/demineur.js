@@ -24,7 +24,7 @@ module.exports = {
         }
         return matrix
             ? typeMessage.reply(matrix)
-            : typeMessage.reply({content: ':warning: Données invalides, veuillez rééssayer.', ephemeral: true});
+            : typeMessage.reply({ content: ':warning: Données invalides, veuillez rééssayer.', ephemeral: true });
     },
 
     options: [{

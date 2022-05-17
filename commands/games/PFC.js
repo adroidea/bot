@@ -25,7 +25,7 @@ module.exports = {
                 content: `J'ai joué ${emoteChoice[botChoice]} ! Bravo à toi ! On réessaie ?`, ephemeral: true
             });
         } else {
-            typeMessage.reply({content: 'Tu dois choisir entre 🗿 (p), 🍁 (f) ou ✂ (c) !', ephemeral: true});
+            typeMessage.reply({ content: 'Tu dois choisir entre 🗿 (p), 🍁 (f) ou ✂ (c) !', ephemeral: true });
         }
     },
     options: [{

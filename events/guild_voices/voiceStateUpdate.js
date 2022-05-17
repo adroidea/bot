@@ -4,7 +4,7 @@ function isMoved(oldState, newState) {
 
 async function createNewChannel(newState) {
     if (isHostChannel(newState)) {
-        newState.guild.channels.create(`🔊Vocal ${newState.member.user.username}`, {type: 'GUILD_VOICE'})
+        newState.guild.channels.create(`🔊Vocal ${newState.member.user.username}`, { type: 'GUILD_VOICE' })
             .then(channel => {
                 channel.setParent(newState.channel.parentId);
                 newState.member.voice.setChannel(channel.id);
