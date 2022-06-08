@@ -18,9 +18,7 @@
     "dependencies": {
         "chalk": "^4.1.2",
         "dayjs": "^1.11.2",
-        "discord-tictactoe": "^3.0.0",
         "discord.js": "^13.6.0",
-        "discord.js-minesweeper": "^1.1.0",
         "dotenv": "^16.0.0",
         "glob": "^7.2.0",
         "node-twitch": "^0.4.5"

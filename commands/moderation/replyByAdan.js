@@ -1,3 +1,5 @@
+const { OWNER_ID } = require('../../utils/config');
+
 module.exports = {
     name: 'reply',
     description: 'No desc.',
@@ -14,7 +16,7 @@ module.exports = {
         }
     ],
     runInteraction(client, interaction) {
-        if (interaction.member.id === '294916386072035328') {
+        if (interaction.member.id === OWNER_ID) {
             interaction.channel.sendTyping();
             const reply = interaction.options.getString('text');
             interaction.channel.send(reply);
