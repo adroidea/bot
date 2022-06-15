@@ -27,48 +27,29 @@ async function deleteEmptyChannel(oldState) {
     }
 }
 
-function isHostChannel(state) {
-    //gez
-    if (state.channel.id === '951395573133639741') {
-        return true;
-    }
-    //Créer vocal in VOCAUX
-    if (state.channel.id === '891306696528506961') {
-        return true;
-    }
+let isHostChannel = (state) => {
+    const hostChannels = [
+        '986602974476394546',
+        '891306696528506961', //Créer vocal dans VOCAUX
+    ];
 
-    //Voc Apex
-    else if (state.channel.id === '936981199551881237') {
-        return true;
-    }
-
-    //Voc DBD
-    else if (state.channel.id === '936981382624841748') {
-        return true;
-    }
-
-    //Voc Fall Guys
-    else if (state.channel.id === '936981410844131348') {
+    if (hostChannels.includes(state.channel.id)) {
         return true;
     }
     return false;
 }
 
 function isProtectedVoiceChannel(state) {
+    const protectedChannels = [
+        '940511315938648064',
+        '940510575253921832',
+        '940510503824937021'
+    ];
     if (isHostChannel(state)) {
         return true;
     }
-    //modération
-    if (state.channel.id === '940511315938648064') {
-        return true;
-    }
-    //En Live
-    else if (state.channel.id === '940510575253921832') {
-        return true;
-    }
-
-    //En Attente
-    else if (state.channel.id === '940510503824937021') {
+    
+    if (protectedChannels.includes(state.channel.id)) {
         return true;
     }
     return false;

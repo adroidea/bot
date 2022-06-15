@@ -4,7 +4,8 @@ module.exports = {
     name: 'guildMemberRemove',
     once: false,
     async execute(client, member) {
-        const logChannel = client.channels.cache.get('814621178223394818');
+        const fetchGuild = await client.getGuild(member.guild);
+        const logChannel = client.channels.cache.get(fetchGuild.publicLogChannel);
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);
         const embed = new MessageEmbed()
             .setAuthor({

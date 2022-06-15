@@ -21,6 +21,7 @@
         "discord.js": "^13.6.0",
         "dotenv": "^16.0.0",
         "glob": "^7.2.0",
+        "mongoose": "^6.2.3",
         "node-twitch": "^0.4.5"
     },
     "devDependencies": {

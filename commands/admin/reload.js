@@ -6,7 +6,7 @@ module.exports = {
     examples: ['reload'],
     description: 'Relancer le bot',
     async runInteraction(client, interaction) {
-        await interaction.reply('Relancement du bot en cours, je reviens !');
+        await interaction.reply({content: 'Relancement du bot en cours, je reviens !', ephemeral: true});
         return process.exit();
     }
 };

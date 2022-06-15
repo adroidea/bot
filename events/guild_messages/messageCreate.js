@@ -2,6 +2,7 @@ module.exports = {
     name: 'messageCreate',
     once: false,
     execute(client, message) {
+        
         const englishDadRegex = /\bi(?:(?:\s+a|')?m|\s+be)\s+(?=\S)/i;
         const frenchDadRegex = /j(?:e+\s|')?suis/i;
         const englishMatch = message.content.match(englishDadRegex);
