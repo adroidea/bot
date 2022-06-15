@@ -49,10 +49,10 @@ module.exports = {
             noArgsEmbed
                 .addField(
                     '----------------------',
-                    `**\`/helpea <commande>\` For more informations.**`
+                    `**\`/helpea <commande>\` Pour plus d'informations.**`
                 )
                 .setFooter({
-                    text: `( ) = alias | < > = optionnel | [ ] = requis | (Don't include them in your commands)`
+                    text: `( ) = alias | < > = optionnel | [ ] = requis | (A ne pas inclure dans les commandes)`
                 });
             return interaction.reply({
                 embeds: [noArgsEmbed],
@@ -77,7 +77,7 @@ Comment l'utiliser : /${cmd.usage}
 Exemples : /${cmd.examples.join(` | /`)}
 
 ------------
-( ) = alias | < > = optionnel | [ ] = requis | (Don't include them in your commands)
+( ) = alias | < > = optionnel | [ ] = requis | (A ne pas inclure dans les commandes)
 \`\`\`
         `,
             ephemeral: true

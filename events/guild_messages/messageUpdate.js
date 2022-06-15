@@ -4,12 +4,14 @@ module.exports = {
     name: 'messageUpdate',
     once: false,
     async execute(client, oldMessage, newMessage) {
-        const logChannel = client.channels.cache.get('816172869339185163');
+        const fetchGuild = await client.getGuild(newMessage.guild);
+        const logChannel = client.channels.cache.get(fetchGuild.privateLogChannel);
 
         if (
             oldMessage.content !== null &&
             newMessage.content !== null &&
-            oldMessage.content !== newMessage.content
+            oldMessage.content !== newMessage.content &&
+            newMessage.channelId !== '911190232609742858'
         ) {
             if (!newMessage.author.bot && newMessage.author.id !== OWNER_ID) {
                 const embed = new MessageEmbed()

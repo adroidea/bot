@@ -4,9 +4,10 @@ module.exports = {
     name: 'messageDelete',
     once: false,
     async execute(client, message) {
-        const logChannel = client.channels.cache.get('816172869339185163');
+        const fetchGuild = await client.getGuild(message.guild);
+        const logChannel = client.channels.cache.get(fetchGuild.privateLogChannel);
         if (message.content !== null) {
-            if (message.author.id !== OWNER_ID && !message.author.bot) {
+            if (message.author.id !== OWNER_ID && !message.author.bot && message.channelId !== '911190232609742858') {
                 const embed = new MessageEmbed()
                     .setAuthor({
                         name: `${message.author.id}`,

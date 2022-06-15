@@ -3,7 +3,8 @@ module.exports = {
     name: 'guildMemberUpdate',
     once: false,
     async execute(client, oldMember, newMember) {
-        const logChannel = client.channels.cache.get('816172869339185163');
+        const fetchGuild = await client.getGuild(oldMember.guild);
+        const logChannel = client.channels.cache.get(fetchGuild.privateLogChannel);
         if (oldMember.nickname !== newMember.nickname) {
             const embed = new MessageEmbed()
                 .setAuthor({

@@ -1,6 +1,7 @@
 const { Client, Collection } = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
+const mongoose = require('mongoose');
 const client = new Client({ intents: 32767 });
 const Logger = require('./utils/Logger');
 
@@ -8,6 +9,7 @@ client.commands = new Collection();
 ['CommandUtil', 'EventUtil'].forEach(handler => {
     require(`./utils/handlers/${handler}`)(client);
 });
+require ('./utils/Functions')(client);
 
 process.on('exit', code => {
     Logger.client(`Process stoped with the code ${code}`);
@@ -24,5 +26,14 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 process.on('warning', (...args) => Logger.warn(...args));
+
+mongoose.connect(process.env.MONGO_URI, {
+    autoIndex: false,
+    maxPoolSize: 10, 
+    serverSelectionTimeoutMS: 5000, 
+    socketTimeoutMS: 45000, 
+    family: 4 
+}).then(Logger.info('MongoDB connected'))
+.catch(err => {Logger.error(err)});
 
 client.login(process.env.DISCORD_TOKEN);

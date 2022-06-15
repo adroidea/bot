@@ -3,6 +3,12 @@ module.exports = {
     once: false,
     async execute(client, interaction) {
         if (interaction.isCommand() || interaction.isContextMenu()) {
+            let guildSettings = await client.getGuild(interaction.guild);
+            if (!guildSettings) {
+                await client.createGuild(interaction.guild);
+                guildSettings = await client.createGuild(interaction.guild);
+            }
+
             const cmd = client.commands.get(interaction.commandName);
             if (!cmd) {
                 return interaction.reply({
@@ -15,7 +21,7 @@ module.exports = {
                     content: "Tu n'as pas le droit d'utiliser cette commande !",
                     ephemeral: true
                 });
-            cmd.runInteraction(client, interaction);
+            cmd.runInteraction(client, interaction, guildSettings);
         }
     }
 };
