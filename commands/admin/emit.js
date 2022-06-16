@@ -1,7 +1,7 @@
 module.exports = {
     name: 'emit',
     description:
-        'Emmet un nouvel évènement si un admin souhaite essayer une nouvelle commande',
+        '[ADMIN] Emmet un nouvel évènement si un admin souhaite essayer une nouvelle commande',
     category: 'admin',
     permissions: ['ADMINISTRATOR'],
     usage: 'emit [event]',

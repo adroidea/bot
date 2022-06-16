@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'purge',
     description:
-        "Suppression de masse d'un certain nombre de messages dans un salon ou d'un utilisateur",
+        "[ADMIN] Suppression de masse d'un certain nombre de messages dans un salon ou d'un utilisateur",
     category: 'moderation',
     permissions: ['MANAGE_MESSAGES'],
     usage: 'purge [montant] <@cible>',
