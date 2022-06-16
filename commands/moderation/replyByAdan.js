@@ -1,12 +1,12 @@
 const { OWNER_ID } = require('../../utils/config');
 
 module.exports = {
-    name: 'reply',
+    name: 'r',
     description: 'No desc.',
     category: 'No categ.',
+    permissions: ['ADMINISTRATOR'],
     usage: 'Would you like to know',
     examples: 'Idk man',
-    permissions: ['ADMINISTRATOR'],
     options: [
         {
             name: 'text',
@@ -15,11 +15,11 @@ module.exports = {
             required: true
         }
     ],
-    runInteraction(client, interaction) {
+    async runInteraction(client, interaction) {
         if (interaction.member.id === OWNER_ID) {
-            interaction.channel.sendTyping();
+            interaction.reply({content: 'f', ephemeral: true});
             const reply = interaction.options.getString('text');
-            interaction.channel.send(reply);
+            await interaction.channel.send(reply);
         }
     }
 };

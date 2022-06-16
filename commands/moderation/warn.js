@@ -2,11 +2,11 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'warn',
+    description: '[ADMIN] Avertis un utilisateur',
     category: 'admin',
     permissions: ['ADMINISTRATOR'],
     usage: 'warn <idUtilisateur> <raison>',
     examples: ['warn 294916386072035328 "Spam"'],
-    description: 'Avertis un utilisateur',
     options: [
         {
             name: 'id',
