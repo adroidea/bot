@@ -25,8 +25,10 @@ module.exports = {
         const iduser = interaction.options.getMember('id');
         const reason = interaction.options.getString('raison');
         const fetchGuild = await client.getGuild(interaction.guild);
-        const logChannel = client.channels.cache.get(fetchGuild.privateLogChannel);
-        
+        const logChannel = client.channels.cache.get(
+            fetchGuild.privateLogChannel
+        );
+        const agrouChannel = client.channels.cache.get('971658703155630084');
         const embed = new MessageEmbed()
             .setAuthor({
                 name: `${client.user.username}`,
@@ -42,8 +44,14 @@ module.exports = {
                     : '#0FF0FF'
             )
             .setTimestamp();
-
-        await iduser.send({ embeds: [embed] });
-        await logChannel.send({ embeds: [embed] });
+        try {
+            await iduser.send({ embeds: [embed] });
+            await logChannel.send({ embeds: [embed] });
+        } catch (e) {
+            await logChannel.send(
+                `L'utilisateur ${iduser.user.username} n'a pas autorisé les messages privés sur ce serveur, il n'a pas pu être warn en privé, envoie dans le channel Agrou.`
+            );
+            await agrouChannel.send({ embeds: [embed] });
+        }
     }
 };
