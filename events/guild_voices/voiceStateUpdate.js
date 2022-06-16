@@ -1,12 +1,12 @@
-function isMoved(oldState, newState) {
+let isMoved = (oldState, newState) => {
     return (
         oldState.channel !== null &&
         newState.channel !== null &&
         oldState.channel !== newState.channel
     );
-}
+};
 
-async function createNewChannel(newState) {
+let createNewChannel = async newState => {
     if (isHostChannel(newState)) {
         newState.guild.channels
             .create(`🔊Vocal ${newState.member.user.username}`, {
@@ -17,29 +17,26 @@ async function createNewChannel(newState) {
                 newState.member.voice.setChannel(channel.id);
             });
     }
-}
+};
 
-async function deleteEmptyChannel(oldState) {
+let deleteEmptyChannel = async oldState => {
     if (!isProtectedVoiceChannel(oldState)) {
         if (oldState.channel.members.size === 0) {
             oldState.channel.delete();
         }
     }
-}
+};
 
-let isHostChannel = (state) => {
+let isHostChannel = state => {
     const hostChannels = [
         '986602974476394546',
-        '891306696528506961', //Créer vocal dans VOCAUX
+        '891306696528506961'
     ];
 
-    if (hostChannels.includes(state.channel.id)) {
-        return true;
-    }
-    return false;
-}
+    return hostChannels.includes(state.channel.id);
+};
 
-function isProtectedVoiceChannel(state) {
+let isProtectedVoiceChannel = state => {
     const protectedChannels = [
         '940511315938648064',
         '940510575253921832',
@@ -48,12 +45,9 @@ function isProtectedVoiceChannel(state) {
     if (isHostChannel(state)) {
         return true;
     }
-    
-    if (protectedChannels.includes(state.channel.id)) {
-        return true;
-    }
-    return false;
-}
+
+    return protectedChannels.includes(state.channel.id);
+};
 
 module.exports = {
     name: 'voiceStateUpdate',

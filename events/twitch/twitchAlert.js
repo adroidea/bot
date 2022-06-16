@@ -6,22 +6,19 @@ const twitch = new TwitchApi({
     client_secret: process.env.TWITCH_CLIENT_SECRET
 });
 
-async function sleep(ms) {
+let sleep = async ms => {
     return new Promise(resolve => setTimeout(resolve, ms));
-}
+};
 
 let IsLiveMemory = false;
 
-async function run(client) {
+let run = async client => {
     await twitch.getStreams({ channel: 'adan_ea' }).then(async data => {
         const r = data.data[0];
         let liveChannel = client.guilds.cache.get('814621177770541076');
         if (r !== undefined) {
             if (r.type === 'live') {
-                if (
-                    IsLiveMemory === false ||
-                    IsLiveMemory === undefined
-                ) {
+                if (IsLiveMemory === false || IsLiveMemory === undefined) {
                     const embed = new MessageEmbed()
                         .setTitle(`${r.title}`)
                         .setURL(`https://twitch.tv/${r.user_name}`)
@@ -31,12 +28,12 @@ async function run(client) {
                         .addField(`**Jeu**`, r.game_name, false)
                         .setImage(r.getThumbnailUrl())
                         .setColor('#b02020');
-                    const sentMessage = client.channels.cache
-                        .get('856293901237616640');
-                        sentMessage.send({
-                            content: `<@&930051152987430952> ${r.user_name} est en live ! Rejoins le pour du ${r.game_name}`,
-                            embeds: [embed]
-                        });
+                    const sentMessage =
+                        client.channels.cache.get('856293901237616640');
+                    sentMessage.send({
+                        content: `<@&930051152987430952> ${r.user_name} est en live ! Rejoins le pour du ${r.game_name}`,
+                        embeds: [embed]
+                    });
                     await liveChannel.setIcon(
                         'https://cdn.discordapp.com/attachments/763373900171313162/957985745258315836/icone-discord-live.png'
                     );
@@ -60,7 +57,7 @@ async function run(client) {
             }
         }
     });
-}
+};
 
 module.exports = {
     name: 'ready',
