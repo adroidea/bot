@@ -7,6 +7,8 @@ module.exports = {
         const fetchGuild = await client.getGuild(member.guild);
 
         const logChannel = client.channels.cache.get(fetchGuild.publicLogChannel);
+        if (logChannel === undefined || logChannel=== null) return;
+
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);
         const embed = new MessageEmbed()
             .setAuthor({

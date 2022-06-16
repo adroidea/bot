@@ -5,7 +5,6 @@ module.exports = {
         if (interaction.isCommand() || interaction.isContextMenu()) {
             let guildSettings = await client.getGuild(interaction.guild);
             if (!guildSettings) {
-                await client.createGuild(interaction.guild);
                 guildSettings = await client.createGuild(interaction.guild);
             }
 

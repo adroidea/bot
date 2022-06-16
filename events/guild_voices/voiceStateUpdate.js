@@ -6,8 +6,8 @@ let isMoved = (oldState, newState) => {
     );
 };
 
-let createNewChannel = async newState => {
-    if (isHostChannel(newState)) {
+let createNewChannel = async (client, newState) => {
+    if (await isHostChannel(client, newState)) {
         newState.guild.channels
             .create(`🔊Vocal ${newState.member.user.username}`, {
                 type: 'GUILD_VOICE'
@@ -19,30 +19,25 @@ let createNewChannel = async newState => {
     }
 };
 
-let deleteEmptyChannel = async oldState => {
-    if (!isProtectedVoiceChannel(oldState)) {
-        if (oldState.channel.members.size === 0) {
-            oldState.channel.delete();
+let deleteEmptyChannel = async (client, state) => {
+    if (!(await isProtectedVoiceChannel(client, state))) {
+        if (state.channel.members.size === 0) {
+            state.channel.delete();
         }
     }
 };
 
-let isHostChannel = state => {
-    const hostChannels = [
-        '986602974476394546',
-        '891306696528506961'
-    ];
-
+let isHostChannel = async (client, state) => {
+    const fetchGuild = await client.getGuild(state.guild);
+    const hostChannels = fetchGuild.hostChannels;
     return hostChannels.includes(state.channel.id);
 };
 
-let isProtectedVoiceChannel = state => {
-    const protectedChannels = [
-        '940511315938648064',
-        '940510575253921832',
-        '940510503824937021'
-    ];
-    if (isHostChannel(state)) {
+let isProtectedVoiceChannel = async (client, state) => {
+    const fetchGuild = await client.getGuild(state.guild);
+    const protectedChannels = fetchGuild.protectedChannels;
+
+    if (await isHostChannel(client, state)) {
         return true;
     }
 
@@ -55,12 +50,12 @@ module.exports = {
 
     async execute(client, oldState, newState) {
         if (oldState.channel === null && newState.channel !== null) {
-            await createNewChannel(newState);
+            await createNewChannel(client, newState);
         } else if (oldState.channel !== null && newState.channel === null) {
-            await deleteEmptyChannel(oldState);
+            await deleteEmptyChannel(client, oldState);
         } else if (isMoved(oldState, newState)) {
-            await deleteEmptyChannel(oldState);
-            await createNewChannel(newState);
+            await deleteEmptyChannel(client, oldState);
+            await createNewChannel(client, newState);
         }
     }
 };
