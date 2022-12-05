@@ -1,9 +1,15 @@
 module.exports = {
     name: 'messageCreate',
     once: false,
+    /**
+     * Event triggered when a user sends a message in the guild. When triggered, sends a welcome message in the public log channel.
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} message - Represents a message on Discord.
+     */
     execute(client, message) {
-        
+        //accepts (case insensitive) : i'm / i am / I be
         const englishDadRegex = /\bi(?:(?:\s+a|')?m|\s+be)\s+(?=\S)/i;
+        //accepts (case insensitive) : je suis / jsuis / j'suis
         const frenchDadRegex = /j(?:e+\s|')?suis/i;
         const englishMatch = message.content.match(englishDadRegex);
         const frenchMatch = message.content.match(frenchDadRegex);

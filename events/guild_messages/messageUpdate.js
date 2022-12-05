@@ -3,6 +3,12 @@ const { OWNER_ID } = require('../../utils/config');
 module.exports = {
     name: 'messageUpdate',
     once: false,
+    /**
+     * Event triggered when a user updates a message in the guild. When triggered, sends a comparison message in the private log channel.
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} oldMessage - Represents a message on Discord.
+     * @param {*} newMessage - Represents a message on Discord.
+     */
     async execute(client, oldMessage, newMessage) {
         const fetchGuild = await client.getGuild(newMessage.guild);
         const logChannel = client.channels.cache.get(

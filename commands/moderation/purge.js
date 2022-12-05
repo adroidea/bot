@@ -22,6 +22,11 @@ module.exports = {
             required: false
         }
     ],
+    /**
+     * Command to remove default channels for the server in the database
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} interaction - Represents a command interaction.
+     */
     async runInteraction(client, interaction) {
         const amountToDelete = interaction.options.getNumber('montant');
         if (amountToDelete > 100 || amountToDelete < 0)
@@ -61,7 +66,7 @@ module.exports = {
                     });
                 });
         }
-
+        //Sends a message to log the bulk delete
         const logChannel = client.channels.cache.get('816172869339185163');
         const embed = new MessageEmbed()
             .setAuthor({

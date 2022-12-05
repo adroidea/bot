@@ -5,6 +5,11 @@ module.exports = {
     category: 'users',
     permissions: ['SEND_MESSAGES'],
     type: 'USER',
+    /**
+     * Give informations about the requested user
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} interaction - Represents a command interaction.
+     */
     async runInteraction(client, interaction) {
         const member = await interaction.guild.members.fetch(
             interaction.targetId

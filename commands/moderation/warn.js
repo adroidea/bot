@@ -21,6 +21,11 @@ module.exports = {
             required: true
         }
     ],
+    /**
+     * Warn a user 
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} interaction - Represents a command interaction.
+     */
     async runInteraction(client, interaction) {
         const iduser = interaction.options.getMember('id');
         const reason = interaction.options.getString('raison');

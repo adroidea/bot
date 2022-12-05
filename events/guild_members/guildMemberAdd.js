@@ -3,11 +3,18 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'guildMemberAdd',
     once: false,
+    /**
+     * Event triggered when a user joins the guild. When triggered, sends a welcome message in the public log channel.
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} member - Represents a member of a guild on Discord.
+     */
     async execute(client, member) {
         const fetchGuild = await client.getGuild(member.guild);
 
-        const logChannel = client.channels.cache.get(fetchGuild.publicLogChannel);
-        if (logChannel === undefined || logChannel=== null) return;
+        const logChannel = client.channels.cache.get(
+            fetchGuild.publicLogChannel
+        );
+        if (logChannel === undefined || logChannel === null) return;
 
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);
         const embed = new MessageEmbed()

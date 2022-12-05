@@ -10,13 +10,14 @@ let nbFailedEvents = 0;
 module.exports = async client => {
     (await pGlob(`${process.cwd()}/events/*/*.js`)).map(async eventFile => {
         const event = require(eventFile);
-
+        //checks if the event has a name
         if (!event.name) {
             nbFailedEvents++;
             return Logger.warn(
                 `Not initialised Event: NAME required but missing\nFile : ${eventFile}`
             );
         }
+        //checks if the event exists in the API
         if (!eventList.includes(event.name)) {
             nbFailedEvents++;
             return Logger.typo(
@@ -39,6 +40,7 @@ module.exports = async client => {
         await Logger.warn(`Failed to load ${nbFailedEvents} events. `);
 };
 
+//A list of all the events triggered by the API.
 const eventList = [
     'apiRequest',
     'apiResponse',

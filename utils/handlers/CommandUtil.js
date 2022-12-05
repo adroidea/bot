@@ -9,30 +9,35 @@ module.exports = async client => {
     (await pGlob(`${process.cwd()}/commands/*/*.js`)).map(async cmdFile => {
         const cmd = require(cmdFile);
 
+        //checks if the command has a proper name.
         if (!cmd.name) {
             nbFailedCmd++;
             return Logger.warn(
                 `Not initialised Command: NAME required but missing.\nFile : ${cmdFile}`
             );
         }
+        //checks if the command has a proper category.
         if (!cmd.category) {
             nbFailedCmd++;
             return Logger.warn(
                 `Not initialised Command: CATEGORY required but missing.\nFile : ${cmdFile}`
             );
         }
+        //checks if the command has proper examples.
         if (!cmd.examples && cmd.type !== 'USER') {
             nbFailedCmd++;
             return Logger.warn(
                 `Not initialised Command: EXAMPLES required but missing.\nFile : ${cmdFile}`
             );
         }
+        //checks if the command has a proper description.
         if (!cmd.description && cmd.type !== 'USER') {
             nbFailedCmd++;
             return Logger.warn(
                 `Not initialised Command: DESCRIPTION required but missing.\nFile : ${cmdFile}`
             );
         }
+        //checks if the command has proper permissions.
         if (!cmd.permissions) {
             nbFailedCmd++;
             return Logger.warn(
@@ -63,6 +68,7 @@ module.exports = async client => {
         await Logger.warn(`Failed to load ${nbFailedCmd} commands.`);
 };
 
+//List of all the discord API permissions.
 const permissionList = [
     'CREATE_INSTANT_INVITE',
     'KICK_MEMBERS',

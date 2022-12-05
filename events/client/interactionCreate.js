@@ -1,6 +1,11 @@
 module.exports = {
     name: 'interactionCreate',
     once: false,
+    /**
+     * Command to remove default channels for the server in the database
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} interaction - Represents a command interaction.
+     */
     async execute(client, interaction) {
         if (interaction.isCommand() || interaction.isContextMenu()) {
             let guildSettings = await client.getGuild(interaction.guild);

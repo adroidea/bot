@@ -8,6 +8,11 @@ module.exports = {
     permissions: ['ADMINISTRATOR'],
     usage: 'support',
     examples: ['support'],
+    /**
+     * Send a "Support Me" embed with all the informations to.. well, support me
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} interaction - Represents a command interaction.
+     */
     runInteraction(client, interaction) {
         const embed = new MessageEmbed()
             .setColor('#FFFF00')

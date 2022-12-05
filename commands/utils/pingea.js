@@ -7,6 +7,11 @@ module.exports = {
     permissions: ['SEND_MESSAGES'],
     usage: 'ping',
     examples: ['ping'],
+    /**
+     * Makes a request in order to get the bot and the API ping 
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} interaction - Represents a command interaction.
+     */
     async runInteraction(client, interaction) {
         const sentMessage = await interaction.reply({
             content: 'Pong !',

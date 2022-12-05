@@ -20,6 +20,11 @@ module.exports = {
             required: false
         }
     ],
+    /**
+     * Sends a message with a complete explenation about commands
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} interaction - Represents a command interaction.
+     */
     async runInteraction(client, interaction) {
         const cmdName = interaction.options.getString('commande');
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);

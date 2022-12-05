@@ -35,11 +35,20 @@ module.exports = {
             ]
         }
     ],
+    /**
+     * List all the default channels for the server in the database
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} interaction - Represents a command interaction.
+     * @param {import("discord.js").Snowflake} guildSettings - Represents the guild in which the action is made.
+     */
     async runInteraction(client, interaction, guildSettings) {
         const channelList = interaction.options.getString('channel-list');
 
         if (channelList === 'public-log') {
-            if (guildSettings.publicLogChannel !== undefined && guildSettings.publicLogChannel !== null) {
+            if (
+                guildSettings.publicLogChannel !== undefined &&
+                guildSettings.publicLogChannel !== null
+            ) {
                 interaction.reply({
                     content: `Le channel <#${guildSettings.publicLogChannel}> (${guildSettings.publicLogChannel}) est le channel de logs publics (Départs et arrivés)`,
                     ephemeral: true
@@ -53,7 +62,10 @@ module.exports = {
         }
 
         if (channelList === 'private-log') {
-            if (guildSettings.privateLogChannel !== undefined && guildSettings.privateLogChannel !== null) {
+            if (
+                guildSettings.privateLogChannel !== undefined &&
+                guildSettings.privateLogChannel !== null
+            ) {
                 interaction.reply({
                     content: `Le channel <#${guildSettings.privateLogChannel}> (#${guildSettings.privateLogChannel})est le channel de logs privé (Kick, Ban, edit et suppressions de messages, changement de pseudo, etc.)`,
                     ephemeral: true
