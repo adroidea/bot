@@ -2,9 +2,16 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'guildMemberUpdate',
     once: false,
+    /**
+     * Event triggered when a user changes their nickname. When triggered, sends a log message in the private log channel.
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} member - Represents a member of a guild on Discord.
+     */
     async execute(client, oldMember, newMember) {
         const fetchGuild = await client.getGuild(oldMember.guild);
-        const logChannel = client.channels.cache.get(fetchGuild.privateLogChannel);
+        const logChannel = client.channels.cache.get(
+            fetchGuild.privateLogChannel
+        );
         if (oldMember.nickname !== newMember.nickname) {
             const embed = new MessageEmbed()
                 .setAuthor({

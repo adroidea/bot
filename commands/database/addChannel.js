@@ -37,6 +37,11 @@ module.exports = {
             required: false
         }
     ],
+    /**
+     * Command to add default channels for the server in the database
+     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {*} interaction - Represents a command interaction.
+     */
     async runInteraction(client, interaction) {
         const publicLog = interaction.options.getString('public-log');
         const privateLog = interaction.options.getString('private-log');
@@ -44,7 +49,7 @@ module.exports = {
         const hostVoice = interaction.options.getString('host-voice');
         const notLoggedChan =
             interaction.options.getString('not-logged-channel');
-
+        // Adds a public log channel id to the database, for arrival and leaving notifications
         if (publicLog !== null) {
             if (client.channels.cache.get(publicLog)?.isText()) {
                 await client.updateGuild(interaction.guild, {
@@ -61,7 +66,7 @@ module.exports = {
                 });
             }
         }
-
+        // Adds a private log channel id to the database, for every event. (nickname edit, message edit and delete).
         if (privateLog !== null) {
             if (client.channels.cache.get(privateLog)?.isText()) {
                 await client.updateGuild(interaction.guild, {
@@ -78,7 +83,7 @@ module.exports = {
                 });
             }
         }
-
+        //Adds a voice channel id to the database that should be deleted when no one is in it.
         if (protectedVoice !== null) {
             if (client.channels.cache.get(protectedVoice)?.isVoice()) {
                 await client.updateGuild(interaction.guild, {
@@ -95,7 +100,7 @@ module.exports = {
                 });
             }
         }
-
+        //Adds a voice channel id to the database used to create temporary voice channels
         if (hostVoice !== null) {
             if (client.channels.cache.get(hostVoice)?.isVoice()) {
                 await client.updateGuild(interaction.guild, {
@@ -112,7 +117,7 @@ module.exports = {
                 });
             }
         }
-
+        //Adds a textual channel id to the database that will not be monitored for the logs
         if (notLoggedChan !== null) {
             if (client.channels.cache.get(notLoggedChan)?.isText()) {
                 await client.updateGuild(interaction.guild, {

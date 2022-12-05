@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const TwitchApi = require('node-twitch').default;
 
+//Connection to the Twitch API. Used to get informations about the stream.
 const twitch = new TwitchApi({
     client_id: process.env.TWITCH_CLIENT_ID,
     client_secret: process.env.TWITCH_CLIENT_SECRET
@@ -10,8 +11,13 @@ let sleep = async ms => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
 
+//Used to find out what the status of the stream is.
 let IsLiveMemory = false;
 
+/**
+ * Sends a message on Discord whenever i go on live
+ * @param {ClientOptions} client The main hub for interacting with the Discord API, and the starting point for the bot.
+ */
 let run = async client => {
     await twitch.getStreams({ channel: 'adan_ea' }).then(async data => {
         const r = data.data[0];
