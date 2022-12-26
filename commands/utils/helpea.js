@@ -22,8 +22,8 @@ module.exports = {
     ],
     /**
      * Sends a message with a complete explenation about commands
-     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
-     * @param {*} interaction - Represents a command interaction.
+     * @param {Client} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {CommandInteraction} interaction - Represents a command interaction.
      */
     async runInteraction(client, interaction) {
         const cmdName = interaction.options.getString('commande');

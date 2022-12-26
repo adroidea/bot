@@ -5,8 +5,8 @@ module.exports = {
     once: false,
     /**
      * Event triggered when a user deletes a message in the guild. When triggered, sends a log message in the private log channel.
-     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
-     * @param {*} message - Represents a message on Discord.
+     * @param {Client} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {Message} message - Represents a message on Discord.
      */
     async execute(client, message) {
         const fetchGuild = await client.getGuild(message.guild);

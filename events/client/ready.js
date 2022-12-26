@@ -5,7 +5,7 @@ module.exports = {
     once: true,
     /**
      * Send a message in the console whenever the bot is up and running
-     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {Client} client - The main hub for interacting with the Discord API, and the starting point for the bot.
      */
     async execute(client) {
         Logger.client(`Bot ${client.user.tag} up and running !`);

@@ -3,8 +3,8 @@ module.exports = {
     once: false,
     /**
      * Event triggered when a user sends a message in the guild. When triggered, sends a welcome message in the public log channel.
-     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
-     * @param {*} message - Represents a message on Discord.
+     * @param {Client} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {Message} message - Represents a message on Discord.
      */
     execute(client, message) {
         //accepts (case insensitive) : i'm / i am / I be

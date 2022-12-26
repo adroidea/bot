@@ -4,8 +4,8 @@ module.exports = {
     once: false,
     /**
      * Event triggered when a user changes their nickname. When triggered, sends a log message in the private log channel.
-     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
-     * @param {*} member - Represents a member of a guild on Discord.
+     * @param {Client} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {GuildMember} member - Represents a member of a guild on Discord.
      */
     async execute(client, oldMember, newMember) {
         const fetchGuild = await client.getGuild(oldMember.guild);
@@ -20,14 +20,14 @@ module.exports = {
                 })
                 .setDescription(`<@${newMember.id}> a changé de pseudo`)
                 .addField(
-                    'Avant',
+                    'Ancien',
                     oldMember.nickname !== null
                         ? oldMember.nickname
                         : oldMember.user.username,
                     false
                 )
                 .addField(
-                    'Maintenant',
+                    'Nouveau',
                     newMember.nickname !== null
                         ? newMember.nickname
                         : newMember.user.username,
