@@ -16,9 +16,9 @@ let IsLiveMemory = false;
 
 /**
  * Sends a message on Discord whenever i go on live
- * @param {ClientOptions} client The main hub for interacting with the Discord API, and the starting point for the bot.
+ * @param {Client} client The main hub for interacting with the Discord API, and the starting point for the bot.
  */
-let run = async client => {
+let run = async (client, guildSettings) => {
     await twitch.getStreams({ channel: 'adan_ea' }).then(async data => {
         const r = data.data[0];
         let liveChannel = client.guilds.cache.get('814621177770541076');
@@ -40,25 +40,19 @@ let run = async client => {
                         content: `<@&930051152987430952> ${r.user_name} est en live ! Rejoins le pour du ${r.game_name}`,
                         embeds: [embed]
                     });
-                    await liveChannel.setIcon(
-                        'https://cdn.discordapp.com/attachments/763373900171313162/957985745258315836/icone-discord-live.png'
-                    );
+                    await liveChannel.setIcon(guildSettings.liveProfilePicture);
                     IsLiveMemory = true;
                     await sleep(900000);
                 }
             } else {
                 if (IsLiveMemory === true) {
-                    await liveChannel.setIcon(
-                        'https://cdn.discordapp.com/attachments/763373900171313162/957985780322664449/icone-discord.png'
-                    );
+                    await liveChannel.setIcon(guildSettings.defaultProfilePicture);
                     IsLiveMemory = false;
                 }
             }
         } else {
             if (IsLiveMemory === true) {
-                await liveChannel.setIcon(
-                    'https://cdn.discordapp.com/attachments/763373900171313162/957985780322664449/icone-discord.png'
-                );
+                await liveChannel.setIcon(guildSettings.defaultProfilePicture);
                 IsLiveMemory = false;
             }
         }
