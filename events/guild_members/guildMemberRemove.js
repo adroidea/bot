@@ -5,8 +5,8 @@ module.exports = {
     once: false,
     /**
      * Event triggered when a user leaves the guild. When triggered, sends a goodbye message in the public log channel.
-     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
-     * @param {*} member - Represents a member of a guild on Discord.
+     * @param {Client} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {GuildMember} member - Represents a member of a guild on Discord.
      */
     async execute(client, member) {
         const fetchGuild = await client.getGuild(member.guild);

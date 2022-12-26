@@ -30,8 +30,8 @@ module.exports = {
     ],
     /**
      * Triggers a fake event in order to test the bot
-     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
-     * @param {*} interaction - Represents a command interaction.
+     * @param {Client} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {CommandInteraction} interaction - Represents a command interaction.
      */
     runInteraction(client, interaction) {
         const evtChoices = interaction.options.getString('event');
