@@ -1,46 +1,47 @@
 module.exports = {
-    name: 'addchan',
+    name: 'delchan',
     description: '[ADMIN] Configurer les différents salons',
     category: 'database',
     permissions: ['ADMINISTRATOR'],
-    usage: 'addchan [channel] [id]',
-    examples: ['addchan privateLog 814621178223394818'],
+    usage: 'delchan [channel] [id]',
+    examples: ['delchan publicLog 814621178223394818'],
     options: [
         {
             name: 'public-log',
-            description: 'change id du salon des logs public',
+            description: 'Retire id du salon des logs public',
             type: 'STRING',
             required: false
         },
         {
             name: 'private-log',
-            description: 'change id du salon des logs privé',
+            description: 'Retire id du salon des logs privé',
             type: 'STRING',
             required: false
         },
         {
             name: 'protected-voice',
-            description: 'Ajoute un salon vocal protégé contre la suppression',
+            description:
+                "Retire la protection d'un salon vocal de la suppression",
             type: 'STRING',
             required: false
         },
         {
             name: 'host-voice',
-            description: 'Ajoute un salon vocal hôte',
+            description: 'Retire un salon vocal hôte',
             type: 'STRING',
             required: false
         },
         {
             name: 'not-logged-channel',
-            description: 'Ajoute un channel non loggé',
+            description: 'Ajoute un channel à logger',
             type: 'STRING',
             required: false
         }
     ],
     /**
-     * Command to add default channels for the server in the database
-     * @param {ClientOptions} client - The main hub for interacting with the Discord API, and the starting point for the bot.
-     * @param {*} interaction - Represents a command interaction.
+     * Command to remove default channels for the server in the database
+     * @param {Client} client - The main hub for interacting with the Discord API, and the starting point for the bot.
+     * @param {CommandInteraction} interaction - Represents a command interaction.
      */
     async runInteraction(client, interaction) {
         const publicLog = interaction.options.getString('public-log');
@@ -49,14 +50,14 @@ module.exports = {
         const hostVoice = interaction.options.getString('host-voice');
         const notLoggedChan =
             interaction.options.getString('not-logged-channel');
-        // Adds a public log channel id to the database, for arrival and leaving notifications
+        // Remove a public log channel id to the database, for arrival and leaving notifications
         if (publicLog !== null) {
             if (client.channels.cache.get(publicLog)?.isText()) {
                 await client.updateGuild(interaction.guild, {
-                    publicLogChannel: publicLog
+                    publicLogChannel: null
                 });
                 interaction.reply({
-                    content: `Le channel de logs public est maintenant <#${publicLog}> ${publicLog}`,
+                    content: `Le channel de logs public est désactivé`,
                     ephemeral: true
                 });
             } else {
@@ -66,14 +67,14 @@ module.exports = {
                 });
             }
         }
-        // Adds a private log channel id to the database, for every event. (nickname edit, message edit and delete).
+        // Remove a private log channel id to the database, for every event. (nickname edit, message edit and delete).
         if (privateLog !== null) {
             if (client.channels.cache.get(privateLog)?.isText()) {
                 await client.updateGuild(interaction.guild, {
-                    privateLogChannel: privateLog
+                    privateLogChannel: null
                 });
                 interaction.reply({
-                    content: `Le channel de logs privé est maintenant <#${privateLog}> ${privateLog}`,
+                    content: `Le channel de logs privé a été désactivé`,
                     ephemeral: true
                 });
             } else {
@@ -83,14 +84,14 @@ module.exports = {
                 });
             }
         }
-        //Adds a voice channel id to the database that should be deleted when no one is in it.
+        //Remove a voice channel id to the database that should not be deleted when no one is in it.
         if (protectedVoice !== null) {
             if (client.channels.cache.get(protectedVoice)?.isVoice()) {
                 await client.updateGuild(interaction.guild, {
-                    $addToSet: { protectedChannels: protectedVoice }
+                    $pull: { protectedChannels: protectedVoice }
                 });
                 return interaction.reply({
-                    content: `Le channel <#${protectedVoice}> est maintenant protégé contre la suppression automatique.`,
+                    content: `Le channel <#${protectedVoice}> n'est maintenant plus protégé contre la suppression automatique.`,
                     ephemeral: true
                 });
             } else {
@@ -100,14 +101,14 @@ module.exports = {
                 });
             }
         }
-        //Adds a voice channel id to the database used to create temporary voice channels
+        //Remove a voice channel id to the database used to create temporary voice channels
         if (hostVoice !== null) {
             if (client.channels.cache.get(hostVoice)?.isVoice()) {
                 await client.updateGuild(interaction.guild, {
-                    $addToSet: { hostChannels: hostVoice }
+                    $pull: { hostChannels: hostVoice }
                 });
                 return interaction.reply({
-                    content: `Le channel <#${hostVoice}> est maintenant un salon host.`,
+                    content: `Le channel <#${hostVoice}> n'est maintenant plus un salon host.`,
                     ephemeral: true
                 });
             } else {
@@ -117,14 +118,14 @@ module.exports = {
                 });
             }
         }
-        //Adds a textual channel id to the database that will not be monitored for the logs
+        //Remove a textual channel id to the database so it will be monitored for the logs
         if (notLoggedChan !== null) {
             if (client.channels.cache.get(notLoggedChan)?.isText()) {
                 await client.updateGuild(interaction.guild, {
-                    $addToSet: { notLoggedChannels: notLoggedChan }
+                    $pull: { notLoggedChannels: notLoggedChan }
                 });
                 return interaction.reply({
-                    content: `Le channel <#${notLoggedChan}> a été ajouté à la liste des salons non surveillé.`,
+                    content: `Le channel <#${notLoggedChan}> est dorénavent loggé.`,
                     ephemeral: true
                 });
             } else {
