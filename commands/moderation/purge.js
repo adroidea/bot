@@ -29,10 +29,11 @@ module.exports = {
      */
     async runInteraction(client, interaction, guildSettings) {
         const amountToDelete = interaction.options.getNumber('montant');
-        if (amountToDelete > 100 || amountToDelete < 0)
+        if (amountToDelete > 100 || amountToDelete < 0) {
             return interaction.reply(
                 'Merci de choisir un nombre entre 1 et 100'
             );
+        }
         const target = interaction.options.getMember('cible');
 
         const messageToDelete = await interaction.channel.messages.fetch();
@@ -66,8 +67,11 @@ module.exports = {
                     });
                 });
         }
+
         //Sends a message to log the bulk delete
-        const logChannel = client.channels.cache.get(guildSettings.privateLogChannel);
+        const logChannel = client.channels.cache.get(
+            guildSettings.privateLogChannel
+        );
         const embed = new MessageEmbed()
             .setAuthor({
                 name: `${interaction.user.username}`,

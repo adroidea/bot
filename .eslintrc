@@ -11,6 +11,12 @@
     },
     "rules": {
         "no-console": "error",
-        "no-constant-condition": "off"
+        "no-constant-condition": "off",
+        "capitalized-comments": "error",
+        "eqeqeq": ["error", "always"],
+        "no-await-in-loop": "error",
+        "no-duplicate-imports": "error",
+        "no-unreachable-loop": "error",
+        "sort-imports": "error"
     }
 }

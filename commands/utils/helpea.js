@@ -51,6 +51,7 @@ module.exports = {
                         .join(' | ')}\`\``
                 );
             }
+
             noArgsEmbed
                 .addField(
                     '----------------------',
@@ -65,12 +66,13 @@ module.exports = {
             });
         }
         const cmd = client.commands.get(cmdName);
-        if (!cmd)
+        if (!cmd) {
             return interaction.reply({
                 content:
                     "Cette commande n'existe pas ou vous avez fait une typo.",
                 ephemeral: true
             });
+        }
         return interaction.reply({
             content: `
 \`\`\`makefile

@@ -66,6 +66,7 @@ module.exports = {
                 });
             }
         }
+
         // Adds a private log channel id to the database, for every event. (nickname edit, message edit and delete).
         if (privateLog !== null) {
             if (client.channels.cache.get(privateLog)?.isText()) {
@@ -83,6 +84,7 @@ module.exports = {
                 });
             }
         }
+
         //Adds a voice channel id to the database that should be deleted when no one is in it.
         if (protectedVoice !== null) {
             if (client.channels.cache.get(protectedVoice)?.isVoice()) {
@@ -100,6 +102,7 @@ module.exports = {
                 });
             }
         }
+
         //Adds a voice channel id to the database used to create temporary voice channels
         if (hostVoice !== null) {
             if (client.channels.cache.get(hostVoice)?.isVoice()) {
@@ -117,6 +120,7 @@ module.exports = {
                 });
             }
         }
+
         //Adds a textual channel id to the database that will not be monitored for the logs
         if (notLoggedChan !== null) {
             if (client.channels.cache.get(notLoggedChan)?.isText()) {

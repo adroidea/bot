@@ -20,11 +20,13 @@ module.exports = {
                     ephemeral: true
                 });
             }
-            if (!interaction.member.permissions.has([cmd.permissions]))
+
+            if (!interaction.member.permissions.has([cmd.permissions])) {
                 return interaction.reply({
                     content: "Tu n'as pas le droit d'utiliser cette commande !",
                     ephemeral: true
                 });
+            }
             cmd.runInteraction(client, interaction, guildSettings);
         }
     }
