@@ -7,9 +7,9 @@ module.exports = {
      * @param {Message} message - Represents a message on Discord.
      */
     execute(client, message) {
-        //accepts (case insensitive) : i'm / i am / I be
+        //Accepts (case insensitive) : i'm / i am / I be
         const englishDadRegex = /\bi(?:(?:\s+a|')?m|\s+be)\s+(?=\S)/i;
-        //accepts (case insensitive) : je suis / jsuis / j'suis
+        //Accepts (case insensitive) : je suis / jsuis / j'suis
         const frenchDadRegex = /j(?:e+\s|')?suis/i;
         const englishMatch = message.content.match(englishDadRegex);
         const frenchMatch = message.content.match(frenchDadRegex);
@@ -31,6 +31,7 @@ module.exports = {
                                 'https://cdn.discordapp.com/attachments/771934231647223848/938389858802606160/jpp_jean-pierre.png'
                             );
                         }
+
                         return;
                     case frenchDadRegex.test(message.content):
                         if (randomReact > 0.9) {

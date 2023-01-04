@@ -76,7 +76,7 @@ module.exports = {
     name: 'voiceStateUpdate',
     once: false,
     /**
-     * manages a new state from a member. Used to create or delete a voice channel.
+     * Manages a new state from a member. Used to create or delete a voice channel.
      * @param {Client} client The main hub for interacting with the Discord API, and the starting point for the bot.
      * @param {VoiceState} oldState Represents the previous voice state after the event trigger for a Guild Member.
      * @param {VoiceState} newState Represents the new voice state after the event trigger for a Guild Member.

@@ -6,38 +6,38 @@ let nbCmd = 0;
 let nbFailedCmd = 0;
 
 module.exports = async client => {
-    (await pGlob(`${process.cwd()}/commands/*/*.js`)).map(async cmdFile => {
+    (await pGlob(`${process.cwd()}/commands/**/*.js`)).map(async cmdFile => {
         const cmd = require(cmdFile);
 
-        //checks if the command has a proper name.
+        //Checks if the command has a proper name.
         if (!cmd.name) {
             nbFailedCmd++;
             return Logger.warn(
                 `Not initialised Command: NAME required but missing.\nFile : ${cmdFile}`
             );
         }
-        //checks if the command has a proper category.
+        //Checks if the command has a proper category.
         if (!cmd.category) {
             nbFailedCmd++;
             return Logger.warn(
                 `Not initialised Command: CATEGORY required but missing.\nFile : ${cmdFile}`
             );
         }
-        //checks if the command has proper examples.
+        //Checks if the command has proper examples.
         if (!cmd.examples && cmd.type !== 'USER') {
             nbFailedCmd++;
             return Logger.warn(
                 `Not initialised Command: EXAMPLES required but missing.\nFile : ${cmdFile}`
             );
         }
-        //checks if the command has a proper description.
+        //Checks if the command has a proper description.
         if (!cmd.description && cmd.type !== 'USER') {
             nbFailedCmd++;
             return Logger.warn(
                 `Not initialised Command: DESCRIPTION required but missing.\nFile : ${cmdFile}`
             );
         }
-        //checks if the command has proper permissions.
+        //Checks if the command has proper permissions.
         if (!cmd.permissions) {
             nbFailedCmd++;
             return Logger.warn(

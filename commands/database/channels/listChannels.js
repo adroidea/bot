@@ -39,7 +39,7 @@ module.exports = {
      * List all the default channels for the server in the database
      * @param {Client} client - The main hub for interacting with the Discord API, and the starting point for the bot.
      * @param {CommandInteraction} interaction - Represents a command interaction.
-     * @param {import("discord.js").Snowflake} guildSettings - Represents the guild in which the action is made.
+     * @param {*} guildSettings - Represents the guild in which the action is made.
      */
     async runInteraction(client, interaction, guildSettings) {
         const channelList = interaction.options.getString('channel-list');

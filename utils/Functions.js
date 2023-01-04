@@ -17,11 +17,13 @@ module.exports = client => {
         if (typeof guildData !== 'object') {
             guildData = {};
         }
+
         for (const key in settings) {
             if (guildData[key] !== settings[key]) {
                 guildData[key] = settings[key];
             }
         }
+
         return guildData.updateOne(settings);
     };
 };
