@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const TwitchApi = require('node-twitch').default;
-const Guild = require('../../models/index');
+
 //Connection to the Twitch API. Used to get informations about the stream.
 const twitch = new TwitchApi({
     client_id: process.env.TWITCH_CLIENT_ID,
@@ -11,19 +11,43 @@ let sleep = async ms => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
 
+let randomize = array => {
+    let randomNumber = Math.floor(Math.random() * array.length);
+    return array[randomNumber];
+}
+
 //Used to find out what the status of the stream is.
 let IsLiveMemory = false;
 
+const partOne = [
+    "Bon, on a eu marre de faire du",
+    "Votre streamer vient tout juste de rage quit",
+    "On veut plus faire de"
+];
+
+const partTwo = [
+    "Du coup on passe sur",
+    "On va donc faire un petit tour sur"
+];
+const partThree = [
+    "(Adan est pas fou en vrai sur ça, mais on l'aime bien quand même)",
+    ""
+]
+
+//Used to find out what game is currently played, if a game is played.
+let currentGame = "";
 /**
  * Sends a message on Discord whenever i go on live
  * @param {Client} client The main hub for interacting with the Discord API, and the starting point for the bot.
  */
-let run = async (client, guildSettings) => {
+let run = async (client) => {
     await twitch.getStreams({ channel: 'adan_ea' }).then(async data => {
         const r = data.data[0];
         let liveChannel = client.guilds.cache.get(
             process.env.DISCORD_DEV_GUILD
-        );
+            );
+            const guildPic = await client.getGuild(liveChannel);
+            const sentMessage = client.channels.cache.get('949252153225150524');
         if (r !== undefined) {
             if (r.type === 'live') {
                 if (IsLiveMemory === false || IsLiveMemory === undefined) {
@@ -36,27 +60,33 @@ let run = async (client, guildSettings) => {
                         .addField(`**Jeu**`, r.game_name, false)
                         .setImage(`${r.getThumbnailUrl()}?${r.id}?${r.id}`)
                         .setColor('#b02020');
-                    const sentMessage =
-                        client.channels.cache.get('949252153225150524');
                     sentMessage.send({
                         content: `<@&930051152987430952> ${r.user_name} est en live ! Rejoins le pour du ${r.game_name}`,
                         embeds: [embed]
                     });
-                    await liveChannel.setIcon(guildSettings.liveProfilePicture);
+                    await liveChannel.setIcon(guildPic.liveProfilePicture);
                     IsLiveMemory = true;
+                    currentGame = r.game_name;
                     await sleep(900000);
+                } 
+                if(r.game_name !== currentGame) {
+                    sentMessage.send(`${randomize(partOne)} **__${currentGame}__**. ${randomize(partTwo)} **__${r.game_name}__** ! ${randomize(partThree)}`);
+                    currentGame = r.game_name;
+                    
                 }
             } else {
                 if (IsLiveMemory === true) {
                     await liveChannel.setIcon(
-                        guildSettings.defaultProfilePicture
+                        guildPic.defaultProfilePicture
                     );
                     IsLiveMemory = false;
+                    currentGame = "";
                 }
             }
         } else if (IsLiveMemory === true) {
-            await liveChannel.setIcon(guildSettings.defaultProfilePicture);
+            await liveChannel.setIcon(guildPic.defaultProfilePicture);
             IsLiveMemory = false;
+            currentGame = "";
         }
     });
 };
