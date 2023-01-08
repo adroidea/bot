@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const TwitchApi = require('node-twitch').default;
+const { gameChangePartOne, gameChangePartTwo, gameChangePartThree, liveStart } = require('./twitchSentences');
 
 //Connection to the Twitch API. Used to get informations about the stream.
 const twitch = new TwitchApi({
@@ -11,28 +12,13 @@ let sleep = async ms => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
 
-let randomize = array => {
+let randomizeArray = array => {
     let randomNumber = Math.floor(Math.random() * array.length);
     return array[randomNumber];
 }
 
 //Used to find out what the status of the stream is.
 let IsLiveMemory = false;
-
-const partOne = [
-    "Bon, on a eu marre de faire du",
-    "Votre streamer vient tout juste de rage quit",
-    "On veut plus faire de"
-];
-
-const partTwo = [
-    "Du coup on passe sur",
-    "On va donc faire un petit tour sur"
-];
-const partThree = [
-    "(Adan est pas fou en vrai sur ça, mais on l'aime bien quand même)",
-    ""
-]
 
 //Used to find out what game is currently played, if a game is played.
 let currentGame = "";
@@ -55,13 +41,13 @@ let run = async (client) => {
                         .setTitle(`${r.title}`)
                         .setURL(`https://twitch.tv/${r.user_name}`)
                         .setDescription(
-                            `**${r.user_name} est en live pour ${r.viewer_count} viewers !**`
+                            `**${r.user_name} est en live pour ${r.viewer_count} bg ultimes !**`
                         )
                         .addField(`**Jeu**`, r.game_name, false)
                         .setImage(`${r.getThumbnailUrl()}?${r.id}?${r.id}`)
                         .setColor('#b02020');
                     sentMessage.send({
-                        content: `<@&930051152987430952> ${r.user_name} est en live ! Rejoins le pour du ${r.game_name}`,
+                        content: `<@&930051152987430952>, ${r.user_name} ${randomizeArray(liveStart)} **__${r.game_name}__**`,
                         embeds: [embed]
                     });
                     await liveChannel.setIcon(guildPic.liveProfilePicture);
@@ -70,7 +56,7 @@ let run = async (client) => {
                     await sleep(900000);
                 } 
                 if(r.game_name !== currentGame) {
-                    sentMessage.send(`${randomize(partOne)} **__${currentGame}__**. ${randomize(partTwo)} **__${r.game_name}__** ! ${randomize(partThree)}`);
+                    sentMessage.send(`${randomizeArray(gameChangePartOne)} **__${currentGame}__**. ${randomizeArray(gameChangePartTwo)} **__${r.game_name}__** ! ${randomizeArray(gameChangePartThree)}`);
                     currentGame = r.game_name;
                     
                 }
