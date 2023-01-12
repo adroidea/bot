@@ -16,11 +16,10 @@ let randomizeArray = array => {
     return array[randomNumber];
 };
 
-//Used to find out what the status of the stream is.
 let IsLiveMemory = false;
 
-//Used to find out what game is currently played, if a game is played.
 let currentGame = '';
+
 /**
  * Sends a message on Discord whenever i go on live
  * @param {Client} client The main hub for interacting with the Discord API, and the starting point for the bot.
@@ -58,8 +57,6 @@ let run = async client => {
                 }
                 if(r.game_name !== currentGame) {
                     const embed = new MessageEmbed()
-                        .setTitle(`${r.title}`)
-                        .setURL(`https://twitch.tv/${r.user_name}`)
                         .setDescription(
                             `${randomizeArray(gameChangePartOne)} 
                             **${currentGame}**, ${randomizeArray(gameChangePartTwo)} 
