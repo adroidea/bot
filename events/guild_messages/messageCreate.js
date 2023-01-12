@@ -17,22 +17,30 @@ module.exports = {
             if (!message.author.bot) {
                 let randomReact = Math.random();
                 switch (true) {
-                    case /\bAllo\b/gi.test(message.content):
+                    case /\ballo\b/gi.test(message.content):
                         return message.reply(
                             'https://cdn.discordapp.com/attachments/771934231647223848/932926764253052949/oui_allo_jegoutte.jpg'
                         );
+
                     case /hello there/gim.test(message.content):
                         return message.reply(
                             'https://tenor.com/view/hello-there-general-kenobi-star-wars-grevious-gif-17774326'
                         );
+
                     case /jpp/gim.test(message.content):
                         if (randomReact > 0.95) {
                             return message.reply(
                                 'https://cdn.discordapp.com/attachments/771934231647223848/938389858802606160/jpp_jean-pierre.png'
                             );
                         }
-
                         return;
+
+                    case /quoi/gim.test(message.content):
+                        if (randomReact > 0.95) {
+                            return message.reply('feur');
+                        }
+                        return;
+
                     case frenchDadRegex.test(message.content):
                         if (randomReact > 0.9) {
                             const name = message.content
@@ -46,6 +54,7 @@ module.exports = {
                             );
                         }
                         return;
+
                     case englishDadRegex.test(message.content):
                         if (randomReact > 0.5) {
                             const name = message.content
@@ -57,6 +66,7 @@ module.exports = {
                             return message.reply(`Hi ${name}, I'm dad!`);
                         }
                         return;
+
                     default:
                         return;
                 }
