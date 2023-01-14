@@ -1,10 +1,10 @@
 module.exports = {
     name: 'poll',
-    description: '[ADMIN] Créer un sondage avec différents choix',
+    description: '[ADMIN] Créer un sondage',
     category: 'admin',
     permissions: ['ADMINISTRATOR'],
-    usage: 'poll <question> <number of choices> <choices>',
-    examples: ['reload'],
+    usage: 'poll [question] [choix] <description> <image> <vote_unique>',
+    examples: ['poll question:Vous préférez manger quoi ? (feur) choix:Burger Chèvre Miel, Lasagnes, Rien'],
     options: [
         {
             name: 'question',
@@ -16,6 +16,31 @@ module.exports = {
             name: 'choix',
             description: 'Différents choix séparés d\'une virgule (ex:Agrou, DBD, Valo)',
             required: true
+        },
+        {
+            name:'description',
+            description:'Une description du sondage en cours',
+            required:false
+        },
+        {
+            name:'image',
+            description:'lien d\'une image pour le sondage',
+            required:false
+        },
+        {
+            name:'choix_multpiples',
+            description:'définis si l\'utilisateur peut voter plusieurs fois ou non',
+            required:false,
+            choices: [
+                {
+                    name: 'Multiple',
+                    value: 'true'
+                },
+                {
+                    name: 'Vote unique',
+                    value: 'false'
+                }
+            ]
         }
     ],
     /**
@@ -24,7 +49,12 @@ module.exports = {
  * @param {CommandInteraction} interaction - Represents a command interaction.
  */
     async runInteraction(client, interaction) {
-        // Exit the bot in order to reload it if there is a bug or a crash
+        const question = interaction.options.getString('question');
+        const choices = interaction.options.getString('choix');
+        const description = interaction.options.getString('description');
+        const imageURL = interaction.options.getString('image');
+
+
         await interaction.reply({content: 'Relancement du bot en cours, je reviens !', ephemeral: true});
         return process.exit();
     }
