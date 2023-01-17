@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { readdirSync } = require('fs');
+const { version } = require('../../package.json')
 const cmdFolder = readdirSync('./commands');
 const contextDescription = {
     userInfo: 'Shows informations about a user'
@@ -57,6 +58,7 @@ module.exports = {
                     '----------------------',
                     `**\`/helpea <commande>\` Pour plus d'informations.**`
                 )
+                noArgsEmbed.addField('Version', `v${version}`)
                 .setFooter({
                     text: `( ) = alias | < > = optionnel | [ ] = requis | (A ne pas inclure dans les commandes)`
                 });
