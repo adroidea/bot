@@ -1,0 +1,15 @@
+.env
+
+# Useless files/folders
+*.md
+.git
+.vscode
+/node_modules
+dist
+
+# Dev Dependencies
+.*ignore
+.eslintrc
+.prettierrc
+Dockerfile
+docker-compose.yml
