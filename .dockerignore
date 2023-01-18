@@ -4,6 +4,7 @@
 *.md
 .git
 .vscode
+/assets
 /node_modules
 dist
 
