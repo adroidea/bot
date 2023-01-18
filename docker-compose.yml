@@ -1,0 +1,10 @@
+version: '2.3.4'
+services:
+    adroid_ea:
+        image: adanea/adroid_ea
+        environment:
+            - MONGO_URI=MONGO_URI
+            - DISCORD_TOKEN=DISCORD_TOKEN
+            - DISCORD_DEV_GUILD=DISCORD_DEV_GUILD
+            - TWITCH_CLIENT_ID=TWITCH_CLIENT_ID
+            - TWITCH_CLIENT_SECRET=TWITCH_CLIENT_SECRET
