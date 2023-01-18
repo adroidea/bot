@@ -37,7 +37,7 @@ module.exports = {
 
                     case /quoi/gim.test(message.content):
                         if (randomReact > 0.95) {
-                            return message.reply('feur');
+                            return message.reply('feur <3');
                         }
                         return;
 
@@ -68,6 +68,9 @@ module.exports = {
                         return;
 
                     default:
+                        if(randomReact > 0.99) {
+                            return message.reply('Tu sais que t\'es vraiment une personne méga sublime de la mort qui tue ? on est tellement content de t\'avoir sur le serveur')
+                        }
                         return;
                 }
             }
