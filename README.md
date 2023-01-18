@@ -9,8 +9,12 @@ This is a discord bot primarly made for my discord server (this is why some valu
 - Uses slash (/) commands
 - Log certain important events like GuildMemberJoin/Leave
 - Auto manage voice channels, deletes and creates channels so only one is visible
+![image](/assets/voice-channel-feature.gif)
+
 - Some memes stuff like "hello there" and some private jokes
-- Sends a message whenever the (mine) twitch channel **Adan_ea** is live
+![image](/assets/hello_there.png)
+
+- Sends a message whenever the (mine) twitch channel **Adan_ea** is live or when i change game mid-stream
 - help command
 - if used with pm2 the /reload command will reload the bot when it crashs
 - purge command 
