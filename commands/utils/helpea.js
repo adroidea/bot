@@ -1,6 +1,6 @@
-const { MessageEmbed } = require('discord.js');
+const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const { readdirSync } = require('fs');
-const { version } = require('../../package.json')
+const { version } = require('../../package.json');
 const cmdFolder = readdirSync('./commands');
 const contextDescription = {
     userInfo: 'Shows informations about a user'
@@ -11,13 +11,13 @@ module.exports = {
     description: 'Affiche un message avec toutes les commandes du bot',
     category: 'utils',
     permissions: ['SEND_MESSAGES'],
-    usage: 'help',
-    examples: ['help', 'help'],
+    usage: 'helpea',
+    examples: ['helpea', 'helpea pingea'],
     options: [
         {
             name: 'commande',
             description: 'La méchante commande qui te pose souci',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: false
         }
     ],
@@ -30,7 +30,7 @@ module.exports = {
         const cmdName = interaction.options.getString('commande');
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);
         if (!cmdName) {
-            const noArgsEmbed = new MessageEmbed()
+            const noArgsEmbed = new EmbedBuilder()
                 .setAuthor({
                     name: `${interaction.member.user.username}`,
                     iconURL: interaction.member.user.displayAvatarURL()
@@ -42,23 +42,28 @@ module.exports = {
                 .setDescription('----------------------')
                 .setColor(randomColor);
             for (const category of cmdFolder) {
-                noArgsEmbed.addField(
-                    `❄ ${category.replace(/(^\w|\s\w)/g, firstLetter =>
-                        firstLetter.toUpperCase()
-                    )} :`,
-                    ` \`\`${client.commands
-                        .filter(cmd => cmd.category === category.toLowerCase())
-                        .map(cmd => cmd.name)
-                        .join(' | ')}\`\``
-                );
+                noArgsEmbed.addFields([
+                    {
+                        name: `❄ ${category.replace(
+                            /(^\w|\s\w)/g,
+                            firstLetter => firstLetter.toUpperCase()
+                        )} :`,
+                        value: ` \`\`${client.commands
+                            .filter(
+                                cmd => cmd.category === category.toLowerCase()
+                            )
+                            .map(cmd => cmd.name)
+                            .join(' | ')}\`\``
+                    },
+                    {
+                        name: '----------------------',
+                        value: `**\`/helpea <commande>\` Pour plus d'informations.**`
+                    }
+                ]);
             }
 
             noArgsEmbed
-                .addField(
-                    '----------------------',
-                    `**\`/helpea <commande>\` Pour plus d'informations.**`
-                )
-                noArgsEmbed.addField('Version', `v${version}`)
+                .addFields([{ name: 'Version', value: `v${version}` }])
                 .setFooter({
                     text: `( ) = alias | < > = optionnel | [ ] = requis | (A ne pas inclure dans les commandes)`
                 });
