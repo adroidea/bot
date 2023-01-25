@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'warn',
@@ -11,18 +11,18 @@ module.exports = {
         {
             name: 'id',
             description: 'id utilisateur',
-            type: 'USER',
+            type: ApplicationCommandOptionType.User,
             required: true
         },
         {
             name: 'raison',
             description: 'Raison du warn',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: true
         }
     ],
     /**
-     * Warn a user 
+     * Warn a user
      * @param {Client} client - The main hub for interacting with the Discord API, and the starting point for the bot.
      * @param {CommandInteraction} interaction - Represents a command interaction.
      */
@@ -34,7 +34,7 @@ module.exports = {
             fetchGuild.privateLogChannel
         );
         const agrouChannel = client.channels.cache.get('971658703155630084');
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setAuthor({
                 name: `${client.user.username}`,
                 iconURL: client.user.avatarURL()

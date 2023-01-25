@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const TwitchApi = require('node-twitch').default;
 
 //Connection to the Twitch API. Used to get informations about the stream.
@@ -35,13 +35,19 @@ let run = async client => {
         if (r !== undefined) {
             if (r.type === 'live') {
                 if (IsLiveMemory === false || IsLiveMemory === undefined) {
-                    const embed = new MessageEmbed()
+                    const embed = new EmbedBuilder()
                         .setTitle(`${r.title}`)
                         .setURL(`https://twitch.tv/${r.user_name}`)
                         .setDescription(
                             `**${r.user_name} est en live pour ${r.viewer_count} bg ultimes !**`
                         )
-                        .addField(`**Jeu**`, r.game_name, false)
+                        .addFields([
+                            {
+                                name: `**Jeu**`,
+                                value: r.game_name,
+                                inline: false
+                            }
+                        ])
                         .setImage(`${r.getThumbnailUrl()}?${r.id}?${r.id}`)
                         .setColor('#b02020');
                     sentMessage.send({
@@ -55,8 +61,8 @@ let run = async client => {
                     currentGame = r.game_name;
                     await sleep(900000);
                 }
-                if(r.game_name !== currentGame) {
-                    const embed = new MessageEmbed()
+                if (r.game_name !== currentGame) {
+                    const embed = new EmbedBuilder()
                         .setDescription(
                             `${randomizeArray(gameChangePartOne)} 
                             **${currentGame}**, ${randomizeArray(gameChangePartTwo)} 

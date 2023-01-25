@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { OWNER_ID } = require('../../utils/config');
 module.exports = {
     name: 'messageUpdate',
@@ -25,7 +25,7 @@ module.exports = {
             logChannel !== undefined
         ) {
             if (!newMessage.author.bot && newMessage.author.id !== OWNER_ID) {
-                const embed = new MessageEmbed()
+                const embed = new EmbedBuilder()
                     .setAuthor({
                         name: `<@${newMessage.author.id}>`,
                         iconURL: newMessage.author.avatarURL()

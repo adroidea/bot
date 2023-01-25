@@ -1,3 +1,5 @@
+const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+
 module.exports = {
     name: 'listchan',
     description: '[ADMIN] Configurer les différents salons',
@@ -9,9 +11,13 @@ module.exports = {
         {
             name: 'channel-list',
             description: 'Liste des channels',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: true,
             choices: [
+                {
+                    name: 'all',
+                    value: 'all'
+                },
                 {
                     name: 'public-log',
                     value: 'public-log'
@@ -43,6 +49,44 @@ module.exports = {
      */
     async runInteraction(client, interaction, guildSettings) {
         const channelList = interaction.options.getString('channel-list');
+
+        if (channelList === 'all') {
+            const embed = new EmbedBuilder()
+                .setTitle('Listes des salons en base de données')
+                .addFields([
+                    {
+                        name: '**Log publiques**',
+                        value: `<#${guildSettings.publicLogChannel}> ${guildSettings.publicLogChannel}`,
+                        inline: true
+                    },
+                    {
+                        name: '**Logs privées**',
+                        value: `<#${guildSettings.privateLogChannel}> ${guildSettings.privateLogChannel}`,
+                        inline: true
+                    },
+                    {
+                        name: '**Salons ignorés**',
+                        value: getChannels(guildSettings.notLoggedChannels),
+                        inline: false
+                    }
+                ])
+                .addFields([
+                    {
+                        name: '**Salons protégés**',
+                        value: getChannels(guildSettings.protectedChannels),
+                        inline: false
+                    },
+                    {
+                        name: '**Salons host ** *(non supprimables par le bot)*',
+                        value: getChannels(guildSettings.hostChannels),
+                        inline: false
+                    }
+                ]);
+            interaction.reply({
+                embeds: [embed],
+                ephemeral: true
+            });
+        }
 
         if (channelList === 'public-log') {
             if (
@@ -79,42 +123,39 @@ module.exports = {
         }
 
         if (channelList === 'protected-voice') {
-            let protectedChannelList = '';
-            guildSettings.protectedChannels.forEach(
-                protectedChannel =>
-                    (protectedChannelList += `<#${protectedChannel}> (${protectedChannel})\n`)
-            );
-            guildSettings.hostChannels.forEach(
-                channel =>
-                    (protectedChannelList += `<#${channel}> (${channel}) (via host)\n`)
-            );
             interaction.reply({
-                content: `Les channels protégés contre la suppression automatique sont :\n${protectedChannelList}`,
+                content: `Les channels protégés contre la suppression automatique sont :\n${getChannels(
+                    guildSettings.protectedChannels
+                )}`,
                 ephemeral: true
             });
         }
 
         if (channelList === 'host-voice') {
-            let hostChannelList = '';
-            guildSettings.hostChannels.forEach(
-                hostChannel =>
-                    (hostChannelList += `<#${hostChannel}> (${hostChannel})\n`)
-            );
             interaction.reply({
-                content: `Les channels host sont :\n${hostChannelList}`,
+                content: `Les channels host sont :\n${getChannels(
+                    guildSettings.hostChannels
+                )}`,
                 ephemeral: true
             });
         }
 
         if (channelList === 'not-logged-channel') {
-            let channelList = '';
-            guildSettings.notLoggedChannels.forEach(
-                channel => (channelList += `<#${channel}> (${channel})\n`)
-            );
             interaction.reply({
-                content: `Les channels qui ne sont pas loggés sont :\n${channelList}`,
+                content: `Les channels qui ne sont pas loggés sont :\n${getChannels(
+                    guildSettings.notLoggedChannels
+                )}`,
                 ephemeral: true
             });
         }
     }
+};
+
+let getChannels = channelsToGet => {
+    let channelList = '';
+    channelsToGet.forEach(
+        channel => (channelList += `<#${channel}> ${channel}\n`)
+    );
+    if (channelList === '') return (channelList = 'Aucun salon affecté');
+    return channelList;
 };

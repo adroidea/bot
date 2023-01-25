@@ -1,4 +1,5 @@
 const { OWNER_ID } = require('../../utils/config');
+const { ApplicationCommandOptionType } = require("discord.js");
 
 module.exports = {
     name: 'r',
@@ -10,7 +11,7 @@ module.exports = {
     options: [
         {
             name: 'text',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             description: 'No desc.',
             required: true
         }

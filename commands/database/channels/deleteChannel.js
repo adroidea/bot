@@ -1,3 +1,5 @@
+const { ApplicationCommandOptionType, ChannelType } = require("discord.js");
+
 module.exports = {
     name: 'delchan',
     description: '[ADMIN] Configurer les différents salons',
@@ -9,32 +11,32 @@ module.exports = {
         {
             name: 'public-log',
             description: 'Retire id du salon des logs public',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: false
         },
         {
             name: 'private-log',
             description: 'Retire id du salon des logs privé',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: false
         },
         {
             name: 'protected-voice',
             description:
                 "Retire la protection d'un salon vocal de la suppression",
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: false
         },
         {
             name: 'host-voice',
             description: 'Retire un salon vocal hôte',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: false
         },
         {
             name: 'not-logged-channel',
             description: 'Ajoute un channel à logger',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: false
         }
     ],
@@ -52,7 +54,7 @@ module.exports = {
             interaction.options.getString('not-logged-channel');
         // Remove a public log channel id to the database, for arrival and leaving notifications
         if (publicLog !== null) {
-            if (client.channels.cache.get(publicLog)?.isText()) {
+            if (client.channels.cache.get(publicLog)?.type === ChannelType.GuildText) {
                 await client.updateGuild(interaction.guild, {
                     publicLogChannel: null
                 });
@@ -70,7 +72,7 @@ module.exports = {
 
         // Remove a private log channel id to the database, for every event. (nickname edit, message edit and delete).
         if (privateLog !== null) {
-            if (client.channels.cache.get(privateLog)?.isText()) {
+            if (client.channels.cache.get(privateLog)?.type === ChannelType.GuildText) {
                 await client.updateGuild(interaction.guild, {
                     privateLogChannel: null
                 });
@@ -88,7 +90,7 @@ module.exports = {
 
         //Remove a voice channel id to the database that should not be deleted when no one is in it.
         if (protectedVoice !== null) {
-            if (client.channels.cache.get(protectedVoice)?.isVoice()) {
+            if (client.channels.cache.get(protectedVoice)?.type === ChannelType.GuildVoice) {
                 await client.updateGuild(interaction.guild, {
                     $pull: { protectedChannels: protectedVoice }
                 });
@@ -106,7 +108,7 @@ module.exports = {
 
         //Remove a voice channel id to the database used to create temporary voice channels
         if (hostVoice !== null) {
-            if (client.channels.cache.get(hostVoice)?.isVoice()) {
+            if (client.channels.cache.get(hostVoice)?.type === ChannelType.GuildVoice) {
                 await client.updateGuild(interaction.guild, {
                     $pull: { hostChannels: hostVoice }
                 });
@@ -124,7 +126,7 @@ module.exports = {
 
         //Remove a textual channel id to the database so it will be monitored for the logs
         if (notLoggedChan !== null) {
-            if (client.channels.cache.get(notLoggedChan)?.isText()) {
+            if (client.channels.cache.get(notLoggedChan)?.type === ChannelType.GuildText) {
                 await client.updateGuild(interaction.guild, {
                     $pull: { notLoggedChannels: notLoggedChan }
                 });
