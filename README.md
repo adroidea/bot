@@ -1,10 +1,8 @@
-# Adroid_ea
-
-## Introduction 
+# 📖 Introduction
 
 This is a discord bot primarly made for my discord server (this is why some values are hard coded) but feel free to use the code for yourself.
 
-## Features
+# ✨ Features
 
 - Uses slash (/) commands
 - Log certain important events like GuildMemberJoin/Leave
@@ -19,9 +17,7 @@ This is a discord bot primarly made for my discord server (this is why some valu
 - if used with pm2 the /reload command will reload the bot when it crashs
 - purge command 
 
-## Config
-
-discord.js: v13 (not up to date)
+# 🏗 Development
 
 env: 
 ```
@@ -32,10 +28,37 @@ TWITCH_CLIENT_ID
 TWITCH_CLIENT_SECRET
 ```
 
-## Run with Docker
-From this project : 
-```sh
-docker build . -t adanea/adroid_ea:<version>
+```
+npm install
+npm run dev
+```
+
+# 💻 Production
+
+```
+npm install --production
+npm run build
+npm run start
+```
+
+# 🐋 Docker
+
+To start your application:
+
+```
+docker-compose up -d
+```
+
+To shut down your application:
+
+```
+docker-compose down
+```
+
+To view your application's logs:
+
+```
+docker-compose logs
 ```
 
 From Dockerhub:
@@ -43,10 +66,8 @@ From Dockerhub:
 docker pull adanea/adroid_ea:<version>
 ```
 
-## Run from source
+For the full command list please view the [Docker Documentation](https://docs.docker.com/engine/reference/commandline/cli/).
 
-clone or download this repository
+# 📜 Documentation
 
-```sh
-npm start
-```
+- [discordx.js.org](https://discordx.js.org)

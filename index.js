@@ -34,6 +34,7 @@ process.on('unhandledRejection', (reason, promise) => {
 process.on('warning', (...args) => Logger.warn(...args));
 
 // Database connection
+mongoose.set('strictQuery', false);
 mongoose
     .connect(process.env.MONGO_URI, {
         autoIndex: false,
