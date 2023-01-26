@@ -1,3 +1,5 @@
+const { ApplicationCommandOptionType } = require("discord.js");
+
 module.exports = {
     name: 'updatepic',
     description: '[ADMIN] Configurer la photo de profil du serveur',
@@ -11,13 +13,13 @@ module.exports = {
         {
             name: 'default',
             description: 'Photo hors steram',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: false
         },
         {
             name: 'live',
             description: "Photo lors d'un stream",
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             required: false
         }
     ],

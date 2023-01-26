@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'support',
@@ -14,7 +14,7 @@ module.exports = {
     * @param {CommandInteraction} interaction - Represents a command interaction.
      */
     runInteraction(client, interaction) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor('#FFFF00')
             .setAuthor({
                 name: `${interaction.member.user.tag}`,
@@ -67,7 +67,7 @@ module.exports = {
                 },
                 {
                     name: 'ㅤNavigateur Brave !',
-                    value: "ㅤㅤUn doc explicatif viendra sous peu ! Mais en gros c'est un navigateur qui vous paye pour avoir des pubs de temps en temps, et vous pouvez partager un peu de votre fortune",
+                    value: "ㅤㅤLa chaine supporte les dons de BAT !",
                     inline: false
                 }
             )
