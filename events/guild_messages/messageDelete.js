@@ -14,12 +14,7 @@ module.exports = {
             fetchGuild.privateLogChannel
         );
         const notLoggedChannels = fetchGuild.notLoggedChannels;
-
-        if (
-            message.content !== null &&
-            logChannel !== undefined &&
-            logChannel !== undefined
-        ) {
+        if (message.content && logChannel) {
             if (
                 message.author.id !== OWNER_ID &&
                 !message.author.bot &&

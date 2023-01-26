@@ -23,7 +23,6 @@ module.exports = {
      */
     async runInteraction(client, interaction) {
         if (interaction.member.id === OWNER_ID) {
-            interaction.reply({ content: 'f', ephemeral: true });
             const reply = interaction.options.getString('text');
             await interaction.channel.send(reply);
         }
