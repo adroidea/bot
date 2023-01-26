@@ -1,3 +1,4 @@
+const { ActivityType } = require('discord.js');
 const Logger = require('../../utils/Logger');
 
 module.exports = {
@@ -15,7 +16,7 @@ module.exports = {
         await devGuild.commands.set(client.commands.map(cmd => cmd));
 
         client.user.setPresence({
-            activities: [{ name: 'adan_ea sur twitch !', type: 'WATCHING' }],
+            activities: [{ name: 'adan_ea sur twitch !', type: ActivityType.Watching }],
             status: 'dnd'
         });
     }

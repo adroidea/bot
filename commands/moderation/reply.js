@@ -1,4 +1,5 @@
 const { OWNER_ID } = require('../../utils/config');
+const { ApplicationCommandOptionType } = require("discord.js");
 
 module.exports = {
     name: 'r',
@@ -10,7 +11,7 @@ module.exports = {
     options: [
         {
             name: 'text',
-            type: 'STRING',
+            type: ApplicationCommandOptionType.String,
             description: 'No desc.',
             required: true
         }
@@ -22,7 +23,6 @@ module.exports = {
      */
     async runInteraction(client, interaction) {
         if (interaction.member.id === OWNER_ID) {
-            interaction.reply({ content: 'f', ephemeral: true });
             const reply = interaction.options.getString('text');
             await interaction.channel.send(reply);
         }

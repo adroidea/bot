@@ -1,3 +1,5 @@
+const { ChannelType } = require('discord.js');
+
 /**
  * Checks if the user is moved from a channel to another
  * @param {VoiceState} oldState Represents the voice state for a Guild Member before the event.
@@ -19,14 +21,29 @@ let isMoved = (oldState, newState) => {
  */
 let createNewChannel = async (client, newState) => {
     if (await isHostChannel(client, newState)) {
-        newState.guild.channels
-            .create(`🔊Vocal ${newState.member.user.username}`, {
-                type: 'GUILD_VOICE'
-            })
-            .then(channel => {
-                channel.setParent(newState.channel.parentId);
-                newState.member.voice.setChannel(channel.id);
-            });
+        let username = newState.member.user.username;
+        let usernameRegex = /^\w*$/;
+        if (usernameRegex.test(username)) {
+            newState.guild.channels
+                .create({
+                    name: `🔊Vocal ${newState.member.user.username}`,
+                    type: ChannelType.GuildVoice
+                })
+                .then(channel => {
+                    channel.setParent(newState.channel.parentId);
+                    newState.member.voice.setChannel(channel.id);
+                });
+        } else {
+            newState.guild.channels
+                .create({
+                    name: `🔊Vocal du pseudo relou`,
+                    type: ChannelType.GuildVoice
+                })
+                .then(channel => {
+                    channel.setParent(newState.channel.parentId);
+                    newState.member.voice.setChannel(channel.id);
+                });
+        }
     }
 };
 

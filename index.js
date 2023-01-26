@@ -2,7 +2,7 @@ const { Client, Collection } = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
 const mongoose = require('mongoose');
-const client = new Client({ intents: 32767 });
+const client = new Client({ intents: 128671 });
 const Logger = require('./utils/Logger');
 
 client.commands = new Collection();
@@ -34,6 +34,7 @@ process.on('unhandledRejection', (reason, promise) => {
 process.on('warning', (...args) => Logger.warn(...args));
 
 // Database connection
+mongoose.set('strictQuery', false);
 mongoose
     .connect(process.env.MONGO_URI, {
         autoIndex: false,
