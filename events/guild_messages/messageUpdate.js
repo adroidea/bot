@@ -33,7 +33,7 @@ module.exports = {
                     .setDescription(
                         `Message edité dans <#${oldMessage.channelId}>, [voir le message](${oldMessage.url})`
                     )
-                    .addFields(
+                    .addFields([
                         {
                             name: `Ancien message :`,
                             value: oldMessage.content,
@@ -44,7 +44,7 @@ module.exports = {
                             value: newMessage.content,
                             inline: false
                         }
-                    )
+                    ])
                     .setFooter({ text: `Message modifié.` })
                     .setColor('#b02020')
                     .setTimestamp();
