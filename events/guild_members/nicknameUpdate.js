@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
     name: 'guildMemberUpdate',
     once: false,
@@ -13,26 +13,30 @@ module.exports = {
             fetchGuild.privateLogChannel
         );
         if (oldMember.nickname !== newMember.nickname) {
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setAuthor({
                     name: `${newMember.user.tag}`,
                     iconURL: newMember.avatarURL()
                 })
                 .setDescription(`<@${newMember.id}> a changé de pseudo`)
-                .addField(
-                    'Ancien',
-                    oldMember.nickname !== null
-                        ? oldMember.nickname
-                        : oldMember.user.username,
-                    false
-                )
-                .addField(
-                    'Nouveau',
-                    newMember.nickname !== null
-                        ? newMember.nickname
-                        : newMember.user.username,
-                    false
-                )
+                .addFields([
+                    {
+                        name: 'Ancien',
+                        value:
+                            oldMember.nickname !== null
+                                ? oldMember.nickname
+                                : oldMember.user.username,
+                        inline: false
+                    },
+                    {
+                        name: 'Nouveau',
+                        value:
+                            newMember.nickname !== null
+                                ? newMember.nickname
+                                : newMember.user.username,
+                        inline: false
+                    }
+                ])
                 .setColor('#20B068')
                 .setFooter({ text: `ID: ${newMember.id}` })
                 .setTimestamp();
