@@ -15,11 +15,11 @@ jobs:
     - name: Set env
       run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag adanea/adroid_ea:$RELEASE_VERSION
+      run: docker build . --file Dockerfile --tag adanea/adroid_ea:$RELEASE_VERSION && docker tag adanea/adroid_ea:$RELEASE_VERSION adanea/adroid_ea:latest
     - name: docker login
       run: echo '${{ secrets.DOCKER_TOKEN }}' | docker login --username adanea --password-stdin
     - name: docker push
-      run: docker push adanea/adroid_ea:$RELEASE_VERSION
+      run: docker push adanea/adroid_ea:$RELEASE_VERSION && docker push adanea/adroid_ea:latest
     - name: Build
       run: echo ${{ github.sha }} > Release.txt
     - name: Release
