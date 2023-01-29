@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'guildMemberAdd',
@@ -17,7 +17,7 @@ module.exports = {
         if (logChannel === undefined || logChannel === null) return;
 
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setAuthor({
                 name: `${member.user.id}`,
                 iconURL: member.user.avatarURL()

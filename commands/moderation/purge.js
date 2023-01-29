@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'purge',
@@ -12,13 +12,13 @@ module.exports = {
         {
             name: 'montant',
             description: 'Nombre de messages à supprimer',
-            type: 'NUMBER',
+            type: ApplicationCommandOptionType.Number,
             required: true
         },
         {
             name: 'cible',
             description: 'La victime de cette suppression de masse',
-            type: 'USER',
+            type: ApplicationCommandOptionType.User,
             required: false
         }
     ],
@@ -72,7 +72,7 @@ module.exports = {
         const logChannel = client.channels.cache.get(
             guildSettings.privateLogChannel
         );
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setAuthor({
                 name: `${interaction.user.username}`,
                 iconURL: interaction.user.avatarURL()

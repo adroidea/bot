@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { OWNER_ID } = require('../../utils/config');
 module.exports = {
     name: 'messageUpdate',
@@ -25,7 +25,7 @@ module.exports = {
             logChannel !== undefined
         ) {
             if (!newMessage.author.bot && newMessage.author.id !== OWNER_ID) {
-                const embed = new MessageEmbed()
+                const embed = new EmbedBuilder()
                     .setAuthor({
                         name: `<@${newMessage.author.id}>`,
                         iconURL: newMessage.author.avatarURL()
@@ -33,7 +33,7 @@ module.exports = {
                     .setDescription(
                         `Message edité dans <#${oldMessage.channelId}>, [voir le message](${oldMessage.url})`
                     )
-                    .addFields(
+                    .addFields([
                         {
                             name: `Ancien message :`,
                             value: oldMessage.content,
@@ -44,7 +44,7 @@ module.exports = {
                             value: newMessage.content,
                             inline: false
                         }
-                    )
+                    ])
                     .setFooter({ text: `Message modifié.` })
                     .setColor('#b02020')
                     .setTimestamp();
