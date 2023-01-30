@@ -31,7 +31,7 @@ let run = async client => {
             process.env.DISCORD_DEV_GUILD
         );
         const guildPic = await client.getGuild(liveChannel);
-        const sentMessage = client.channels.cache.get('949252153225150524');
+        const sentMessage = client.channels.cache.get('856293901237616640');
         if (r !== undefined) {
             if (r.type === 'live') {
                 if (IsLiveMemory === false || IsLiveMemory === undefined) {
