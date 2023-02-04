@@ -1,6 +1,6 @@
 const { ActivityType } = require('discord.js');
 const Logger = require('../../utils/Logger');
-
+const { GUILD } = require('../../utils/config');
 module.exports = {
     name: 'ready',
     once: true,
@@ -10,13 +10,13 @@ module.exports = {
      */
     async execute(client) {
         Logger.client(`Bot ${client.user.tag} up and running !`);
-        const devGuild = await client.guilds.cache.get(
-            process.env.DISCORD_DEV_GUILD
-        );
+        const devGuild = await client.guilds.cache.get(GUILD);
         await devGuild.commands.set(client.commands.map(cmd => cmd));
 
         client.user.setPresence({
-            activities: [{ name: 'adan_ea sur twitch !', type: ActivityType.Watching }],
+            activities: [
+                { name: 'adan_ea sur twitch !', type: ActivityType.Watching }
+            ],
             status: 'dnd'
         });
     }

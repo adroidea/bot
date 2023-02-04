@@ -22,28 +22,15 @@ let isMoved = (oldState, newState) => {
 let createNewChannel = async (client, newState) => {
     if (await isHostChannel(client, newState)) {
         let username = newState.member.user.username;
-        let usernameRegex = /^\w*$/;
-        if (usernameRegex.test(username)) {
-            newState.guild.channels
-                .create({
-                    name: `🔊Vocal ${newState.member.user.username}`,
-                    type: ChannelType.GuildVoice
-                })
-                .then(channel => {
-                    channel.setParent(newState.channel.parentId);
-                    newState.member.voice.setChannel(channel.id);
-                });
-        } else {
-            newState.guild.channels
-                .create({
-                    name: `🔊Vocal du pseudo relou`,
-                    type: ChannelType.GuildVoice
-                })
-                .then(channel => {
-                    channel.setParent(newState.channel.parentId);
-                    newState.member.voice.setChannel(channel.id);
-                });
-        }
+        newState.guild.channels
+            .create({
+                name: `🔊Voc ${username}`,
+                type: ChannelType.GuildVoice
+            })
+            .then(channel => {
+                channel.setParent(newState.channel.parentId);
+                newState.member.voice.setChannel(channel.id);
+            });
     }
 };
 

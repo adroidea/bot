@@ -1,3 +1,5 @@
+const { GENERAL } = require("../../utils/config");
+
 module.exports = {
     name: 'messageCreate',
     once: false,
@@ -13,7 +15,7 @@ module.exports = {
         const frenchDadRegex = /j(?:e+\s|')?suis/i;
         const englishMatch = message.content.match(englishDadRegex);
         const frenchMatch = message.content.match(frenchDadRegex);
-        if (message.channel.id === '816168046183317505') {
+        if (message.channel.id === GENERAL) {
             if (!message.author.bot) {
                 let randomReact = Math.random();
                 switch (true) {

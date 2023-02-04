@@ -1,3 +1,4 @@
+const { GUILD, LIVE_CHANNEL } = require('../../utils/config');
 const { EmbedBuilder } = require('discord.js');
 const TwitchApi = require('node-twitch').default;
 
@@ -27,11 +28,9 @@ let currentGame = '';
 let run = async client => {
     await twitch.getStreams({ channel: 'adan_ea' }).then(async data => {
         const r = data.data[0];
-        let liveChannel = client.guilds.cache.get(
-            process.env.DISCORD_DEV_GUILD
-        );
+        let liveChannel = client.guilds.cache.get(GUILD);
         const guildPic = await client.getGuild(liveChannel);
-        const sentMessage = client.channels.cache.get('856293901237616640');
+        const sentMessage = client.channels.cache.get(LIVE_CHANNEL);
         if (r !== undefined) {
             if (r.type === 'live') {
                 if (IsLiveMemory === false || IsLiveMemory === undefined) {
@@ -48,7 +47,7 @@ let run = async client => {
                                 inline: false
                             }
                         ])
-                        .setImage(`${r.getThumbnailUrl()}?${r.id}?${r.id}`)
+                        .setImage(`${r.getThumbnailUrl()}?r=${r.id}?`)
                         .setColor('#b02020');
                     sentMessage.send({
                         content: `<@&930051152987430952>, ${
@@ -64,9 +63,13 @@ let run = async client => {
                 if (r.game_name !== currentGame) {
                     const embed = new EmbedBuilder()
                         .setDescription(
-                            `${randomizeArray(gameChangePartOne)} 
-                            **${currentGame}**, ${randomizeArray(gameChangePartTwo)} 
-                            **${r.game_name}**. ${randomizeArray(gameChangePartThree)}`
+                            `${randomizeArray(
+                                gameChangePartOne
+                            )} **${currentGame}**. ${randomizeArray(
+                                gameChangePartTwo
+                            )} **${r.game_name}**. ${randomizeArray(
+                                gameChangePartThree
+                            )}`
                         )
                         .setColor('#b02020');
                     sentMessage.send({ embeds: [embed] });
@@ -110,7 +113,12 @@ const liveStart = [
     "vient d'arriver ksksks, et si toi aussi tu arrivais ? On va tous s'amuser sur",
     'a une absence incroyable de skill à te présenter sur',
     "a ou n'a pas un burger chèvre miel, à toi de le découvrir en venant, tu pourras profiter pour regarder du non skill sur",
-    "Viens. C'est pas une demande, c'est un ordre"
+    "Viens. C'est pas une demande, c'est un ordre",
+    'est en direct pour vous offrir des moments de folie. Lâchez tout ce que vous faites pour',
+    'est sur le point de vous en mettre plein les yeux sur',
+    "est en direct. C'est le moment de laisser votre journée de côté et de vous plonger dans l'aventure",
+    "est là pour vous si vous êtes à la recherche d'une dose de divertissement sur",
+    "est en live ! C'est l'heure de laisser la réalité derrière toi et de plonger dans le monde de"
 ];
 
 const gameChangePartOne = [
@@ -119,21 +127,34 @@ const gameChangePartOne = [
     'On veut plus faire de',
     'On a été fatigué par',
     'Le petit alt f4 des familles a été fait sur',
-    "On suit le planning (ca m'étonnerai que ce soit vrai) donc on quitte"
+    "On suit le planning (ca m'étonnerai que ce soit vrai) donc on quitte",
+    'Adieu',
+    'Au revoir',
+    'Après avoir dit au revoir à',
+    'Dernier round pour',
+    'Notre voyage touche à sa fin sur',
+    "L'heure est venue de dire au revoir à"
 ];
 
 const gameChangePartTwo = [
-    'Du coup on passe sur',
-    'On va donc faire un petit tour sur'
+    'On passe sur',
+    'On va donc faire un petit tour sur',
+    'En échange ca te tente un peu de',
+    'Place au prochain jeu :',
+    'On accueille à bras ouverts',
+    'Changeons pour',
+    'Préparons-nous pour',
+    'Le moment est venu de jouer à',
+    'Nouveau jeu, nouveaux défis :'
 ];
 
 const gameChangePartThree = [
     "(Adan est pas fou en vrai sur ça, mais on l'aime bien quand même)",
-    '',
-    '',
-    '',
-    '',
-    '',
+    'Quelle aventure nous attend cette fois-ci ?',
+    'Prêts ?',
+    'Accrochez-vous, ça va être intense.',
+    'Préparez-vous à une nouvelle aventure.',
+    'Préparez-vous pour un divertissement de haut niveau',
     '',
     '',
     '',
