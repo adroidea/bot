@@ -1,16 +1,21 @@
-.env
-
-# Useless files/folders
-*.md
-.git
-.vscode
-/assets
-/node_modules
-dist
-
-# Dev Dependencies
+# Dev files/folders
+*.ts
 .*ignore
-.eslintrc
+.eslintrc.js
 .prettierrc
+.vscode
+/node_modules
+/src
+tsconfig.json
+
+# Github assets
+*.md
+.git*
+/.github
+/.husky
+/assets
+LICENSE
+
+# Docker
 Dockerfile
 docker-compose.yml

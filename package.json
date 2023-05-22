@@ -20,13 +20,14 @@
       "npx eslint . --ext .ts --fix",
       "npx prettier --write"
     ]
-  },  
+  },
   "author": "adan_ea",
   "license": "ISC",
   "dependencies": {
     "@discordjs/rest": "^1.5.0",
     "@types/node": "^18.14.0",
     "bullmq": "^3.12.0",
+    "chalk": "^4.1.2",
     "dayjs": "^1.11.7",
     "discord-api-types": "^0.37.35",
     "discord.js": "^14.11.0",
