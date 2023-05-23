@@ -1,32 +1,42 @@
-version: '3.8'
+version: "3.8"
 services:
-    adroid_ea:
-        image: adanea/adroid_ea
-        environment:
-            - MONGO_URI=MONGO_URI
-            - DISCORD_TOKEN=DISCORD_TOKEN
-            - DISCORD_DEV_GUILD=DISCORD_DEV_GUILD
-            - DISCORD_CLIENT_ID=DISCORD_CLIENT_ID
-            - TWITCH_CLIENT_ID=TWITCH_CLIENT_ID
-            - TWITCH_CLIENT_SECRET=TWITCH_CLIENT_SECRET
-        depends_on:
-            - mongo
-    mongo:
-        image: mongo
-        restart: always
-        ports:
-            - 27017:27017
-        volumes:
-            - ./data:/data/db
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: root
-            MONGO_INITDB_ROOT_PASSWORD: root
-    mongo-express:
-        image: mongo-express
-        restart: always
-        ports:
-        - 8081:8081
-        environment:
-            ME_CONFIG_MONGODB_ADMINUSERNAME: root
-            ME_CONFIG_MONGODB_ADMINPASSWORD: root
-            ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
+
+  adroid_ea:
+    image: adanea/adroid_ea:test
+    container_name: adroid_ea
+    environment:
+      - MONGO_URI=xxx
+      - DISCORD_TOKEN=xxx
+      - DISCORD_CLIENT_ID=xxx
+      - TWITCH_CLIENT_ID=xxx
+      - TWITCH_CLIENT_SECRET=xxx
+    restart: unless-stopped
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: database
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: xxx
+      MONGO_INITDB_ROOT_PASSWORD: xxx
+      MONGO_INITDB_DATABASE: adroidDB
+    restart: unless-stopped
+    volumes:
+      - adroidDB:/home/adanea/Documents/Docker/volumes
+
+  mongo-express:
+    image: mongo-express
+    container_name: admin-interface
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: xxx
+      ME_CONFIG_MONGODB_ADMINPASSWORD: xxx
+      ME_CONFIG_MONGODB_URL: xxx
+    restart: unless-stopped
+    depends_on:
+      - mongo
+
+volumes:
+  adroidDB:
