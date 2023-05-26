@@ -106,5 +106,3 @@ docker pull adanea/adroid_ea:latest
 For the full command list please view the [Docker Documentation](https://docs.docker.com/engine/reference/commandline/cli/).
 
 # 📜 Documentation
-
-- [discord.js](https://old.discordjs.dev/#/docs/discord.js/14.11.0/general/welcome)
