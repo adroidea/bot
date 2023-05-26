@@ -5,6 +5,7 @@ on:
       - 4-upgrade-to-typescript
   pull_request:
     types: [opened, synchronize, reopened]
+    branches: [ "4-upgrade-to-typescript" ]
 jobs:
   sonarcloud:
     name: SonarCloud
