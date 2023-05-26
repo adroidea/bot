@@ -33,7 +33,7 @@ jobs:
             -Dsonar.projectKey=kevin-fer_adroid_ea
             -Dsonar.organization=kevin-fer
       - name: Discord notifications
-        uses: cl8dep/action-discord@v0
+        uses: cl8dep/action-discord@0.1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           message: 'Analyse SonarCloud complétée dans le projet Adroid. Por consulter le rapport : https://sonarcloud.io/project/overview?id=kevin-fer_adroid_ea'
