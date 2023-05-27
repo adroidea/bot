@@ -2,14 +2,13 @@ version: "3.8"
 services:
 
   adroid_ea:
-    image: adanea/adroid_ea:test
+    image: yaamz123/bot:latest
     container_name: adroid_ea
     environment:
-      - MONGO_URI=xxx
-      - DISCORD_TOKEN=xxx
-      - DISCORD_CLIENT_ID=xxx
-      - TWITCH_CLIENT_ID=xxx
-      - TWITCH_CLIENT_SECRET=xxx
+      - MONGO_URI=mongodb://root:example@mongo:27017/
+      - DISCORD_TOKEN=MTExMDg1NDgxODE2NTE3MDIxOA.GCqHWP.57y2x60JJP1psi_md8Is3eMgshGQv9nvwWm1cA
+      - DISCORD_CLIENT_ID=1110854818165170218
+      - NODE_ENV=production
     restart: unless-stopped
     depends_on:
       - mongo
@@ -18,12 +17,13 @@ services:
     image: mongo
     container_name: database
     environment:
-      MONGO_INITDB_ROOT_USERNAME: xxx
-      MONGO_INITDB_ROOT_PASSWORD: xxx
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
       MONGO_INITDB_DATABASE: adroidDB
     restart: unless-stopped
     volumes:
-      - adroidDB:/home/adanea/Documents/Docker/volumes
+        - C:\Users\Yaami\Documents\DEVOPS\volume:/data/db
+
 
   mongo-express:
     image: mongo-express
@@ -31,12 +31,20 @@ services:
     ports:
       - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: xxx
-      ME_CONFIG_MONGODB_ADMINPASSWORD: xxx
-      ME_CONFIG_MONGODB_URL: xxx
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
     restart: unless-stopped
     depends_on:
       - mongo
 
-volumes:
-  adroidDB:
+  test:
+      image: yaamz123/bot:latest
+      container_name: adroid_ea_test
+      environment:
+        - MONGO_URI=mongodb://root:example@mongo:27017/
+      command: npm run test-mocha
+      restart: unless-stopped
+      depends_on:
+        - mongo
+
