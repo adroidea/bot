@@ -8,6 +8,10 @@
     "module": "commonjs",                           /* Specify what module code is generated. */
     "resolveJsonModule": true,                      /* Enable importing .json files */
 
+	"types": [
+      "node",
+      "mocha"
+    ],
     /* Emit */
     "sourceMap": true,                              /* Create source map files for emitted JavaScript files. */
     "outDir": "dist",                               /* Specify an output folder for all emitted files. */
@@ -33,4 +37,7 @@
     /* Completeness */
     "skipLibCheck": true                            /* Skip type checking all .d.ts files. */
   },
+    "include": [
+    "test/*.ts"
+  ]
 }
