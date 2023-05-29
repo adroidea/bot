@@ -32,6 +32,8 @@ jobs:
             # Clés uniques du projet
             -Dsonar.projectKey=kevin-fer_adroid_ea
             -Dsonar.organization=kevin-fer
+      - name: Extraction Sonar API
+        run: curl https://sonarcloud.io/api/ce/activity?deprecated=false&component=kevin-fer_adroid_ea
       - name: Discord notifications
         uses: cl8dep/action-discord@main
         with:
