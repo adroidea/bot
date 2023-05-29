@@ -2,28 +2,29 @@ version: "3.8"
 services:
 
   adroid_ea:
-    image: yaamz123/bot:latest
+    image: adanea/adroid_ea:test
     container_name: adroid_ea
     environment:
-      - MONGO_URI=mongodb://root:example@mongo:27017/
-      - DISCORD_TOKEN=MTExMDg1NDgxODE2NTE3MDIxOA.GCqHWP.57y2x60JJP1psi_md8Is3eMgshGQv9nvwWm1cA
-      - DISCORD_CLIENT_ID=1110854818165170218
+      - MONGO_URI=xxx
+      - DISCORD_TOKEN=xxx
+      - DISCORD_CLIENT_ID=xxx
+      - TWITCH_CLIENT_ID=xxx
+      - TWITCH_CLIENT_SECRET=xxx
+      - REDIS_HOST=xxx
       - NODE_ENV=production
     restart: unless-stopped
     depends_on:
       - mongo
-
+      - redis
   mongo:
     image: mongo
     container_name: database
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
-      MONGO_INITDB_DATABASE: adroidDB
     restart: unless-stopped
     volumes:
-        - C:\Users\Yaami\Documents\DEVOPS\volume:/data/db
-
+      - /home/adanea/Documents/Docker/volumes:/data/db
 
   mongo-express:
     image: mongo-express
@@ -38,12 +39,19 @@ services:
     depends_on:
       - mongo
 
-  test:
-      image: yaamz123/bot:latest
-      container_name: adroid_ea_test
-      environment:
-        - MONGO_URI=mongodb://root:example@mongo:27017/
-      command: npm run test-mocha
-      depends_on:
-        - mongo
+  redis:
+    image: redis/redis-stack
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+      - 8001:8001
 
+  test:
+    image: yaamz123/bot:latest
+    container_name: adroid_ea_test
+    environment:
+      - MONGO_URI=mongodb://root:example@mongo:27017/
+    command: npm run test-mocha
+    depends_on:
+      - mongo
