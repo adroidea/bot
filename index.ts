@@ -1,10 +1,8 @@
 import { Collection, Partials } from "discord.js";
 import { Queue, Worker } from "bullmq";
 import DiscordClient from "./src/client";
-
 import Logger from "./src/utils/logger";
 import dotenv from "dotenv";
-
 import mongoose from "mongoose";
 import path from "node:path";
 import { readdirSync } from "fs";
@@ -77,33 +75,32 @@ mongoose
     Logger.error("Couldn't connect to database", err, filePath);
   });
 
-const customEvents = new Queue("customEvents", {
+export const customEvents = new Queue("customEvents", {
   connection: {
-    host: "localhost",
+    host: process.env.REDIS_HOST,
     port: 6379
+  },
+  defaultJobOptions: {
+    removeOnComplete: true,
+    removeOnFail: 1000
   }
 });
 
-async function addJobs() {
-  await customEvents.add("event instant", { foo: "bar" }, { removeOnComplete: true });
-  await customEvents.add("event instant", { qux: "baz" }, { removeOnComplete: true });
-  await customEvents.add("event 5 ", { delay: 5000 }, { removeOnComplete: true });
-  await customEvents.add("event 7", { delay: 7000 }, { removeOnComplete: true });
-  await customEvents.add("paint 10", { delay: 10000 }, { removeOnComplete: true });
-  await customEvents.add("paint 15", { delay: 15000 }, { removeOnComplete: true });
-}
-
-addJobs();
-
-const worker = new Worker("customEvents", async job => {}, {
-  connection: {
-    host: "localhost",
-    port: 6379
+const worker = new Worker(
+  "customEvents",
+  async job => {
+    console.log(job.data);
+  },
+  {
+    connection: {
+      host: process.env.REDIS_HOST,
+      port: 6379
+    }
   }
-});
+);
 
 worker.on("completed", job => {
-  console.log(`${job.data} has completed!`);
+  console.log(`${job.id} has completed!`);
 });
 
 worker.on("failed", (job, err) => {
