@@ -6,7 +6,6 @@
 .vscode
 /node_modules
 /src
-tsconfig.json
 
 # Github assets
 *.md
