@@ -1,0 +1,73 @@
+name: Build
+on:
+  push:
+    branches:
+      - 4-upgrade-to-typescript
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ "4-upgrade-to-typescript" ]
+jobs:
+  sonarcloud:
+    name: Analyse Qualité SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Install dependencies
+        run: yarn
+      # Si on utilise des tests unitaires JEST
+      - name: Add Jest
+        run: yarn add jest
+      - name: Test and coverage
+        run: yarn jest --coverage --passWithNoTests
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          # Autres args Sonar
+          args:
+            # Clés uniques du projet
+            -Dsonar.projectKey=kevin-fer_adroid_ea
+            -Dsonar.organization=kevin-fer
+      - name: Discord notifications
+        uses: cl8dep/action-discord@main
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: 'Analyse SonarCloud complétée dans le projet Adroid. Pour consulter le rapport : https://sonarcloud.io/project/overview?id=kevin-fer_adroid_ea'
+  eslint:
+    name: Analyse eslint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install ESLint
+        run: |
+          npm install eslint@8.10.0
+          npm install @microsoft/eslint-formatter-sarif@2.1.7
+
+      - name: Run ESLint
+        run: npx eslint .
+          --config .eslintrc.js
+          --ext .js,.jsx,.ts,.tsx
+          --format @microsoft/eslint-formatter-sarif
+          --output-file eslint-results.sarif
+        continue-on-error: true
+
+      - name: Upload analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: eslint-results.sarif
+          wait-for-processing: true
+      - name: Discord notifications
+        uses: cl8dep/action-discord@main
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: 'Analyse Eslint terminée'
