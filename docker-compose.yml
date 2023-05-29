@@ -44,7 +44,6 @@ services:
       environment:
         - MONGO_URI=mongodb://root:example@mongo:27017/
       command: npm run test-mocha
-      restart: unless-stopped
       depends_on:
         - mongo
 
