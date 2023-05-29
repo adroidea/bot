@@ -13,7 +13,9 @@
     "build": "tsc",
     "reg-cmds": "node dist/src/deploy-commands.js",
     "delete-cmds": "node dist/src/delete-commands.js",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"test-mocha": "mocha src/test/*.js"
   },
   "lint-staged": {
     "*": [
@@ -25,17 +27,25 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/rest": "^1.5.0",
+    "@types/chai": "^4.3.5",
+    "@types/mocha": "^10.0.1",
     "@types/node": "^18.14.0",
+    "assert": "^2.0.0",
     "bullmq": "^3.12.0",
+    "chai": "^4.3.7",
+    "chai-as-promised": "^7.1.1",
+    "chai-http": "^4.3.0",
     "chalk": "^4.1.2",
     "dayjs": "^1.11.7",
     "discord-api-types": "^0.37.35",
     "discord.js": "^14.11.0",
     "dotenv": "^16.0.3",
+    "mocha": "^10.2.0",
     "mongoose": "^7.0.0",
     "node-cron": "^3.0.2",
     "node-fetch": "^3.3.0",
     "node-twitch": "^0.5.0",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
   "devDependencies": {

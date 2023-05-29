@@ -9,4 +9,6 @@ RUN npm install --omit=dev
 COPY dist /usr/src/bot
 RUN ln -snf /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo Europe/Paris > /etc/timezone
 
-CMD ["node", "index.js"]
+CMD ["node", "index.js" ]
+
+
