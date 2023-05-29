@@ -34,7 +34,8 @@ jobs:
             -Dsonar.organization=kevin-fer
       - name: Extraction Sonar API
         run: |
-          response = $(curl https://sonarcloud.io/api/ce/activity?deprecated=false&component=kevin-fer_adroid_ea -H "Authorization: Bearer {${{ secrets.SONAR_TOKEN }}}"
+          response = $(curl https://sonarcloud.io/api/ce/activity?deprecated=false&component=kevin-fer_adroid_ea -H "Authorization: Bearer {${{ secrets.SONAR_TOKEN }}}")
+          echo $response
       - name: Discord notifications
         uses: cl8dep/action-discord@main
         with:
