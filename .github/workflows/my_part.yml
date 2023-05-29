@@ -33,7 +33,7 @@ jobs:
             -Dsonar.projectKey=kevin-fer_adroid_ea
             -Dsonar.organization=kevin-fer
       - name: Extraction Sonar API
-        run: curl https://sonarcloud.io/api/ce/activity?deprecated=false&component=kevin-fer_adroid_ea -H "Authorization: Bearer {"{ secrets.SONAR_TOKEN}"}"
+        run: curl https://sonarcloud.io/api/ce/activity?deprecated=false&component=kevin-fer_adroid_ea -H "Authorization: Bearer {"{{ secrets.SONAR_TOKEN }}"}"
       - name: Discord notifications
         uses: cl8dep/action-discord@main
         with:
