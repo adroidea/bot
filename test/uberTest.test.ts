@@ -3,6 +3,16 @@ const assert = require("assert");
 import { EventModel } from "../src/models/eventModel";
 import { GuildModel } from "../src/models/guildModel";
 
+const newEvent = new EventModel({
+  title: "Test Event",
+  description: "This is a test event",
+  date: new Date(),
+  duration: "2 hours",
+  imageURL: "https://example.com/image.jpg",
+  maxParticipants: 10,
+  participantsId: ["user1", "user2"]
+});
+
 describe("EventModel", function () {
   before(async function () {
     this.timeout(40000);
@@ -18,15 +28,6 @@ describe("EventModel", function () {
 
   it("should save a new event to the database", async function () {
     this.timeout(45000);
-    const newEvent = new EventModel({
-      title: "Test Event",
-      description: "This is a test event",
-      date: new Date(),
-      duration: "2 hours",
-      imageURL: "https://example.com/image.jpg",
-      maxParticipants: 10,
-      participantsId: ["user1", "user2"]
-    });
 
     const savedEvent = await newEvent.save();
     assert.notEqual(savedEvent, null);
@@ -34,15 +35,6 @@ describe("EventModel", function () {
 
   it("should update an existing event in the database", async function () {
     this.timeout(45000);
-    const newEvent = new EventModel({
-      title: "Test Event",
-      description: "This is a test event",
-      date: new Date(),
-      duration: "2 hours",
-      imageURL: "https://example.com/image.jpg",
-      maxParticipants: 10,
-      participantsId: ["user1", "user2"]
-    });
 
     const savedEvent = await newEvent.save();
     const eventId = savedEvent._id;
@@ -59,15 +51,6 @@ describe("EventModel", function () {
 
   it("should delete an existing event from the database", async function () {
     this.timeout(45000);
-    const newEvent = new EventModel({
-      title: "Test Event",
-      description: "This is a test event",
-      date: new Date(),
-      duration: "2 hours",
-      imageURL: "https://example.com/image.jpg",
-      maxParticipants: 10,
-      participantsId: ["user1", "user2"]
-    });
 
     const savedEvent = await newEvent.save();
     const eventId = savedEvent._id;
