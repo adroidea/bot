@@ -12,9 +12,7 @@ module.exports = {
     name: `event_manage_edit_data_button`
   },
   async execute(interaction: ButtonInteraction) {
-    const modal = new ModalBuilder()
-      .setCustomId("myModal")
-      .setTitle("My Modal");
+    const modal = new ModalBuilder().setCustomId("myModal").setTitle("My Modal");
 
     const eventTitleInput = new TextInputBuilder()
       .setCustomId("eventTitleInput")
@@ -52,25 +50,18 @@ module.exports = {
       .setRequired(false);
 
     const eventTitleActionRow =
-      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-        eventTitleInput
-      );
+      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(eventTitleInput);
     const eventDescriptionActionRow =
-      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-        eventDescriptionInput
-      );
-    const eventDateActionRow =
-      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-        eventDateInput
-      );
+      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(eventDescriptionInput);
+    const eventDateActionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+      eventDateInput
+    );
     const eventMaxParticipantsActionRow =
       new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
         eventMaxParticipantsInput
       );
     const eventImageActionRow =
-      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-        eventImageInput
-      );
+      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(eventImageInput);
 
     // Add inputs to the modal
     modal.addComponents(

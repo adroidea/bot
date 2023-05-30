@@ -8,9 +8,7 @@ import {
 } from "discord.js";
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("pingea")
-    .setDescription("Renvoie le ping du bot"),
+  data: new SlashCommandBuilder().setName("pingea").setDescription("Renvoie le ping du bot"),
   category: "utils",
   cooldown: 10,
   permissions: [PermissionsBitField.Flags.Administrator],
@@ -24,8 +22,7 @@ module.exports = {
       ephemeral: true
     });
 
-    const botLantency =
-      sentMessage.createdTimestamp - interaction.createdTimestamp;
+    const botLantency = sentMessage.createdTimestamp - interaction.createdTimestamp;
     const embed = new EmbedBuilder()
       .setThumbnail(client.user!.displayAvatarURL())
       .setTitle("🏓 Pong !")

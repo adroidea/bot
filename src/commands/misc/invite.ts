@@ -1,9 +1,4 @@
-import {
-  Client,
-  CommandInteraction,
-  PermissionsBitField,
-  SlashCommandBuilder
-} from "discord.js";
+import { Client, CommandInteraction, PermissionsBitField, SlashCommandBuilder } from "discord.js";
 
 module.exports = {
   data: new SlashCommandBuilder()

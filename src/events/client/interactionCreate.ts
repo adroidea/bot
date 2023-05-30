@@ -23,9 +23,7 @@ module.exports = {
   name: Events.InteractionCreate,
   async execute(client: IDiscordClient, interaction: Interaction) {
     if (interaction instanceof CommandInteraction) {
-      let guildSettings: IGuild | null = await guildService.getGuildById(
-        interaction.guildId!
-      );
+      let guildSettings: IGuild | null = await guildService.getGuildById(interaction.guildId!);
       if (!guildSettings) {
         guildSettings = await guildService.createGuild(interaction.guildId!);
       }
@@ -34,12 +32,7 @@ module.exports = {
         const command = client.commands.get(interaction.commandName);
         if (!command) throw UnknownCommandError;
 
-        if (
-          !checkMemberPermission(
-            interaction.memberPermissions,
-            command.permissions
-          )
-        )
+        if (!checkMemberPermission(interaction.memberPermissions, command.permissions))
           throw NoPermissionsError;
 
         if (!client.cooldowns.has(command.data.name)) {
@@ -48,12 +41,10 @@ module.exports = {
         const now = Date.now();
         const timestamps = client.cooldowns.get(command.data.name);
         const defaultCooldownDuration = 3;
-        const cooldownAmount =
-          (command.cooldown ?? defaultCooldownDuration) * 1000;
+        const cooldownAmount = (command.cooldown ?? defaultCooldownDuration) * 1000;
         if (timestamps)
           if (timestamps.has(interaction.user.id)) {
-            const expirationTime =
-              timestamps.get(interaction.user.id) + cooldownAmount;
+            const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
 
             if (now < expirationTime) {
               const expiredTimestamp = Math.round(expirationTime / 1000);
@@ -67,10 +58,7 @@ module.exports = {
           }
 
         timestamps.set(interaction.user.id, now);
-        setTimeout(
-          () => timestamps.delete(interaction.user.id),
-          cooldownAmount
-        );
+        setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
         if (interaction.isChatInputCommand()) {
           await command.execute(client, interaction, guildSettings);

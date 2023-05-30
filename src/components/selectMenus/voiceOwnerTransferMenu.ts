@@ -1,8 +1,4 @@
-import {
-  GuildMember,
-  StringSelectMenuInteraction,
-  userMention
-} from "discord.js";
+import { GuildMember, StringSelectMenuInteraction, userMention } from "discord.js";
 import { checkVoiceOwnership, switchVoiceOwner } from "../../utils/voiceUtil";
 import { NotVoiceChannelOwnerError } from "../../utils/errors";
 
@@ -12,9 +8,7 @@ module.exports = {
   },
   async execute(interaction: StringSelectMenuInteraction) {
     const targetId = interaction.values[0];
-    const target: GuildMember = await interaction.guild!.members.fetch(
-      targetId
-    );
+    const target: GuildMember = await interaction.guild!.members.fetch(targetId);
     const user = interaction.member as GuildMember;
     if (target.user.bot)
       return interaction.update({
@@ -34,9 +28,7 @@ module.exports = {
     switchVoiceOwner(user, target);
 
     await interaction.update({
-      content: `La propriété du salon a été transféré à ${userMention(
-        target.id
-      )}.`,
+      content: `La propriété du salon a été transféré à ${userMention(target.id)}.`,
       components: []
     });
   }

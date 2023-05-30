@@ -1,9 +1,5 @@
 import { Client, Events, VoiceState } from "discord.js";
-import {
-  createNewTempChannel,
-  deleteEmptyChannel,
-  switchVoiceOwner
-} from "../../utils/voiceUtil";
+import { createNewTempChannel, deleteEmptyChannel, switchVoiceOwner } from "../../utils/voiceUtil";
 import { IGuild } from "../../models";
 import guildService from "../../services/guildService";
 
@@ -28,10 +24,7 @@ const isHostVoice = async (
   return hostChannels.includes(state.channel.id);
 };
 
-const getVoiceUpdateType = (
-  oldState: VoiceState,
-  newState: VoiceState
-): string => {
+const getVoiceUpdateType = (oldState: VoiceState, newState: VoiceState): string => {
   const oldChannel = oldState.channel;
   const newChannel = newState.channel;
 
@@ -39,11 +32,7 @@ const getVoiceUpdateType = (
     return "JOINED_VOICE";
   } else if (oldChannel !== null && newChannel === null) {
     return "LEFT_VOICE";
-  } else if (
-    oldChannel !== null &&
-    newChannel !== null &&
-    oldChannel !== newChannel
-  ) {
+  } else if (oldChannel !== null && newChannel !== null && oldChannel !== newChannel) {
     return "MOVED_VOICE";
   }
   return "";
@@ -52,9 +41,7 @@ const getVoiceUpdateType = (
 module.exports = {
   name: Events.VoiceStateUpdate,
   async execute(client: Client, oldState: VoiceState, newState: VoiceState) {
-    let guildSettings: IGuild | null = await guildService.getGuildById(
-      newState.guild.id!
-    );
+    let guildSettings: IGuild | null = await guildService.getGuildById(newState.guild.id!);
     if (!guildSettings) {
       guildSettings = await guildService.createGuild(newState.guild.id!);
     }
@@ -62,8 +49,7 @@ module.exports = {
     if (!guildSettings.modules.temporaryVoice.enabled) return;
 
     const hostChannels = guildSettings.modules.temporaryVoice.hostChannels;
-    const protectedChannels =
-      guildSettings.modules.temporaryVoice.protectedChannels;
+    const protectedChannels = guildSettings.modules.temporaryVoice.protectedChannels;
 
     const voiceUpdateType = getVoiceUpdateType(oldState, newState);
 
@@ -75,9 +61,7 @@ module.exports = {
         break;
       }
       case "LEFT_VOICE": {
-        if (
-          !(await isProtectedVoice(hostChannels, protectedChannels, oldState))
-        ) {
+        if (!(await isProtectedVoice(hostChannels, protectedChannels, oldState))) {
           await deleteEmptyChannel(oldState);
           const member = oldState.channel?.members.first();
           if (member) await switchVoiceOwner(oldState.member!, member);
@@ -85,9 +69,7 @@ module.exports = {
         break;
       }
       case "MOVED_VOICE": {
-        if (
-          !(await isProtectedVoice(hostChannels, protectedChannels, oldState))
-        ) {
+        if (!(await isProtectedVoice(hostChannels, protectedChannels, oldState))) {
           await deleteEmptyChannel(oldState);
           const member = oldState.channel?.members.first();
           if (member) await switchVoiceOwner(oldState.member!, member);

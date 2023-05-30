@@ -33,10 +33,6 @@ export const regCMD = (clientId: string) => {
 
   rest
     .put(Routes.applicationCommands(clientId), { body: commands })
-    .then(() =>
-      Logger.info(
-        `Successfully registered ${commands.length} application commands.`
-      )
-    )
+    .then(() => Logger.info(`Successfully registered ${commands.length} application commands.`))
     .catch(console.error);
 };
