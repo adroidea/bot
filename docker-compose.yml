@@ -46,12 +46,3 @@ services:
     ports:
       - 6379:6379
       - 8001:8001
-
-  test:
-    image: yaamz123/bot:latest
-    container_name: adroid_ea_test
-    environment:
-      - MONGO_URI=mongodb://root:example@mongo:27017/
-    command: npm run test-mocha
-    depends_on:
-      - mongo

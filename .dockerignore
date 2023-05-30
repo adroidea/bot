@@ -1,11 +1,14 @@
 # Dev files/folders
 *.ts
 .*ignore
+.env
 .eslintrc.js
 .prettierrc
 .vscode
 /node_modules
 /src
+/test
+tsconfig.json
 
 # Github assets
 *.md
