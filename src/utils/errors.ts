@@ -12,9 +12,7 @@ export const ToDoError = new CustomError(
   "Alors, ca fonctionne, mais t'as pas setup d'erreur pour ce cas encore."
 );
 
-export const NoPermissionsError = new CustomError(
-  "Eh non, t'as pas les droits, cheh !"
-);
+export const NoPermissionsError = new CustomError("Eh non, t'as pas les droits, cheh !");
 
 export const UnknownCommandError = new CustomError(
   "Mmh, il semblerait que je ne connais pas cette commande."
@@ -40,14 +38,10 @@ export const SelfBanError = new CustomError(
 //               Events related err               //
 ////////////////////////////////////////////////////
 
-export const EventNotFoundError = new CustomError(
-  "L'évenement en question n'existe pas."
-);
+export const EventNotFoundError = new CustomError("L'évenement en question n'existe pas.");
 
 export const AlreadyParticipantError = new CustomError(
   "Je sais que cet évènement est incroyable mais tu es déjà dans la liste des participants, prend ton mal en patience !"
 );
 
-export const ParticipantNotFoundError = new CustomError(
-  "Tu n'es pas un participant !"
-);
+export const ParticipantNotFoundError = new CustomError("Tu n'es pas un participant !");

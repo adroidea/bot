@@ -14,27 +14,15 @@ module.exports = {
     .setName("qdj")
     .setDescription("Envoie la question du jour et l'épingle")
     .addStringOption(option =>
-      option
-        .setName("question")
-        .setDescription("question du jour")
-        .setRequired(true)
+      option.setName("question").setDescription("question du jour").setRequired(true)
     )
     .addUserOption(option =>
-      option
-        .setName("auteur")
-        .setDescription("Auteur de la question")
-        .setRequired(false)
+      option.setName("auteur").setDescription("Auteur de la question").setRequired(false)
     ),
   category: "misc",
-  permissions: [
-    PermissionsBitField.Flags.SendMessages,
-    PermissionsBitField.Flags.ManageMessages
-  ],
+  permissions: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ManageMessages],
   usage: "qdj [question] <auteur>",
-  examples: [
-    "qdj Pâtes ou riz ?",
-    "qdj pain au chocolat ou croissant ? @Adan_ea#3000"
-  ],
+  examples: ["qdj Pâtes ou riz ?", "qdj pain au chocolat ou croissant ? @Adan_ea#3000"],
 
   async execute(client: Client, interaction: ChatInputCommandInteraction) {
     const question = interaction.options.getString("question");
@@ -78,10 +66,7 @@ module.exports = {
 
     const pinMessages = await interaction.channel!.messages.fetch({ limit: 5 });
     pinMessages.forEach(async msg => {
-      if (
-        msg.type === MessageType.ChannelPinnedMessage &&
-        msg.id !== sentMessage.id
-      ) {
+      if (msg.type === MessageType.ChannelPinnedMessage && msg.id !== sentMessage.id) {
         await msg.delete();
       }
     });

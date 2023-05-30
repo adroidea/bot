@@ -7,9 +7,7 @@ import guildService from "../../services/guildService";
 module.exports = {
   name: Events.MessageUpdate,
   async execute(client: Client, oldMessage: Message, newMessage: Message) {
-    let guildSettings: IGuild | null = await guildService.getGuildById(
-      newMessage.guildId!
-    );
+    let guildSettings: IGuild | null = await guildService.getGuildById(newMessage.guildId!);
     if (!guildSettings) {
       guildSettings = await guildService.createGuild(newMessage.guildId!);
     }
@@ -33,13 +31,8 @@ module.exports = {
     const logChannel = client.channels.cache.get(registeredLogChannel);
 
     const notLoggedChannels = moduleSettings.notLoggedChannels;
-    const isMessageUpdated =
-      oldText !== null && newText !== null && oldText !== newText;
-    if (
-      isMessageUpdated &&
-      !notLoggedChannels?.includes(newMessage.channelId) &&
-      logChannel
-    ) {
+    const isMessageUpdated = oldText !== null && newText !== null && oldText !== newText;
+    if (isMessageUpdated && !notLoggedChannels?.includes(newMessage.channelId) && logChannel) {
       if (!newMessage.author.bot && newMessage.author.id !== OWNER_ID) {
         const embed = new EmbedBuilder()
           .setAuthor({

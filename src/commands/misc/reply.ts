@@ -9,9 +9,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("r")
     .setDescription("r")
-    .addStringOption(option =>
-      option.setName("r").setDescription("r").setRequired(true)
-    ),
+    .addStringOption(option => option.setName("r").setDescription("r").setRequired(true)),
   category: "misc",
   permissions: [PermissionsBitField.Flags.Administrator],
   usage: "idk dude.",

@@ -29,10 +29,7 @@ function checkMemberRole(member: GuildMember, role: Role | undefined) {
   return member && role && false;
 }
 
-export function checkMemberPermission(
-  memberPermissions: any,
-  permissionFlag: string[]
-) {
+export function checkMemberPermission(memberPermissions: any, permissionFlag: string[]) {
   return memberPermissions.has(permissionFlag);
 }
 

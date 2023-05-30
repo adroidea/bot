@@ -9,10 +9,7 @@ module.exports = {
     let oldEmbed = interaction.message.embeds[0];
     const eventId = oldEmbed.footer?.text!;
     const createdDate = new Date(oldEmbed.timestamp!);
-    const event = await eventService.addParticipantToEvent(
-      eventId,
-      interaction.member?.user.id!
-    );
+    const event = await eventService.addParticipantToEvent(eventId, interaction.member?.user.id!);
 
     if (!event) return;
 
@@ -36,16 +33,12 @@ module.exports = {
 
     const nbParticipants = event.participantsId.length;
 
-    const participantsList = event.participantsId
-      .map(id => userMention(id))
-      .join("\n");
+    const participantsList = event.participantsId.map(id => userMention(id)).join("\n");
 
     if (event.maxParticipants) {
       newEmbed.addFields({
         name: `Participants (${
-          nbParticipants > event.maxParticipants
-            ? event.maxParticipants
-            : nbParticipants
+          nbParticipants > event.maxParticipants ? event.maxParticipants : nbParticipants
         }/${event.maxParticipants})`,
         value:
           nbParticipants > 0
@@ -70,8 +63,7 @@ module.exports = {
     } else {
       newEmbed.addFields({
         name: `Participants (${nbParticipants})`,
-        value:
-          nbParticipants > 0 ? `>>> ${participantsList}` : "> Aucun participant"
+        value: nbParticipants > 0 ? `>>> ${participantsList}` : "> Aucun participant"
       });
     }
 

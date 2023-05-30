@@ -21,23 +21,22 @@ let IsLiveMemory = false;
 let currentGame = "";
 
 export default function (): void {
-  if(!process.env.TWITCH_CLIENT_ID) return;
+  if (!process.env.TWITCH_CLIENT_ID) return;
   cron.schedule("* * * * *", async () => {
-    
     //Fetch all the guilds in the database
     const guilds = await GuildModel.find().exec();
-    
+
     for (const guild of guilds) {
       //FIXME: DELETE THIS BEFORE PROD
       if (guild.id === "814621177770541076") continue;
-      
+
       //Fetch the actual guild from discord and checks if it exists
       const guildData: Guild = client.guilds.cache.get(guild.id);
       if (!guildData) return;
 
       const { twitchLive } = guild.modules.notifications;
       const { streamerName, streamers, streamingRoleId, infoLiveChannel } = twitchLive;
-      
+
       if (streamers && streamingRoleId) {
         for (const { streamer, memberId } of streamers) {
           //Fetch the member affiliated with the streamer and checks if they're still in the guild
