@@ -65,72 +65,72 @@ describe("EventModel", function () {
 });
 
 describe("GuildModel", function () {
-    let savedGuildId;
-  
-    before(async function () {
-      this.timeout(40000);
-      await mongoose.connect(mongoURI);
-    });
-  
-    after(async function () {
-      await mongoose.connection.close();
-    });
-  
-    it("should save a new guild to the database", async function () {
-      this.timeout(45000);
-      const newGuild = new GuildModel({
-        id: "test-guild-id",
-        modules: {
-          notifications: {
-            enabled: true,
-            publicLogs: {
-              enabled: true,
-              publicLogChannel: "public-log-channel-id"
-            }
-          },
-          temporaryVoice: {
-            enabled: true,
-            hostChannels: ["host-channel-id"]
-          },
-          eventManagement: {
-            enabled: true
-          }
-        }
-      });
-  
-      const savedGuild = await newGuild.save();
-      savedGuildId = savedGuild._id;
-      assert.notEqual(savedGuild, null);
-    });
-  
-    it("should find an existing guild from the database", async function () {
-      this.timeout(45000);
-  
-      const foundGuild = await GuildModel.findById(savedGuildId);
-      assert.notEqual(foundGuild, null);
-      assert.equal(foundGuild?.id, "test-guild-id");
-    });
-  
-    it("should update an existing guild in the database", async function () {
-      this.timeout(45000);
-  
-      const updatedGuild = await GuildModel.findByIdAndUpdate(
-        savedGuildId,
-        { "modules.notifications.enabled": false },
-        { new: true }
-      );
-  
-      assert.notEqual(updatedGuild, null);
-      assert.equal(updatedGuild?.modules.notifications.enabled, false);
-    });
-  
-    it("should delete an existing guild from the database", async function () {
-      this.timeout(45000);
-  
-      const deletedGuild = await GuildModel.findByIdAndDelete(savedGuildId);
-      assert.notEqual(deletedGuild, null);
-  
-      const findDeletedGuild = await GuildModel.findById(savedGuildId);
-      assert.equal(findDeletedGuild, null);
-    });
+  let savedGuildId: string;
+
+  before(async function () {
+    this.timeout(40000);
+    await mongoose.connect(mongoURI);
   });
+
+  after(async function () {
+    await mongoose.connection.close();
+  });
+
+  it("should save a new guild to the database", async function () {
+    this.timeout(45000);
+    const newGuild = new GuildModel({
+      id: "test-guild-id",
+      modules: {
+        notifications: {
+          enabled: true,
+          publicLogs: {
+            enabled: true,
+            publicLogChannel: "public-log-channel-id"
+          }
+        },
+        temporaryVoice: {
+          enabled: true,
+          hostChannels: ["host-channel-id"]
+        },
+        eventManagement: {
+          enabled: true
+        }
+      }
+    });
+
+    const savedGuild = await newGuild.save();
+    savedGuildId = savedGuild._id;
+    assert.notEqual(savedGuild, null);
+  });
+
+  it("should find an existing guild from the database", async function () {
+    this.timeout(45000);
+
+    const foundGuild = await GuildModel.findById(savedGuildId);
+    assert.notEqual(foundGuild, null);
+    assert.equal(foundGuild?.id, "test-guild-id");
+  });
+
+  it("should update an existing guild in the database", async function () {
+    this.timeout(45000);
+
+    const updatedGuild = await GuildModel.findByIdAndUpdate(
+      savedGuildId,
+      { "modules.notifications.enabled": false },
+      { new: true }
+    );
+
+    assert.notEqual(updatedGuild, null);
+    assert.equal(updatedGuild?.modules.notifications.enabled, false);
+  });
+
+  it("should delete an existing guild from the database", async function () {
+    this.timeout(45000);
+
+    const deletedGuild = await GuildModel.findByIdAndDelete(savedGuildId);
+    assert.notEqual(deletedGuild, null);
+
+    const findDeletedGuild = await GuildModel.findById(savedGuildId);
+    assert.equal(findDeletedGuild, null);
+  });
+});
