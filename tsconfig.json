@@ -37,4 +37,7 @@
     /* Completeness */
     "skipLibCheck": true                            /* Skip type checking all .d.ts files. */
   },
+  "exclude": [
+    "test"                                 /* Chemin vers les fichiers de test à exclure */
+  ],
 }
