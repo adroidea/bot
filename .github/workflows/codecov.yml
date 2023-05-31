@@ -9,7 +9,7 @@ on:
       - 4-upgrade-to-typescript
 
 jobs:
-  integration-tests:
+  codecov-tests:
     runs-on: ubuntu-latest
 
     services:
