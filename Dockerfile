@@ -1,6 +1,6 @@
-FROM node:16.14.0-alpine
+FROM node:20-alpine
 
-RUN mkdir -p /usr/src/bot && apk update && apk add git
+RUN mkdir -p /usr/src/bot
 WORKDIR /usr/src/bot
 
 COPY package.json /usr/src/bot
