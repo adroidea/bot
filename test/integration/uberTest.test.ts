@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const assert = require("assert");
-import { EventModel } from "../src/models/eventModel";
-import { GuildModel } from "../src/models/guildModel";
+import { EventModel } from "../../src/models/eventModel";
+import { GuildModel } from "../../src/models/guildModel";
+import assert from "assert";
+import mongoose from "mongoose";
 
 const newEvent = new EventModel({
   title: "Test Event",
@@ -10,30 +10,31 @@ const newEvent = new EventModel({
   duration: "2 hours",
   imageURL: "https://example.com/image.jpg",
   maxParticipants: 10,
-  participantsId: ["user1", "user2"]
+  participantsId: ["user1", "user2"],
+  guildId: "id1",
+  channelId: "idchannel1"
 });
+
+const mongoURI = "mongodb://root:example@mongo:27017/"
 
 describe("EventModel", function () {
   before(async function () {
     this.timeout(40000);
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    await mongoose.connect(mongoURI);
   });
 
   after(async function () {
     await mongoose.connection.close();
   });
 
-  it("should save a new event to the database", async function () {
+  it("should save an event to the database", async function () {
     this.timeout(45000);
 
     const savedEvent = await newEvent.save();
     assert.notEqual(savedEvent, null);
   });
 
-  it("should update an existing event in the database", async function () {
+  it("should update an event in the database", async function () {
     this.timeout(45000);
 
     const savedEvent = await newEvent.save();
@@ -66,10 +67,7 @@ describe("EventModel", function () {
 describe("GuildModel", function () {
   before(async function () {
     this.timeout(40000);
-    await mongoose.connect("mongodb://root:example@mongo:27017/", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    await mongoose.connect(mongoURI);
   });
 
   after(async function () {
