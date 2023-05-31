@@ -33,4 +33,4 @@ jobs:
       - name: Run integration tests
         run: npm test
         env:
-          MONGO_URI: mongodb://root:example@mongo:27017/
+          MONGO_URI: mongodb://localhost:27017/
