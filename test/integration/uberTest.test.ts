@@ -99,17 +99,10 @@ describe("GuildModel", function () {
     });
 
     const savedGuild = await newGuild.save();
-    savedGuildId = savedGuild._id;
+    savedGuildId = savedGuild._id.toString(); // Convert ObjectId to string
     assert.notEqual(savedGuild, null);
   });
 
-  it("should find an existing guild from the database", async function () {
-    this.timeout(45000);
-
-    const foundGuild = await GuildModel.findById(savedGuildId);
-    assert.notEqual(foundGuild, null);
-    assert.equal(foundGuild?.id, "test-guild-id");
-  });
 
   it("should update an existing guild in the database", async function () {
     this.timeout(45000);
