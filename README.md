@@ -16,7 +16,9 @@ This is a discord bot primarly made for my discord server (this is why some valu
 <div align="center">
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/adan-ea/adroid_ea?style=flat-square">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues/adan-ea/adroid_ea?style=flat-square">
-  [![codecov](https://codecov.io/github/adan-ea/adroid_ea/branch/main/graph/badge.svg?token=8GMJCHJ6OY)](https://codecov.io/github/adan-ea/adroid_ea)
+  <a href="https://codecov.io/github/adan-ea/adroid_ea" > 
+ <img src="https://codecov.io/github/adan-ea/adroid_ea/branch/main/graph/badge.svg?token=8GMJCHJ6OY"/> 
+ </a>
 </div>
 
 # ✨ Features
