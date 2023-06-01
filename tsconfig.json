@@ -10,7 +10,7 @@
 
 	"types": [
       "node",
-      "mocha"
+      "jest"
     ],
     /* Emit */
     "sourceMap": true,                              /* Create source map files for emitted JavaScript files. */
