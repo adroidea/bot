@@ -14,6 +14,15 @@ const newEvent = new EventModel({
   guildId: "id1",
   channelId: "idchannel1"
 });
+const newEvent2 = new EventModel({
+  title: "Second Test Event",
+  description: "This is the second test event",
+  date: new Date(),
+  duration: "6 hours",
+  participantsId: ["user1", "user2", "user3"],
+  guildId: "id1",
+  channelId: "idchannel1"
+});
 
 const mongoURI = process.env.MONGO_URI || "mongodb://root:example@mongo:27017/";
 
@@ -31,7 +40,9 @@ describe("EventModel", function () {
     this.timeout(45000);
 
     const savedEvent = await newEvent.save();
+    const secondEvent = await newEvent2.save();
     assert.notEqual(savedEvent, null);
+    assert.notEqual(secondEvent, null || undefined);
   });
 
   it("should update an event in the database", async function () {
@@ -47,7 +58,21 @@ describe("EventModel", function () {
     );
 
     assert.notEqual(updatedEvent, null);
+    assert.notEqual(updatedEvent, savedEvent);
     assert.equal(updatedEvent?.title, "Updated Test Event");
+
+    const secondEvent = await newEvent2.save();
+    const secondEventId = secondEvent._id;
+
+    const updatedSecondEvent = await EventModel.findByIdAndUpdate(
+      secondEventId,
+      { title: "The better Test Event" },
+      { new: true }
+    );
+
+    assert.notEqual(updatedSecondEvent, null);
+    assert.notEqual(updatedSecondEvent, secondEvent);
+    assert.equal(updatedSecondEvent?.title, "The better Test Event");
   });
 
   it("should delete an existing event from the database", async function () {
@@ -61,6 +86,15 @@ describe("EventModel", function () {
 
     const findDeletedEvent = await EventModel.findById(eventId);
     assert.equal(findDeletedEvent, null);
+
+    const secondEvent = await newEvent2.save();
+    const secondEventId = secondEvent._id;
+
+    const deletedSecondEvent = await EventModel.findByIdAndDelete(secondEventId);
+    assert.notEqual(deletedEvent, null);
+
+    const findSecondDeletedEvent = await EventModel.findById(secondEventId);
+    assert.equal(findSecondDeletedEvent, null);
   });
 });
 
@@ -102,7 +136,6 @@ describe("GuildModel", function () {
     savedGuildId = savedGuild._id.toString(); // Convert ObjectId to string
     assert.notEqual(savedGuild, null);
   });
-
 
   it("should update an existing guild in the database", async function () {
     this.timeout(45000);
