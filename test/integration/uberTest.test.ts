@@ -15,7 +15,7 @@ const newEvent = new EventModel({
   channelId: "idchannel1"
 });
 
-const mongoURI = "mongodb://root:example@mongo:27017/"
+const mongoURI = process.env.MONGO_URI || "mongodb://root:example@mongo:27017/";
 
 describe("EventModel", function () {
   before(async function () {
@@ -65,6 +65,8 @@ describe("EventModel", function () {
 });
 
 describe("GuildModel", function () {
+  let savedGuildId: string;
+
   before(async function () {
     this.timeout(40000);
     await mongoose.connect(mongoURI);
@@ -97,6 +99,31 @@ describe("GuildModel", function () {
     });
 
     const savedGuild = await newGuild.save();
+    savedGuildId = savedGuild._id.toString(); // Convert ObjectId to string
     assert.notEqual(savedGuild, null);
+  });
+
+
+  it("should update an existing guild in the database", async function () {
+    this.timeout(45000);
+
+    const updatedGuild = await GuildModel.findByIdAndUpdate(
+      savedGuildId,
+      { "modules.notifications.enabled": false },
+      { new: true }
+    );
+
+    assert.notEqual(updatedGuild, null);
+    assert.equal(updatedGuild?.modules.notifications.enabled, false);
+  });
+
+  it("should delete an existing guild from the database", async function () {
+    this.timeout(45000);
+
+    const deletedGuild = await GuildModel.findByIdAndDelete(savedGuildId);
+    assert.notEqual(deletedGuild, null);
+
+    const findDeletedGuild = await GuildModel.findById(savedGuildId);
+    assert.equal(findDeletedGuild, null);
   });
 });
