@@ -14,7 +14,7 @@
     "reg-cmds": "node dist/src/deploy-commands.js",
     "delete-cmds": "node dist/src/delete-commands.js",
     "pre-commit": "lint-staged",
-    "test": "mocha --require ts-node/register test/**/*.test.ts"
+    "test": "mocha --require ts-node/register test/**/*.test.ts > coverage.txt"
   },
   "lint-staged": {
     "*": [
