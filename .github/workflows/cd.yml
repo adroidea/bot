@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -45,6 +45,9 @@ jobs:
 
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Install TypeScript
+        run: npm install --no-save typescript && npx tsc
 
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag adanea/adroid_ea:$RELEASE_VERSION && docker tag adanea/adroid_ea:$RELEASE_VERSION adanea/adroid_ea:latest
