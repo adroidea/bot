@@ -26,26 +26,38 @@ This is a discord bot primarly made for my discord server (this is why some valu
 ## Modules 
 
 ### Events management
-> Sooo much TODO
+
+- Create and delete events (administrator)
+- Join created events (you can unRSVP)
+- Waiting list available (max participants)
+> Sooo much TODO (event scheduling otw, with alerts 1 week, 1 day and 1 hour prior to the event)
 
 ### Moderation 
-> TODO
->- Purge channel
+
+- Purge channel
 
 ### Notifications
+
+- Custom role for streamers of your choice
 - Twitch Alert for a Twitch Streamer when going live or changing category 
-> TODO 
->- custom role for streamers 
->- Private logs
->   - Message update, delete
->   - Nickname update
->- Public logs
->   - Member arrival, departure
+
+- Private logs
+   - Message update, delete
+   - Nickname update
+- Public logs
+   - Member arrival, departure
 
 ### Voices
+
 > TODO : Update this screenshot. It's better now
 - Auto manage voice channels, deletes and creates channels so only one is needed
 ![image](/assets/voice-channel-feature.gif)
+
+The voice owner can : 
+- Lock the channel to everyone
+- Transfer ownership
+- Ban someone in particular (will kick them out)
+- Set a user limit to the channel
 
 
 ### Misc
@@ -54,6 +66,7 @@ This is a discord bot primarly made for my discord server (this is why some valu
 ![image](/assets/hello_there.png)
 
 # To-Do
+
 - EVERYTHING FFS
 
 # 🏗 Development
@@ -63,6 +76,7 @@ env:
 MONGO_URI
 DISCORD_TOKEN
 DISCORD_CLIENT_ID
+REDIS_HOST
 # You will get an error but these are not required
 TWITCH_CLIENT_ID
 TWITCH_CLIENT_SECRET
@@ -76,14 +90,16 @@ npm run dev
 # 💻 Production
 
 ```
-npm install --production
+npm install --omit=dev
 npm start
 ```
 
 # 🐋 Docker
 
 To start your application:
+
 > Not actually working, but i intend on setting it up :')
+
 ```
 docker-compose up -d
 ```
