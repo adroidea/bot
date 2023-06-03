@@ -14,7 +14,7 @@ jobs:
     name: Analyse Qualité SonarCloud
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.sonar_status.outputs.stdout }}
+      output1: ${{ steps.sonar_status.outputs.status }}
     steps:
       - uses: actions/checkout@v3
         with:
