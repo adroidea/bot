@@ -30,15 +30,10 @@ jobs:
             -Dsonar.organization=kevin-fer
       
       - name: Check Sonar Status
-        uses: sonarcloud-actions/sonarcloud-check-status-action@v1
+        uses: sonarcloud-actions/sonarcloud-check-status-action@v1   
+        run: echo "SELECTED_COLOR=green"
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      
-      - name: Extraction Sonar API
-        run: |
-          response=(curl -H "Authorization: Bearer ${{ secrets.SONAR_BEARER }}" --request GET https://sonarcloud.io/api/ce/activity?deprecated=false&component=kevin-fer_adroid_ea)
-          export $response
-          echo $response
       
       - name: Discord notifications
         uses: cl8dep/action-discord@main
