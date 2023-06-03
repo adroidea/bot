@@ -6,6 +6,7 @@ module.exports = {
     parserOptions: {
         project: "./tsconfig.json"
     },
+    ignorePatterns: ["node_modules/"],
     rules: {
         "@typescript-eslint/no-unused-vars": 0,
         "import/prefer-default-export": 0,
