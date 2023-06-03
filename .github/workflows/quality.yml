@@ -30,33 +30,18 @@ jobs:
             # Clés uniques du projet
             -Dsonar.projectKey=kevin-fer_adroid_ea
             -Dsonar.organization=kevin-fer
-      
-      - name: Check Sonar Status
-        uses: sonarcloud-actions/sonarcloud-check-status-action@v1   
-        id: sonar_status
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          
-      - name: Make API request
-        env:
-          BEARER_TOKEN: ${{ secrets.SONAR_BEARER }}
-        run: |
-          response=$(curl -X GET \
-                     -H "Authorization: Bearer ${{ env.BEARER_TOKEN }}" \
-                     https://sonarcloud.io/api/ce/activity?deprecated=false&component=kevin-fer_adroid_ea)
-          echo "$response"
-          echo ${{ secrets.DISCORD_WEBHOOK }}
-          
-      - name: Get SonarCloud Quality Gate status
+        
+      - name: SonarCloud Quality Gate status
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           quality_gate_status=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" -X GET \
                                "https://sonarcloud.io/api/qualitygates/project_status?projectKey=kevin-fer_adroid_ea")
           echo "$quality_gate_status"
+          echo "result=$quality_gate_status" >> "$GITHUB_OUTPUT"
 
       - name: test
-        run: echo ${{ steps.sonar_status.outputs.status }}  
+        run: echo ${{ steps.sonar_status.outputs.result }}  
         
       - name: Discord notifications
         uses: cl8dep/action-discord@main
