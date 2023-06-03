@@ -42,10 +42,6 @@ jobs:
           status=$(echo "$quality_gate_status" | cut -c 29-31)
           echo "result=$status" >> "$GITHUB_OUTPUT"
           echo "$status"
-
-      - name: test
-        run: |
-          echo "${{ steps.sonar_status.outputs.result }}"    
         
       - name: Discord notifications Ok
         if: ${{ steps.sonar_status.outputs.result == 'OK' }}
