@@ -30,7 +30,7 @@ jobs:
           npm install @microsoft/eslint-formatter-sarif@2.1.7
         
       - name: Run ESLint
-        run: npx eslint . --format=json > eslint-report.json
+        run: npx eslint **/* --format=json > eslint-report.json
 
       
       - name: SonarCloud Scan
