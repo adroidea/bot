@@ -8,6 +8,8 @@ export interface IEvent {
   imageURL?: string | null;
   maxParticipants?: number | null;
   participantsId: string[];
+  guildId: string;
+  channelId: string;
 }
 
 const eventSchema = new mongoose.Schema<IEvent>({
@@ -17,7 +19,9 @@ const eventSchema = new mongoose.Schema<IEvent>({
   duration: { type: String },
   imageURL: { type: String },
   maxParticipants: { type: Number },
-  participantsId: { type: [String], required: true }
+  participantsId: { type: [String], required: true },
+  guildId: { type: String, required: true },
+  channelId: { type: String, required: true }
 });
 
 export const EventModel = mongoose.model<IEvent>("Event", eventSchema);

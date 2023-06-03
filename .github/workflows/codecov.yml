@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run integration tests
+      - name: Test and coverage
         run: npm test
         env:
           MONGO_URI: mongodb://localhost:27017/
@@ -39,3 +39,9 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Discord notifications
+        uses: cl8dep/action-discord@main
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: "Unit test avec jest terminés"
