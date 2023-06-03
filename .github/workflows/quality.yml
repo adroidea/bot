@@ -56,6 +56,11 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           message: 'Analyse sonar en failed. Pour consulter le rapport : https://sonarcloud.io/project/overview?id=kevin-fer_adroid_ea'
+          
+      - name: Write to workflow job summary
+        run: |
+          SUMMARY=$'# Testing Job Summary\n## Résultat Sonar\n${{ steps.sonar_status.outputs.result == 'OK' }}'
+          echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
 #---------------------------------------------------------------------------------------------------------------
 # ESLint : Analyse de code statique JS/TS
 #--------------------------------------------------------------------------------------------------------------- 
