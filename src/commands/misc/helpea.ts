@@ -38,7 +38,7 @@ module.exports = {
       .setDescription(`${commandsList}`)
       .addFields({
         name: "version",
-        value: `v${process.env.npm_package_version}`
+        value: `v${process.env.npm_package_version} ou 3.0.1`
       })
       .setFooter({ text: `< > = optionnel | [ ] = requis | (A ne pas inclure dans les commandes)` })
       .setThumbnail(client1.user?.avatarURL({ forceStatic: false })!);
