@@ -40,9 +40,12 @@ jobs:
                                "https://sonarcloud.io/api/qualitygates/project_status?projectKey=kevin-fer_adroid_ea")
           echo "$quality_gate_status"
           echo "result=$quality_gate_status" >> "$GITHUB_OUTPUT"
+          echo "$quality_gate_status" >> "$GITHUB_OUTPUT"
 
       - name: test
-        run: echo "${{ steps.sonar_status.outputs.result }}"  
+        run: |
+          echo "${{ steps.sonar_status.outputs.result }}"  
+          echo "${{ steps.sonar_status.outputs.quality_gate_status }}"  
         
       - name: Discord notifications
         uses: cl8dep/action-discord@main
