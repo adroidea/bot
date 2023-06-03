@@ -19,10 +19,7 @@ module.exports = {
       "Suppression de masse d'un certain nombre de messages dans un salon ou d'un utilisateur"
     )
     .addNumberOption(option =>
-      option
-        .setName("montant")
-        .setDescription("Nombre de messages à supprimer")
-        .setRequired(true)
+      option.setName("montant").setDescription("Nombre de messages à supprimer").setRequired(true)
     )
     .addUserOption(option =>
       option
@@ -35,11 +32,7 @@ module.exports = {
   usage: "purge [montant] <@cible>",
   examples: ["purge 10", "purge 100 @adan_ea"],
 
-  async execute(
-    client: Client,
-    interaction: ChatInputCommandInteraction,
-    guildSettings: IGuild
-  ) {
+  async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
     const amountToDelete = interaction.options.getNumber("montant");
     if (!amountToDelete || amountToDelete > 100 || amountToDelete < 0) {
       return interaction.reply("Merci de choisir un nombre entre 1 et 100");
@@ -80,8 +73,7 @@ module.exports = {
 
     if (!checkNotificationsSubModule(guildSettings, "privateLogs")) return;
 
-    const privateLogChannel =
-      guildSettings.modules.notifications.privateLogs.privateLogChannel;
+    const privateLogChannel = guildSettings.modules.notifications.privateLogs.privateLogChannel;
 
     if (privateLogChannel) {
       const logChannel = client.channels.cache.get(privateLogChannel);
@@ -96,11 +88,7 @@ module.exports = {
           `Suppression de masse (Bulk Delete) de ${amountDeleted} messages effectuée dans <#${channel.id}>`
         )
         .setFooter({ text: `Suppression de masse.` })
-        .setColor(
-          interaction.user.hexAccentColor
-            ? interaction.user.hexAccentColor
-            : "#0FF0FF"
-        )
+        .setColor(interaction.user.hexAccentColor ? interaction.user.hexAccentColor : "#0FF0FF")
         .setTimestamp();
 
       await logChannel.send({ embeds: [embed] });

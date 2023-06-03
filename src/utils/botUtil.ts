@@ -13,10 +13,7 @@ export default function checkBotPermission(guild: any, permissionFlag: bigint) {
   return guild.members.me.permissions.has(permissionFlag);
 }
 
-export function checkNotificationsSubModule(
-  guildSettings: IGuild,
-  smn: keyof INotifications
-) {
+export function checkNotificationsSubModule(guildSettings: IGuild, smn: keyof INotifications) {
   const notifications: INotifications = guildSettings.modules.notifications;
 
   const subModule = notifications[smn as keyof INotifications];

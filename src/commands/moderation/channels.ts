@@ -57,16 +57,10 @@ module.exports = {
   usage: "channel [commande] [channel]",
   examples: "channel list all",
 
-  async execute(
-    client: Client,
-    interaction: CommandInteraction,
-    guildSettings: IGuild
-  ) {
+  async execute(client: Client, interaction: CommandInteraction, guildSettings: IGuild) {
     if (!checkTemporaryVoiceModule(guildSettings)) throw ModuleNotEnabledError;
 
-    const subcommand = (
-      interaction as ChatInputCommandInteraction
-    ).options.getSubcommand();
+    const subcommand = (interaction as ChatInputCommandInteraction).options.getSubcommand();
 
     switch (subcommand) {
       case "ban": {

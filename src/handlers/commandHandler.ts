@@ -61,9 +61,7 @@ export default async (client: any) => {
       } else {
         nbFailedCmd++;
         Logger.warn(
-          `Not initialised Command: ${errorList.join(
-            ", "
-          )} required.\nFile : ${filePath}`
+          `Not initialised Command: ${errorList.join(", ")} required.\nFile : ${filePath}`
         );
       }
     }
