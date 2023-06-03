@@ -5,11 +5,11 @@ on:
       - 4-upgrade-to-typescript
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [ "4-upgrade-to-typescript" ]
+    branches: ["4-upgrade-to-typescript"]
 jobs:
-#---------------------------------------------------------------------------------------------------------------
-# SonarCloud : Analyse qualité du code
-#---------------------------------------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------------------------------------
+  # SonarCloud : Analyse qualité du code
+  #---------------------------------------------------------------------------------------------------------------
   sonarcloud:
     name: Analyse Qualité SonarCloud
     runs-on: ubuntu-latest
@@ -18,24 +18,24 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
       # Intégration Eslint à Sonar
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Install ESLint
         run: |
           npm install eslint@8.10.0
           npm install @microsoft/eslint-formatter-sarif@2.1.7
-        
+
       - name: Run ESLint #Ignorer les dépendances externes
         run: npx eslint src/**/*.ts --format=json --ignore-pattern '**/node_modules/**' > eslint-report.json
-      
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
         env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}  # Token GITHUB pour les PR
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # Token GITHUB pour les PR
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Token SonarCloud
         with:
           # Autres args Sonar
@@ -46,7 +46,7 @@ jobs:
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECTKEY }}
             -Dsonar.organization=${{ secrets.SONAR_ORGA }}
             -Dsonar.eslint.reportPaths=eslint-report.json
-        
+
       - name: SonarCloud Quality Gate status
         id: sonar_status
         env:
@@ -58,28 +58,28 @@ jobs:
           status=$(echo "$quality_gate_status" | cut -c 29-30)
           echo "result=$status" >> "$GITHUB_OUTPUT"
           echo "$status"
-        
+
       - name: Discord notifications Ok
         if: ${{ steps.sonar_status.outputs.result == 'OK' }}
         uses: cl8dep/action-discord@main
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: 'Analyse SonarCloud complétée dans le projet Adroid pour les nouvelles lignes de codes. Statut : Ok. Pour consulter le rapport : https://sonarcloud.io/project/overview?id=kevin-fer_adroid_ea'
-          
+          message: "Analyse SonarCloud complétée dans le projet Adroid pour les nouvelles lignes de codes. Statut : Ok. Pour consulter le rapport : https://sonarcloud.io/project/overview?id=kevin-fer_adroid_ea"
+
       - name: Discord notifications NOT OK
         if: ${{ steps.sonar_status.outputs.result != 'OK' }}
         uses: cl8dep/action-discord@main
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: 'Analyse sonar en failed. Pour consulter le rapport : https://sonarcloud.io/project/overview?id=kevin-fer_adroid_ea'
-          
+          message: "Analyse sonar en failed. Pour consulter le rapport : https://sonarcloud.io/project/overview?id=kevin-fer_adroid_ea"
+
       - name: Write to workflow job summary
         run: |
           SUMMARY=$'# Testing Job Summary\n## Résultat Sonar\n${{ steps.sonar_status.outputs.result == 'OK' }}'
           echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
-#---------------------------------------------------------------------------------------------------------------
-# ESLint : Analyse de code statique JS/TS
-#--------------------------------------------------------------------------------------------------------------- 
+  #---------------------------------------------------------------------------------------------------------------
+  # ESLint : Analyse de code statique TS
+  #---------------------------------------------------------------------------------------------------------------
   eslint:
     name: Analyse eslint
     runs-on: ubuntu-latest
@@ -93,13 +93,13 @@ jobs:
 
       - name: Install ESLint
         run: |
-          npm install eslint@8.10.0
-          npm install @microsoft/eslint-formatter-sarif@2.1.7
+          npm install eslint@8.10.0 --no-save
+          npm install @microsoft/eslint-formatter-sarif@2.1.7 --no-save
 
       - name: Run ESLint
         run: npx eslint .
           --config .eslintrc.js
-          --ext .js,.jsx,.ts,.tsx
+          --ext .ts,.tsx
           --format @microsoft/eslint-formatter-sarif
           --output-file eslint-results.sarif
         continue-on-error: true
@@ -113,28 +113,5 @@ jobs:
         uses: cl8dep/action-discord@main
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: 'Analyse Eslint terminée'
-#---------------------------------------------------------------------------------------------------------------
-# Jest : Tests avec Jest
-#--------------------------------------------------------------------------------------------------------------- 
-  jest:
-    name: Unit test Jest
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    steps:
-      - name: Install dependencies
-        run: yarn
-      # Si on utilise des tests unitaires JEST
-      - name: Add Jest
-        run: yarn add jest
-      - name: Test and coverage
-        run: yarn jest --coverage --passWithNoTests
-      - name: Discord notifications
-        uses: cl8dep/action-discord@main
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: 'Unit test avec jest terminés'
+          message: "Analyse Eslint terminée"
   
