@@ -7,8 +7,8 @@ module.exports = {
     const englishDadRegex = /\bi(?:(?:\s+a|')?m|\s+be)\s+(?=\S)/i;
     //Accepts (case insensitive) : je suis / jsuis / j'suis
     const frenchDadRegex = /j(?:e+\s|')?suis/i;
-    const englishMatch = message.content.match(englishDadRegex);
-    const frenchMatch = message.content.match(frenchDadRegex);
+    const englishMatch = englishDadRegex.exec(message.content);
+    const frenchMatch = frenchDadRegex.exec(message.content);
     if (!message.author.bot) {
       let randomReact = 1;
       switch (true) {

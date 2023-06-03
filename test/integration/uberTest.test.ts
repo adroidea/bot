@@ -14,7 +14,7 @@ const newEvent = new EventModel({
   channelId: "idchannel1"
 });
 
-const mongoURI = process.env.MONGO_URI || "mongodb://root:example@mongo:27017/";
+const mongoURI = process.env.MONGO_URI ?? "mongodb://root:example@mongo:27017/";
 
 describe("EventModel", () => {
   beforeAll(async () => {
