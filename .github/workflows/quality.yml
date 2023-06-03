@@ -28,12 +28,6 @@ jobs:
             # Clés uniques du projet
             -Dsonar.projectKey=kevin-fer_adroid_ea
             -Dsonar.organization=kevin-fer
-      - name: SonarCloud Summary Action
-        uses: thecanadianroot/sonarcloud-summary-action@v1
-        with:
-          github-repository: ${{ github.repository }}
-          github-token: ${{ secrets.GIT_TOKEN }}
-          pull-request: ${{ github.event.pull_request.number }} 
       
       - name: Check Sonar Status
         uses: sonarcloud-actions/sonarcloud-check-status-action@v1
