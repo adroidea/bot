@@ -37,13 +37,9 @@ module.exports = {
     const selectMenu = new StringSelectMenuBuilder()
       .setCustomId("voiceOwnerTransferMenu")
       .setPlaceholder("Choisir le nouveau propriétaire")
-      .addOptions(
-        members.filter(member => member.value !== interaction.member?.user.id)
-      );
+      .addOptions(members.filter(member => member.value !== interaction.member?.user.id));
 
-    const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-      selectMenu
-    );
+    const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(selectMenu);
     await interaction.reply({
       content: "Un grand pouvoir implique de grandes responsabilités :",
       ephemeral: true,

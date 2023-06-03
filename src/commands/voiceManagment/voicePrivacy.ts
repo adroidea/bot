@@ -28,10 +28,7 @@ module.exports = {
         .setName("ban")
         .setDescription("Bannir un membre de ton salon")
         .addUserOption(option =>
-          option
-            .setName("membre")
-            .setDescription("Le membre à bannir")
-            .setRequired(true)
+          option.setName("membre").setDescription("Le membre à bannir").setRequired(true)
         )
     )
 
@@ -40,10 +37,7 @@ module.exports = {
         .setName("unban")
         .setDescription("Débannir un utilisateur de ton salon")
         .addUserOption(option =>
-          option
-            .setName("membre")
-            .setDescription("Le membre à débannir")
-            .setRequired(true)
+          option.setName("membre").setDescription("Le membre à débannir").setRequired(true)
         )
     )
 
@@ -65,11 +59,7 @@ module.exports = {
   usage: "voice [commande] [member] ou [option]",
   examples: "voice ban @adan_ea#3945",
 
-  async execute(
-    client: Client,
-    interaction: CommandInteraction,
-    guildSettings: IGuild
-  ) {
+  async execute(client: Client, interaction: CommandInteraction, guildSettings: IGuild) {
     if (!checkTemporaryVoiceModule(guildSettings)) throw ModuleNotEnabledError;
 
     const member = interaction.member as GuildMember;
@@ -80,13 +70,9 @@ module.exports = {
       throw NotVoiceChannelOwnerError;
     }
 
-    const voiceChannel = await interaction.guild!.channels.fetch(
-      memberVoiceChannel.id
-    );
+    const voiceChannel = await interaction.guild!.channels.fetch(memberVoiceChannel.id);
 
-    const subcommand = (
-      interaction as ChatInputCommandInteraction
-    ).options.getSubcommand();
+    const subcommand = (interaction as ChatInputCommandInteraction).options.getSubcommand();
 
     switch (subcommand) {
       case "ban": {
@@ -96,13 +82,10 @@ module.exports = {
           await target.voice.disconnect();
         }
 
-        await (voiceChannel as GuildChannel).permissionOverwrites.edit(
-          target.id,
-          {
-            ViewChannel: false,
-            Connect: false
-          }
-        );
+        await (voiceChannel as GuildChannel).permissionOverwrites.edit(target.id, {
+          ViewChannel: false,
+          Connect: false
+        });
 
         return interaction.reply({
           content: `${target} a été banni du salon.`,
@@ -112,13 +95,10 @@ module.exports = {
 
       case "unban": {
         const target = interaction.options.getMember("membre") as GuildMember;
-        await (voiceChannel as GuildChannel).permissionOverwrites.edit(
-          target.id,
-          {
-            ViewChannel: null,
-            Connect: null
-          }
-        );
+        await (voiceChannel as GuildChannel).permissionOverwrites.edit(target.id, {
+          ViewChannel: null,
+          Connect: null
+        });
 
         return interaction.reply({
           content: `${target} a été débanni du salon.`,
@@ -127,9 +107,10 @@ module.exports = {
       }
 
       case "limite": {
-        const userLimit = (
-          interaction as ChatInputCommandInteraction
-        ).options.getInteger("limite", true);
+        const userLimit = (interaction as ChatInputCommandInteraction).options.getInteger(
+          "limite",
+          true
+        );
 
         if (voiceChannel && voiceChannel.type === ChannelType.GuildVoice) {
           await voiceChannel.setUserLimit(userLimit);
@@ -172,9 +153,7 @@ const isMembersInSameVoice = (member: GuildMember, target: GuildMember) => {
     return false;
   }
 
-  const isAdmin = target.permissions.has(
-    PermissionsBitField.Flags.Administrator
-  );
+  const isAdmin = target.permissions.has(PermissionsBitField.Flags.Administrator);
   if (isAdmin) {
     throw ToDoError;
   }

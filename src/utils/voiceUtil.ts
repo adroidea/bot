@@ -58,11 +58,7 @@ export const createNewTempChannel = async (newState: VoiceState) => {
         });
       });
   } catch (error: any) {
-    Logger.error(
-      `An error occurred while creating a voice channel`,
-      error,
-      filePath
-    );
+    Logger.error(`An error occurred while creating a voice channel`, error, filePath);
   }
 };
 
@@ -78,10 +74,7 @@ export const switchVoicePrivacy = async (member: GuildMember) => {
   });
 };
 
-export const switchVoiceOwner = async (
-  user: GuildMember,
-  target: GuildMember
-) => {
+export const switchVoiceOwner = async (user: GuildMember, target: GuildMember) => {
   const voiceChannel = target.voice.channel;
   if (!voiceChannel) return;
 
@@ -99,9 +92,7 @@ export const switchVoiceOwner = async (
 };
 
 export const checkVoicePrivacy = async (voiceChannel: VoiceBasedChannel) => {
-  const permissions = voiceChannel.permissionsFor(
-    voiceChannel.guild.roles.everyone
-  );
+  const permissions = voiceChannel.permissionsFor(voiceChannel.guild.roles.everyone);
   if (!permissions) return false;
 
   return permissions.has([
@@ -110,13 +101,8 @@ export const checkVoicePrivacy = async (voiceChannel: VoiceBasedChannel) => {
   ]);
 };
 
-export const checkVoiceOwnership = async (
-  voiceChannel: VoiceBasedChannel,
-  member: GuildMember
-) => {
-  return voiceChannel
-    .permissionsFor(member)
-    ?.has(PermissionsBitField.Flags.MoveMembers);
+export const checkVoiceOwnership = async (voiceChannel: VoiceBasedChannel, member: GuildMember) => {
+  return voiceChannel.permissionsFor(member)?.has(PermissionsBitField.Flags.MoveMembers);
 };
 
 export const deleteEmptyChannel = async (state: VoiceState) => {

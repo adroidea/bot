@@ -53,9 +53,9 @@ module.exports = {
       })
     );
 
-    await interaction.reply({
+    await interaction.update({
       content: `Cet évènement a bien été supprimé, je préviens tous les participants en MP !`,
-      ephemeral: true
+      components: []
     });
 
     if (usersNotNotified.length > 0) {

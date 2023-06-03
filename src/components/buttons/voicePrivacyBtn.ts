@@ -5,11 +5,7 @@ import {
   ButtonStyle,
   GuildMember
 } from "discord.js";
-import {
-  checkVoiceOwnership,
-  checkVoicePrivacy,
-  switchVoicePrivacy
-} from "../../utils/voiceUtil";
+import { checkVoiceOwnership, checkVoicePrivacy, switchVoicePrivacy } from "../../utils/voiceUtil";
 import { NotVoiceChannelOwnerError } from "../../utils/errors";
 
 module.exports = {

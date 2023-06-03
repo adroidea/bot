@@ -9,6 +9,7 @@ import {
   SlashCommandBuilder
 } from "discord.js";
 import { IEvent } from "../../models";
+import { customEvents } from "../../..";
 import eventService from "../../services/eventModuleService";
 import { getRandomRGB } from "../../utils/botUtil";
 
@@ -30,10 +31,7 @@ module.exports = {
     .setName("event")
     .setDescription("Créer un évènement")
     .addStringOption(option =>
-      option
-        .setName("titre")
-        .setDescription("Titre de l'évènement")
-        .setRequired(true)
+      option.setName("titre").setDescription("Titre de l'évènement").setRequired(true)
     )
     .addStringOption(option =>
       option
@@ -42,10 +40,7 @@ module.exports = {
         .setRequired(true)
     )
     .addStringOption(option =>
-      option
-        .setName("description")
-        .setDescription("Description de l'évènement")
-        .setRequired(false)
+      option.setName("description").setDescription("Description de l'évènement").setRequired(false)
     )
     .addStringOption(option =>
       option
@@ -56,16 +51,11 @@ module.exports = {
     .addNumberOption(option =>
       option
         .setName("maxparticipants")
-        .setDescription(
-          "Nombre de participants max, les autres seront en file d'attente"
-        )
+        .setDescription("Nombre de participants max, les autres seront en file d'attente")
         .setRequired(false)
     )
     .addStringOption(option =>
-      option
-        .setName("duree")
-        .setDescription("Durée de l'évènement")
-        .setRequired(false)
+      option.setName("duree").setDescription("Durée de l'évènement").setRequired(false)
     ),
   category: "events",
   permissions: [PermissionsBitField.Flags.ManageEvents],
@@ -91,19 +81,24 @@ Acceptées :
   ],
 
   async execute(client: Client, interaction: ChatInputCommandInteraction) {
+    const date = new Date(interaction.options.getString("dateheure")!);
+    const dateNow = new Date();
+    if (date < dateNow)
+      return interaction.reply({
+        content: "https://media.tenor.com/HheHJfLHhcIAAAAd/time-travel.gif",
+        ephemeral: true
+      });
+
     const title = interaction.options.getString("titre")!;
     const description = interaction.options.getString("description");
-    const date = new Date(interaction.options.getString("dateheure")!);
+
     const timestamp = Math.floor(date.getTime() / 1000);
     const maxParticipants = interaction.options.getNumber("maxparticipants");
-    let imageURL = interaction.options.getString("imageurl");
-    const duration = interaction.options.getString("duree");
 
-    if (
-      imageURL &&
-      !imageURL?.match(/https?:\/\/.+\.(?:png|jpg|jpeg|gif|webp)/gi)
-    )
-      imageURL = null;
+    let imageURL = interaction.options.getString("imageurl");
+    if (imageURL && !imageURL?.match(/https?:\/\/.+\.(?:png|jpg|jpeg|gif|webp)/gi)) imageURL = null;
+
+    const duration = interaction.options.getString("duree");
 
     const event: IEvent = {
       title,
@@ -148,6 +143,8 @@ Acceptées :
         value: "> Aucun participant"
       });
     }
+    const delay = getDelay(date);
+    await customEvents.add(`${eventId}`, { event }, { delay });
 
     await interaction.reply({
       embeds: [embed],
@@ -155,3 +152,7 @@ Acceptées :
     });
   }
 };
+
+function getDelay(date: Date) {
+  return Number(date) - Number(new Date());
+}

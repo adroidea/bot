@@ -16,7 +16,9 @@ This is a discord bot primarly made for my discord server (this is why some valu
 <div align="center">
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/adan-ea/adroid_ea?style=flat-square">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues/adan-ea/adroid_ea?style=flat-square">
-  
+  <a href="https://codecov.io/github/adan-ea/adroid_ea" > 
+ <img src="https://codecov.io/github/adan-ea/adroid_ea/branch/main/graph/badge.svg?token=8GMJCHJ6OY"/> 
+ </a>
 </div>
 
 # ✨ Features
@@ -106,3 +108,5 @@ docker pull adanea/adroid_ea:latest
 For the full command list please view the [Docker Documentation](https://docs.docker.com/engine/reference/commandline/cli/).
 
 # 📜 Documentation
+
+- [discord.js](https://old.discordjs.dev/#/docs/discord.js/14.11.0/general/welcome)

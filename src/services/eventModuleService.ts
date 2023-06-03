@@ -26,8 +26,7 @@ async function addParticipantToEvent(
   const event = await EventModel.findById(eventId);
   if (!event) throw EventNotFoundError;
 
-  if (event.participantsId.includes(participantId))
-    throw AlreadyParticipantError;
+  if (event.participantsId.includes(participantId)) throw AlreadyParticipantError;
 
   event.participantsId.push(participantId);
   const updatedEvent = await event.save();
@@ -41,9 +40,7 @@ async function removeParticipantFromEvent(
   const event = await EventModel.findById(eventId);
   if (!event) throw EventNotFoundError;
 
-  const participantIndex = event.participantsId.findIndex(
-    id => id === participantId
-  );
+  const participantIndex = event.participantsId.findIndex(id => id === participantId);
   if (participantIndex === -1) {
     throw ParticipantNotFoundError;
   }

@@ -8,6 +8,7 @@
     "module": "commonjs",                           /* Specify what module code is generated. */
     "resolveJsonModule": true,                      /* Enable importing .json files */
 
+	"types": ["node", "jest"],
     /* Emit */
     "sourceMap": true,                              /* Create source map files for emitted JavaScript files. */
     "outDir": "dist",                               /* Specify an output folder for all emitted files. */
@@ -27,10 +28,11 @@
     "alwaysStrict": true,                           /* Ensure 'use strict' is always emitted. */
     "noUnusedLocals": false,                        /* Enable error reporting when a local variables aren't read. */
     "exactOptionalPropertyTypes": false,            /* Interpret optional property types as written, rather than adding 'undefined'. */
-    "noImplicitReturns": false,                      /* Enable error reporting for codepaths that do not explicitly return in a function. */
+    "noImplicitReturns": false,                     /* Enable error reporting for codepaths that do not explicitly return in a function. */
     "noImplicitOverride": true,                     /* Ensure overriding members in derived classes are marked with an override modifier. */
 
     /* Completeness */
     "skipLibCheck": true                            /* Skip type checking all .d.ts files. */
   },
+  "include": ["src/**/*.ts"]
 }

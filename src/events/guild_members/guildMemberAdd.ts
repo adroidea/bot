@@ -8,9 +8,7 @@ import guildService from "../../services/guildService";
 module.exports = {
   name: Events.GuildMemberAdd,
   async execute(client: Client, member: GuildMember) {
-    let guildSettings: IGuild | null = await guildService.getGuildById(
-      member.guild.id!
-    );
+    let guildSettings: IGuild | null = await guildService.getGuildById(member.guild.id!);
     if (!guildSettings) {
       guildSettings = await guildService.createGuild(member.guild.id!);
     }
@@ -36,9 +34,7 @@ module.exports = {
         iconURL: member.user.avatarURL()!
       })
       .setThumbnail(member.user.avatarURL())
-      .setTitle(
-        `<a:pikaHi:960872476718551070> Bienvenue sur le serveur ${member.user.tag} !`
-      )
+      .setTitle(`<a:pikaHi:960872476718551070> Bienvenue sur le serveur ${member.user.tag} !`)
       .setDescription(
         `Bonjour à toi ! Surtout n'oublie pas, le bon sens est une règle, veille à respecter ce qui devrait être évident !
              Nous souhaitons que ton expérience parmi nous soit aussi plaisante que possible, et nous nous y emploierons constamment.`
