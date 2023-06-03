@@ -32,13 +32,14 @@ jobs:
             -Dsonar.organization=kevin-fer
         
       - name: SonarCloud Quality Gate status
+        id: sonar_status
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           quality_gate_status=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" -X GET \
                                "https://sonarcloud.io/api/qualitygates/project_status?projectKey=kevin-fer_adroid_ea")
           echo "$quality_gate_status"
-          echo "result=`$quality_gate_status`" >> "$GITHUB_OUTPUT"
+          echo "result=$quality_gate_status" >> "$GITHUB_OUTPUT"
 
       - name: test
         run: echo "${{ steps.sonar_status.outputs.result }}"  
