@@ -29,9 +29,8 @@ jobs:
           npm install eslint@8.10.0
           npm install @microsoft/eslint-formatter-sarif@2.1.7
         
-      - name: Run ESLint
-        run: npx eslint **/* --format=json > eslint-report.json --ignore-pattern "node_modules/"
-
+      - name: Run ESLint #Ignorer les dépendances externes
+        run: npx eslint **/* --format=json > eslint-report.json --ignore-pattern "node_modules/**/*"
       
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
