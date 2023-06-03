@@ -41,8 +41,10 @@ jobs:
           # Autres args Sonar
           args:
             # Clés uniques du projet
-            -Dsonar.projectKey=kevin-fer_adroid_ea
-            -Dsonar.organization=kevin-fer
+            #-Dsonar.projectKey=kevin-fer_adroid_ea
+            #-Dsonar.organization=kevin-fer
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECTKEY }}
+            -Dsonar.organization=${{ secrets.SONAR_ORGA }
             -Dsonar.eslint.reportPaths=eslint-report.json
         
       - name: SonarCloud Quality Gate status
