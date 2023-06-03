@@ -45,7 +45,7 @@ jobs:
       - name: test
         run: |
           echo "${{ steps.sonar_status.outputs.result }}"  
-          echo "${{ steps.sonar_status.outputs.result }}"  
+          echo "${${{ steps.sonar_status.outputs.result }}:0:5}"  
           echo "${{ steps.sonar_status.outputs.quality_gate_status }}"  
         
       - name: Discord notifications
