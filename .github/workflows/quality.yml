@@ -34,15 +34,18 @@ jobs:
           github-repository: ${{ github.repository }}
           github-token: ${{ secrets.GIT_TOKEN }}
           pull-request: ${{ github.event.pull_request.number }} 
+      
       - name: Check Sonar Status
         uses: sonarcloud-actions/sonarcloud-check-status-action@v1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      
       - name: Extraction Sonar API
         run: |
           response=(curl -H "Authorization: Bearer ${{ secrets.SONAR_BEARER }}" --request GET https://sonarcloud.io/api/ce/activity?deprecated=false&component=kevin-fer_adroid_ea)
           export $response
           echo $response
+      
       - name: Discord notifications
         uses: cl8dep/action-discord@main
         with:
