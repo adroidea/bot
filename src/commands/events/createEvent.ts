@@ -107,7 +107,9 @@ Acceptées :
       imageURL,
       maxParticipants,
       duration,
-      participantsId: []
+      participantsId: [],
+      guildId: interaction.guildId!,
+      channelId: interaction.channelId!
     };
 
     const eventId = await eventService.createEvent(event);
