@@ -49,7 +49,7 @@ This is a discord bot primarly made for my discord server (this is why some valu
 
 ### Voices
 
-> TODO : Update this screenshot. It's better now
+> TODO : Update this screenshot. It's better now, so much better
 - Auto manage voice channels, deletes and creates channels so only one is needed
 ![image](/assets/voice-channel-feature.gif)
 
