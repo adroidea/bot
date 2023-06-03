@@ -32,14 +32,10 @@ export default async (client: Client) => {
 
       if (!hasError) {
         if (event.once) {
-          client.once(event.name, (...args: any) =>
-            event.execute(client, ...args)
-          );
+          client.once(event.name, (...args: any) => event.execute(client, ...args));
         } else {
           try {
-            client.on(event.name, async (...args: any) =>
-              event.execute(client, ...args)
-            );
+            client.on(event.name, async (...args: any) => event.execute(client, ...args));
           } catch (err) {
             console.error(err);
           }
@@ -47,11 +43,7 @@ export default async (client: Client) => {
         nbEvents++;
       } else {
         nbFailedEvents++;
-        Logger.warn(
-          `Not initialised Command: ${errorList.join(
-            ", "
-          )}.\nFile : ${filePath}`
-        );
+        Logger.warn(`Not initialised Command: ${errorList.join(", ")}.\nFile : ${filePath}`);
       }
     }
   }

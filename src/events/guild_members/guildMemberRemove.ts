@@ -8,9 +8,7 @@ import guildService from "../../services/guildService";
 module.exports = {
   name: Events.GuildMemberRemove,
   async execute(client: Client, member: GuildMember) {
-    let guildSettings: IGuild | null = await guildService.getGuildById(
-      member.guild.id!
-    );
+    let guildSettings: IGuild | null = await guildService.getGuildById(member.guild.id!);
     if (!guildSettings) {
       guildSettings = await guildService.createGuild(member.guild.id!);
     }

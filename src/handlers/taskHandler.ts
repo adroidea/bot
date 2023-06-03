@@ -10,16 +10,11 @@ let nbFailedTasks = 0;
 export default async () => {
   // Get the list of task files in the tasks folder
   const tasksFolder = path.join(__dirname, "../tasks");
-  const taskFiles = fs
-    .readdirSync(tasksFolder)
-    .filter(file => file.endsWith(".js"));
+  const taskFiles = fs.readdirSync(tasksFolder).filter(file => file.endsWith(".js"));
 
   taskFiles.forEach((file: string) => {
     // Dynamically import the task module
-    const taskModule: { default: TaskFunction } = require(path.join(
-      tasksFolder,
-      file
-    ));
+    const taskModule: { default: TaskFunction } = require(path.join(tasksFolder, file));
 
     // Find the exported function and call it to schedule the task
     const taskFunction = taskModule.default;

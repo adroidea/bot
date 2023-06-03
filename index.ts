@@ -1,9 +1,8 @@
 import { Collection, Partials } from "discord.js";
+import { Queue, Worker } from "bullmq";
 import DiscordClient from "./src/client";
-
 import Logger from "./src/utils/logger";
 import dotenv from "dotenv";
-
 import mongoose from "mongoose";
 import path from "node:path";
 import { readdirSync } from "fs";
@@ -11,19 +10,14 @@ import { readdirSync } from "fs";
 dotenv.config();
 export const client: any = new DiscordClient({
   intents: 3276799,
-  partials: [
-    Partials.Channel
-  ]
+  partials: [Partials.Channel]
 });
 
 const filePath = path.join(__dirname, __filename);
 client.commands = new Collection();
 
-
 const handlersPath = path.join(__dirname, "src/handlers");
-const handlerFiles = readdirSync(handlersPath).filter(file =>
-  file.endsWith("Handler.js")
-);
+const handlerFiles = readdirSync(handlersPath).filter(file => file.endsWith("Handler.js"));
 handlerFiles.forEach((handlerFile: any) => {
   const filePath = path.join(handlersPath, handlerFile);
   import(filePath).then(handler => handler.default(client));
@@ -34,9 +28,7 @@ const componentFolders = readdirSync(compPath);
 
 for (const folder of componentFolders) {
   const comps = path.join(compPath, folder);
-  const componentFiles = readdirSync(comps).filter(file =>
-    file.endsWith(".js")
-  );
+  const componentFiles = readdirSync(comps).filter(file => file.endsWith(".js"));
 
   switch (folder) {
     case "buttons":
@@ -82,5 +74,37 @@ mongoose
   .catch((err: any) => {
     Logger.error("Couldn't connect to database", err, filePath);
   });
+
+export const customEvents = new Queue("customEvents", {
+  connection: {
+    host: process.env.REDIS_HOST,
+    port: 6379
+  },
+  defaultJobOptions: {
+    removeOnComplete: true,
+    removeOnFail: 1000
+  }
+});
+
+const worker = new Worker(
+  "customEvents",
+  async job => {
+    console.log(job.data);
+  },
+  {
+    connection: {
+      host: process.env.REDIS_HOST,
+      port: 6379
+    }
+  }
+);
+
+worker.on("completed", job => {
+  console.log(`${job.id} has completed!`);
+});
+
+worker.on("failed", (job, err) => {
+  console.log(`${job?.id} has failed with ${err.message}`);
+});
 
 client.login(process.env.TOKEN);

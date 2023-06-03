@@ -21,6 +21,7 @@ let IsLiveMemory = false;
 let currentGame = "";
 
 export default function (): void {
+  if (!process.env.TWITCH_CLIENT_ID) return;
   cron.schedule("* * * * *", async () => {
     //Fetch all the guilds in the database
     const guilds = await GuildModel.find().exec();
