@@ -16,7 +16,7 @@ export default function checkBotPermission(guild: any, permissionFlag: bigint) {
 export function checkNotificationsSubModule(guildSettings: IGuild, smn: keyof INotifications) {
   const notifications: INotifications = guildSettings.modules.notifications;
 
-  const subModule = notifications[smn as keyof INotifications];
+  const subModule = notifications[smn];
 
   if (typeof subModule === "boolean") {
     return false;
