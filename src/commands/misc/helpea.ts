@@ -41,7 +41,7 @@ module.exports = {
         value: `v${process.env.npm_package_version} ou 3.0.1`
       })
       .setFooter({ text: `< > = optionnel | [ ] = requis | (A ne pas inclure dans les commandes)` })
-      .setThumbnail(client1.user?.avatarURL({ forceStatic: false })!);
+      .setThumbnail(client1.user.avatarURL({ forceStatic: false })!);
 
     await interaction.reply({
       embeds: [embed],

@@ -14,7 +14,7 @@ module.exports = {
   },
   async execute(interaction: ButtonInteraction) {
     const member = interaction.member as GuildMember;
-    const voiceChannel = member!.voice.channel;
+    const voiceChannel = member.voice.channel;
 
     if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel, member)))
       throw NotVoiceChannelOwnerError;

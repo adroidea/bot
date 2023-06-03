@@ -78,7 +78,7 @@ export const switchVoiceOwner = async (user: GuildMember, target: GuildMember) =
   const voiceChannel = target.voice.channel;
   if (!voiceChannel) return;
 
-  const isUserOwner = voiceChannel.name === "🔊Voc " + user.user.username!;
+  const isUserOwner = voiceChannel.name === "🔊Voc " + user.user.username;
   if (!isUserOwner) return;
 
   await voiceChannel.setName(`🔊Voc ${target.user.username}`);
