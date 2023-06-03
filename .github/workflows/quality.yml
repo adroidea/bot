@@ -41,7 +41,7 @@ jobs:
           echo "result=$quality_gate_status" >> "$GITHUB_OUTPUT"
 
       - name: test
-        run: echo ${{ steps.sonar_status.outputs.result }}  
+        run: echo "${{ steps.sonar_status.outputs.result }}"  
         
       - name: Discord notifications
         uses: cl8dep/action-discord@main
