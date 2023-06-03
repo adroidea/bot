@@ -31,7 +31,7 @@ jobs:
       
       - name: Check Sonar Status
         uses: sonarcloud-actions/sonarcloud-check-status-action@v1   
-        run: echo "SELECTED_COLOR=green"
+        id: sonar_status
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       
