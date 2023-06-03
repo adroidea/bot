@@ -35,7 +35,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: test
-        run: ${{ steps.tests.sonar_status.stdout }}   
+        run: echo ${{ steps.tests.sonar_status.stdout }}  
+        
       - name: Discord notifications
         uses: cl8dep/action-discord@main
         with:
