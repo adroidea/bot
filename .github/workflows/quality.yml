@@ -42,7 +42,7 @@ jobs:
           BEARER_TOKEN: ${{ secrets.SONAR_BEARER }}
         run: |
           response=$(curl -X GET \
-                     -H "Authorization: Bearer $BEARER_TOKEN" \
+                     -H "Authorization: Bearer ${{ env.BEARER_TOKEN }}" \
                      https://sonarcloud.io/api/ce/activity?deprecated=false&component=kevin-fer_adroid_ea)
           echo "$response"
 
