@@ -36,6 +36,16 @@ jobs:
         id: sonar_status
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          
+      - name: Make API request
+        env:
+          BEARER_TOKEN: ${{ secrets.SONAR_BEARER }}
+        run: |
+          response=$(curl -X GET \
+                     -H "Authorization: Bearer $BEARER_TOKEN" \
+                     https://sonarcloud.io/api/ce/activity?deprecated=false&component=kevin-fer_adroid_ea)
+          echo "$response"
+
       - name: test
         run: echo ${{ steps.sonar_status.outputs.status }}  
         
