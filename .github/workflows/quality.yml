@@ -46,6 +46,14 @@ jobs:
                      https://sonarcloud.io/api/ce/activity?deprecated=false&component=kevin-fer_adroid_ea)
           echo "$response"
           echo ${{ secrets.DISCORD_WEBHOOK }}
+          
+      - name: Get SonarCloud Quality Gate status
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          quality_gate_status=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" -X GET \
+                               "https://sonarcloud.io/api/qualitygates/project_status?projectKey=kevin-fer_adroid_ea")
+          echo "$quality_gate_status"
 
       - name: test
         run: echo ${{ steps.sonar_status.outputs.status }}  
