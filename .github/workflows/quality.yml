@@ -39,7 +39,7 @@ jobs:
           quality_gate_status=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" -X GET \
                                "https://sonarcloud.io/api/qualitygates/project_status?projectKey=kevin-fer_adroid_ea")
           echo "$quality_gate_status"
-          status=$(echo "${{ steps.sonar_status.outputs.result }}" | cut -c 30-31)
+          status=$(echo "$quality_gate_status" | cut -c 30-31)
           echo "result=$status" >> "$GITHUB_OUTPUT"
           echo "$status"
 
