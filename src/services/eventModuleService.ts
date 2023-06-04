@@ -49,7 +49,7 @@ async function removeParticipantFromEvent(
   event.participantsId.splice(participantIndex, 1);
 
   // Save the updated event
-  const updatedEvent = await event.save();
+  const updatedEvent = event.save();
 
   return updatedEvent;
 }

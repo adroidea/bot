@@ -9,7 +9,7 @@ import {
   SlashCommandBuilder
 } from "discord.js";
 import { IEvent } from "../../models";
-import { customEvents } from "../../..";
+import { addToAppropriateQueue } from "../../tasks/CustomEvents.queue";
 import eventService from "../../services/eventModuleService";
 import { getRandomRGB } from "../../utils/botUtil";
 
@@ -109,7 +109,7 @@ Acceptées :
       duration,
       participantsId: [],
       guildId: interaction.guildId!,
-      channelId: interaction.channelId!
+      channelId: interaction.channelId
     };
 
     const eventId = await eventService.createEvent(event);
@@ -145,8 +145,7 @@ Acceptées :
         value: "> Aucun participant"
       });
     }
-    const delay = getDelay(date);
-    await customEvents.add(`${eventId}`, { event }, { delay });
+    addToAppropriateQueue(eventId, event);
 
     await interaction.reply({
       embeds: [embed],
@@ -154,7 +153,3 @@ Acceptées :
     });
   }
 };
-
-function getDelay(date: Date) {
-  return Number(date) - Number(new Date());
-}
