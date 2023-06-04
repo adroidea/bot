@@ -1,5 +1,5 @@
+import { CustomErrors } from "./errors";
 import { IGuild } from "../models";
-import { ModuleNotEnabledError } from "./errors";
 import guildService from "../services/guildService";
 
 export const checkModuleState = async (
@@ -16,5 +16,5 @@ export const checkModuleState = async (
     !guildSettings.modules.notifications.enabled &&
     !guildSettings.modules.notifications.publicLogs.enabled
   )
-    throw ModuleNotEnabledError;
+    throw CustomErrors.ModuleNotEnabledError;
 };

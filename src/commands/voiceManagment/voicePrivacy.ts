@@ -8,13 +8,7 @@ import {
   PermissionsBitField,
   SlashCommandBuilder
 } from "discord.js";
-import {
-  ModuleNotEnabledError,
-  NotVoiceChannelOwnerError,
-  SelfBanError,
-  ToDoError,
-  UnknownCommandError
-} from "../../utils/errors";
+import { CustomErrors } from "../../utils/errors";
 import { IGuild } from "../../models";
 import { checkTemporaryVoiceModule } from "../../utils/botUtil";
 
@@ -60,14 +54,14 @@ module.exports = {
   examples: "voice ban @adan_ea#3945",
 
   async execute(client: Client, interaction: CommandInteraction, guildSettings: IGuild) {
-    if (!checkTemporaryVoiceModule(guildSettings)) throw ModuleNotEnabledError;
+    if (!checkTemporaryVoiceModule(guildSettings)) throw CustomErrors.ModuleNotEnabledError;
 
     const member = interaction.member as GuildMember;
 
     const memberVoiceChannel = member.voice.channel;
 
     if (!memberVoiceChannel) {
-      throw NotVoiceChannelOwnerError;
+      throw CustomErrors.NotVoiceOwnerError;
     }
 
     const voiceChannel = await interaction.guild!.channels.fetch(memberVoiceChannel.id);
@@ -131,7 +125,7 @@ module.exports = {
       }
 
       default: {
-        throw UnknownCommandError;
+        throw CustomErrors.UnknownCommandError;
       }
     }
   }
@@ -142,7 +136,7 @@ const isMembersInSameVoice = (member: GuildMember, target: GuildMember) => {
   const targetVoiceChannel = target.voice.channel;
 
   if (member.id === target.id) {
-    throw SelfBanError;
+    throw CustomErrors.SelfBanError;
   }
 
   if (!memberVoiceChannel || !targetVoiceChannel) {
@@ -155,7 +149,7 @@ const isMembersInSameVoice = (member: GuildMember, target: GuildMember) => {
 
   const isAdmin = target.permissions.has(PermissionsBitField.Flags.Administrator);
   if (isAdmin) {
-    throw ToDoError;
+    throw CustomErrors.ToDoError;
   }
 
   return true;

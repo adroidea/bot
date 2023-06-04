@@ -1,9 +1,5 @@
-import {
-  AlreadyParticipantError,
-  EventNotFoundError,
-  ParticipantNotFoundError
-} from "../utils/errors";
 import { EventModel, IEvent } from "../models";
+import { CustomErrors } from "../utils/errors";
 
 async function createEvent(eventData: IEvent): Promise<IEvent | null> {
   try {
@@ -24,9 +20,9 @@ async function addParticipantToEvent(
   participantId: string
 ): Promise<IEvent | null> {
   const event = await EventModel.findById(eventId);
-  if (!event) throw EventNotFoundError;
+  if (!event) throw CustomErrors.EventNotFoundError;
 
-  if (event.participantsId.includes(participantId)) throw AlreadyParticipantError;
+  if (event.participantsId.includes(participantId)) throw CustomErrors.AlreadyParticipantError;
 
   event.participantsId.push(participantId);
   const updatedEvent = await event.save();
@@ -38,11 +34,11 @@ async function removeParticipantFromEvent(
   participantId: string
 ): Promise<IEvent | null> {
   const event = await EventModel.findById(eventId);
-  if (!event) throw EventNotFoundError;
+  if (!event) throw CustomErrors.EventNotFoundError;
 
   const participantIndex = event.participantsId.findIndex(id => id === participantId);
   if (participantIndex === -1) {
-    throw ParticipantNotFoundError;
+    throw CustomErrors.ParticipantNotFoundError;
   }
 
   // Remove the participant from the event
@@ -56,7 +52,7 @@ async function removeParticipantFromEvent(
 
 async function deleteEvent(eventId: string): Promise<void> {
   const event = await EventModel.findById(eventId);
-  if (!event) throw EventNotFoundError;
+  if (!event) throw CustomErrors.EventNotFoundError;
   try {
     await EventModel.findByIdAndDelete(eventId);
   } catch (error) {
