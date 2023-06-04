@@ -1,5 +1,4 @@
 import { Collection, Partials } from "discord.js";
-import { Queue, Worker } from "bullmq";
 import DiscordClient from "./src/client";
 import Logger from "./src/utils/logger";
 import dotenv from "dotenv";
@@ -74,37 +73,5 @@ mongoose
   .catch((err: any) => {
     Logger.error("Couldn't connect to database", err, filePath);
   });
-
-export const customEvents = new Queue("customEvents", {
-  connection: {
-    host: process.env.REDIS_HOST,
-    port: 6379
-  },
-  defaultJobOptions: {
-    removeOnComplete: true,
-    removeOnFail: 1000
-  }
-});
-
-const worker = new Worker(
-  "customEvents",
-  async job => {
-    console.log(job.data);
-  },
-  {
-    connection: {
-      host: process.env.REDIS_HOST,
-      port: 6379
-    }
-  }
-);
-
-worker.on("completed", job => {
-  console.log(`${job.id} has completed!`);
-});
-
-worker.on("failed", (job, err) => {
-  console.log(`${job?.id} has failed with ${err.message}`);
-});
 
 client.login(process.env.TOKEN);

@@ -9,7 +9,7 @@ module.exports = {
       .setColor("Random")
       .setTitle(`${interaction.user.username}'s emotion`)
       .setDescription(`${interaction.fields.getTextInputValue("explain_mood")}`)
-      .setThumbnail(interaction.user.avatarURL({ forceStatic: false })!);
+      .setThumbnail(interaction.user.avatarURL({ forceStatic: false }));
     await interaction.reply({ embeds: [embed] });
   }
 };

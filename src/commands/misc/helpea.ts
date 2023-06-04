@@ -38,10 +38,10 @@ module.exports = {
       .setDescription(`${commandsList}`)
       .addFields({
         name: "version",
-        value: `v${process.env.npm_package_version} ou 3.0.1`
+        value: `v${process.env.npm_package_version} ou 3.0.2`
       })
       .setFooter({ text: `< > = optionnel | [ ] = requis | (A ne pas inclure dans les commandes)` })
-      .setThumbnail(client1.user.avatarURL({ forceStatic: false })!);
+      .setThumbnail(client1.user.avatarURL({ forceStatic: false }));
 
     await interaction.reply({
       embeds: [embed],

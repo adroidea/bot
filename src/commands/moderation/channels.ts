@@ -65,14 +65,14 @@ module.exports = {
     switch (subcommand) {
       case "ban": {
         return interaction.reply({
-          content: ``,
+          content: `Booh il est banni`,
           ephemeral: true
         });
       }
 
       case "unban": {
         return interaction.reply({
-          content: ``,
+          content: `https://media.tenor.com/31nachzhSKQAAAAd/did-you-say-free.gif`,
           ephemeral: true
         });
       }
