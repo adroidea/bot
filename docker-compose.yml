@@ -16,6 +16,7 @@ services:
     depends_on:
       - mongo
       - redis
+
   mongo:
     image: mongo
     container_name: database
@@ -46,3 +47,12 @@ services:
     ports:
       - 6379:6379
       - 8001:8001
+    volumes:
+      - /home/adanea/Documents/Docker/volumes:/data
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30
+    restart: unless-stopped
