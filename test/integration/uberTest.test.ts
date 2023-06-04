@@ -29,7 +29,7 @@ describe("EventModel", () => {
   it("should save an event to the database", async () => {
     jest.setTimeout(45000);
 
-    const savedEvent = newEvent.save();
+    const savedEvent = await newEvent.save();
     expect(savedEvent).not.toBeNull();
   });
 
@@ -56,10 +56,10 @@ describe("EventModel", () => {
     const savedEvent = await newEvent.save();
     const eventId = savedEvent._id;
 
-    const deletedEvent = EventModel.findByIdAndDelete(eventId);
+    const deletedEvent = await EventModel.findByIdAndDelete(eventId);
     expect(deletedEvent).not.toBeNull();
 
-    const findDeletedEvent = EventModel.findById(eventId);
+    const findDeletedEvent = await EventModel.findById(eventId);
     expect(findDeletedEvent).toBeNull();
   });
 });

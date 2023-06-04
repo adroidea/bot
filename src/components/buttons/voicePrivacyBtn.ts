@@ -6,7 +6,7 @@ import {
   GuildMember
 } from "discord.js";
 import { checkVoiceOwnership, checkVoicePrivacy, switchVoicePrivacy } from "../../utils/voiceUtil";
-import { NotVoiceChannelOwnerError } from "../../utils/errors";
+import { CustomErrors } from "../../utils/errors";
 
 module.exports = {
   data: {
@@ -17,7 +17,7 @@ module.exports = {
     const voiceChannel = member.voice.channel;
 
     if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel, member)))
-      throw NotVoiceChannelOwnerError;
+      throw CustomErrors.NotVoiceOwnerError;
 
     let isPublic: boolean = await checkVoicePrivacy(voiceChannel);
 

@@ -9,14 +9,15 @@ import {
   VoiceState,
   userMention
 } from "discord.js";
+import { CustomErrors } from "./errors";
 import Logger from "./logger";
 import path from "path";
 
 const filePath = path.join(__dirname, __filename);
 
 export const createNewTempChannel = async (newState: VoiceState) => {
-  const username = newState.member!.user.username;
   try {
+    const username = newState.member!.user.username;
     newState.guild.channels
       .create({
         name: `🔊Voc ${username}`,
@@ -57,38 +58,49 @@ export const createNewTempChannel = async (newState: VoiceState) => {
           components: [row]
         });
       });
-  } catch (error: any) {
-    Logger.error(`An error occurred while creating a voice channel`, error, filePath);
+  } catch (err: any) {
+    Logger.error(`An error occurred while creating a voice channel`, err, filePath);
+    throw CustomErrors.CreateNewTempChannelError;
   }
 };
 
 export const switchVoicePrivacy = async (member: GuildMember) => {
-  const voiceChannel = member.voice.channel;
-  if (!voiceChannel) return;
+  try {
+    const voiceChannel = member.voice.channel;
+    if (!voiceChannel) return;
 
-  const isPublic: boolean = await checkVoicePrivacy(voiceChannel);
+    const isPublic: boolean = await checkVoicePrivacy(voiceChannel);
 
-  voiceChannel.permissionOverwrites.edit(member.guild.roles.everyone, {
-    ViewChannel: isPublic ? false : null,
-    Connect: isPublic ? false : null
-  });
+    await voiceChannel.permissionOverwrites.edit(member.guild.roles.everyone, {
+      ViewChannel: isPublic ? false : null,
+      Connect: isPublic ? false : null
+    });
+  } catch (err: any) {
+    Logger.error(`An error occurred while changing the privacy of a voice channel`, err, filePath);
+    throw CustomErrors.SwitchVoicePrivacyError;
+  }
 };
 
 export const switchVoiceOwner = async (user: GuildMember, target: GuildMember) => {
-  const voiceChannel = target.voice.channel;
-  if (!voiceChannel) return;
+  try {
+    const voiceChannel = target.voice.channel;
+    if (!voiceChannel) return;
 
-  const isUserOwner = voiceChannel.name === "🔊Voc " + user.user.username;
-  if (!isUserOwner) return;
+    const isUserOwner = voiceChannel.name === "🔊Voc " + user.user.username;
+    if (!isUserOwner) return;
 
-  await voiceChannel.setName(`🔊Voc ${target.user.username}`);
+    await voiceChannel.setName(`🔊Voc ${target.user.username}`);
 
-  await voiceChannel.permissionOverwrites.delete(user.id);
-  await voiceChannel.permissionOverwrites.edit(target.id, {
-    MoveMembers: true,
-    ViewChannel: true,
-    Connect: true
-  });
+    await voiceChannel.permissionOverwrites.delete(user.id);
+    await voiceChannel.permissionOverwrites.edit(target.id, {
+      MoveMembers: true,
+      ViewChannel: true,
+      Connect: true
+    });
+  } catch (err: any) {
+    Logger.error(`An error occurred while changing the privacy of a voice channel`, err, filePath);
+    throw CustomErrors.SwitchVoiceOwnerError;
+  }
 };
 
 export const checkVoicePrivacy = async (voiceChannel: VoiceBasedChannel) => {

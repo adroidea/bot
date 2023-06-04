@@ -5,7 +5,7 @@ import {
   PermissionsBitField,
   SlashCommandBuilder
 } from "discord.js";
-import { ModuleNotEnabledError, UnknownCommandError } from "../../utils/errors";
+import { CustomErrors } from "../../utils/errors";
 import { IGuild } from "../../models";
 import { checkTemporaryVoiceModule } from "../../utils/botUtil";
 
@@ -58,7 +58,7 @@ module.exports = {
   examples: "channel list all",
 
   async execute(client: Client, interaction: CommandInteraction, guildSettings: IGuild) {
-    if (!checkTemporaryVoiceModule(guildSettings)) throw ModuleNotEnabledError;
+    if (!checkTemporaryVoiceModule(guildSettings)) throw CustomErrors.ModuleNotEnabledError;
 
     const subcommand = (interaction as ChatInputCommandInteraction).options.getSubcommand();
 
@@ -78,7 +78,7 @@ module.exports = {
       }
 
       default: {
-        throw UnknownCommandError;
+        throw CustomErrors.UnknownCommandError;
       }
     }
   }
