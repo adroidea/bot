@@ -47,7 +47,7 @@ module.exports = {
       });
     }
 
-    interaction.reply({
+    await interaction.reply({
       content: "Question du jour envoyée !",
       ephemeral: true
     });

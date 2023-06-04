@@ -30,12 +30,12 @@ module.exports = {
       .addFields([
         {
           name: "Latence bot",
-          value: codeBlock("py", `${botLantency.toString()}ms`),
+          value: codeBlock("sci", `${botLantency.toString()}ms`),
           inline: true
         },
         {
           name: "Latence api",
-          value: codeBlock("py", `${client.ws.ping.toString()}ms`),
+          value: codeBlock("sci", `${client.ws.ping.toString()}ms`),
           inline: true
         }
       ])
@@ -44,6 +44,6 @@ module.exports = {
         iconURL: interaction.user.displayAvatarURL()
       })
       .setTimestamp();
-    interaction.editReply({ embeds: [embed] });
+    return interaction.editReply({ embeds: [embed] });
   }
 };

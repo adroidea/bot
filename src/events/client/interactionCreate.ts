@@ -10,9 +10,7 @@ import {
 } from "discord.js";
 import {
   CustomError,
-  NoPermissionsError,
-  UnknownCommandError,
-  UnknownError
+  CustomErrors,
 } from "../../utils/errors";
 import { IDiscordClient } from "../../client";
 import { IGuild } from "../../models";
@@ -30,10 +28,10 @@ module.exports = {
 
       try {
         const command = client.commands.get(interaction.commandName);
-        if (!command) throw UnknownCommandError;
+        if (!command) throw CustomErrors.UnknownCommandError;
 
         if (!checkMemberPermission(interaction.memberPermissions, command.permissions))
-          throw NoPermissionsError;
+          throw CustomErrors.NoPermissionsError;
 
         if (!client.cooldowns.has(command.data.name)) {
           client.cooldowns.set(command.data.name, new Collection());
@@ -76,7 +74,7 @@ module.exports = {
           interaction.reply({ content: err.message, ephemeral: true });
         } else {
           interaction.reply({
-            content: UnknownError.message,
+            content: CustomErrors.UnknownError.message,
             ephemeral: true
           });
           console.error(err);
@@ -97,7 +95,7 @@ module.exports = {
             interaction.reply({ content: err.message, ephemeral: true });
           } else {
             interaction.reply({
-              content: UnknownError.message,
+              content: CustomErrors.UnknownError.message,
               ephemeral: true
             });
             console.error(err);
@@ -112,7 +110,7 @@ module.exports = {
             interaction.update({ content: err.message, components: [] });
           } else {
             interaction.update({
-              content: UnknownError.message,
+              content: CustomErrors.UnknownError.message,
               components: []
             });
             console.error(err);
@@ -128,7 +126,7 @@ module.exports = {
             interaction.reply({ content: err.message, ephemeral: true });
           } else {
             interaction.reply({
-              content: UnknownError.message,
+              content: CustomErrors.UnknownError.message,
               ephemeral: true
             });
             console.error(err);

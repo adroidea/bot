@@ -1,7 +1,7 @@
 import { Client, Events, GuildMember, TextChannel } from "discord.js";
+import { CustomErrors } from "../../utils/errors";
 import { EmbedBuilder } from "@discordjs/builders";
 import { IGuild } from "../../models";
-import { ModuleNotEnabledError } from "../../utils/errors";
 import { getRandomRGB } from "../../utils/botUtil";
 import guildService from "../../services/guildService";
 
@@ -17,7 +17,7 @@ module.exports = {
       !guildSettings.modules.notifications.enabled &&
       !guildSettings.modules.notifications.publicLogs.enabled
     )
-      throw ModuleNotEnabledError;
+      throw CustomErrors.ModuleNotEnabledError;
 
     const moduleSettings = guildSettings.modules.notifications.publicLogs;
     const registeredLogChannel = moduleSettings.publicLogChannel;

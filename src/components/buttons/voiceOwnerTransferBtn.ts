@@ -4,7 +4,7 @@ import {
   GuildMember,
   StringSelectMenuBuilder
 } from "discord.js";
-import { NotVoiceChannelOwnerError } from "../../utils/errors";
+import { CustomErrors } from "../../utils/errors";
 import { checkVoiceOwnership } from "../../utils/voiceUtil";
 
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
     const member = interaction.member as GuildMember;
 
     if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel, member)))
-      throw NotVoiceChannelOwnerError;
+      throw CustomErrors.NotVoiceOwnerError;
 
     const members = voiceChannel.members.map(member => {
       return {
