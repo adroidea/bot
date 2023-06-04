@@ -38,7 +38,7 @@ module.exports = {
 
         case frenchDadRegex.test(message.content):
           if (randomReact > 0.9 && message.author.id !== "159638700316164096") {
-            const name = message.content.slice(frenchMatch!.index! + frenchMatch![0].length).trim();
+            const name = message.content.slice(frenchMatch!.index + frenchMatch![0].length).trim();
             if (!name || name.length > 100) return false;
             return message.reply(`Salut ${name}, Je suis ton père !`);
           }
@@ -47,7 +47,7 @@ module.exports = {
         case englishDadRegex.test(message.content):
           if (randomReact > 0.5) {
             const name = message.content
-              .slice(englishMatch!.index! + englishMatch![0].length)
+              .slice(englishMatch!.index + englishMatch![0].length)
               .trim();
             if (!name || name.length > 100) return false;
             return message.reply(`Hi ${name}, I'm dad!`);
