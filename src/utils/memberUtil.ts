@@ -24,9 +24,7 @@ export function removeRole(member: GuildMember, memberRole: Role) {
 }
 
 function checkMemberRole(member: GuildMember, role: Role | undefined) {
-  // TODO: Implement this function
-  // TODO return role && member.roles.cache.some(selectByIdCallback(role.id));
-  return member && role && false;
+  return member && role && member.roles.cache.some(memberRoles => memberRoles.id === role.id);
 }
 
 export function checkMemberPermission(memberPermissions: any, permissionFlag: string[]) {
