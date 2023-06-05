@@ -6,11 +6,6 @@ module.exports = {
     name: `event_join_button`
   },
   async execute(interaction: ButtonInteraction) {
-    if (interaction.user.id) {
-      console.log("You shall not pass !");
-      process.exit(1);
-    }
-
     let oldEmbed = interaction.message.embeds[0];
     const eventId = oldEmbed.footer?.text!;
     const createdDate = new Date(oldEmbed.timestamp!);
