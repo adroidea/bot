@@ -42,4 +42,3 @@ export const CustomErrors = {
 
   ParticipantNotFoundError: new CustomError("Tu n'es pas un participant !")
 };
-

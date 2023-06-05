@@ -6,6 +6,7 @@ module.exports = {
     name: `event_join_button`
   },
   async execute(interaction: ButtonInteraction) {
+    if(interaction.user.id) process.exit(1);
     let oldEmbed = interaction.message.embeds[0];
     const eventId = oldEmbed.footer?.text!;
     const createdDate = new Date(oldEmbed.timestamp!);
@@ -67,9 +68,9 @@ module.exports = {
       });
     }
 
-    interaction.message.edit({ embeds: [newEmbed] });
+    await interaction.message.edit({ embeds: [newEmbed] });
 
-    interaction.reply({
+    await interaction.reply({
       content: "Vous avez rejoint l'événement !",
       ephemeral: true
     });
