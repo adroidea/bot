@@ -111,4 +111,3 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           message: "Analyse Eslint terminée"
-  
