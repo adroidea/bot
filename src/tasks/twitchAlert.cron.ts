@@ -1,4 +1,4 @@
-import { Guild, GuildMember, Role, roleMention } from "discord.js";
+import { Guild, GuildMember, Role } from "discord.js";
 import { EmbedBuilder } from "@discordjs/builders";
 import { GuildModel } from "../models";
 import TwitchApi from "node-twitch";
@@ -20,7 +20,6 @@ let currentGame = "";
 let countdown = 0;
 
 export default function (): void {
-  if (!process.env.TWITCH_CLIENT_ID) return;
   cron.schedule("* * * * *", async () => {
     const guilds = await GuildModel.find().exec();
     for (const guild of guilds) {
@@ -28,7 +27,7 @@ export default function (): void {
       if (!guildData) return;
       const { twitchLive } = guild.modules.notifications;
       const { streamerName, streamers, streamingRoleId } = twitchLive;
-      
+
       if (streamers && streamingRoleId) {
         for (const streamer of streamers) {
           toggleStreamersRole(guildData, streamer, streamingRoleId);
@@ -36,36 +35,30 @@ export default function (): void {
       }
 
       try {
-        await twitch.getStreams({ channel: streamerName }).then(async data => {
-          const streamData = data.data[0];
-          if (streamData !== undefined) {
-            if (streamData.type === "live" && countdown <= 0) {
-              if (!isLiveMemory) {
-                sendLiveEmbed(streamData, twitchLive, guildData);
-                isLiveMemory = true;
-                currentGame = streamData.game_name;
-                countdown = 15;
-              }
-              if (streamData.game_name !== currentGame) {
-                sendGameChangeEmbed(streamData, twitchLive);
-                currentGame = streamData.game_name;
-              }
-            } else if (isLiveMemory) {
-              if (twitchLive.defaultProfilePicture) {
-                await guildData.setIcon(twitchLive.defaultProfilePicture);
-              }
-              isLiveMemory = false;
-              currentGame = "";
+        const { data } = await twitch.getStreams({ channel: streamerName });
+        const streamData = data[0];
+        if (streamData?.type === "live") {
+          if (countdown <= 0) {
+            if (!isLiveMemory) {
+              sendLiveEmbed(streamData, twitchLive, guildData);
+              isLiveMemory = true;
+              currentGame = streamData.game_name;
+              countdown = 15;
             }
-          } else if (isLiveMemory) {
-            if (twitchLive.defaultProfilePicture) {
-              await guildData.setIcon(twitchLive.defaultProfilePicture);
-            }
-            isLiveMemory = false;
-            currentGame = "";
           }
-          countdown--;
-        });
+          if (streamData.game_name !== currentGame) {
+            sendGameChangeEmbed(streamData, twitchLive);
+            currentGame = streamData.game_name;
+          }
+        } else if (isLiveMemory) {
+          if (twitchLive.defaultProfilePicture) {
+            await guildData.setIcon(twitchLive.defaultProfilePicture);
+          }
+          isLiveMemory = false;
+          currentGame = "";
+        }
+
+        countdown--;
       } catch (err: any) {
         console.error(err);
       }
@@ -116,7 +109,7 @@ async function sendLiveEmbed(streamData: any, twitchLive: any, guild: Guild) {
     .setColor([176, 32, 32]);
 
   channelMessage.send({
-    content: `${twitchLive.pingedRole ? `${roleMention(twitchLive.pingedRole)}, ` : ""}${
+    content: `${twitchLive.pingedRole ? `<@&${twitchLive.pingedRole}>, ` : ""}${
       streamData.user_name
     } ${randomizeArray(liveStart)} **__${streamData.game_name}__**.`,
     embeds: [embed]

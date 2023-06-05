@@ -40,7 +40,7 @@ module.exports = {
         },
         {
           name: "Version",
-          value: "v"+process.env.npm_package_version,
+          value: "v3.0.2",
           inline: true
         }
       ])

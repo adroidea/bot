@@ -45,14 +45,14 @@ async function createGuild(id: string): Promise<IGuild> {
 }
 
 async function getGuildById(id: string): Promise<IGuild | null> {
-  return await GuildModel.findOne({ id });
+  return GuildModel.findOne({ id });
 }
 
-async function updateGuild(id: string): Promise<void> {
+async function updateGuild(guildData: IGuild): Promise<void> {
   /**
    * @TODO : implement this
    */
-  console.log(id);
+  console.log(guildData);
 }
 
 async function deleteGuild(guildId: string): Promise<void> {

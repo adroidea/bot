@@ -8,10 +8,7 @@ import {
   StringSelectMenuInteraction,
   inlineCode
 } from "discord.js";
-import {
-  CustomError,
-  CustomErrors,
-} from "../../utils/errors";
+import { CustomError, CustomErrors } from "../../utils/errors";
 import { IDiscordClient } from "../../client";
 import { IGuild } from "../../models";
 import { checkMemberPermission } from "../../utils/memberUtil";
