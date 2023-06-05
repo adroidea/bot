@@ -40,7 +40,7 @@ module.exports = {
         },
         {
           name: "Version",
-          value: "v3.0.2",
+          value: "v3.0.3",
           inline: true
         }
       ])
