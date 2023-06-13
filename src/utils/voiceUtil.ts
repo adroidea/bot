@@ -29,7 +29,9 @@ export const createNewTempChannel = async (newState: VoiceState) => {
             allow: [
               PermissionsBitField.Flags.MoveMembers,
               PermissionsBitField.Flags.ViewChannel,
-              PermissionsBitField.Flags.Connect
+              PermissionsBitField.Flags.Connect,
+              PermissionsBitField.Flags.Speak,
+              PermissionsBitField.Flags.ReadMessageHistory
             ]
           }
         ]
