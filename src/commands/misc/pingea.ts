@@ -11,7 +11,7 @@ module.exports = {
   data: new SlashCommandBuilder().setName("pingea").setDescription("Renvoie le ping du bot"),
   category: "utils",
   cooldown: 10,
-  permissions: [PermissionsBitField.Flags.Administrator],
+  permissions: [PermissionsBitField.Flags.SendMessages],
   usage: "pingea",
   examples: ["pingea"],
 

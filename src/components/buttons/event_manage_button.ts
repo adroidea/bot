@@ -28,7 +28,7 @@ module.exports = {
     name: `event_manage_button`
   },
   async execute(interaction: ButtonInteraction) {
-    interaction.reply({
+    return interaction.reply({
       content: "Vous avez rejoint l'événement !",
       ephemeral: true,
       components: [row]

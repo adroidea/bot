@@ -69,7 +69,7 @@ module.exports = {
 
     await interaction.message.edit({ embeds: [newEmbed] });
 
-    await interaction.reply({
+    return interaction.reply({
       content: "Vous avez rejoint l'événement !",
       ephemeral: true
     });
