@@ -27,7 +27,7 @@ module.exports = {
 
     switchVoiceOwner(user, target);
 
-    await interaction.update({
+    return interaction.update({
       content: `La propriété du salon a été transféré à ${userMention(target.id)}.`,
       components: []
     });

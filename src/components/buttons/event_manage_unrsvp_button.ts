@@ -75,7 +75,7 @@ module.exports = {
 
     await message.edit({ embeds: [newEmbed] });
 
-    interaction.reply({
+    return interaction.reply({
       content: "Vous avez quitté l'événement !",
       ephemeral: true
     });

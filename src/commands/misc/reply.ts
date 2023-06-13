@@ -20,6 +20,6 @@ module.exports = {
 
     await interaction.channel?.sendTyping();
     await interaction.channel!.send(message);
-    await interaction.reply({ content: "done", ephemeral: true });
+    return interaction.reply({ content: "done", ephemeral: true });
   }
 };

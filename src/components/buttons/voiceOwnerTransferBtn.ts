@@ -40,7 +40,7 @@ module.exports = {
       .addOptions(members.filter(member => member.value !== interaction.member?.user.id));
 
     const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(selectMenu);
-    await interaction.reply({
+    return interaction.reply({
       content: "Un grand pouvoir implique de grandes responsabilités :",
       ephemeral: true,
       components: [row]
