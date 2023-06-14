@@ -24,23 +24,23 @@ export default function (): void {
   customEventsOneWeek;
 }
 
-export function addToAppropriateQueue(eventId: IEvent | null, event: IEvent) {
+export async function addToAppropriateQueue(eventId: IEvent | null, event: IEvent) {
   const delay = Number(event.date) - Number(new Date());
 
-  customEventsStart.add(`${eventId}`, { event }, { delay });
+  await customEventsStart.add(`${eventId}`, { event }, { delay });
 
   if (delay >= 5 * 60 * 1000) {
     // L'événement se produit dans les 5 minutes à venir, on l'ajoute à la queue 'customEventsFiveMinutes'
-    customEventsFiveMinutes.add(`${eventId}`, { event }, { delay });
+    await customEventsFiveMinutes.add(`${eventId}`, { event }, { delay });
   }
 
   if (delay >= 24 * 60 * 60 * 1000) {
     // L'événement se produit dans les 24 heures à venir, on l'ajoute à la queue 'customEventsOneDay'
-    customEventsOneDay.add(`${eventId}`, { event }, { delay });
+    await customEventsOneDay.add(`${eventId}`, { event }, { delay });
   }
 
   if (delay >= 7 * 24 * 60 * 60 * 1000) {
     // L'événement se produit dans la semaine à venir, on l'ajoute à la queue 'customEventsOneWeek'
-    customEventsOneWeek.add(`${eventId}`, { event }, { delay });
+    await customEventsOneWeek.add(`${eventId}`, { event }, { delay });
   }
 }
