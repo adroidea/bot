@@ -18,7 +18,7 @@ const filePath = path.join(__dirname, __filename);
 export const createNewTempChannel = async (newState: VoiceState) => {
   try {
     const username = newState.member!.user.username;
-    newState.guild.channels
+    await newState.guild.channels
       .create({
         name: `🔊Voc ${username}`,
         type: ChannelType.GuildVoice,
