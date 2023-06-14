@@ -1,6 +1,6 @@
 import { GuildModel } from "../../src/models/guildModel";
 import mongoose from "mongoose";
-require('dotenv').config();
+require("dotenv").config();
 
 const mongoURI = process.env.MONGO_URI ?? "mongodb://root:example@mongo:27017/";
 
@@ -56,6 +56,15 @@ describe("GuildModel", () => {
     expect(updatedGuild?.modules.notifications.enabled).toBe(false);
   });
 
+  it("should find a guild by its id", async () => {
+    jest.setTimeout(45000);
+
+    const foundGuild = await GuildModel.findOne({ id: "test-guild-id" });
+
+    expect(foundGuild).not.toBeNull();
+    expect(foundGuild?._id.toString()).toBe(savedGuildId);
+  });
+
   it("should delete an existing guild from the database", async () => {
     jest.setTimeout(45000);
 
@@ -66,3 +75,34 @@ describe("GuildModel", () => {
     expect(findDeletedGuild).toBeNull();
   });
 });
+
+it("should not save a guild with a missing id", async () => {
+  jest.setTimeout(45000);
+
+  const invalidGuild = new GuildModel({
+    modules: {
+      notifications: {
+        enabled: true,
+        publicLogs: {
+          enabled: true,
+          publicLogChannel: "public-log-channel-id"
+        }
+      },
+      temporaryVoice: {
+        enabled: true,
+        hostChannels: ["host-channel-id"]
+      },
+      eventManagement: {
+        enabled: true
+      }
+    }
+  });
+
+  try {
+    await invalidGuild.save();
+  } catch (error: any) {
+    expect(error).not.toBeNull();
+    expect(error.errors.id).toBeDefined();
+  }
+});
+
