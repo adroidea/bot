@@ -1,6 +1,6 @@
 import { EventModel } from "../../src/models/eventModel";
 import mongoose from "mongoose";
-require('dotenv').config();
+require("dotenv").config();
 
 const newEvent = new EventModel({
   title: "Test Event",
@@ -49,6 +49,7 @@ describe("EventModel", () => {
     expect(updatedEvent).not.toBe(savedEvent);
     expect(updatedEvent?.title).toBe("Updated Test Event");
   });
+  
 
   it("should delete an existing event from the database", async () => {
     jest.setTimeout(45000);
@@ -63,3 +64,26 @@ describe("EventModel", () => {
     expect(findDeletedEvent).toBeNull();
   });
 });
+
+it("should not save an event with a missing title", async () => {
+  jest.setTimeout(45000);
+
+  const invalidEvent = new EventModel({
+    description: "This is a test event",
+    date: new Date(),
+    duration: "2 hours",
+    imageURL: "https://example.com/image.jpg",
+    maxParticipants: 10,
+    participantsId: ["user1", "user2"],
+    guildId: "id1",
+    channelId: "idchannel1"
+  });
+
+  try {
+    await invalidEvent.save();
+  } catch (error: any) {
+    expect(error).not.toBeNull();
+    expect(error.errors.title).toBeDefined();
+  }
+});
+
