@@ -37,11 +37,6 @@ module.exports = {
           name: "Latence api",
           value: codeBlock("sci", `${client.ws.ping.toString()}ms`),
           inline: true
-        },
-        {
-          name: "Version",
-          value: "v3.0.3",
-          inline: true
         }
       ])
       .setFooter({

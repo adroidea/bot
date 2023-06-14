@@ -6,7 +6,7 @@ export class CustomError extends Error {
 
 export const CustomErrors = {
   UnknownError: new CustomError(
-    "Tu m'a posé une colle là. Signale ce message à <@294916386072035328> (Adan_ea#3000) et ce que t'as fais pour l'avoir. C'est pas normal que tu vois ceci. Mais je t'aime quand même hein <3"
+    "Tu m'a posé une colle là. Signale ce message à <@294916386072035328> (@adan_ea) et ce que t'as fais pour l'avoir. C'est pas normal que tu vois ceci. Mais je t'aime quand même hein <3"
   ),
   NoPermissionsError: new CustomError("Eh non, t'as pas les droits, cheh !"),
   ToDoError: new CustomError("Ca fonctionne, mais t'as pas setup d'erreur pour ce cas encore."),
@@ -30,10 +30,10 @@ export const CustomErrors = {
   ),
 
   SwitchVoicePrivacyError: new CustomError("Whoops, j'ai pas réussi à switch l'état du salon."),
+
   ////////////////////////////////////////////////////
   //               Events related err               //
   ////////////////////////////////////////////////////
-
   EventNotFoundError: new CustomError("L'évenement en question n'existe pas."),
 
   AlreadyParticipantError: new CustomError(

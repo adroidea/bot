@@ -61,7 +61,7 @@ module.exports = {
     if (usersNotNotified.length > 0) {
       await interaction.followUp({
         content: `Je n'ai pas pu prévenir ces utilisateurs en MP :\n ${usersNotNotified
-          .map(userId => `<@${userId}>`)
+          .map(userId => userMention(userId))
           .join("\n")}`,
         ephemeral: true
       });
