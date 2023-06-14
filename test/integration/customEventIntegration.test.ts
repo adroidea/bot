@@ -1,5 +1,6 @@
 import { EventModel } from "../../src/models/eventModel";
 import mongoose from "mongoose";
+require('dotenv').config();
 
 const newEvent = new EventModel({
   title: "Test Event",
