@@ -1,4 +1,4 @@
-FROM node:16.14.0-alpine
+FROM node:16-alpine
 
 RUN mkdir -p /usr/src/bot && apk update && apk add git
 WORKDIR /usr/src/bot
