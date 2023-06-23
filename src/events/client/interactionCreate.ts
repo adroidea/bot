@@ -2,6 +2,7 @@ import {
   ButtonInteraction,
   Collection,
   CommandInteraction,
+  EmbedBuilder,
   Events,
   Interaction,
   ModalSubmitInteraction,
@@ -13,6 +14,7 @@ import { IDiscordClient } from "../../client";
 import { IGuild } from "../../models";
 import { checkMemberPermission } from "../../utils/memberUtil";
 import guildService from "../../services/guildService";
+import { Colors } from "../../utils/consts";
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -43,10 +45,14 @@ module.exports = {
 
             if (now < expirationTime) {
               const expiredTimestamp = Math.round(expirationTime / 1000);
+
+              const cdError = `Comme dirait Orel San, ça va trop vite. la commande ${inlineCode(
+                command.data.name
+              )} est en cooldown, tu pourras l'utiliser <t:${expiredTimestamp}:R>.`;
+              const cdEmbed = new EmbedBuilder().setTitle(cdError).setColor(Colors.error);
+
               return interaction.reply({
-                content: `Comme dirait Orel San, ça va trop vite. la commande ${inlineCode(
-                  command.data.name
-                )} est en cooldown, tu pourras l'utiliser <t:${expiredTimestamp}:R>.`,
+                embeds: [cdEmbed],
                 ephemeral: true
               });
             }
@@ -68,12 +74,13 @@ module.exports = {
         }
       } catch (err) {
         if (err instanceof CustomError) {
-          interaction.reply({ content: err.message, ephemeral: true });
+          const embed = new EmbedBuilder().setTitle(err.message).setColor(Colors.error);
+          interaction.reply({ embeds: [embed], ephemeral: true });
         } else {
-          interaction.reply({
-            content: CustomErrors.UnknownError.message,
-            ephemeral: true
-          });
+          const embed = new EmbedBuilder()
+            .setTitle(CustomErrors.UnknownError.message)
+            .setColor(Colors.error);
+          interaction.reply({ embeds: [embed], ephemeral: true });
           console.error(err);
         }
       }
@@ -89,10 +96,17 @@ module.exports = {
           await button.execute(interaction);
         } catch (err) {
           if (err instanceof CustomError) {
-            interaction.reply({ content: err.message, ephemeral: true });
-          } else {
+            const embed = new EmbedBuilder().setTitle(err.message).setColor(Colors.error);
             interaction.reply({
-              content: CustomErrors.UnknownError.message,
+              embeds: [embed],
+              ephemeral: true
+            });
+          } else {
+            const embed = new EmbedBuilder()
+              .setTitle(CustomErrors.UnknownError.message)
+              .setColor(Colors.error);
+            interaction.reply({
+              embeds: [embed],
               ephemeral: true
             });
             console.error(err);
@@ -104,12 +118,14 @@ module.exports = {
           await selectMenu.execute(interaction);
         } catch (err) {
           if (err instanceof CustomError) {
-            interaction.update({ content: err.message, components: [] });
+            const embed = new EmbedBuilder().setTitle(err.message).setColor(Colors.error);
+            interaction.update({ embeds: [embed], components: [] });
           } else {
-            interaction.update({
-              content: CustomErrors.UnknownError.message,
-              components: []
-            });
+            const embed = new EmbedBuilder()
+              .setTitle(CustomErrors.UnknownError.message)
+              .setColor(Colors.error);
+            interaction.update({ embeds: [embed], components: [] });
+
             console.error(err);
           }
         }
@@ -120,12 +136,14 @@ module.exports = {
           await modal.execute(interaction);
         } catch (err) {
           if (err instanceof CustomError) {
-            interaction.reply({ content: err.message, ephemeral: true });
+            const embed = new EmbedBuilder().setTitle(err.message).setColor(Colors.error);
+            interaction.reply({ embeds: [embed], ephemeral: true });
           } else {
-            interaction.reply({
-              content: CustomErrors.UnknownError.message,
-              ephemeral: true
-            });
+            const embed = new EmbedBuilder()
+              .setTitle(CustomErrors.UnknownError.message)
+              .setColor(Colors.error);
+            interaction.reply({ embeds: [embed], ephemeral: true });
+
             console.error(err);
           }
         }
