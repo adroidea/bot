@@ -6,7 +6,7 @@ import {
   PermissionsBitField,
   SlashCommandBuilder
 } from "discord.js";
-import { getRandomRGB } from "../../utils/botUtil";
+import { Colors } from "../../utils/consts";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -33,7 +33,7 @@ module.exports = {
       .join("\n");
 
     const embed = new EmbedBuilder()
-      .setColor(getRandomRGB())
+      .setColor(Colors.random)
       .setTitle(`<a:flocon:1107932689291554897> Voici toutes les commandes du bot !`)
       .setDescription(`${commandsList}`)
       .addFields({

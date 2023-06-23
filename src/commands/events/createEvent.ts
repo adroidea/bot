@@ -8,10 +8,10 @@ import {
   PermissionsBitField,
   SlashCommandBuilder
 } from "discord.js";
+import { Colors } from "../../utils/consts";
 import { IEvent } from "../../models";
 import { addToAppropriateQueue } from "../../tasks/CustomEvents.queue";
 import eventService from "../../services/eventModuleService";
-import { getRandomRGB } from "../../utils/botUtil";
 
 const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
   new ButtonBuilder()
@@ -123,7 +123,7 @@ Acceptées :
         }
       ])
       .setFooter({ text: `${eventId}` })
-      .setColor(getRandomRGB())
+      .setColor(Colors.random)
       .setTimestamp();
 
     if (duration) {

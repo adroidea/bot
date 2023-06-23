@@ -7,7 +7,7 @@ import {
   PermissionsBitField,
   SlashCommandBuilder
 } from "discord.js";
-import { getRandomRGB } from "../../utils/botUtil";
+import { Colors } from "../../utils/consts";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -31,7 +31,7 @@ module.exports = {
 
     const questionEmbed = new EmbedBuilder()
       .setTitle(question)
-      .setColor(getRandomRGB())
+      .setColor(Colors.random)
       .setFooter({ text: "Question du jour" })
       .setTimestamp();
 
