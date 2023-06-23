@@ -11,19 +11,21 @@ export interface INotifications {
     privateLogChannel?: string;
     notLoggedChannels?: string[];
   };
-  twitchLive: {
-    enabled: boolean;
-    defaultProfilePicture?: string;
-    liveProfilePicture?: string;
-    streamerName: string;
-    infoLiveChannel?: string;
-    pingedRole?: string;
-    streamingRoleId?: string;
-    streamers?: {
-      streamer: string;
-      memberId: string;
-    }[];
-  };
+  twitchLive: ITwitchLive;
+}
+
+export interface ITwitchLive {
+  enabled: boolean;
+  defaultProfilePicture?: string;
+  liveProfilePicture?: string;
+  streamerName: string;
+  infoLiveChannel?: string;
+  pingedRole?: string;
+  streamingRoleId?: string;
+  streamers?: {
+    streamer: string;
+    memberId: string;
+  }[];
 }
 
 const notificationsSchema = new mongoose.Schema<INotifications>({
