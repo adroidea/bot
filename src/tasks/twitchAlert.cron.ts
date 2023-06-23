@@ -1,5 +1,5 @@
-import { Guild, GuildMember, Role, roleMention } from "discord.js";
-import { EmbedBuilder } from "@discordjs/builders";
+import { EmbedBuilder, Guild, GuildMember, Role, roleMention } from "discord.js";
+import { Colors } from "../utils/consts";
 import { GuildModel } from "../models";
 import TwitchApi from "node-twitch";
 import { client } from "../../index";
@@ -106,7 +106,7 @@ async function sendLiveEmbed(streamData: any, twitchLive: any, guild: Guild) {
     ])
     .setImage(`${streamData.getThumbnailUrl()}?r=${streamData.id}?`)
     .setThumbnail(`https://static-cdn.jtvnw.net/ttv-boxart/${streamData.game_id}-144x192.jpg`)
-    .setColor([176, 32, 32]);
+    .setColor(Colors.red);
 
   await channelMessage.send({
     content: `${twitchLive.pingedRole ? roleMention(twitchLive.pingedRole) + ", " : ""}${
@@ -128,7 +128,7 @@ async function sendGameChangeEmbed(streamData: any, twitchLive: any) {
         gameChangePartTwo
       )} **${streamData.game_name}**. ${randomizeArray(gameChangePartThree)}`
     )
-    .setColor([176, 32, 32]);
+    .setColor(Colors.red);
 
   await channelMessage.send({ embeds: [gameChangeEmbed] });
 }

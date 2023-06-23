@@ -1,6 +1,6 @@
-import { Client, Events, Message, TextChannel } from "discord.js";
+import { Client, EmbedBuilder, Events, Message, TextChannel } from "discord.js";
+import { Colors } from "../../utils/consts";
 import { CustomErrors } from "../../utils/errors";
-import { EmbedBuilder } from "@discordjs/builders";
 import { IGuild } from "../../models";
 import { OWNER_ID } from "../../utils/memberUtil";
 import guildService from "../../services/guildService";
@@ -52,7 +52,7 @@ module.exports = {
             }
           ])
           .setFooter({ text: `Message supprimé.` })
-          .setColor([176, 32, 32])
+          .setColor(Colors.red)
           .setTimestamp();
 
         await (logChannel as TextChannel).send({ embeds: [embed] });

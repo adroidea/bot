@@ -1,8 +1,7 @@
-import { Client, Events, GuildMember, TextChannel } from "discord.js";
+import { Client, EmbedBuilder, Events, GuildMember, TextChannel } from "discord.js";
+import { Colors } from "../../utils/consts";
 import { CustomErrors } from "../../utils/errors";
-import { EmbedBuilder } from "@discordjs/builders";
 import { IGuild } from "../../models";
-import { getRandomRGB } from "../../utils/botUtil";
 import guildService from "../../services/guildService";
 
 module.exports = {
@@ -60,7 +59,7 @@ module.exports = {
         iconURL: member.user.avatarURL()!
       })
       .setTimestamp()
-      .setColor(getRandomRGB());
+      .setColor(Colors.random);
     await (logChannel as TextChannel).send({ embeds: [embed] });
   }
 };
