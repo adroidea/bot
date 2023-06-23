@@ -1,9 +1,9 @@
+import { Colors } from "../utils/consts";
 import { EmbedBuilder } from "discord.js";
 import { IEvent } from "../models";
 import { Worker } from "bullmq";
 import { client } from "../../index";
 import eventService from "../services/eventModuleService";
-import { getRandomRGB } from "../utils/botUtil";
 
 const connection = {
   connection: {
@@ -23,7 +23,7 @@ export default function (): void {
       const embed = new EmbedBuilder()
         .setTitle("Début de l'évenement " + event.title)
         .setDescription(event.description)
-        .setColor(getRandomRGB())
+        .setColor(Colors.random)
         .setTimestamp();
 
       if (event.duration) {
