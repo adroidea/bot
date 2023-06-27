@@ -15,7 +15,7 @@ export default class Logger {
     const logTag = `[${tag}]`;
     const stream = error ? process.stderr : process.stdout;
     const item = format
-      .replace("{tstamp}", ansis.red(timestamp))
+      .replace("{tstamp}", ansis.gray(timestamp))
       .replace("{tag}", ansis[bgTagColor][tagColor](logTag))
       .replace("{txt}", ansis.white(content));
     stream.write(item);
