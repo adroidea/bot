@@ -53,11 +53,10 @@ module.exports = {
     });
 
     const pinnedMessages = await interaction.channel!.messages.fetchPinned();
-    pinnedMessages.forEach(async msg => {
-      if (msg.author.bot === true) {
-        await msg.unpin();
-      }
-    });
+
+    for (const pinnedMessage of pinnedMessages) {
+      if (pinnedMessage[1].author.bot === true) await pinnedMessage[1].unpin();
+    }
 
     const sentMessage = await interaction.channel!.send({
       embeds: [questionEmbed]
@@ -65,10 +64,12 @@ module.exports = {
     await sentMessage.pin();
 
     const pinMessages = await interaction.channel!.messages.fetch({ limit: 5 });
-    pinMessages.forEach(async msg => {
-      if (msg.type === MessageType.ChannelPinnedMessage && msg.id !== sentMessage.id) {
-        await msg.delete();
-      }
-    });
+    for (const pinMessage of pinMessages) {
+      if (
+        pinMessage[1].type === MessageType.ChannelPinnedMessage &&
+        pinMessage[1].id !== sentMessage.id
+      )
+        pinMessage[1].delete();
+    }
   }
 };
