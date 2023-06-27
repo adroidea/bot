@@ -22,10 +22,7 @@ export interface ITwitchLive {
   infoLiveChannel?: string;
   pingedRole?: string;
   streamingRoleId?: string;
-  streamers?: {
-    streamer: string;
-    memberId: string;
-  }[];
+  streamers?: IStreamersData[];
 }
 
 const notificationsSchema = new mongoose.Schema<INotifications>({
@@ -55,6 +52,11 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
     ]
   }
 });
+
+export interface IStreamersData {
+  streamer: string;
+  memberId: string;
+}
 
 export interface ITemporaryVoice {
   enabled: boolean;
