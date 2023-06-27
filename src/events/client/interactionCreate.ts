@@ -2,7 +2,6 @@ import {
   ButtonInteraction,
   Collection,
   CommandInteraction,
-  EmbedBuilder,
   Events,
   Interaction,
   ModalSubmitInteraction,
@@ -10,11 +9,11 @@ import {
   inlineCode
 } from "discord.js";
 import { CustomError, CustomErrors } from "../../utils/errors";
+import { Embed } from "../../utils/embedsUtil";
 import { IDiscordClient } from "../../client";
 import { IGuild } from "../../models";
 import { checkMemberPermission } from "../../utils/memberUtil";
 import guildService from "../../services/guildService";
-import { Colors } from "../../utils/consts";
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -49,10 +48,10 @@ module.exports = {
               const cdError = `Comme dirait Orel San, ça va trop vite. la commande ${inlineCode(
                 command.data.name
               )} est en cooldown, tu pourras l'utiliser <t:${expiredTimestamp}:R>.`;
-              const cdEmbed = new EmbedBuilder().setTitle(cdError).setColor(Colors.error);
+              const embed = Embed.error(cdError);
 
               return interaction.reply({
-                embeds: [cdEmbed],
+                embeds: [embed],
                 ephemeral: true
               });
             }
@@ -74,12 +73,10 @@ module.exports = {
         }
       } catch (err) {
         if (err instanceof CustomError) {
-          const embed = new EmbedBuilder().setTitle(err.message).setColor(Colors.error);
+          const embed = Embed.error(err.message);
           interaction.reply({ embeds: [embed], ephemeral: true });
         } else {
-          const embed = new EmbedBuilder()
-            .setTitle(CustomErrors.UnknownError.message)
-            .setColor(Colors.error);
+          const embed = Embed.error(CustomErrors.UnknownError.message);
           interaction.reply({ embeds: [embed], ephemeral: true });
           console.error(err);
         }
@@ -96,15 +93,13 @@ module.exports = {
           await button.execute(interaction);
         } catch (err) {
           if (err instanceof CustomError) {
-            const embed = new EmbedBuilder().setTitle(err.message).setColor(Colors.error);
+            const embed = Embed.error(err.message);
             interaction.reply({
               embeds: [embed],
               ephemeral: true
             });
           } else {
-            const embed = new EmbedBuilder()
-              .setTitle(CustomErrors.UnknownError.message)
-              .setColor(Colors.error);
+            const embed = Embed.error(CustomErrors.UnknownError.message);
             interaction.reply({
               embeds: [embed],
               ephemeral: true
@@ -118,12 +113,10 @@ module.exports = {
           await selectMenu.execute(interaction);
         } catch (err) {
           if (err instanceof CustomError) {
-            const embed = new EmbedBuilder().setTitle(err.message).setColor(Colors.error);
+            const embed = Embed.error(err.message);
             interaction.update({ embeds: [embed], components: [] });
           } else {
-            const embed = new EmbedBuilder()
-              .setTitle(CustomErrors.UnknownError.message)
-              .setColor(Colors.error);
+            const embed = Embed.error(CustomErrors.UnknownError.message);
             interaction.update({ embeds: [embed], components: [] });
 
             console.error(err);
@@ -136,14 +129,11 @@ module.exports = {
           await modal.execute(interaction);
         } catch (err) {
           if (err instanceof CustomError) {
-            const embed = new EmbedBuilder().setTitle(err.message).setColor(Colors.error);
+            const embed = Embed.error(err.message);
             interaction.reply({ embeds: [embed], ephemeral: true });
           } else {
-            const embed = new EmbedBuilder()
-              .setTitle(CustomErrors.UnknownError.message)
-              .setColor(Colors.error);
+            const embed = Embed.error(CustomErrors.UnknownError.message);
             interaction.reply({ embeds: [embed], ephemeral: true });
-
             console.error(err);
           }
         }
