@@ -49,7 +49,6 @@ describe("EventModel", () => {
     expect(updatedEvent).not.toBe(savedEvent);
     expect(updatedEvent?.title).toBe("Updated Test Event");
   });
-  
 
   it("should delete an existing event from the database", async () => {
     jest.setTimeout(45000);
@@ -86,4 +85,3 @@ it("should not save an event with a missing title", async () => {
     expect(error.errors.title).toBeDefined();
   }
 });
-
