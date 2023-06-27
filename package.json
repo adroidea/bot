@@ -27,9 +27,9 @@
   "dependencies": {
     "@discordjs/rest": "^1.5.0",
     "@types/node": "^18.14.0",
+    "ansis": "^1.5.5",
     "bullmq": "^3.12.0",
-    "chalk": "^4.1.2",
-    "dayjs": "^1.11.7",
+    "dayjs": "^1.11.8",
     "discord-api-types": "^0.37.35",
     "discord.js": "^14.11.0",
     "dotenv": "^16.0.3",

@@ -1,4 +1,4 @@
-import chalk, { BackgroundColor, ForegroundColor } from "chalk";
+import ansis, { AnsiColors } from "ansis";
 import dayjs from "dayjs";
 
 const format = "{tstamp} : {tag} {txt} \n";
@@ -6,8 +6,8 @@ const format = "{tstamp} : {tag} {txt} \n";
 export default class Logger {
   private static write(
     content: string,
-    tagColor: typeof ForegroundColor,
-    bgTagColor: typeof BackgroundColor,
+    tagColor: AnsiColors,
+    bgTagColor: AnsiColors,
     tag: string,
     error = false
   ) {
@@ -15,9 +15,9 @@ export default class Logger {
     const logTag = `[${tag}]`;
     const stream = error ? process.stderr : process.stdout;
     const item = format
-      .replace("{tstamp}", chalk.grey(timestamp))
-      .replace("{tag}", chalk[bgTagColor][tagColor](logTag))
-      .replace("{txt}", chalk.white(content));
+      .replace("{tstamp}", ansis.red(timestamp))
+      .replace("{tag}", ansis[bgTagColor][tagColor](logTag))
+      .replace("{txt}", ansis.white(content));
     stream.write(item);
   }
 
