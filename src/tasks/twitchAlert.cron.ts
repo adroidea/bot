@@ -1,6 +1,8 @@
-import { EmbedBuilder, Guild, GuildMember, Role, roleMention } from "discord.js";
+import { EmbedBuilder, Guild, GuildMember, Role, TextChannel, roleMention } from "discord.js";
+import { IStreamersData, ITwitchLive } from "../models/guildModel";
 import { Colors } from "../utils/consts";
 import { GuildModel } from "../models";
+import { Stream } from "node-twitch/dist/types/objects";
 import TwitchApi from "node-twitch";
 import { client } from "../../index";
 import cron from "node-cron";
@@ -15,88 +17,108 @@ const randomizeArray = (array: string[]) => {
   return array[randomNumber];
 };
 
-let isLiveMemory = false;
-let currentGame = "";
-let countdown = 0;
+interface LiveStatus {
+  isLive: boolean;
+  currentGame: string;
+}
+
+const streamersList = new Map<string, LiveStatus>();
 
 export default function (): void {
   cron.schedule("* * * * *", async () => {
     const guilds = await GuildModel.find().exec();
     for (const guild of guilds) {
       const guildData: Guild = client.guilds.cache.get(guild.id);
-      if (!guildData) return;
-      const { twitchLive } = guild.modules.notifications;
+      if (!guildData) continue;
+
+      const { enabled, twitchLive } = guild.modules.notifications;
       const { streamerName, streamers, streamingRoleId } = twitchLive;
+      if (!enabled || !twitchLive.enabled) continue;
 
       if (streamers && streamingRoleId) {
-        for (const streamer of streamers) {
-          toggleStreamersRole(guildData, streamer, streamingRoleId);
-        }
+        toggleStreamersRole(guildData, streamers, streamingRoleId);
       }
 
-      try {
-        const { data } = await twitch.getStreams({ channel: streamerName });
-        const streamData = data[0];
-        if (streamData?.type === "live") {
-          if (countdown <= 0) {
-            if (!isLiveMemory) {
-              sendLiveEmbed(streamData, twitchLive, guildData);
-              isLiveMemory = true;
-              currentGame = streamData.game_name;
-              countdown = 15;
-            }
-          }
-          if (streamData.game_name !== currentGame) {
-            sendGameChangeEmbed(streamData, twitchLive);
-            currentGame = streamData.game_name;
-          }
-        } else if (isLiveMemory) {
+      let liveStatus: LiveStatus = streamersList.get(guild.id) || {
+        isLive: false,
+        currentGame: ""
+      };
+
+      const { data } = await twitch.getStreams({ channel: streamerName });
+      const streamData = data[0];
+      if (streamData?.type === "live") {
+        if (!liveStatus.isLive) {
+          sendLiveEmbed(streamData, twitchLive, guildData);
           if (twitchLive.defaultProfilePicture) {
             await guildData.setIcon(twitchLive.defaultProfilePicture);
           }
-          isLiveMemory = false;
-          currentGame = "";
+          liveStatus.isLive = true;
         }
 
-        countdown--;
-      } catch (err: any) {
-        console.error(err);
+        if (streamData.game_name !== liveStatus.currentGame) {
+          sendGameChangeEmbed(streamData, twitchLive, guild.id);
+          liveStatus.currentGame = streamData.game_name;
+        }
+      } else if (liveStatus.isLive) {
+        if (twitchLive.defaultProfilePicture) {
+          await guildData.setIcon(twitchLive.defaultProfilePicture);
+        }
+        liveStatus.isLive = false;
+        liveStatus.currentGame = "";
       }
+
+      streamersList.set(guild.id, liveStatus);
     }
   });
 }
 
-async function toggleStreamersRole(guild: Guild, streamerData: any, streamingRoleId: string) {
-  const member: GuildMember | undefined = guild.members.cache.get(streamerData.memberId);
-  if (!member) return;
-  const role: Role | undefined = guild.roles.cache.get(streamingRoleId);
-  if (!role) return;
-  const hasRole: boolean = member.roles.cache.some(role => role.id === streamingRoleId);
-  const response: Promise<string> = (
-    await fetch(`https://api.crunchprank.net/twitch/uptime/${streamerData.streamer}`)
-  ).text();
-  if ((await response) === `${streamerData.streamer} is offline`) {
-    if (hasRole) {
-      member.roles.remove(role);
+async function toggleStreamersRole(
+  guild: Guild,
+  streamers: IStreamersData[],
+  streamingRoleId: string
+) {
+  for (const streamer of streamers) {
+    const member: GuildMember | undefined = guild.members.cache.get(streamer.memberId);
+    if (!member) return;
+
+    const role: Role | undefined = guild.roles.cache.get(streamingRoleId);
+    if (!role) return;
+
+    const hasRole: boolean = member.roles.cache.some(role => role.id === streamingRoleId);
+    const response: Promise<string> = (
+      await fetch(`https://api.crunchprank.net/twitch/uptime/${streamer.streamer}`)
+    ).text();
+
+    if ((await response) === `${streamer.streamer} is offline`) {
+      if (hasRole) {
+        member.roles.remove(role);
+      }
+    } else if (!hasRole) {
+      member.roles.add(role);
     }
-  } else if (!hasRole) {
-    member.roles.add(role);
   }
 }
 
-async function sendLiveEmbed(streamData: any, twitchLive: any, guild: Guild) {
-  const channelMessage = client.channels.cache.get(twitchLive.infoLiveChannel);
+async function sendLiveEmbed(streamData: Stream, twitchLive: ITwitchLive, guild: Guild) {
+  const { user_name, game_id, title } = streamData;
+  const { infoLiveChannel, pingedRole } = twitchLive;
+
+  const channel: TextChannel | undefined = client.channels.cache.get(
+    infoLiveChannel
+  ) as TextChannel;
+  if (!channel) return;
+
   const twitchAvatarURL: string = await (
-    await fetch(`https://api.crunchprank.net/twitch/avatar/${streamData.user_name}`)
+    await fetch(`https://api.crunchprank.net/twitch/avatar/${user_name}`)
   ).text();
 
   const embed = new EmbedBuilder()
     .setAuthor({
       iconURL: twitchAvatarURL,
-      name: `${streamData.user_name} est en live !`
+      name: `${user_name} est en live !`
     })
-    .setTitle(`${streamData.title}`)
-    .setURL(`https://twitch.tv/${streamData.user_name}`)
+    .setTitle(`${title}`)
+    .setURL(`https://twitch.tv/${user_name}`)
     .addFields([
       {
         name: `**Jeu**`,
@@ -105,11 +127,11 @@ async function sendLiveEmbed(streamData: any, twitchLive: any, guild: Guild) {
       }
     ])
     .setImage(`${streamData.getThumbnailUrl()}?r=${streamData.id}?`)
-    .setThumbnail(`https://static-cdn.jtvnw.net/ttv-boxart/${streamData.game_id}-144x192.jpg`)
+    .setThumbnail(`https://static-cdn.jtvnw.net/ttv-boxart/${game_id}-144x192.jpg`)
     .setColor(Colors.red);
 
-  await channelMessage.send({
-    content: `${twitchLive.pingedRole ? roleMention(twitchLive.pingedRole) + ", " : ""}${
+  await channel.send({
+    content: `${pingedRole ? roleMention(pingedRole) + ", " : ""}${
       streamData.user_name
     } ${randomizeArray(liveStart)} **__${streamData.game_name}__**.`,
     embeds: [embed]
@@ -120,7 +142,8 @@ async function sendLiveEmbed(streamData: any, twitchLive: any, guild: Guild) {
   }
 }
 
-async function sendGameChangeEmbed(streamData: any, twitchLive: any) {
+async function sendGameChangeEmbed(streamData: Stream, twitchLive: ITwitchLive, guildId: string) {
+  const currentGame = streamersList.get(guildId)?.currentGame;
   const channelMessage = client.channels.cache.get(twitchLive.infoLiveChannel);
   const gameChangeEmbed = new EmbedBuilder()
     .setDescription(
