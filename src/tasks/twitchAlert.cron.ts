@@ -20,6 +20,7 @@ const randomizeArray = (array: string[]) => {
 interface LiveStatus {
   isLive: boolean;
   currentGame: string;
+  cooldown: number | null;
 }
 
 const streamersList = new Map<string, LiveStatus>();
@@ -39,32 +40,34 @@ export default function (): void {
         toggleStreamersRole(guildData, streamers, streamingRoleId);
       }
 
-      let liveStatus: LiveStatus = streamersList.get(guild.id) || {
+      const liveStatus: LiveStatus = streamersList.get(guild.id) ?? {
         isLive: false,
-        currentGame: ""
+        currentGame: "",
+        cooldown: null
       };
 
       const { data } = await twitch.getStreams({ channel: streamerName });
       const streamData = data[0];
       if (streamData?.type === "live") {
-        if (!liveStatus.isLive) {
+        if (!liveStatus.isLive && !liveStatus.cooldown) {
           sendLiveEmbed(streamData, twitchLive, guildData);
-          if (twitchLive.defaultProfilePicture) {
-            await guildData.setIcon(twitchLive.defaultProfilePicture);
-          }
           liveStatus.isLive = true;
+          liveStatus.currentGame = streamData.game_name;
+          liveStatus.cooldown = 15;
         }
 
         if (streamData.game_name !== liveStatus.currentGame) {
           sendGameChangeEmbed(streamData, twitchLive, guild.id);
           liveStatus.currentGame = streamData.game_name;
         }
+        liveStatus.cooldown = liveStatus.cooldown ? --liveStatus.cooldown : liveStatus.cooldown;
       } else if (liveStatus.isLive) {
         if (twitchLive.defaultProfilePicture) {
           await guildData.setIcon(twitchLive.defaultProfilePicture);
         }
         liveStatus.isLive = false;
         liveStatus.currentGame = "";
+        liveStatus.cooldown = null;
       }
 
       streamersList.set(guild.id, liveStatus);
