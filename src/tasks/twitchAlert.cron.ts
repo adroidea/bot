@@ -1,7 +1,6 @@
 import { EmbedBuilder, Guild, GuildMember, Role, TextChannel, roleMention } from "discord.js";
-import { IStreamersData, ITwitchLive } from "../models/guildModel";
+import { GuildModel, IStreamersData, ITwitchLive } from "../models";
 import { Colors } from "../utils/consts";
-import { GuildModel } from "../models";
 import { Stream } from "node-twitch/dist/types/objects";
 import TwitchApi from "node-twitch";
 import { client } from "../../index";
