@@ -5,15 +5,19 @@ import {
   IEventManagement,
   IGuild,
   INotifications,
-  ITemporaryVoice
+  IStreamersData,
+  ITemporaryVoice,
+  ITwitchLive
 } from "./guildModel";
 
 export {
+  EventModel,
   GuildModel,
+  IEvent,
+  IEventManagement,
   IGuild,
   INotifications,
+  IStreamersData,
   ITemporaryVoice,
-  IEventManagement,
-  EventModel,
-  IEvent
+  ITwitchLive
 };

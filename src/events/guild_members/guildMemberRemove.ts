@@ -35,7 +35,7 @@ module.exports = {
       .setThumbnail(
         "https://cdn.discordapp.com/attachments/779901444408606730/918202331743539200/unknown.png"
       )
-      .setTitle(`${member.user.tag} nous a quitté!`)
+      .setTitle(`${member.user.username} nous a quitté!`)
       .setDescription(`Weaklings Die. Big Deal.`)
       .addFields(
         {
