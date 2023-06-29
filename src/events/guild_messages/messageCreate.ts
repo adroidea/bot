@@ -3,10 +3,10 @@ import { Client, Events, Message } from "discord.js";
 module.exports = {
   name: Events.MessageCreate,
   execute(client: Client, message: Message) {
+    if (message.author.bot) return;
     //Accepts (case insensitive) : je suis / jsuis / j'suis
     const frenchDadRegex = /j(?:e+\s|')?suis/i;
     const frenchMatch = frenchDadRegex.exec(message.content);
-    if (message.author.bot) return;
     let randomReact = 1;
     switch (true) {
       case /\ballo\b/gi.test(message.content):

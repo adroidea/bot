@@ -1,4 +1,4 @@
-import { GuildModel } from "../../src/models/guildModel";
+import { GuildModel } from "../../src/models";
 import mongoose from "mongoose";
 require("dotenv").config();
 

@@ -31,7 +31,7 @@ module.exports = {
       if (oldMember.nickname !== newMember.nickname) {
         const embed = new EmbedBuilder()
           .setAuthor({
-            name: `${newMember.user.tag}`,
+            name: `${newMember.user.username}`,
             iconURL: newMember.avatarURL()!
           })
           .setDescription(`${userMention(newMember.id)} a changé de pseudo`)
