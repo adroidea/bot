@@ -1,20 +1,20 @@
 module.exports = {
     root: true,
-    parser: "@typescript-eslint/parser",
-    plugins: ["@typescript-eslint", "jsdoc", "prettier"],
-    extends: ["eslint:recommended", "prettier"],
+    parser: '@typescript-eslint/parser',
+    plugins: ['@typescript-eslint', 'jsdoc', 'prettier'],
+    extends: ['eslint:recommended', 'prettier'],
     parserOptions: {
-        project: ["./tsconfig.json","./test/tsconfig.json"]
+        project: ['./tsconfig.json', './test/tsconfig.json']
     },
-    ignorePatterns: ["node_modules/"],
+    ignorePatterns: ['node_modules/'],
     rules: {
-        "@typescript-eslint/no-unused-vars": 0,
-        "import/prefer-default-export": 0,
-        "import/no-cycle": 0,
-        "react/jsx-filename-extension": 0,
-        "class-methods-use-this": 0,
-        "max-len": [
-            "error",
+        '@typescript-eslint/no-unused-vars': 0,
+        'import/prefer-default-export': 0,
+        'import/no-cycle': 0,
+        'react/jsx-filename-extension': 0,
+        'class-methods-use-this': 0,
+        'max-len': [
+            'error',
             {
                 code: 150,
                 ignoreComments: true,
@@ -25,30 +25,30 @@ module.exports = {
                 ignoreRegExpLiterals: true
             }
         ],
-        "no-restricted-syntax": [
-            "error",
+        'no-restricted-syntax': [
+            'error',
             {
-                selector: "ForInStatement",
+                selector: 'ForInStatement',
                 message:
-                    "for..in loops iterate over the entire prototype chain, which is virtually never what you want. Use Object.{keys,values,entries}, and iterate over the resulting array."
+                    'for..in loops iterate over the entire prototype chain, which is virtually never what you want. Use Object.{keys,values,entries}, and iterate over the resulting array.'
             },
             {
-                selector: "LabeledStatement",
+                selector: 'LabeledStatement',
                 message:
-                    "Labels are a form of GOTO; using them makes code confusing and hard to maintain and understand."
+                    'Labels are a form of GOTO; using them makes code confusing and hard to maintain and understand.'
             },
             {
-                selector: "WithStatement",
+                selector: 'WithStatement',
                 message:
-                    "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
+                    '`with` is disallowed in strict mode because it makes code impossible to predict and optimize.'
             }
         ],
-        "capitalized-comments": "error",
-        "eqeqeq": ["error", "always"],
-        "no-constant-condition": "off",
-        "no-duplicate-imports": "error",
-        "no-undef": 0,
-        "no-unreachable-loop": "error",
-        "sort-imports": "error"
+        'capitalized-comments': 'error',
+        eqeqeq: ['error', 'always'],
+        'no-constant-condition': 'off',
+        'no-duplicate-imports': 'error',
+        'no-undef': 0,
+        'no-unreachable-loop': 'error',
+        'sort-imports': 'error'
     }
 };
