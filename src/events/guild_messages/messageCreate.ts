@@ -20,7 +20,7 @@ module.exports = {
                 );
 
             case /jpp/gim.test(message.content):
-                if (randomReact > 0.80) {
+                if (randomReact > 0.8) {
                     return message.reply(
                         'https://cdn.discordapp.com/attachments/771934231647223848/938389858802606160/jpp_jean-pierre.png'
                     );
@@ -28,7 +28,7 @@ module.exports = {
                 return;
 
             case /quoi/gim.test(message.content):
-                if (randomReact > 0.80) {
+                if (randomReact > 0.8) {
                     return message.reply('feur <3');
                 }
                 return;
