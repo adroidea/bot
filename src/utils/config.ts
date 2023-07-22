@@ -1,3 +1,3 @@
 export default {
-  OWNER_ID: "294916386072035328"
+    OWNER_ID: '294916386072035328'
 };

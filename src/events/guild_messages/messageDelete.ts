@@ -1,62 +1,62 @@
-import { Client, EmbedBuilder, Events, Message, TextChannel } from "discord.js";
-import { Colors } from "../../utils/consts";
-import { CustomErrors } from "../../utils/errors";
-import { IGuild } from "../../models";
-import { OWNER_ID } from "../../utils/memberUtil";
-import guildService from "../../services/guildService";
+import { Client, EmbedBuilder, Events, Message, TextChannel } from 'discord.js';
+import { Colors } from '../../utils/consts';
+import { CustomErrors } from '../../utils/errors';
+import { IGuild } from '../../models';
+import { OWNER_ID } from '../../utils/memberUtil';
+import guildService from '../../services/guildService';
 
 module.exports = {
-  name: Events.MessageDelete,
-  async execute(client: Client, message: Message) {
-    let guildSettings: IGuild | null = await guildService.getGuildById(message.guildId!);
-    if (!guildSettings) {
-      guildSettings = await guildService.createGuild(message.guildId!);
-    }
+    name: Events.MessageDelete,
+    async execute(client: Client, message: Message) {
+        let guildSettings: IGuild | null = await guildService.getGuildById(message.guildId!);
+        if (!guildSettings) {
+            guildSettings = await guildService.createGuild(message.guildId!);
+        }
 
-    if (
-      !guildSettings.modules.notifications.enabled &&
-      !guildSettings.modules.notifications.privateLogs.enabled
-    )
-      throw CustomErrors.ModuleNotEnabledError;
+        if (
+            !guildSettings.modules.notifications.enabled &&
+            !guildSettings.modules.notifications.privateLogs.enabled
+        )
+            throw CustomErrors.ModuleNotEnabledError;
 
-    const moduleSettings = guildSettings.modules.notifications.privateLogs;
-    const registeredLogChannel = moduleSettings.privateLogChannel;
+        const moduleSettings = guildSettings.modules.notifications.privateLogs;
+        const registeredLogChannel = moduleSettings.privateLogChannel;
 
-    if (!registeredLogChannel) {
-      return;
-    }
+        if (!registeredLogChannel) {
+            return;
+        }
 
-    const notLoggedChannels = moduleSettings.notLoggedChannels;
+        const notLoggedChannels = moduleSettings.notLoggedChannels;
 
-    const logChannel = client.channels.cache.get(registeredLogChannel);
+        const logChannel = client.channels.cache.get(registeredLogChannel);
 
-    if (message.content && logChannel) {
-      if (
-        message.author.id !== OWNER_ID &&
-        !message.author.bot &&
-        !notLoggedChannels?.includes(message.channelId)
-      ) {
-        const embed = new EmbedBuilder()
-          .setAuthor({
-            name: `${message.author.username} (${message.author.id})`,
-            iconURL: message.author.avatarURL()!
-          })
-          .setDescription(
-            `Message supprimé de ${message.author.username} dans <#${message.channelId}>, [voir le salon](${message.url})`
-          )
-          .addFields([
-            {
-              name: `Message supprimé :`,
-              value: "❄ " + message.content,
-              inline: false
+        if (message.content && logChannel) {
+            if (
+                message.author.id !== OWNER_ID &&
+                !message.author.bot &&
+                !notLoggedChannels?.includes(message.channelId)
+            ) {
+                const embed = new EmbedBuilder()
+                    .setAuthor({
+                        name: `${message.author.username} (${message.author.id})`,
+                        iconURL: message.author.avatarURL()!
+                    })
+                    .setDescription(
+                        `Message supprimé de ${message.author.username} dans <#${message.channelId}>, [voir le salon](${message.url})`
+                    )
+                    .addFields([
+                        {
+                            name: `Message supprimé :`,
+                            value: '❄ ' + message.content,
+                            inline: false
+                        }
+                    ])
+                    .setFooter({ text: `Message supprimé.` })
+                    .setColor(Colors.red)
+                    .setTimestamp();
+
+                await (logChannel as TextChannel).send({ embeds: [embed] });
             }
-          ])
-          .setFooter({ text: `Message supprimé.` })
-          .setColor(Colors.red)
-          .setTimestamp();
-
-        await (logChannel as TextChannel).send({ embeds: [embed] });
-      }
+        }
     }
-  }
 };
