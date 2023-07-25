@@ -1,8 +1,7 @@
 import { Client, EmbedBuilder, Events, Message, TextChannel } from 'discord.js';
-import { Colors } from '../../utils/consts';
+import { Colors, OWNER_ID } from '../../utils/consts';
 import { CustomErrors } from '../../utils/errors';
 import { IGuild } from '../../models';
-import { OWNER_ID } from '../../utils/memberUtil';
 import guildService from '../../services/guildService';
 
 module.exports = {
