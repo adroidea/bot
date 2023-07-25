@@ -3,12 +3,14 @@ import {
     CommandInteraction,
     EmbedBuilder,
     PermissionsBitField,
-    SlashCommandBuilder,
     codeBlock
 } from 'discord.js';
 
 module.exports = {
-    data: new SlashCommandBuilder().setName('pingea').setDescription('Renvoie le ping du bot'),
+    data: {
+        name: 'pingea',
+        description: 'Renvoie le ping du bot'
+    },
     category: 'utils',
     cooldown: 10,
     permissions: [PermissionsBitField.Flags.SendMessages],

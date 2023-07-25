@@ -1,55 +1,63 @@
 import {
+    ApplicationCommandOptionType,
     ChannelType,
     ChatInputCommandInteraction,
     Client,
     CommandInteraction,
     GuildChannel,
     GuildMember,
-    PermissionsBitField,
-    SlashCommandBuilder
+    PermissionsBitField
 } from 'discord.js';
 import { CustomErrors } from '../../utils/errors';
 import { IGuild } from '../../models';
 import { checkTemporaryVoiceModule } from '../../utils/botUtil';
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('voice')
-        .setDescription('Gère ton salon vocal temporaire')
-
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('ban')
-                .setDescription('Bannir un membre de ton salon')
-                .addUserOption(option =>
-                    option.setName('membre').setDescription('Le membre à bannir').setRequired(true)
-                )
-        )
-
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('unban')
-                .setDescription('Débannir un utilisateur de ton salon')
-                .addUserOption(option =>
-                    option
-                        .setName('membre')
-                        .setDescription('Le membre à débannir')
-                        .setRequired(true)
-                )
-        )
-
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('limite')
-                .setDescription('Limiter le nombre de membres dans ton salon')
-                .addIntegerOption(option =>
-                    option
-                        .setName('limite')
-                        .setDescription('1 à 99, 0 retire la limite')
-                        .setMaxValue(99)
-                        .setRequired(true)
-                )
-        ),
+    data: {
+        name: 'voice',
+        description: 'Gère ton salon vocal temporaire',
+        options: [
+            {
+                name: 'ban',
+                description: 'Bannir un membre de ton salon',
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: 'membre',
+                        description: 'Le membre à bannir',
+                        type: ApplicationCommandOptionType.User,
+                        required: true
+                    }
+                ]
+            },
+            {
+                name: 'unban',
+                description: 'Débannir un utilisateur de ton salon',
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: 'membre',
+                        description: 'Le membre à débannir',
+                        type: ApplicationCommandOptionType.User,
+                        required: true
+                    }
+                ]
+            },
+            {
+                name: 'limite',
+                description: 'Limiter le nombre de membres dans ton salon',
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: 'limite',
+                        description: '1 à 99, 0 retire la limite',
+                        type: ApplicationCommandOptionType.Number,
+                        required: true
+                    }
+                ]
+            }
+        ]
+    },
     category: 'voice',
     cooldown: 30,
     permissions: [PermissionsBitField.Flags.SendMessages],
@@ -104,7 +112,7 @@ module.exports = {
             }
 
             case 'limite': {
-                const userLimit = (interaction as ChatInputCommandInteraction).options.getInteger(
+                const userLimit = (interaction as ChatInputCommandInteraction).options.getNumber(
                     'limite',
                     true
                 );

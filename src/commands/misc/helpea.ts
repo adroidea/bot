@@ -1,23 +1,26 @@
 import {
     ApplicationCommand,
+    ApplicationCommandOptionType,
     Client,
     CommandInteraction,
     EmbedBuilder,
-    PermissionsBitField,
-    SlashCommandBuilder
+    PermissionsBitField
 } from 'discord.js';
 import { Colors } from '../../utils/consts';
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('helpea')
-        .setDescription('Affiche un message avec toutes les commandes du bot')
-        .addStringOption(option =>
-            option
-                .setName('commande')
-                .setDescription('La méchante commande qui te pose souci')
-                .setRequired(false)
-        ),
+    data: {
+        name: 'helpea',
+        description: 'Affiche un message avec toutes les commandes du bot',
+        options: [
+            {
+                name: 'commande',
+                description: 'La méchante commande qui te pose souci',
+                type: ApplicationCommandOptionType.String,
+                required: false
+            }
+        ]
+    },
     category: 'utils',
     permissions: [PermissionsBitField.Flags.SendMessages],
     usage: 'helpea <command>',

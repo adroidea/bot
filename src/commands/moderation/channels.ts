@@ -1,56 +1,61 @@
 import {
+    ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     Client,
     CommandInteraction,
-    PermissionsBitField,
-    SlashCommandBuilder
+    PermissionsBitField
 } from 'discord.js';
 import { CustomErrors } from '../../utils/errors';
 import { IGuild } from '../../models';
 import { checkTemporaryVoiceModule } from '../../utils/botUtil';
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('channel')
-        .setDescription('[ADMIN] Gère les salons du serveur')
-
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('edit')
-                .setDescription('Configure les différents salons')
-                .addStringOption(option =>
-                    option
-                        .setName('channels-to-edit')
-                        .setDescription('Configuration des différents salons')
-                        .setRequired(true)
-                        .addChoices(
+    data: {
+        name: 'channel',
+        description: '[ADMIN] Gère les salons du serveur',
+        options: [
+            {
+                name: 'edit',
+                description: 'Configure les différents salons',
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: 'channels-to-edit',
+                        description: 'Configuration des différents salons',
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                        choices: [
                             { name: 'all', value: 'all' },
                             { name: 'public-log', value: 'public-log' },
                             { name: 'private-log', value: 'private-log' },
                             { name: 'protected-voice', value: 'protected-voice' },
                             { name: 'host-voice', value: 'host-voice' },
                             { name: 'not-logged-channel', value: 'not-logged-channel' }
-                        )
-                )
-        )
-
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('list')
-                .setDescription('Liste des différents salons')
-                .addStringOption(option =>
-                    option
-                        .setName('channels-list')
-                        .setDescription('Salons à lister')
-                        .setRequired(true)
-                        .addChoices(
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'list',
+                description: 'Liste des différents salons',
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: 'channels-list',
+                        description: 'Salons à lister',
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                        choices: [
                             { name: 'all', value: 'all' },
                             { name: 'host-voice', value: 'host-voice' },
                             { name: 'protected-voice', value: 'protected-voice' },
                             { name: 'textual-logs', value: 'textual-logs' }
-                        )
-                )
-        ),
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
     category: 'moderation',
     cooldown: 30,
     permissions: [PermissionsBitField.Flags.Administrator],

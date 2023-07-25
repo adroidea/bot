@@ -1,24 +1,33 @@
 import {
+    ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     Client,
     EmbedBuilder,
     GuildMember,
     MessageType,
-    PermissionsBitField,
-    SlashCommandBuilder
+    PermissionsBitField
 } from 'discord.js';
 import { Colors } from '../../utils/consts';
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('qdj')
-        .setDescription("Envoie la question du jour et l'épingle")
-        .addStringOption(option =>
-            option.setName('question').setDescription('question du jour').setRequired(true)
-        )
-        .addUserOption(option =>
-            option.setName('auteur').setDescription('Auteur de la question').setRequired(false)
-        ),
+    data: {
+        name: 'qdj',
+        description: "Envoie la question du jour et l'épingle",
+        options: [
+            {
+                name: 'question',
+                description: 'question du jour',
+                type: ApplicationCommandOptionType.String,
+                required: true
+            },
+            {
+                name: 'auteur',
+                description: 'Auteur de la question',
+                type: ApplicationCommandOptionType.User,
+                required: false
+            }
+        ]
+    },
     category: 'misc',
     permissions: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ManageMessages],
     usage: 'qdj [question] <auteur>',
