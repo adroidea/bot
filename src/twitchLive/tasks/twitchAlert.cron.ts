@@ -160,6 +160,7 @@ async function sendGameChangeEmbed(streamData: Stream, twitchLive: ITwitchLive, 
                 gameChangePartTwo
             )} **${streamData.game_name}**. ${randomizeArray(gameChangePartThree)}`
         )
+        .setThumbnail(`https://static-cdn.jtvnw.net/ttv-boxart/${streamData.game_id}-144x192.jpg`)
         .setColor(Colors.red);
 
     await channelMessage.send({ embeds: [gameChangeEmbed] });
