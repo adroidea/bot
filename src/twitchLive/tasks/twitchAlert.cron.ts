@@ -1,9 +1,9 @@
 import { EmbedBuilder, Guild, GuildMember, Role, TextChannel, roleMention } from 'discord.js';
-import { GuildModel, IStreamersData, ITwitchLive } from '../models';
-import { Colors } from '../utils/consts';
+import { GuildModel, IStreamersData, ITwitchLive } from '../../models';
+import { Colors } from '../../utils/consts';
 import { Stream } from 'node-twitch/dist/types/objects';
 import TwitchApi from 'node-twitch';
-import { client } from '../index';
+import { client } from '../../index';
 import cron from 'node-cron';
 
 if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
@@ -35,8 +35,8 @@ export default function (): void {
             const guildData: Guild = client.guilds.cache.get(guild.id);
             if (!guildData) continue;
 
-            const { enabled, twitchLive } = guild.modules.notifications;
-            const { streamerName, streamers, streamingRoleId } = twitchLive;
+            const { twitchLive } = guild.modules;
+            const { enabled, streamerName, streamers, streamingRoleId } = twitchLive;
             if (!enabled || !twitchLive.enabled) continue;
 
             if (streamers && streamingRoleId) {

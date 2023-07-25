@@ -1,3 +1,4 @@
+import { ITwitchLive, twitchLiveSchema } from '../twitchLive/models';
 import mongoose from 'mongoose';
 
 export interface INotifications {
@@ -11,18 +12,6 @@ export interface INotifications {
         privateLogChannel?: string;
         notLoggedChannels?: string[];
     };
-    twitchLive: ITwitchLive;
-}
-
-export interface ITwitchLive {
-    enabled: boolean;
-    defaultProfilePicture?: string;
-    liveProfilePicture?: string;
-    streamerName: string;
-    infoLiveChannel?: string;
-    pingedRole?: string;
-    streamingRoleId?: string;
-    streamers?: IStreamersData[];
 }
 
 const notificationsSchema = new mongoose.Schema<INotifications>({
@@ -35,28 +24,8 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
         enabled: { type: Boolean, default: false },
         privateLogChannel: { type: String, default: '' },
         notLoggedChannels: { type: [String], default: [] }
-    },
-    twitchLive: {
-        enabled: { type: Boolean, default: false },
-        defaultProfilePicture: { type: String, default: '' },
-        liveProfilePicture: { type: String, default: '' },
-        streamerName: { type: String, default: 'adan_ea' },
-        infoLiveChannel: { type: String, default: '' },
-        pingedRole: { type: String, default: '' },
-        streamingRoleId: { type: String, default: '' },
-        streamers: [
-            {
-                streamer: String,
-                memberId: String
-            }
-        ]
     }
 });
-
-export interface IStreamersData {
-    streamer: string;
-    memberId: string;
-}
 
 export interface ITemporaryVoice {
     enabled: boolean;
@@ -81,9 +50,10 @@ const eventManagementSchema = new mongoose.Schema<IEventManagement>({
 export interface IGuild {
     id: string;
     modules: {
+        eventManagement: IEventManagement;
         notifications: INotifications;
         temporaryVoice: ITemporaryVoice;
-        eventManagement: IEventManagement;
+        twitchLive: ITwitchLive;
     };
 }
 
@@ -93,9 +63,10 @@ const guildSchema = new mongoose.Schema<IGuild>({
         required: true
     },
     modules: {
+        eventManagement: eventManagementSchema,
         notifications: notificationsSchema,
         temporaryVoice: temporaryVoiceSchema,
-        eventManagement: eventManagementSchema
+        twitchLive: twitchLiveSchema
     }
 });
 

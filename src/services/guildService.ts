@@ -14,22 +14,22 @@ async function createGuild(id: string): Promise<IGuild> {
                     enabled: false,
                     privateLogChannel: '',
                     notLoggedChannels: []
-                },
-                twitchLive: {
-                    enabled: false,
-                    defaultProfilePicture: '',
-                    liveProfilePicture: '',
-                    streamerName: 'adan_ea',
-                    infoLiveChannel: '',
-                    pingedRole: '',
-                    streamingRoleId: '',
-                    streamers: [
-                        {
-                            streamer: '',
-                            memberId: ''
-                        }
-                    ]
                 }
+            },
+            twitchLive: {
+                enabled: false,
+                defaultProfilePicture: '',
+                liveProfilePicture: '',
+                streamerName: 'adan_ea',
+                infoLiveChannel: '',
+                pingedRole: '',
+                streamingRoleId: '',
+                streamers: [
+                    {
+                        streamer: '',
+                        memberId: ''
+                    }
+                ]
             },
             temporaryVoice: {
                 enabled: false,
