@@ -1,3 +1,4 @@
+import { IQOtD, qotdSchema } from '../qotd/models';
 import { ITwitchLive, twitchLiveSchema } from '../twitchLive/models';
 import mongoose from 'mongoose';
 
@@ -52,6 +53,7 @@ export interface IGuild {
     modules: {
         eventManagement: IEventManagement;
         notifications: INotifications;
+        qotd: IQOtD;
         temporaryVoice: ITemporaryVoice;
         twitchLive: ITwitchLive;
     };
@@ -65,6 +67,7 @@ const guildSchema = new mongoose.Schema<IGuild>({
     modules: {
         eventManagement: eventManagementSchema,
         notifications: notificationsSchema,
+        qotd: qotdSchema,
         temporaryVoice: temporaryVoiceSchema,
         twitchLive: twitchLiveSchema
     }
