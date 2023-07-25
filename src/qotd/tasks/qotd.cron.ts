@@ -1,4 +1,4 @@
-import { EmbedBuilder, Guild, MessageType, User } from 'discord.js';
+import { EmbedBuilder, Guild, MessageType, TextBasedChannel, User } from 'discord.js';
 import { GuildModel, IQOtD, IQuestions, QuestionsModel } from '../../models';
 import { Colors } from '../../utils/consts';
 import Logger from '../../utils/logger';
@@ -26,7 +26,7 @@ export default function (): void {
                 const { question, authorId } = randomQuestion[0];
 
                 const channel = guild.channels.cache.get(qotd.channelId);
-                if (!channel || !channel.isTextBased()) continue;
+                if (!channel?.isTextBased()) continue;
 
                 const questionEmbed = new EmbedBuilder()
                     .setTitle(question)
@@ -43,32 +43,40 @@ export default function (): void {
                     });
                 }
 
-                // Delete all pinned messages from bots
-                const pinnedMessages = await channel.messages.fetchPinned();
+                await deletePinnedMessages(channel);
 
-                for (const pinnedMessage of pinnedMessages) {
-                    if (pinnedMessage[1].author.bot === true) await pinnedMessage[1].unpin();
-                }
-
-                // Send question and pin it
                 const sentMessage = await channel.send({
                     content: qotd.pingedRoleId ? `<@&${qotd.pingedRoleId}>` : '',
                     embeds: [questionEmbed]
                 });
                 await sentMessage.pin();
 
-                // Delete the notification "pinned" message
-                const pinMessages = await channel.messages.fetch({ limit: 5 });
-                for (const pinMessage of pinMessages) {
-                    if (
-                        pinMessage[1].type === MessageType.ChannelPinnedMessage &&
-                        pinMessage[1].id !== sentMessage.id
-                    )
-                        pinMessage[1].delete();
-                }
+                await deletePinNotification(channel, sentMessage.id);
             } catch (error: any) {
                 Logger.error('Error sending question:', error);
             }
         }
     });
 }
+
+const deletePinnedMessages = async (channel: TextBasedChannel): Promise<void> => {
+    const pinnedMessages = await channel.messages.fetchPinned();
+
+    for (const pinnedMessage of pinnedMessages) {
+        if (pinnedMessage[1].author.bot === true) await pinnedMessage[1].unpin();
+    }
+};
+
+const deletePinNotification = async (
+    channel: TextBasedChannel,
+    sentMessageId: string
+): Promise<void> => {
+    const pinMessages = await channel.messages.fetch({ limit: 5 });
+    for (const pinMessage of pinMessages) {
+        if (
+            pinMessage[1].type === MessageType.ChannelPinnedMessage &&
+            pinMessage[1].id !== sentMessageId
+        )
+            pinMessage[1].delete();
+    }
+};
