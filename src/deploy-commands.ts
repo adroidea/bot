@@ -22,7 +22,7 @@ export const regCMD = (clientId: string) => {
                 readCommands(filePath);
             } else if (file.endsWith('.js')) {
                 const command = require(filePath);
-                commands.push(command.data.toJSON());
+                commands.push(command.data);
             }
         }
     }

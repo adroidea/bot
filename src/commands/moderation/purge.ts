@@ -1,11 +1,11 @@
 import {
+    ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     Client,
     EmbedBuilder,
     GuildMember,
     Message,
     PermissionsBitField,
-    SlashCommandBuilder,
     TextChannel
 } from 'discord.js';
 
@@ -13,23 +13,25 @@ import { IGuild } from '../../models';
 import { checkNotificationsSubModule } from '../../utils/botUtil';
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('purge')
-        .setDescription(
-            "Suppression de masse d'un certain nombre de messages dans un salon ou d'un utilisateur"
-        )
-        .addNumberOption(option =>
-            option
-                .setName('montant')
-                .setDescription('Nombre de messages à supprimer')
-                .setRequired(true)
-        )
-        .addUserOption(option =>
-            option
-                .setName('cible')
-                .setDescription('La victime de cette suppression de masse')
-                .setRequired(false)
-        ),
+    data: {
+        name: 'purge',
+        description:
+            "Suppression de masse d'un certain nombre de messages dans un salon ou d'un utilisateur",
+        options: [
+            {
+                name: 'montant',
+                description: 'Nombre de messages à supprimer',
+                type: ApplicationCommandOptionType.Number,
+                required: true
+            },
+            {
+                name: 'cible',
+                description: 'La victime de cette suppression de masse',
+                type: ApplicationCommandOptionType.User,
+                required: false
+            }
+        ]
+    },
     category: 'moderation',
     permissions: [PermissionsBitField.Flags.ManageMessages],
     usage: 'purge [montant] <@cible>',

@@ -1,6 +1,6 @@
 import { Collection, Partials } from 'discord.js';
-import DiscordClient from './src/client';
-import Logger from './src/utils/logger';
+import DiscordClient from './client';
+import Logger from './utils/logger';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import path from 'node:path';
@@ -16,14 +16,14 @@ export const client: any = new DiscordClient({
 const filePath = path.join(__dirname, __filename);
 client.commands = new Collection();
 
-const handlersPath = path.join(__dirname, 'src/handlers');
+const handlersPath = path.join(__dirname, 'handlers');
 const handlerFiles = readdirSync(handlersPath).filter(file => file.endsWith('Handler.js'));
 handlerFiles.forEach((handlerFile: any) => {
     const filePath = path.join(handlersPath, handlerFile);
     import(filePath).then(handler => handler.default(client));
 });
 
-const compPath = path.join(__dirname, 'src/components');
+const compPath = path.join(__dirname, 'components');
 const componentFolders = readdirSync(compPath);
 
 for (const folder of componentFolders) {

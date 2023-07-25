@@ -1,9 +1,10 @@
-import { Client, CommandInteraction, PermissionsBitField, SlashCommandBuilder } from 'discord.js';
+import { Client, CommandInteraction, PermissionsBitField } from 'discord.js';
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('invite')
-        .setDescription('Envoie un lien pour inviter le bot sur ton serveur'),
+    data: {
+        name: 'invite',
+        description: 'Envoie un lien pour inviter le bot sur ton serveur'
+    },
     category: 'utils',
     cooldown: 10,
     permissions: [PermissionsBitField.Flags.SendMessages],

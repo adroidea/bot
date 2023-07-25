@@ -1,12 +1,12 @@
 import {
     ActionRowBuilder,
+    ApplicationCommandOptionType,
     ButtonBuilder,
     ButtonStyle,
     ChatInputCommandInteraction,
     Client,
     EmbedBuilder,
-    PermissionsBitField,
-    SlashCommandBuilder
+    PermissionsBitField
 } from 'discord.js';
 import { Colors } from '../../utils/consts';
 import { IEvent } from '../../models';
@@ -27,39 +27,48 @@ const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
 );
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('event')
-        .setDescription('Créer un évènement')
-        .addStringOption(option =>
-            option.setName('titre').setDescription("Titre de l'évènement").setRequired(true)
-        )
-        .addStringOption(option =>
-            option
-                .setName('dateheure')
-                .setDescription("Date et heure de l'évènement (AAAA-MM-JJ HH:mm)")
-                .setRequired(true)
-        )
-        .addStringOption(option =>
-            option
-                .setName('description')
-                .setDescription("Description de l'évènement")
-                .setRequired(false)
-        )
-        .addStringOption(option =>
-            option
-                .setName('imageurl')
-                .setDescription("URL de l'image (png|jpg|jpeg|gif|webp)")
-                .setRequired(false)
-        )
-        .addNumberOption(option =>
-            option
-                .setName('maxparticipants')
-                .setDescription("Nombre de participants max, les autres seront en file d'attente")
-                .setRequired(false)
-        )
-        .addStringOption(option =>
-            option.setName('duree').setDescription("Durée de l'évènement").setRequired(false)
-        ),
+    data: {
+        name: 'event',
+        description: 'Créer un évènement',
+        options: [
+            {
+                name: 'titre',
+                description: "Titre de l'évènement",
+                type: ApplicationCommandOptionType.String,
+                required: true
+            },
+            {
+                name: 'dateheure',
+                description: "Date et heure de l'évènement (AAAA-MM-JJ HH:mm)",
+                type: ApplicationCommandOptionType.String,
+                required: true
+            },
+            {
+                name: 'description',
+                description: "Description de l'évènement",
+                type: ApplicationCommandOptionType.String,
+                required: false
+            },
+            {
+                name: 'imageurl',
+                description: "URL de l'image (png|jpg|jpeg|gif|webp)",
+                type: ApplicationCommandOptionType.String,
+                required: false
+            },
+            {
+                name: 'maxparticipants',
+                description: "Nombre de participants max, les autres seront en file d'attente",
+                type: ApplicationCommandOptionType.Number,
+                required: false
+            },
+            {
+                name: 'duree',
+                description: "Durée de l'évènement",
+                type: ApplicationCommandOptionType.String,
+                required: false
+            }
+        ]
+    },
     category: 'events',
     permissions: [PermissionsBitField.Flags.ManageEvents],
     usage: `event [titre][description][dateheure]<durée><maxparticipants><imageURL>
