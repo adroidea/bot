@@ -1,15 +1,23 @@
 import {
+    ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     Client,
-    PermissionsBitField,
-    SlashCommandBuilder
+    PermissionsBitField
 } from 'discord.js';
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('r')
-        .setDescription('r')
-        .addStringOption(option => option.setName('r').setDescription('r').setRequired(true)),
+    data: {
+        name: 'r',
+        description: 'r',
+        options: [
+            {
+                name: 'r',
+                description: 'r',
+                type: ApplicationCommandOptionType.String,
+                required: true
+            }
+        ]
+    },
     category: 'misc',
     permissions: [PermissionsBitField.Flags.Administrator],
     usage: 'idk dude.',

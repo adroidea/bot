@@ -3,12 +3,16 @@ import { GuildModel, IStreamersData, ITwitchLive } from '../models';
 import { Colors } from '../utils/consts';
 import { Stream } from 'node-twitch/dist/types/objects';
 import TwitchApi from 'node-twitch';
-import { client } from '../../index';
+import { client } from '../index';
 import cron from 'node-cron';
 
+if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
+    throw new Error('TWITCH_CLIENT_ID or TWITCH_CLIENT_SECRET is not defined');
+}
+
 const twitch = new TwitchApi({
-    client_id: process.env.TWITCH_CLIENT_ID!,
-    client_secret: process.env.TWITCH_CLIENT_SECRET!
+    client_id: process.env.TWITCH_CLIENT_ID,
+    client_secret: process.env.TWITCH_CLIENT_SECRET
 });
 
 const randomizeArray = (array: string[]) => {
