@@ -37,7 +37,7 @@ export default function (): void {
 
             const { twitchLive } = guild.modules;
             const { enabled, streamerName, streamers, streamingRoleId } = twitchLive;
-            if (!enabled || !twitchLive.enabled) continue;
+            if (!enabled) continue;
 
             if (streamers && streamingRoleId) {
                 toggleStreamersRole(guildData, streamers, streamingRoleId);
