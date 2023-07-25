@@ -1,14 +1,12 @@
 import { EventModel, IEvent } from './eventModel';
-
 import {
     GuildModel,
     IEventManagement,
     IGuild,
     INotifications,
-    IStreamersData,
-    ITemporaryVoice,
-    ITwitchLive
+    ITemporaryVoice
 } from './guildModel';
+import { IStreamersData, ITwitchLive } from '../twitchLive/models';
 
 export {
     EventModel,
