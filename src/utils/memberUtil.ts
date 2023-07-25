@@ -30,5 +30,3 @@ function checkMemberRole(member: GuildMember, role: Role | undefined) {
 export function checkMemberPermission(memberPermissions: any, permissionFlag: string[]) {
     return memberPermissions.has(permissionFlag);
 }
-
-export const OWNER_ID = '';
