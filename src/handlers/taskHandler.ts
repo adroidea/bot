@@ -10,7 +10,8 @@ let nbFailedTasks = 0;
 export default async () => {
     const tasksFolders = [
         path.join(__dirname, '../tasks'),
-        path.join(__dirname, '../twitchlive/tasks')
+        path.join(__dirname, '../twitchlive/tasks'),
+        path.join(__dirname, '../qotd/tasks')
     ];
 
     const taskFiles: [string, string][] = [];

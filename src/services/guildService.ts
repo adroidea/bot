@@ -16,6 +16,12 @@ async function createGuild(id: string): Promise<IGuild> {
                     notLoggedChannels: []
                 }
             },
+            qotd: {
+                enabled: false,
+                channelId: '',
+                pingedRoleId: '',
+                requestChannelId: ''
+            },
             twitchLive: {
                 enabled: false,
                 defaultProfilePicture: '',
