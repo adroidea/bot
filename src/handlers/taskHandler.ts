@@ -8,15 +8,22 @@ let nbTasks = 0;
 let nbFailedTasks = 0;
 
 export default async () => {
-    // Get the list of task files in the tasks folder
-    const tasksFolder = path.join(__dirname, '../tasks');
-    const taskFiles = fs.readdirSync(tasksFolder).filter(file => file.endsWith('.js'));
+    const tasksFolders = [
+        path.join(__dirname, '../tasks'),
+        path.join(__dirname, '../twitchlive/tasks')
+    ];
 
-    taskFiles.forEach((file: string) => {
-        // Dynamically import the task module
+    const taskFiles: [string, string][] = [];
+
+    tasksFolders.forEach((tasksFolder: string) => {
+        if (fs.existsSync(tasksFolder)) {
+            const files = fs.readdirSync(tasksFolder).filter(file => file.endsWith('.js'));
+            taskFiles.push(...files.map(file => [tasksFolder, file] as [string, string]));
+        }
+    });
+
+    taskFiles.forEach(([tasksFolder, file]: [string, string]) => {
         const taskModule: { default: TaskFunction } = require(path.join(tasksFolder, file));
-
-        // Find the exported function and call it to schedule the task
         const taskFunction = taskModule.default;
         if (!taskFunction) return nbFailedTasks++;
         nbTasks++;
