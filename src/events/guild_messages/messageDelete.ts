@@ -16,7 +16,7 @@ module.exports = {
             !guildSettings.modules.notifications.enabled &&
             !guildSettings.modules.notifications.privateLogs.enabled
         )
-            throw CustomErrors.ModuleNotEnabledError;
+            throw CustomErrors.ModuleDisabledError;
 
         const moduleSettings = guildSettings.modules.notifications.privateLogs;
         const registeredLogChannel = moduleSettings.privateLogChannel;
