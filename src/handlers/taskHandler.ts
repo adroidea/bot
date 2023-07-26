@@ -11,7 +11,8 @@ export default async () => {
     const tasksFolders = [
         path.join(__dirname, '../tasks'),
         path.join(__dirname, '../twitchlive/tasks'),
-        path.join(__dirname, '../qotd/tasks')
+        path.join(__dirname, '../qotd/tasks'),
+        path.join(__dirname, '../customEvents/tasks')
     ];
 
     const taskFiles: [string, string][] = [];
