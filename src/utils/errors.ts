@@ -14,6 +14,10 @@ export const CustomErrors = {
         'Mmh, il semblerait que je ne connais pas cette commande.'
     ),
     ModuleNotEnabledError: new CustomError("Le module n'est pas activé sur ce serveur."),
+    CooldownError: (cooldownTime: number) =>
+        new CustomError(
+            `Comme dirait Orel San, ça va trop vite. Cette commande est en cooldown. tu pourras l'utiliser <t:${cooldownTime}:R>.`
+        ),
 
     ////////////////////////////////////////////////////
     //             Temp voice related err             //

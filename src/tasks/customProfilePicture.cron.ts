@@ -18,6 +18,12 @@ const PROFILE_PICTURES = [
 export default function (): void {
     cron.schedule('0 * * * *', async () => {
         try {
+            const response: Promise<string> = (
+                await fetch(`https://api.crunchprank.net/twitch/uptime/adan_ea`)
+            ).text();
+
+            if ((await response) !== `adan_ea is offline`) return;
+
             const guild = await client.guilds.fetch(OWNER_SERVER_ID);
             const currentHour = new Date().getHours();
 
