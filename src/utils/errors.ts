@@ -8,16 +8,17 @@ export const CustomErrors = {
     UnknownError: new CustomError(
         "Tu m'a posé une colle là. Signale ce message à <@294916386072035328> (@adan_ea) et ce que t'as fais pour l'avoir. C'est pas normal que tu vois ceci. Mais je t'aime quand même hein <3"
     ),
+    CooldownError: (cooldownTime: number) =>
+        new CustomError(
+            `Comme dirait Orel San, ça va trop vite. Cette commande est en cooldown. tu pourras l'utiliser <t:${cooldownTime}:R>.`
+        ),
     NoPermissionsError: new CustomError("Eh non, t'as pas les droits, cheh !"),
     ToDoError: new CustomError("Ca fonctionne, mais t'as pas setup d'erreur pour ce cas encore."),
     UnknownCommandError: new CustomError(
         'Mmh, il semblerait que je ne connais pas cette commande.'
     ),
-    ModuleNotEnabledError: new CustomError("Le module n'est pas activé sur ce serveur."),
-    CooldownError: (cooldownTime: number) =>
-        new CustomError(
-            `Comme dirait Orel San, ça va trop vite. Cette commande est en cooldown. tu pourras l'utiliser <t:${cooldownTime}:R>.`
-        ),
+    ModuleDisabledError: new CustomError("Le module n'est pas activé sur ce serveur."),
+    GuildNotFoundError: new CustomError("Le serveur n'a pas été trouvé."),
 
     ////////////////////////////////////////////////////
     //             Temp voice related err             //
@@ -46,5 +47,10 @@ export const CustomErrors = {
         'Je sais que cet évènement est incroyable mais tu es déjà dans la liste des participants, prend ton mal en patience !'
     ),
 
-    ParticipantNotFoundError: new CustomError("Tu n'es pas un participant !")
+    ParticipantNotFoundError: new CustomError("Tu n'es pas un participant !"),
+
+    ////////////////////////////////////////////////////
+    //                QOtD related err                //
+    ////////////////////////////////////////////////////
+    BlacklistedUserError: new CustomError('Tu es blacklisté, tu ne peux pas envoyer de question.')
 };

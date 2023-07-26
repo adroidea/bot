@@ -63,7 +63,7 @@ module.exports = {
     examples: 'channel list all',
 
     async execute(client: Client, interaction: CommandInteraction, guildSettings: IGuild) {
-        if (!checkTemporaryVoiceModule(guildSettings)) throw CustomErrors.ModuleNotEnabledError;
+        if (!checkTemporaryVoiceModule(guildSettings)) throw CustomErrors.ModuleDisabledError;
 
         const subcommand = (interaction as ChatInputCommandInteraction).options.getSubcommand();
 

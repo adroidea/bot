@@ -16,5 +16,5 @@ export const checkModuleState = async (
         !guildSettings.modules.notifications.enabled &&
         !guildSettings.modules.notifications.publicLogs.enabled
     )
-        throw CustomErrors.ModuleNotEnabledError;
+        throw CustomErrors.ModuleDisabledError;
 };

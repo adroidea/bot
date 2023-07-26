@@ -20,7 +20,9 @@ async function createGuild(id: string): Promise<IGuild> {
                 enabled: false,
                 channelId: '',
                 pingedRoleId: '',
-                requestChannelId: ''
+                requestChannelId: '',
+                blacklistUsers: [],
+                trustedUsers: []
             },
             twitchLive: {
                 enabled: false,
@@ -54,18 +56,12 @@ async function getGuildById(id: string): Promise<IGuild | null> {
     return GuildModel.findOne({ id });
 }
 
-async function updateGuild(guildData: IGuild): Promise<void> {
-    /**
-     * @TODO : implement this
-     */
-    console.log(guildData);
+async function updateGuild(guildData: IGuild): Promise<IGuild | null> {
+    return GuildModel.findOneAndUpdate({ id: guildData.id }, guildData);
 }
 
 async function deleteGuild(guildId: string): Promise<void> {
-    /**
-     * @TODO : implement this
-     */
-    await GuildModel.findByIdAndDelete({ guildId });
+    GuildModel.findByIdAndDelete({ guildId });
 }
 
 const guildService = {
