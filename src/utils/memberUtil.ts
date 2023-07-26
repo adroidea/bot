@@ -1,4 +1,4 @@
-import { GuildMember, PermissionFlagsBits, Role } from 'discord.js';
+import { GuildMember, PermissionFlagsBits, PermissionsBitField, Role } from 'discord.js';
 import checkBotPermission from './botUtil';
 
 export function addRole(member: GuildMember, memberRole: Role | undefined) {
@@ -27,6 +27,9 @@ function checkMemberRole(member: GuildMember, role: Role | undefined) {
     return member && role && member.roles.cache.some(memberRoles => memberRoles.id === role.id);
 }
 
-export function checkMemberPermission(memberPermissions: any, permissionFlag: string[]) {
+export function checkMemberPermission(
+    memberPermissions: PermissionsBitField,
+    permissionFlag: PermissionsBitField[]
+) {
     return memberPermissions.has(permissionFlag);
 }

@@ -67,15 +67,12 @@ const deletePinnedMessages = async (channel: TextBasedChannel): Promise<void> =>
     }
 };
 
-const deletePinNotification = async (
-    channel: TextBasedChannel,
-    sentMessageId: string
-): Promise<void> => {
-    const pinMessages = await channel.messages.fetch({ limit: 5 });
+const deletePinNotification = async (chan: TextBasedChannel, sentMsgId: string): Promise<void> => {
+    const pinMessages = await chan.messages.fetch({ limit: 5 });
     for (const pinMessage of pinMessages) {
         if (
             pinMessage[1].type === MessageType.ChannelPinnedMessage &&
-            pinMessage[1].id !== sentMessageId
+            pinMessage[1].id !== sentMsgId
         )
             pinMessage[1].delete();
     }
