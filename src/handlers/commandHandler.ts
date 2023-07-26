@@ -37,29 +37,6 @@ export default async (client: any) => {
                     hasError = true;
                 }
 
-                // Checks if the command has a category.
-                if (!cmd.category) {
-                    errorList.push('CATEGORY');
-                    hasError = true;
-                }
-
-                // Checks if the command has examples.
-                if (!cmd.examples && cmd.type !== 'USER') {
-                    errorList.push('EXAMPLES');
-                    hasError = true;
-                }
-
-                // Checks if the command has permissions.
-                if (!cmd.permissions) {
-                    errorList.push('PERMISSIONS');
-                    hasError = true;
-                }
-
-                if (!cmd.usage && cmd.type !== 'USER') {
-                    errorList.push('USAGE');
-                    hasError = true;
-                }
-
                 if (!hasError && 'execute' in cmd) {
                     client.commands.set(cmd.data.name, cmd);
                     nbCmd++;

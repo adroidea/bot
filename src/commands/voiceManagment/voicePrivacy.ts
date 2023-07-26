@@ -65,7 +65,7 @@ module.exports = {
     examples: 'voice ban @adan_ea#3945',
 
     async execute(client: Client, interaction: CommandInteraction, guildSettings: IGuild) {
-        if (!checkTemporaryVoiceModule(guildSettings)) throw CustomErrors.ModuleNotEnabledError;
+        if (!checkTemporaryVoiceModule(guildSettings)) throw CustomErrors.ModuleDisabledError;
 
         const member = interaction.member as GuildMember;
 
