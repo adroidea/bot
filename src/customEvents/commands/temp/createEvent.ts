@@ -8,10 +8,10 @@ import {
     EmbedBuilder,
     PermissionsBitField
 } from 'discord.js';
-import { Colors } from '../../utils/consts';
-import { IEvent } from '../../models';
+import { Colors } from '../../../utils/consts';
+import { IEvent } from '../../../models';
 import { addToAppropriateQueue } from '../../tasks/CustomEvents.queue';
-import eventService from '../../services/eventModuleService';
+import eventService from '../../../services/eventModuleService';
 
 const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()

@@ -1,4 +1,4 @@
-import { EventModel, IEvent } from './eventModel';
+import { EventModel, IEvent } from '../customEvents/models';
 import {
     GuildModel,
     IEventManagement,
