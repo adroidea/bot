@@ -69,7 +69,7 @@ function checkCommandPermissions(
     commandPermissions: PermissionsBitField[]
 ) {
     if (!checkMemberPermission(memberPermissions, commandPermissions)) {
-        throw CustomErrors.NoPermissionsError;
+        throw CustomErrors.UserNoPermissionsError;
     }
 }
 

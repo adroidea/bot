@@ -1,61 +1,44 @@
 name: SonarCloud analysis
 on:
-  push:
-    branches: ["main", "4-upgrade-to-typescript"]
-  pull_request:
-    branches: ["main", "4-upgrade-to-typescript"]
-  workflow_dispatch:
+    push:
+        branches: ['main', '4-upgrade-to-typescript']
+    pull_request:
+        branches: ['main', '4-upgrade-to-typescript']
+    workflow_dispatch:
 
 permissions:
-  pull-requests: read
+    pull-requests: read
 
 jobs:
-  sonarcloud:
-    runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.sonar_status.outputs.status }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+    sonarcloud:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args:
-            -Dsonar.projectKey=adan-ea_adroid_ea
-            -Dsonar.organization=adanea-adroid-ea
+            - name: SonarCloud Scan
+              uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+              with:
+                  args: -Dsonar.projectKey=adan-ea_adroid_ea
+                      -Dsonar.organization=adanea-adroid-ea
 
-      - name: SonarCloud Quality Gate status
-        id: sonar_status
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          quality_gate_status=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" -X GET \
-                               "https://sonarcloud.io/api/qualitygates/project_status?projectKey=adan-ea_adroid_ea")
-          echo "$quality_gate_status"
-          status=$(echo "$quality_gate_status" | cut -c 29-30)
-          echo "result=$status" >> "$GITHUB_OUTPUT"
-          echo "$status"
+            - name: SonarCloud Quality Gate status
+              id: sonar_status
+              env:
+                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+              run: |
+                  quality_gate_status=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" -X GET \
+                                       "https://sonarcloud.io/api/qualitygates/project_status?projectKey=adan-ea_adroid_ea")
+                  echo "$quality_gate_status"
+                  status=$(echo "$quality_gate_status" | cut -c 29-30)
+                  echo "result=$status" >> "$GITHUB_OUTPUT"
+                  echo "$status"
 
-      - name: Discord notifications Ok
-        if: ${{ steps.sonar_status.outputs.result == 'OK' }}
-        uses: cl8dep/action-discord@main
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: "Analyse SonarCloud complétée pour le projet Adroid_ea pour les nouvelles lignes de codes. Statut : Ok. Pour consulter le rapport : https://sonarcloud.io/project/overview?id=adan-ea_adroid_ea&branch=4-upgrade-to-typescript"
-
-      - name: Discord notifications NOT OK
-        if: ${{ steps.sonar_status.outputs.result != 'OK' }}
-        uses: cl8dep/action-discord@main
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: "Analyse sonar failed. Pour consulter le rapport : https://sonarcloud.io/project/overview?id=adan-ea_adroid_ea&branch=4-upgrade-to-typescript"
-
-      - name: Write to workflow job summary
-        run: |
-          SUMMARY=$'# Testing Job Summary\n## Résultat Sonar\n${{ steps.sonar_status.outputs.result == 'OK' }}'
-          echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
+            - name: Write to workflow job summary
+              run: |
+                  SUMMARY=$'# Testing Job Summary\n## Résultat Sonar\n${{ steps.sonar_status.outputs.result == 'OK' }}'
+                  echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
