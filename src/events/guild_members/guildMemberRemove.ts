@@ -1,6 +1,5 @@
 import { Client, EmbedBuilder, Events, GuildMember, TextChannel } from 'discord.js';
 import { Colors } from '../../utils/consts';
-import { CustomErrors } from '../../utils/errors';
 import { IGuild } from '../../models';
 import guildService from '../../services/guildService';
 
@@ -14,12 +13,12 @@ module.exports = {
 
         if (
             !guildSettings.modules.notifications.enabled &&
-            !guildSettings.modules.notifications.publicLogs.enabled
+            !guildSettings.modules.notifications.privateLogs.enabled
         )
-            throw CustomErrors.ModuleDisabledError;
+            return;
 
-        const moduleSettings = guildSettings.modules.notifications.publicLogs;
-        const registeredLogChannel = moduleSettings.publicLogChannel;
+        const moduleSettings = guildSettings.modules.notifications.privateLogs;
+        const registeredLogChannel = moduleSettings.privateLogChannel;
 
         if (!registeredLogChannel) {
             return;

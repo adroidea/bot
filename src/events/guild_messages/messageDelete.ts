@@ -1,6 +1,5 @@
 import { Client, EmbedBuilder, Events, Message, TextChannel } from 'discord.js';
 import { Colors, OWNER_ID } from '../../utils/consts';
-import { CustomErrors } from '../../utils/errors';
 import { IGuild } from '../../models';
 import guildService from '../../services/guildService';
 
@@ -16,7 +15,7 @@ module.exports = {
             !guildSettings.modules.notifications.enabled &&
             !guildSettings.modules.notifications.privateLogs.enabled
         )
-            throw CustomErrors.ModuleDisabledError;
+            return;
 
         const moduleSettings = guildSettings.modules.notifications.privateLogs;
         const registeredLogChannel = moduleSettings.privateLogChannel;

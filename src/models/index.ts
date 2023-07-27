@@ -1,13 +1,8 @@
-import { EventModel, IEvent } from '../customEvents/models';
-import {
-    GuildModel,
-    IEventManagement,
-    IGuild,
-    INotifications,
-    ITemporaryVoice
-} from './guildModel';
-import { IQOtD, IQuestions, QuestionsModel } from '../qotd/models';
-import { IStreamersData, ITwitchLive } from '../twitchLive/models';
+import { EventModel, IEvent } from '../modules/customEvents/models';
+import { GuildModel, IEventManagement, IGuild, INotifications } from './guildModel';
+import { IQOtD, IQuestions, QuestionsModel } from '../modules/qotd/models';
+import { IStreamersData, ITwitchLive } from '../modules/twitchLive/models';
+import { ITemporaryVoice } from '../modules/tempVoice/models/temporaryVoiceModel';
 
 export {
     EventModel,
