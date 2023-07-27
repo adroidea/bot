@@ -28,8 +28,8 @@ interface LiveStatus {
 
 const streamersList = new Map<string, LiveStatus>();
 
-export default function (): void {
-    cron.schedule('* * * * *', async () => {
+export default function (): cron.ScheduledTask {
+    return cron.schedule('* * * * *', async () => {
         const guilds = await GuildModel.find().exec();
         for (const guild of guilds) {
             const guildData: Guild = client.guilds.cache.get(guild.id);
