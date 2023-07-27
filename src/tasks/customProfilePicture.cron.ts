@@ -15,16 +15,18 @@ const PROFILE_PICTURES = [
     { name: 'dodo', url: 'URL_OF_DODO_IMAGE' }
 ];
 
-export default function (): void {
-    cron.schedule('0 * * * *', async () => {
+export default function (): cron.ScheduledTask {
+    return cron.schedule('0 * * * *', () => {
         try {
-            const response: Promise<string> = (
-                await fetch(`https://api.crunchprank.net/twitch/uptime/adan_ea`)
-            ).text();
+            const responsePromise: Promise<string> = fetch(
+                `https://api.crunchprank.net/twitch/uptime/adan_ea`
+            ).then(response => response.text());
 
-            if ((await response) !== `adan_ea is offline`) return;
+            responsePromise.then(response => {
+                if (response !== `adan_ea is offline`) return;
+            });
 
-            const guild = await client.guilds.fetch(OWNER_SERVER_ID);
+            const guild = client.guilds.fetch(OWNER_SERVER_ID);
             const currentHour = new Date().getHours();
 
             let newProfilePicture;
@@ -59,7 +61,7 @@ export default function (): void {
                     newProfilePicture = null;
             }
 
-            if (newProfilePicture) await guild.setIcon(newProfilePicture.url);
+            if (newProfilePicture) guild.setIcon(newProfilePicture.url);
         } catch (error: any) {
             Logger.error('Error changing profile picture:', error);
         }

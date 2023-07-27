@@ -6,8 +6,8 @@ import Logger from '../../../utils/logger';
 import { client } from '../../..';
 import cron from 'node-cron';
 
-export default function (): void {
-    cron.schedule('0 9 * * *', async () => {
+export default function (): cron.ScheduledTask {
+    return cron.schedule('0 9 * * *', async () => {
         const guilds = await GuildModel.find().exec();
         for (const guildData of guilds) {
             const guild: Guild = client.guilds.cache.get(guildData.id);
