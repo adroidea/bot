@@ -12,7 +12,8 @@ export const CustomErrors = {
         new CustomError(
             `Comme dirait Orel San, ça va trop vite. Cette commande est en cooldown. tu pourras l'utiliser <t:${cooldownTime}:R>.`
         ),
-    NoPermissionsError: new CustomError("Eh non, t'as pas les droits, cheh !"),
+    UserNoPermissionsError: new CustomError("Eh non, t'as pas les droits, cheh !"),
+    SelfNoPermissionsError: new CustomError("Peux pas faire ça, j'ai pas les droits."),
     ToDoError: new CustomError("Ca fonctionne, mais t'as pas setup d'erreur pour ce cas encore."),
     UnknownCommandError: new CustomError(
         'Mmh, il semblerait que je ne connais pas cette commande.'
