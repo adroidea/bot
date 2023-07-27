@@ -23,40 +23,6 @@ handlerFiles.forEach((handlerFile: any) => {
     import(filePath).then(handler => handler.default(client));
 });
 
-const compPath = path.join(__dirname, 'components');
-const componentFolders = readdirSync(compPath);
-
-for (const folder of componentFolders) {
-    const comps = path.join(compPath, folder);
-    const componentFiles = readdirSync(comps).filter(file => file.endsWith('.js'));
-
-    switch (folder) {
-        case 'buttons':
-            for (const file of componentFiles) {
-                const filePath = path.join(compPath, folder, file);
-                const button = require(filePath);
-                client.buttons.set(button.data.name, button);
-            }
-            break;
-        case 'modals':
-            for (const file of componentFiles) {
-                const filePath = path.join(compPath, folder, file);
-                const modal = require(filePath);
-                client.modals.set(modal.data.name, modal);
-            }
-            break;
-        case 'selectMenus':
-            for (const file of componentFiles) {
-                const filePath = path.join(compPath, folder, file);
-                const selectmenu = require(filePath);
-                client.selectMenus.set(selectmenu.data.name, selectmenu);
-            }
-            break;
-        default:
-            break;
-    }
-}
-
 process.on('exit', (code: number) => {
     Logger.client(`Process stopped with the code ${code}`);
 });

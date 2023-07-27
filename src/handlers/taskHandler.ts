@@ -10,9 +10,9 @@ let nbFailedTasks = 0;
 export default async () => {
     const tasksFolders = [
         path.join(__dirname, '../tasks'),
-        path.join(__dirname, '../twitchlive/tasks'),
-        path.join(__dirname, '../qotd/tasks'),
-        path.join(__dirname, '../customEvents/tasks')
+        path.join(__dirname, '../modules/twitchlive/tasks'),
+        path.join(__dirname, '../modules/qotd/tasks'),
+        path.join(__dirname, '../modules/customEvents/tasks')
     ];
 
     const taskFiles: [string, string][] = [];
@@ -27,7 +27,10 @@ export default async () => {
     taskFiles.forEach(([tasksFolder, file]: [string, string]) => {
         const taskModule: { default: TaskFunction } = require(path.join(tasksFolder, file));
         const taskFunction = taskModule.default;
-        if (!taskFunction) return nbFailedTasks++;
+        if (!taskFunction) {
+            Logger.warn(`Not initialised Task.\nFile : ${file}`);
+            return nbFailedTasks++;
+        }
         nbTasks++;
         taskFunction();
     });
