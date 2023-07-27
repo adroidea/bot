@@ -4,7 +4,7 @@ module.exports = {
     plugins: ['@typescript-eslint', 'jsdoc', 'prettier'],
     extends: ['eslint:recommended', 'prettier'],
     parserOptions: {
-        project: ['./tsconfig.json', './test/tsconfig.json']
+        project: ['./tsconfig.json']
     },
     ignorePatterns: ['node_modules/'],
     rules: {

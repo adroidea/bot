@@ -8,7 +8,7 @@
     "module": "commonjs",                           /* Specify what module code is generated. */
     "resolveJsonModule": true,                      /* Enable importing .json files */
 
-	"types": ["node", "jest"],
+	"types": ["node"],
     /* Emit */
     "sourceMap": true,                              /* Create source map files for emitted JavaScript files. */
     "outDir": "dist",                               /* Specify an output folder for all emitted files. */
