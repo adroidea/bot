@@ -8,9 +8,9 @@ import {
     PermissionsBitField,
     TextChannel
 } from 'discord.js';
-
+import checkBotPermission, { checkNotificationsSubModule } from '../../utils/botUtil';
+import { CustomErrors } from '../../utils/errors';
 import { IGuild } from '../../models';
-import { checkNotificationsSubModule } from '../../utils/botUtil';
 
 module.exports = {
     data: {
@@ -38,6 +38,9 @@ module.exports = {
     examples: ['purge 10', 'purge 100 @adan_ea'],
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
+        if (!checkBotPermission(interaction.guild!, PermissionsBitField.Flags.ManageMessages))
+            throw CustomErrors.SelfNoPermissionsError;
+
         const amountToDelete = interaction.options.getNumber('montant');
         if (!amountToDelete || amountToDelete > 100 || amountToDelete < 0) {
             return interaction.reply('Merci de choisir un nombre entre 1 et 100');

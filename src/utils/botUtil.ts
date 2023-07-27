@@ -1,16 +1,8 @@
 import { IGuild, INotifications } from '../models';
-import { RGBTuple } from 'discord.js';
+import { Guild } from 'discord.js';
 
-export function getRandomRGB(): RGBTuple {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    return [r, g, b];
-}
-
-export default function checkBotPermission(guild: any, permissionFlag: bigint) {
-    // FIXME: always returns true
-    return guild.members.me.permissions.has(permissionFlag);
+export default function checkBotPermission(guild: Guild, permissionFlag: bigint) {
+    return guild.members.me!.permissions.has(permissionFlag);
 }
 
 export function checkNotificationsSubModule(guildSettings: IGuild, smn: keyof INotifications) {
