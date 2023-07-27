@@ -1,48 +1,29 @@
-name: Analyse qualité
+name: SonarCloud analysis
 on:
   push:
-    branches:
-      - 4-upgrade-to-typescript
+    branches: ["main", "4-upgrade-to-typescript"]
   pull_request:
-    types: [opened, synchronize, reopened]
-    branches: ["4-upgrade-to-typescript"]
+    branches: ["main", "4-upgrade-to-typescript"]
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read
+
 jobs:
-  #---------------------------------------------------------------------------------------------------------------
-  # SonarCloud : Analyse qualité du code
-  #---------------------------------------------------------------------------------------------------------------
   sonarcloud:
-    name: Analyse Qualité SonarCloud
     runs-on: ubuntu-latest
     outputs:
       output1: ${{ steps.sonar_status.outputs.status }}
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-
-      # Intégration Eslint à Sonar
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install ESLint
-        run: |
-          npm install eslint@8.10.0
-          npm install @microsoft/eslint-formatter-sarif@2.1.7
-
-      - name: Run ESLint #Ignorer les dépendances externes
-        run: npx eslint src/**/*.ts --format=json --ignore-pattern '**/node_modules/**' > eslint-report.json
-
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
         env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # Token GITHUB pour les PR
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Token SonarCloud
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          # Autres args Sonar
           args:
             -Dsonar.projectKey=adan-ea_adroid_ea
             -Dsonar.organization=adanea-adroid-ea
-            -Dsonar.eslint.reportPaths=eslint-report.json
 
       - name: SonarCloud Quality Gate status
         id: sonar_status
