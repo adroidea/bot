@@ -15,6 +15,10 @@ jobs:
     outputs:
       output1: ${{ steps.sonar_status.outputs.status }}
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
         env:
