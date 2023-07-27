@@ -1,5 +1,7 @@
-import { IQOtD, qotdSchema } from '../qotd/models';
-import { ITwitchLive, twitchLiveSchema } from '../twitchLive/models';
+import { IQOtD, qotdSchema } from '../modules/qotd/models';
+import { ITemporaryVoice, temporaryVoiceSchema } from '../modules/tempVoice/models';
+import { ITwitchLive, twitchLiveSchema } from '../modules/twitchLive/models';
+
 import mongoose from 'mongoose';
 
 export interface INotifications {
@@ -26,18 +28,6 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
         privateLogChannel: { type: String, default: '' },
         notLoggedChannels: { type: [String], default: [] }
     }
-});
-
-export interface ITemporaryVoice {
-    enabled: boolean;
-    hostChannels?: string[];
-    protectedChannels?: string[];
-}
-
-const temporaryVoiceSchema = new mongoose.Schema<ITemporaryVoice>({
-    enabled: { type: Boolean, default: false },
-    hostChannels: { type: [String], default: [] },
-    protectedChannels: { type: [String], default: [] }
 });
 
 export interface IEventManagement {
