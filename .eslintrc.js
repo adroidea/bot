@@ -43,7 +43,6 @@ module.exports = {
                     '`with` is disallowed in strict mode because it makes code impossible to predict and optimize.'
             }
         ],
-        'capitalized-comments': 'error',
         eqeqeq: ['error', 'always'],
         'no-constant-condition': 'off',
         'no-duplicate-imports': 'error',

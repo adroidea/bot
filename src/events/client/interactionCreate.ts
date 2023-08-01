@@ -34,7 +34,7 @@ module.exports = {
 };
 
 async function handleCommandInteraction(client: IDiscordClient, interaction: CommandInteraction) {
-    const guildSettings = await getOrCreateGuildSettings(interaction.guildId!);
+    const guildSettings: IGuild = await guildService.getorCreateGuild(interaction.guildId!);
     const command = client.commands.get(interaction.commandName);
 
     try {
@@ -54,14 +54,6 @@ async function handleCommandInteraction(client: IDiscordClient, interaction: Com
     } catch (err) {
         handleError(interaction, err);
     }
-}
-
-async function getOrCreateGuildSettings(guildId: string): Promise<IGuild> {
-    let guildSettings: IGuild | null = await guildService.getGuildById(guildId);
-    if (!guildSettings) {
-        guildSettings = await guildService.createGuild(guildId);
-    }
-    return guildSettings;
 }
 
 function checkCommandPermissions(

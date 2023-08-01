@@ -6,10 +6,7 @@ import guildService from '../../services/guildService';
 module.exports = {
     name: Events.GuildMemberAdd,
     async execute(client: Client, member: GuildMember) {
-        let guildSettings: IGuild | null = await guildService.getGuildById(member.guild.id);
-        if (!guildSettings) {
-            guildSettings = await guildService.createGuild(member.guild.id);
-        }
+        const guildSettings: IGuild = await guildService.getorCreateGuild(member.guild.id);
 
         if (
             !guildSettings.modules.notifications.enabled &&
