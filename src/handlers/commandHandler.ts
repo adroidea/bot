@@ -9,7 +9,7 @@ export default async (client: any) => {
     const categoryFolders = [
         path.join(__dirname, '../commands'),
         // Ppath.join(__dirname, '../twitchlive/commands'),
-        // Ppath.join(__dirname, '../qotd/commands'),
+        path.join(__dirname, '../modules/qotd/commands'),
         path.join(__dirname, '../modules/customEvents/commands')
     ];
 

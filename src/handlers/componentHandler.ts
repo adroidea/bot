@@ -5,7 +5,7 @@ import path from 'path';
 export default async (client: any) => {
     const categoryFolders = [
         // Ppath.join(__dirname, '../twitchlive/components'),
-        // Ppath.join(__dirname, '../qotd/components'),
+        path.join(__dirname, '../modules/qotd/components'),
         path.join(__dirname, '../modules/tempVoice/components'),
         path.join(__dirname, '../modules/customEvents/components')
     ];
@@ -14,10 +14,28 @@ export default async (client: any) => {
     const counts: Record<string, Record<string, number>> = {};
 
     for (const category of categoryFolders) {
+        try {
+            const stats = await fs.stat(category);
+            if (!stats.isDirectory()) {
+                Logger.warn(`"${category}" is not a directory.`);
+                continue;
+            }
+        } catch (error: any) {
+            Logger.warn(`Error checking "${category}": ${error.message}`);
+            continue;
+        }
+
         counts[category] = {};
 
         for (const folder of componentFolders) {
             const folderPath = path.join(category, folder);
+            try {
+                const stats = await fs.stat(folderPath);
+                if (!stats.isDirectory()) continue;
+            } catch (error: any) {
+                continue;
+            }
+
             const componentFiles = (await fs.readdir(folderPath)).filter(file =>
                 file.endsWith('.js')
             );
