@@ -52,8 +52,13 @@ async function createGuild(id: string): Promise<IGuild> {
     return guild;
 }
 
-async function getGuildById(id: string): Promise<IGuild | null> {
-    return GuildModel.findOne({ id });
+async function getorCreateGuild(id: string): Promise<IGuild> {
+    let guildSettings: IGuild | null = await GuildModel.findOne({ id });
+
+    if (!guildSettings) {
+        guildSettings = await guildService.createGuild(id);
+    }
+    return guildSettings;
 }
 
 async function updateGuild(guildData: IGuild): Promise<IGuild | null> {
@@ -66,7 +71,7 @@ async function deleteGuild(guildId: string): Promise<void> {
 
 const guildService = {
     createGuild,
-    getGuildById,
+    getorCreateGuild,
     updateGuild,
     deleteGuild
 };

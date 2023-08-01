@@ -7,10 +7,7 @@ export const checkModuleState = async (
     subModuleName: string,
     guildId: string
 ) => {
-    let guildSettings: IGuild | null = await guildService.getGuildById(guildId);
-    if (!guildSettings) {
-        guildSettings = await guildService.createGuild(guildId);
-    }
+    const guildSettings: IGuild = await guildService.getorCreateGuild(guildId);
 
     if (
         !guildSettings.modules.notifications.enabled &&
