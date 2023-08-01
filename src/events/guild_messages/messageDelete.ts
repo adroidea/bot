@@ -6,10 +6,7 @@ import guildService from '../../services/guildService';
 module.exports = {
     name: Events.MessageDelete,
     async execute(client: Client, message: Message) {
-        let guildSettings: IGuild | null = await guildService.getGuildById(message.guildId!);
-        if (!guildSettings) {
-            guildSettings = await guildService.createGuild(message.guildId!);
-        }
+        const guildSettings: IGuild = await guildService.getorCreateGuild(message.guildId!);
 
         if (
             !guildSettings.modules.notifications.enabled &&

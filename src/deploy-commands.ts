@@ -9,7 +9,13 @@ dotenv.config();
 export const regCMD = (clientId: string) => {
     // Gets slash commands
     const commands: any[] = [];
-    const cmdPath = path.join(__dirname, 'commands');
+
+    const categoryFolders = [
+        path.join(__dirname, 'commands'),
+        // Ppath.join(__dirname, '../twitchlive/commands'),
+        path.join(__dirname, 'modules/qotd/commands'),
+        path.join(__dirname, 'modules/customEvents/commands')
+    ];
 
     function readCommands(dir: string) {
         const files = fs.readdirSync(dir);
@@ -26,8 +32,9 @@ export const regCMD = (clientId: string) => {
             }
         }
     }
-
-    readCommands(cmdPath);
+    for (const cmdPath of categoryFolders) {
+        readCommands(cmdPath);
+    }
 
     const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN!);
 
