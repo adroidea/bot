@@ -15,7 +15,7 @@ const twitch = new TwitchApi({
     client_secret: process.env.TWITCH_CLIENT_SECRET
 });
 
-const randomizeArray = (array: string[]) => {
+export const randomizeArray = (array: string[]): string => {
     const randomNumber = Math.floor(Math.random() * array.length);
     return array[randomNumber];
 };
@@ -108,7 +108,7 @@ async function toggleStreamersRole(
     }
 }
 
-async function sendLiveEmbed(streamData: Stream, twitchLive: ITwitchLive, guild: Guild) {
+export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive, guild: Guild) => {
     const { user_name, game_id, title } = streamData;
     const { infoLiveChannel, pingedRole } = twitchLive;
 
@@ -124,7 +124,7 @@ async function sendLiveEmbed(streamData: Stream, twitchLive: ITwitchLive, guild:
     const embed = new EmbedBuilder()
         .setAuthor({
             iconURL: twitchAvatarURL,
-            name: `${user_name} est en live !`
+            name: `${user_name} est en live sur Twitch !`
         })
         .setTitle(`${title}`)
         .setURL(`https://twitch.tv/${user_name}`)
@@ -137,7 +137,7 @@ async function sendLiveEmbed(streamData: Stream, twitchLive: ITwitchLive, guild:
         ])
         .setImage(`${streamData.getThumbnailUrl()}?r=${streamData.id}?`)
         .setThumbnail(`https://static-cdn.jtvnw.net/ttv-boxart/${game_id}-144x192.jpg`)
-        .setColor(Colors.red);
+        .setColor(Colors.twitch);
 
     await channel.send({
         content: `${pingedRole ? roleMention(pingedRole) + ', ' : ''}${
@@ -166,7 +166,7 @@ async function sendGameChangeEmbed(streamData: Stream, twitchLive: ITwitchLive, 
     await channelMessage.send({ embeds: [gameChangeEmbed] });
 }
 
-const liveStart = [
+export const liveStart = [
     'vient tout juste de lancer un stream ! Viens pour voir du',
     'stream actuellement, il manque plus que toi. Rejoins nous pour du',
     'a enfin lancé son stream ! Go prendre tes snacks et regarder du',

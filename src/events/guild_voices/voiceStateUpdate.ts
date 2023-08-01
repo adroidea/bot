@@ -41,10 +41,7 @@ const getVoiceUpdateType = (oldState: VoiceState, newState: VoiceState): string 
 module.exports = {
     name: Events.VoiceStateUpdate,
     async execute(client: Client, oldState: VoiceState, newState: VoiceState) {
-        let guildSettings: IGuild | null = await guildService.getGuildById(newState.guild.id);
-        if (!guildSettings) {
-            guildSettings = await guildService.createGuild(newState.guild.id);
-        }
+        const guildSettings: IGuild = await guildService.getorCreateGuild(newState.guild.id);
 
         if (!guildSettings.modules.temporaryVoice.enabled) return;
 
