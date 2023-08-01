@@ -27,18 +27,52 @@ const addToQotdBlacklist = async (guildId: string, userId: string): Promise<void
     }
 };
 
-async function createQOtD(qotd: IQuestions): Promise<void> {
+const whiteListUser = async (guildId: string, userId: string): Promise<void> => {
     try {
-        await QuestionsModel.create(qotd);
+        const guild = await GuildModel.findOne({ id: guildId });
+
+        if (!guild) {
+            throw CustomErrors.GuildNotFoundError;
+        }
+
+        if (guild.modules.qotd.trustedUsers && !guild.modules.qotd.trustedUsers.includes(userId)) {
+            guild.modules.qotd.trustedUsers.push(userId);
+        }
+
+        await guild.save();
+    } catch (error: any) {
+        Logger.error(
+            `Une erreur est survenue lors de l'ajout de l'utilisateur ${userId} à la whitelist QOTD :`,
+            error
+        );
+        throw CustomErrors.UnknownError;
+    }
+};
+
+async function createQOtD(qotd: IQuestions): Promise<string> {
+    try {
+        const newQotd = await QuestionsModel.create(qotd);
+        return newQotd._id.toString();
     } catch (error: any) {
         Logger.error("Une erreur est survenue lors de l'ajout d'une qdj :", error);
         throw CustomErrors.UnknownError;
     }
 }
 
+async function deleteQOtD(qotdId: string): Promise<void> {
+    try {
+        await QuestionsModel.deleteOne({ _id: qotdId });
+    } catch (error: any) {
+        Logger.error("Une erreur est survenue lors de la suppression d'une qdj :", error);
+        throw CustomErrors.UnknownError;
+    }
+}
+
 const qotddService = {
     addToQotdBlacklist,
-    addQOtDToDatabase: createQOtD
+    createQOtD,
+    deleteQOtD,
+    whiteListUser
 };
 
 export default qotddService;

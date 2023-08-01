@@ -17,9 +17,9 @@ export interface IQuestions {
 
 export const qotdSchema = new mongoose.Schema<IQOtD>({
     enabled: { type: Boolean, default: false },
-    channelId: { type: String, required: true },
+    channelId: { type: String, default: '' },
     pingedRoleId: { type: String, default: '' },
-    requestChannelId: { type: String, required: true },
+    requestChannelId: { type: String, default: '' },
     blacklistUsers: { type: [String], default: [] },
     trustedUsers: { type: [String], default: [] }
 });
