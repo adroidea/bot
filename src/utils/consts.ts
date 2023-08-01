@@ -5,6 +5,8 @@ export const Colors: { [key: string]: ColorResolvable } = {
     success: [0, 255, 0],
     warning: [255, 255, 0],
     red: [176, 32, 32],
+    twitch: [145, 70, 255],
+    kick: [0, 231, 1],
     random: 'Random'
 };
 
