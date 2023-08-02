@@ -5,6 +5,7 @@ import { GuildModel } from '../../../models';
 import Logger from '../../../utils/logger';
 import { client } from '../../..';
 import cron from 'node-cron';
+import qotddService from '../services/qotdService';
 
 export default function (): cron.ScheduledTask {
     return cron.schedule('0 9 * * *', async () => {
@@ -22,7 +23,7 @@ export default function (): cron.ScheduledTask {
                     { $sample: { size: 1 } }
                 ]);
 
-                if (!randomQuestion || randomQuestion.length <= 0) continue;
+                if (randomQuestion?.length <= 0) continue;
 
                 const { question, authorId } = randomQuestion[0];
 
@@ -53,6 +54,7 @@ export default function (): cron.ScheduledTask {
                 await sentMessage.pin();
 
                 await deletePinNotification(channel, sentMessage.id);
+                qotddService.deleteQOtDById(randomQuestion[0]._id!);
             } catch (error: any) {
                 Logger.error('Error sending question:', error);
             }
