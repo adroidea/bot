@@ -59,9 +59,9 @@ async function createQOtD(qotd: IQuestions): Promise<string> {
     }
 }
 
-async function deleteQOtD(qotdId: string): Promise<void> {
+async function deleteQOtDById(qotdId: string): Promise<void> {
     try {
-        await QuestionsModel.deleteOne({ _id: qotdId });
+        await QuestionsModel.findByIdAndDelete(qotdId);
     } catch (error: any) {
         Logger.error("Une erreur est survenue lors de la suppression d'une qdj :", error);
         throw CustomErrors.UnknownError;
@@ -71,7 +71,7 @@ async function deleteQOtD(qotdId: string): Promise<void> {
 const qotddService = {
     addToQotdBlacklist,
     createQOtD,
-    deleteQOtD,
+    deleteQOtDById,
     whiteListUser
 };
 
