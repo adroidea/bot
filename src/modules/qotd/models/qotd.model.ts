@@ -10,6 +10,7 @@ export interface IQOtD {
 }
 
 export interface IQuestions {
+    _id?:string;
     question: string;
     authorId: string;
     guildId: string;
