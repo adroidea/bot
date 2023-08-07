@@ -64,7 +64,7 @@ export default async (client: any) => {
         const componentCounts: string[] = [];
         for (const folder of componentFolders) {
             const count = counts[category][folder];
-            componentCounts.push(`${count} ${folder}`);
+            if (count ?? 0) componentCounts.push(`${count} ${folder}`);
         }
 
         categoryMsg += ` ${componentCounts.join(' | ')} were loaded.`;

@@ -1,9 +1,4 @@
-import {
-    ButtonInteraction,
-    EmbedBuilder,
-    PermissionsBitField,
-    userMention
-} from 'discord.js';
+import { ButtonInteraction, EmbedBuilder, PermissionsBitField, userMention } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
 import { IQuestions } from '../../models';

@@ -1,7 +1,7 @@
 import { EventModel, IEvent } from '../../../models';
 import { CustomErrors } from '../../../utils/errors';
 
-async function createEvent(eventData: IEvent): Promise<IEvent | null> {
+const createEvent = async (eventData: IEvent): Promise<IEvent | null> => {
     try {
         const createdEvent = await EventModel.create(eventData);
         return createdEvent.id;
@@ -9,63 +9,61 @@ async function createEvent(eventData: IEvent): Promise<IEvent | null> {
         console.error(error);
         return null;
     }
-}
+};
 
-async function getEventById(eventId: string): Promise<IEvent | null> {
-    return EventModel.findById(eventId);
-}
+const getEventById = async (eventId: string): Promise<IEvent | null> => {
+    return EventModel.findOne({ id: eventId });
+};
 
-async function addParticipantToEvent(
+const addParticipantToEvent = async (
     eventId: string,
     participantId: string
-): Promise<IEvent | null> {
-    const event = await EventModel.findById(eventId);
-    if (!event) throw CustomErrors.EventNotFoundError;
+): Promise<IEvent | null> => {
+    const event = await EventModel.findOne({ id: eventId });
+    if (!event) return null;
 
-    if (event.participantsId.includes(participantId)) throw CustomErrors.AlreadyParticipantError;
+    if (event.participantsId.includes(participantId)) return event;
 
     event.participantsId.push(participantId);
     const updatedEvent = await event.save();
     return updatedEvent;
-}
+};
 
-async function removeParticipantFromEvent(
+const removeParticipantFromEvent = async (
     eventId: string,
     participantId: string
-): Promise<IEvent | null> {
-    const event = await EventModel.findById(eventId);
-    if (!event) throw CustomErrors.EventNotFoundError;
+): Promise<IEvent | null> => {
+    const event = await EventModel.findOne({ id: eventId });
+    if (!event) return null;
 
     const participantIndex = event.participantsId.findIndex(id => id === participantId);
     if (participantIndex === -1) {
-        throw CustomErrors.ParticipantNotFoundError;
+        return event;
     }
 
-    // Remove the participant from the event
     event.participantsId.splice(participantIndex, 1);
 
-    // Save the updated event
     const updatedEvent = event.save();
 
     return updatedEvent;
-}
+};
 
-async function deleteEvent(eventId: string): Promise<void> {
-    const event = await EventModel.findById(eventId);
+const deleteEvent = async (eventId: string): Promise<void> => {
+    const event = EventModel.findOne({ id: eventId });
     if (!event) throw CustomErrors.EventNotFoundError;
     try {
-        await EventModel.findByIdAndDelete(eventId);
+        EventModel.findOneAndDelete({ id: eventId });
     } catch (error) {
         console.error(error);
     }
-}
+};
 
 const CustomEventService = {
-    createEvent,
-    getEventById,
     addParticipantToEvent,
-    removeParticipantFromEvent,
-    deleteEvent
+    createEvent,
+    deleteEvent,
+    getEventById,
+    removeParticipantFromEvent
 };
 
 export default CustomEventService;

@@ -1,8 +1,4 @@
-export class CustomError extends Error {
-    constructor(message: string) {
-        super(message);
-    }
-}
+export class CustomError extends Error {}
 
 export const CustomErrors = {
     UnknownError: new CustomError(

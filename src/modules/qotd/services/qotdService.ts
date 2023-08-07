@@ -49,7 +49,7 @@ const whiteListUser = async (guildId: string, userId: string): Promise<void> => 
     }
 };
 
-async function createQOtD(qotd: IQuestions): Promise<string> {
+const createQOtD = async (qotd: IQuestions): Promise<string> => {
     try {
         const newQotd = await QuestionsModel.create(qotd);
         return newQotd._id.toString();
@@ -57,16 +57,16 @@ async function createQOtD(qotd: IQuestions): Promise<string> {
         Logger.error("Une erreur est survenue lors de l'ajout d'une qdj :", error);
         throw CustomErrors.UnknownError;
     }
-}
+};
 
-async function deleteQOtDById(qotdId: string): Promise<void> {
+const deleteQOtDById = async (qotdId: string): Promise<void> => {
     try {
-        await QuestionsModel.findByIdAndDelete(qotdId);
+        QuestionsModel.findByIdAndDelete(qotdId);
     } catch (error: any) {
         Logger.error("Une erreur est survenue lors de la suppression d'une qdj :", error);
         throw CustomErrors.UnknownError;
     }
-}
+};
 
 const qotddService = {
     addToQotdBlacklist,

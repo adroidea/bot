@@ -2,6 +2,7 @@ import { Client, EmbedBuilder, Events, GuildMember, TextChannel } from 'discord.
 import { Colors } from '../../utils/consts';
 import { IGuild } from '../../models';
 import guildService from '../../services/guildService';
+import { timestampToDate } from '../../utils/botUtil';
 
 module.exports = {
     name: Events.GuildMemberAdd,
@@ -37,7 +38,7 @@ module.exports = {
             )
             .addFields({
                 name: '❄ Création :',
-                value: `<t:${member.user.createdTimestamp / 1000}:R>`,
+                value: `<t:${timestampToDate(member.user.createdTimestamp)}:R>`,
                 inline: true
             })
             .setFooter({
