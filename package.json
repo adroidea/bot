@@ -27,13 +27,11 @@
     "@discordjs/rest": "^1.5.0",
     "ansis": "^1.5.5",
     "bullmq": "^3.12.0",
-    "dayjs": "^1.11.8",
     "discord-api-types": "^0.37.35",
     "discord.js": "^14.11.0",
     "dotenv": "^16.0.3",
     "mongoose": "^7.0.0",
     "node-cron": "^3.0.2",
-    "node-fetch": "^3.3.0",
     "node-twitch": "^0.5.0"
   },
   "devDependencies": {

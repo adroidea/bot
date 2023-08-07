@@ -23,23 +23,6 @@ handlerFiles.forEach((handlerFile: any) => {
     import(filePath).then(handler => handler.default(client));
 });
 
-process.on('exit', (code: number) => {
-    Logger.client(`Process stopped with the code ${code}`);
-});
-
-process.on('uncaughtException', (err: Error, origin: Error) => {
-    Logger.error(`UNCAUGHT_EXCEPTION: ${err}`, origin, filePath);
-});
-
-process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
-    Logger.warn(`UNHANDLED_REJECTION : ${reason}`);
-    console.log(promise);
-});
-
-client.rest.on('rateLimited', (info: any) => {
-    Logger.warn(`A rate limit has been hit: ${JSON.stringify(info)}`);
-});
-
 mongoose.set('strictQuery', false);
 mongoose
     .connect(process.env.MONGO_URI!, {
@@ -55,3 +38,20 @@ mongoose
     });
 
 client.login(process.env.TOKEN);
+
+client.rest.on('rateLimited', (info: any) => {
+    Logger.warn(`A rate limit has been hit: ${JSON.stringify(info)}`);
+});
+
+process.on('exit', (code: number) => {
+    Logger.client(`Process stopped with the code ${code}`);
+});
+
+process.on('uncaughtException', async (err: Error, origin: Error) => {
+    Logger.error(`UNCAUGHT_EXCEPTION: ${err}`, origin, filePath);
+});
+
+process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
+    Logger.warn(`UNHANDLED_REJECTION : ${reason}`);
+    console.log(promise);
+});

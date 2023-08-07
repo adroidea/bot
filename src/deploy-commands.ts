@@ -17,7 +17,7 @@ export const regCMD = (clientId: string) => {
         path.join(__dirname, 'modules/customEvents/commands')
     ];
 
-    function readCommands(dir: string) {
+    const readCommands = (dir: string) => {
         const files = fs.readdirSync(dir);
 
         for (const file of files) {
@@ -31,7 +31,7 @@ export const regCMD = (clientId: string) => {
                 commands.push(command.data);
             }
         }
-    }
+    };
     for (const cmdPath of categoryFolders) {
         readCommands(cmdPath);
     }

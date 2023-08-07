@@ -1,11 +1,11 @@
 import { IGuild, INotifications } from '../models';
 import { Guild } from 'discord.js';
 
-export default function checkBotPermission(guild: Guild, permissionFlag: bigint) {
+export const checkBotPermission = (guild: Guild, permissionFlag: bigint) => {
     return guild.members.me!.permissions.has(permissionFlag);
-}
+};
 
-export function checkNotificationsSubModule(guildSettings: IGuild, smn: keyof INotifications) {
+export const checkNotificationsSubModule = (guildSettings: IGuild, smn: keyof INotifications) => {
     const notifications: INotifications = guildSettings.modules.notifications;
 
     const subModule = notifications[smn];
@@ -15,8 +15,12 @@ export function checkNotificationsSubModule(guildSettings: IGuild, smn: keyof IN
     }
 
     return notifications.enabled && subModule.enabled;
-}
+};
 
-export function checkTemporaryVoiceModule(guildSettings: IGuild) {
+export const checkTemporaryVoiceModule = (guildSettings: IGuild) => {
     return guildSettings.modules.temporaryVoice.enabled;
-}
+};
+
+export const timestampToDate = (timestamp: number): number => {
+    return Math.floor(timestamp / 1000);
+};
