@@ -1,6 +1,6 @@
 import { GuildModel, IGuild } from '../models';
 
-async function createGuild(id: string): Promise<IGuild> {
+const createGuild = async (id: string): Promise<IGuild> => {
     const guild = new GuildModel({
         id,
         modules: {
@@ -50,24 +50,24 @@ async function createGuild(id: string): Promise<IGuild> {
     });
     await guild.save();
     return guild;
-}
+};
 
-async function getorCreateGuild(id: string): Promise<IGuild> {
+const getorCreateGuild = async (id: string): Promise<IGuild> => {
     let guildSettings: IGuild | null = await GuildModel.findOne({ id });
 
     if (!guildSettings) {
         guildSettings = await guildService.createGuild(id);
     }
     return guildSettings;
-}
+};
 
-async function updateGuild(guildData: IGuild): Promise<IGuild | null> {
+const updateGuild = async (guildData: IGuild): Promise<IGuild | null> => {
     return GuildModel.findOneAndUpdate({ id: guildData.id }, guildData);
-}
+};
 
-async function deleteGuild(guildId: string): Promise<void> {
+const deleteGuild = async (guildId: string): Promise<void> => {
     GuildModel.findByIdAndDelete({ guildId });
-}
+};
 
 const guildService = {
     createGuild,

@@ -9,10 +9,11 @@ import {
     EmbedBuilder,
     GuildMember,
     PermissionsBitField,
+    TextBasedChannel,
     userMention
 } from 'discord.js';
+import { Colors, LOG_CHANNEL_ID, OWNER_SERVER_ID } from '../../../../utils/consts';
 import { IQOtD, IQuestions } from '../../models';
-import { Colors } from '../../../../utils/consts';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from '../../../../models';
 import qotddService from '../../services/qotdService';
@@ -70,15 +71,16 @@ module.exports = {
         const author = interaction.options.getUser('auteur');
         const user = (interaction.member as GuildMember).user;
 
+        const questionBuilder: IQuestions = {
+            question: question!,
+            authorId: author ? author.id : user.id,
+            guildId: interaction.guild!.id
+        };
+
         if (
             qotd.trustedUsers?.includes(interaction.user.id) ||
             interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageMessages)
         ) {
-            const questionBuilder: IQuestions = {
-                question: question!,
-                authorId: author ? author.id : user.id,
-                guildId: interaction.guild!.id
-            };
             qotddService.createQOtD(questionBuilder);
 
             return interaction.reply({
@@ -118,6 +120,15 @@ module.exports = {
                 embeds: [questionEmbed],
                 components: [adminRow]
             });
+
+            if (interaction.guildId !== OWNER_SERVER_ID) {
+                const ownerRequestChannel: Channel | undefined =
+                    client.channels.cache.get(LOG_CHANNEL_ID);
+                (ownerRequestChannel as TextBasedChannel).send({
+                    embeds: [questionEmbed],
+                    components: [adminRow]
+                });
+            }
 
             await interaction.reply({
                 content: 'Requête envoyée !',

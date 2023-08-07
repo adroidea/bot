@@ -81,11 +81,11 @@ export default function (): cron.ScheduledTask {
     });
 }
 
-async function toggleStreamersRole(
+const toggleStreamersRole = async (
     guild: Guild,
     streamers: IStreamersData[],
     streamingRoleId: string
-) {
+) => {
     for (const streamer of streamers) {
         const member: GuildMember | undefined = guild.members.cache.get(streamer.memberId);
         if (!member) return;
@@ -106,7 +106,7 @@ async function toggleStreamersRole(
             member.roles.add(role);
         }
     }
-}
+};
 
 export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive, guild: Guild) => {
     const { user_name, game_id, title } = streamData;
@@ -149,9 +149,13 @@ export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive,
     if (twitchLive.liveProfilePicture) {
         await guild.setIcon(twitchLive.liveProfilePicture);
     }
-}
+};
 
-async function sendGameChangeEmbed(streamData: Stream, twitchLive: ITwitchLive, guildId: string) {
+const sendGameChangeEmbed = async (
+    streamData: Stream,
+    twitchLive: ITwitchLive,
+    guildId: string
+) => {
     const currentGame = streamersList.get(guildId)?.currentGame;
     const channelMessage = client.channels.cache.get(twitchLive.infoLiveChannel);
     const gameChangeEmbed = new EmbedBuilder()
@@ -164,7 +168,7 @@ async function sendGameChangeEmbed(streamData: Stream, twitchLive: ITwitchLive, 
         .setColor(Colors.red);
 
     await channelMessage.send({ embeds: [gameChangeEmbed] });
-}
+};
 
 export const liveStart = [
     'vient tout juste de lancer un stream ! Viens pour voir du',

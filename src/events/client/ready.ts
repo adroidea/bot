@@ -3,8 +3,6 @@ import Logger from '../../utils/logger';
 import { deleteCMD } from '../../delete-commands';
 import { regCMD } from '../../deploy-commands';
 
-
-
 module.exports = {
     name: Events.ClientReady,
     once: true,

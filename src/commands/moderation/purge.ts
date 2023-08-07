@@ -8,7 +8,7 @@ import {
     PermissionsBitField,
     TextChannel
 } from 'discord.js';
-import checkBotPermission, { checkNotificationsSubModule } from '../../utils/botUtil';
+import { checkBotPermission, checkNotificationsSubModule } from '../../utils/botUtil';
 import { CustomErrors } from '../../utils/errors';
 import { IGuild } from '../../models';
 

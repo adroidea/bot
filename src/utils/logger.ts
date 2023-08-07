@@ -1,17 +1,27 @@
+import { TextBasedChannel, codeBlock } from 'discord.js';
 import ansis, { AnsiColors } from 'ansis';
-import dayjs from 'dayjs';
+import { Embed } from './embedsUtil';
+import { LOG_CHANNEL_ID } from './consts';
+import { client } from '..';
 
 const format = '{tstamp} : {tag} {txt} \n';
 
 export default class Logger {
-    private static write(
+    private static async write(
         content: string,
         tagColor: AnsiColors,
         bgTagColor: AnsiColors,
         tag: string,
         error = false
     ) {
-        const timestamp = `[${dayjs().format('DD/MM - HH:mm:ss')}]`;
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+
+        const timestamp = `[${day}/${month} - ${hours}:${minutes}:${seconds}]`;
         const logTag = `[${tag}]`;
         const stream = error ? process.stderr : process.stdout;
         const item = format
@@ -21,9 +31,14 @@ export default class Logger {
         stream.write(item);
     }
 
-    static error(content: string, error: Error, filePath?: string) {
+    static async error(content: string, error: Error, filePath?: string) {
         Logger.write(`${content} \n${filePath}`, 'black', 'bgRed', 'ERROR', true);
         console.error(error);
+
+        const logChannel = await client.channels.fetch(LOG_CHANNEL_ID);
+        const embed = Embed.error(`${error.name}: ${error.message}`);
+        embed.setDescription(codeBlock(error.stack!));
+        (logChannel as TextBasedChannel).send({ embeds: [embed] });
     }
 
     static warn(content: string) {

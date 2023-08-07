@@ -17,6 +17,7 @@ import { IGuild } from '../../models';
 import { checkMemberPermission } from '../../utils/memberUtil';
 import { client } from '../..';
 import guildService from '../../services/guildService';
+import { timestampToDate } from '../../utils/botUtil';
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -33,7 +34,10 @@ module.exports = {
     }
 };
 
-async function handleCommandInteraction(client: IDiscordClient, interaction: CommandInteraction) {
+const handleCommandInteraction = async (
+    client: IDiscordClient,
+    interaction: CommandInteraction
+) => {
     const guildSettings: IGuild = await guildService.getorCreateGuild(interaction.guildId!);
     const command = client.commands.get(interaction.commandName);
 
@@ -54,23 +58,23 @@ async function handleCommandInteraction(client: IDiscordClient, interaction: Com
     } catch (err) {
         handleError(interaction, err);
     }
-}
+};
 
-function checkCommandPermissions(
+const checkCommandPermissions = (
     memberPermissions: PermissionsBitField,
     commandPermissions: PermissionsBitField[]
-) {
+) => {
     if (!checkMemberPermission(memberPermissions, commandPermissions)) {
         throw CustomErrors.UserNoPermissionsError;
     }
-}
+};
 
-function calculateCooldownAmount(command: any): number {
+const calculateCooldownAmount = (command: any): number => {
     const defaultCooldownDuration = 5;
     return (command.cooldown ?? defaultCooldownDuration) * 1000;
-}
+};
 
-function handleCooldown(userId: string, commandName: string, cooldownAmount: number) {
+const handleCooldown = (userId: string, commandName: string, cooldownAmount: number) => {
     if (!client.cooldowns.has(commandName)) {
         client.cooldowns.set(commandName, new Collection());
     }
@@ -79,15 +83,15 @@ function handleCooldown(userId: string, commandName: string, cooldownAmount: num
     if (timestamps?.has(userId)) {
         const expirationTime = timestamps.get(userId) + cooldownAmount;
         if (now < expirationTime) {
-            const expiredTimestamp = Math.round(expirationTime / 1000);
+            const expiredTimestamp = timestampToDate(expirationTime);
             throw CustomErrors.CooldownError(expiredTimestamp);
         }
     }
     timestamps.set(userId, now);
     setTimeout(() => timestamps.delete(userId), cooldownAmount);
-}
+};
 
-async function handleComponentInteraction(client: IDiscordClient, interaction: BaseInteraction) {
+const handleComponentInteraction = async (client: IDiscordClient, interaction: BaseInteraction) => {
     if (interaction.isButton()) {
         const button = client.buttons.get(interaction.customId);
         if (button) {
@@ -104,43 +108,43 @@ async function handleComponentInteraction(client: IDiscordClient, interaction: B
             await executeModalSubmitInteraction(modal, interaction);
         }
     }
-}
+};
 
-async function executeButtonInteraction(button: any, interaction: ButtonInteraction) {
+const executeButtonInteraction = async (button: any, interaction: ButtonInteraction) => {
     try {
         await button.execute(interaction);
     } catch (err) {
         handleError(interaction, err);
     }
-}
+};
 
-async function executeSelectMenuInteraction(
+const executeSelectMenuInteraction = async (
     selectMenu: any,
     interaction: AnySelectMenuInteraction
-) {
+) => {
     try {
         await selectMenu.execute(interaction);
     } catch (err) {
         handleError(interaction, err);
     }
-}
+};
 
-async function executeModalSubmitInteraction(modal: any, interaction: ModalSubmitInteraction) {
+const executeModalSubmitInteraction = async (modal: any, interaction: ModalSubmitInteraction) => {
     try {
         await modal.execute(interaction);
     } catch (err) {
         handleError(interaction, err);
     }
-}
+};
 
-async function handleError(
+const handleError = async (
     interaction:
         | CommandInteraction
         | AnySelectMenuInteraction
         | ModalSubmitInteraction
         | ButtonInteraction,
     err: any
-) {
+) => {
     if (err instanceof CustomError) {
         const embed = Embed.error(err.message);
         interaction.reply({ embeds: [embed], ephemeral: true });
@@ -149,4 +153,4 @@ async function handleError(
         interaction.reply({ embeds: [embed], ephemeral: true });
         console.error(err);
     }
-}
+};
