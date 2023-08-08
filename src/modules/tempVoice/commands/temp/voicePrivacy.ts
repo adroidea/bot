@@ -63,6 +63,7 @@ module.exports = {
     permissions: [PermissionsBitField.Flags.SendMessages],
     usage: 'voice [commande] [member] ou [option]',
     examples: 'voice ban @adan_ea#3945',
+    guildOnly: false,
 
     async execute(client: Client, interaction: CommandInteraction, guildSettings: IGuild) {
         if (!checkTemporaryVoiceModule(guildSettings)) throw CustomErrors.ModuleDisabledError;

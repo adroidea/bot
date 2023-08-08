@@ -7,7 +7,7 @@ let nbFailedCmd = 0;
 
 export default async (client: any) => {
     const categoryFolders = [
-        path.join(__dirname, '../commands'),
+        path.join(__dirname, '../modules/core/commands'),
         // Ppath.join(__dirname, '../twitchlive/commands'),
         path.join(__dirname, '../modules/qotd/commands'),
         path.join(__dirname, '../modules/customEvents/commands')

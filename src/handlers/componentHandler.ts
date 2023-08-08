@@ -4,10 +4,10 @@ import path from 'path';
 
 export default async (client: any) => {
     const categoryFolders = [
-        // Ppath.join(__dirname, '../twitchlive/components'),
+        //path.join(__dirname, '../modules/customEvents/components'),
         path.join(__dirname, '../modules/qotd/components'),
-        path.join(__dirname, '../modules/tempVoice/components'),
-        path.join(__dirname, '../modules/customEvents/components')
+        path.join(__dirname, '../modules/tempVoice/components')
+        //path.join(__dirname, '../modules/twitchLive/components'),
     ];
 
     const componentFolders = ['buttons', 'modals', 'selectMenus'];

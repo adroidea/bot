@@ -1,8 +1,8 @@
 import { Client, EmbedBuilder, Events, GuildMember, TextChannel } from 'discord.js';
-import { Colors } from '../../utils/consts';
-import { IGuild } from '../../models';
-import guildService from '../../services/guildService';
-import { timestampToDate } from '../../utils/botUtil';
+import { Colors } from '../../../../utils/consts';
+import { IGuild } from '../../../../models';
+import guildService from '../../../../services/guildService';
+import { timestampToDate } from '../../../../utils/botUtil';
 
 module.exports = {
     name: Events.GuildMemberAdd,

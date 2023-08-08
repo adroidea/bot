@@ -8,9 +8,9 @@ import {
     PermissionsBitField,
     TextChannel
 } from 'discord.js';
-import { checkBotPermission, checkNotificationsSubModule } from '../../utils/botUtil';
-import { CustomErrors } from '../../utils/errors';
-import { IGuild } from '../../models';
+import { checkBotPermission, checkNotificationsSubModule } from '../../../../utils/botUtil';
+import { CustomErrors } from '../../../../utils/errors';
+import { IGuild } from '../../../../models';
 
 module.exports = {
     data: {
@@ -33,6 +33,7 @@ module.exports = {
         ]
     },
     category: 'moderation',
+    guildOnly: false,
     permissions: [PermissionsBitField.Flags.ManageMessages],
     usage: 'purge [montant] <@cible>',
     examples: ['purge 10', 'purge 100 @adan_ea'],

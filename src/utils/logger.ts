@@ -7,7 +7,7 @@ import { client } from '..';
 const format = '{tstamp} : {tag} {txt} \n';
 
 export default class Logger {
-    private static async write(
+    private static write(
         content: string,
         tagColor: AnsiColors,
         bgTagColor: AnsiColors,

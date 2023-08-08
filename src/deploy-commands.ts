@@ -1,6 +1,6 @@
+import { REST, Routes } from 'discord.js';
 import Logger from './utils/logger';
-import { REST } from '@discordjs/rest';
-import { Routes } from 'discord-api-types/v9';
+import { OWNER_SERVER_ID } from './utils/consts';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'node:path';
@@ -9,10 +9,11 @@ dotenv.config();
 export const regCMD = (clientId: string) => {
     // Gets slash commands
     const commands: any[] = [];
+    const guildCommands: any[] = [];
 
     const categoryFolders = [
-        path.join(__dirname, 'commands'),
-        // Ppath.join(__dirname, '../twitchlive/commands'),
+        path.join(__dirname, 'modules/core/commands'),
+        //path.join(__dirname, 'modules/twitchLive/commands'),
         path.join(__dirname, 'modules/qotd/commands'),
         path.join(__dirname, 'modules/customEvents/commands')
     ];
@@ -28,7 +29,9 @@ export const regCMD = (clientId: string) => {
                 readCommands(filePath);
             } else if (file.endsWith('.js')) {
                 const command = require(filePath);
-                commands.push(command.data);
+
+                if (command.guildOnly) guildCommands.push(command.data);
+                else commands.push(command.data);
             }
         }
     };
@@ -36,9 +39,21 @@ export const regCMD = (clientId: string) => {
         readCommands(cmdPath);
     }
 
-    const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN!);
+    const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 
-    rest.put(Routes.applicationCommands(clientId), { body: commands })
-        .then(() => Logger.info(`Successfully registered ${commands.length} application commands.`))
-        .catch(console.error);
+    try {
+        rest.put(Routes.applicationGuildCommands(clientId, OWNER_SERVER_ID), {
+            body: guildCommands
+        }).then(() =>
+            Logger.info(
+                `Successfully registered ${guildCommands.length} guild application commands.`
+            )
+        );
+
+        rest.put(Routes.applicationCommands(clientId), { body: commands }).then(() =>
+            Logger.info(`Successfully registered ${commands.length} application commands.`)
+        );
+    } catch (error: any) {
+        Logger.error('Error while registering application commands', error);
+    }
 };
