@@ -6,7 +6,7 @@ import {
     EmbedBuilder,
     PermissionsBitField
 } from 'discord.js';
-import { Colors } from '../../utils/consts';
+import { Colors } from '../../../../utils/consts';
 
 module.exports = {
     data: {
@@ -24,6 +24,7 @@ module.exports = {
     category: 'utils',
     permissions: [PermissionsBitField.Flags.SendMessages],
     usage: 'helpea <command>',
+    guildOnly: false,
     examples: ['helpea', 'helpea pingea'],
 
     async execute(client: Client, interaction: CommandInteraction) {
@@ -41,7 +42,7 @@ module.exports = {
             .setDescription(`${commandsList}`)
             .addFields({
                 name: 'version',
-                value: `v${process.env.npm_package_version} ou 3.0.2`
+                value: `v${process.env.npm_package_version}`
             })
             .setFooter({
                 text: `< > = optionnel | [ ] = requis | (A ne pas inclure dans les commandes)`

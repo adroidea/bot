@@ -1,7 +1,11 @@
 import { Client, Events, VoiceState } from 'discord.js';
-import { createNewTempChannel, deleteEmptyChannel, switchVoiceOwner } from '../../utils/voiceUtil';
-import { IGuild } from '../../models';
-import guildService from '../../services/guildService';
+import {
+    createNewTempChannel,
+    deleteEmptyChannel,
+    switchVoiceOwner
+} from '../../../../utils/voiceUtil';
+import { IGuild } from '../../../../models';
+import guildService from '../../../../services/guildService';
 
 const isProtectedVoice = async (
     hostChannels: string[] | undefined,

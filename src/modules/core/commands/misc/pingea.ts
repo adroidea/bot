@@ -14,6 +14,7 @@ module.exports = {
     category: 'utils',
     cooldown: 10,
     permissions: [PermissionsBitField.Flags.SendMessages],
+    guildOnly: false,
     usage: 'pingea',
     examples: ['pingea'],
 

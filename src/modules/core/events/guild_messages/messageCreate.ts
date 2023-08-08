@@ -64,7 +64,7 @@ module.exports = {
 };
 
 const extractNameFromMessage = (input: string) => {
-    const regex = /[^,.:;!?]+/im;
+    const regex = /[^,.:;!?)]+/im;
     const match = regex.exec(input);
 
     if (match) {

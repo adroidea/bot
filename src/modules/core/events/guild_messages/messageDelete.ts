@@ -1,7 +1,7 @@
 import { Client, EmbedBuilder, Events, Message, TextChannel } from 'discord.js';
-import { Colors, OWNER_ID } from '../../utils/consts';
-import { IGuild } from '../../models';
-import guildService from '../../services/guildService';
+import { Colors, OWNER_ID } from '../../../../utils/consts';
+import { IGuild } from '../../../../models';
+import guildService from '../../../../services/guildService';
 
 module.exports = {
     name: Events.MessageDelete,
