@@ -65,8 +65,8 @@ const updateGuild = async (guildData: IGuild): Promise<IGuild | null> => {
     return GuildModel.findOneAndUpdate({ id: guildData.id }, guildData);
 };
 
-const deleteGuild = async (guildId: string): Promise<void> => {
-    GuildModel.findByIdAndDelete({ guildId });
+const deleteGuild = async (id: string): Promise<void> => {
+    GuildModel.findOneAndDelete({ id });
 };
 
 const guildService = {

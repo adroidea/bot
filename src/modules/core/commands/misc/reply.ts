@@ -20,6 +20,7 @@ module.exports = {
     },
     category: 'misc',
     permissions: [PermissionsBitField.Flags.Administrator],
+    guildOnly: true,
     usage: 'idk dude.',
     examples: ["still don't know"],
 

@@ -1,5 +1,5 @@
 import { Client, Events, Guild } from 'discord.js';
-import guildService from '../../services/guildService';
+import guildService from '../../../../services/guildService';
 
 module.exports = {
     name: Events.GuildCreate,

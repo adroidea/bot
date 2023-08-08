@@ -7,10 +7,10 @@ import {
     TextChannel,
     roleMention
 } from 'discord.js';
-import { liveStart, randomizeArray } from '../../modules/twitchLive/tasks/twitchAlert.cron';
-import { Colors } from '../../utils/consts';
-import { CustomErrors } from '../../utils/errors';
-import { IGuild } from '../../models';
+import { liveStart, randomizeArray } from '../../../../modules/twitchLive/tasks/twitchAlert.cron';
+import { Colors } from '../../../../utils/consts';
+import { CustomErrors } from '../../../../utils/errors';
+import { IGuild } from '../../../../models';
 
 module.exports = {
     data: {
@@ -39,6 +39,7 @@ module.exports = {
     },
     category: 'moderation',
     cooldown: 30,
+    guildOnly: true,
     permissions: [PermissionsBitField.Flags.Administrator],
     usage: 'channel [commande] [channel]',
     examples: 'channel list all',

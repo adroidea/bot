@@ -59,6 +59,7 @@ module.exports = {
     permissions: [PermissionsBitField.Flags.SendMessages],
     usage: 'qdj [question] <auteur>',
     examples: ['qdj Pâtes ou riz ?', 'qdj pain au chocolat ou croissant ? @Adan_ea#3000'],
+    guildOnly: false,
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildData: IGuild) {
         const { qotd }: { qotd: IQOtD } = guildData.modules;

@@ -1,7 +1,7 @@
 import { Client, EmbedBuilder, Events, Message, TextChannel } from 'discord.js';
-import { IGuild } from '../../models';
-import { OWNER_ID } from '../../utils/consts';
-import guildService from '../../services/guildService';
+import { IGuild } from '../../../../models';
+import { OWNER_ID } from '../../../../utils/consts';
+import guildService from '../../../../services/guildService';
 
 module.exports = {
     name: Events.MessageUpdate,

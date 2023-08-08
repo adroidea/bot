@@ -1,6 +1,7 @@
-import Logger from '../utils/logger';
-import { OWNER_SERVER_ID } from '../utils/consts';
-import { client } from '../index';
+import { Guild } from 'discord.js';
+import Logger from '../../../utils/logger';
+import { OWNER_SERVER_ID } from '../../../utils/consts';
+import { client } from '../../../index';
 import cron from 'node-cron';
 
 const dpp = {
@@ -24,7 +25,7 @@ export default function (): cron.ScheduledTask {
                 if (response !== `adan_ea is offline`) return;
             });
 
-            const guild = client.guilds.fetch(OWNER_SERVER_ID);
+            const guild: Guild = client.guilds.fetch(OWNER_SERVER_ID);
             const currentHour = new Date().getHours();
 
             let newProfilePicture;
