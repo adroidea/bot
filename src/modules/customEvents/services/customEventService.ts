@@ -1,5 +1,5 @@
 import { EventModel, IEvent } from '../../../models';
-import { CustomErrors } from '../../../utils/errors';
+import { quote, userMention } from 'discord.js';
 
 const createEvent = async (eventData: IEvent): Promise<IEvent | null> => {
     try {
@@ -49,8 +49,6 @@ const removeParticipantFromEvent = async (
 };
 
 const deleteEvent = async (eventId: string): Promise<void> => {
-    const event = EventModel.findOne({ id: eventId });
-    if (!event) throw CustomErrors.EventNotFoundError;
     try {
         EventModel.findOneAndDelete({ id: eventId });
     } catch (error) {
@@ -58,12 +56,50 @@ const deleteEvent = async (eventId: string): Promise<void> => {
     }
 };
 
+const updateMessage = (eventData: IEvent): string => {
+    const description = eventData.description;
+    let participants = '';
+
+    const nbParticipants = eventData.participantsId.length;
+    const participantsList = eventData.participantsId.map(id => quote(userMention(id))).join('\n');
+
+    if (eventData.maxParticipants) {
+        participants += `**Participants (${
+            nbParticipants > eventData.maxParticipants ? eventData.maxParticipants : nbParticipants
+        }/${eventData.maxParticipants})**`;
+        participants +=
+            nbParticipants > 0
+                ? `\n${eventData.participantsId
+                      .slice(0, eventData.maxParticipants)
+                      .map(id => quote(userMention(id)))
+                      .join('\n')}`
+                : '\n> Aucun participant';
+
+        if (nbParticipants > eventData.maxParticipants) {
+            const waitingList = eventData.participantsId
+                .slice(eventData.maxParticipants)
+                .map(id => quote(userMention(id)))
+                .join('\n');
+
+            participants += `\n\n**File d'attente (${
+                nbParticipants - eventData.maxParticipants
+            })**`;
+            participants += `\n${waitingList}`;
+        }
+    } else {
+        participants += `**Participants (${nbParticipants})**`;
+        participants += nbParticipants > 0 ? `\n${participantsList}` : '\n> Aucun participant';
+    }
+    return description + '\n\n' + participants;
+};
+
 const CustomEventService = {
     addParticipantToEvent,
     createEvent,
     deleteEvent,
     getEventById,
-    removeParticipantFromEvent
+    removeParticipantFromEvent,
+    updateMessage
 };
 
 export default CustomEventService;
