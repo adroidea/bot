@@ -1,7 +1,5 @@
-import { Worker, WorkerOptions } from 'bullmq';
-import { Colors } from '../../../utils/consts';
+import { Job, Worker, WorkerOptions } from 'bullmq';
 import CustomEventService from '../services/customEventService';
-import { EmbedBuilder } from 'discord.js';
 import { IEvent } from '../models';
 import { client } from '../../..';
 
@@ -9,34 +7,11 @@ const redisConnectionOptions: WorkerOptions = {
     connection: {
         host: process.env.REDIS_HOST,
         port: 6379
-    },
-    autorun: false
-};
-
-const handleCustomEventsStartWorker = async (job: any) => {
-    const event: IEvent | null = await CustomEventService.getEventById(job.name);
-    if (!event) return;
-
-    const channel = client.channels.cache.get(event.channelId);
-    const embed = new EmbedBuilder()
-        .setTitle("Début de l'événement " + event.title)
-        .setDescription(event.description)
-        .setColor(Colors.random)
-        .setTimestamp();
-
-    if (event.duration) {
-        embed.addFields([{ name: '**Durée**', value: `${event.duration}` }]);
     }
-
-    if (event.imageURL) {
-        embed.setImage(event.imageURL);
-    }
-
-    await channel.send({ embeds: [embed] });
 };
 
 // Fonction pour traiter le Worker 'customEventsReminder'
-const handleCustomEventsReminderWorker = async (job: any) => {
+const handleCustomEventsReminderWorker = async (job: Job) => {
     const event: IEvent | null = await CustomEventService.getEventById(job.name);
     if (!event) return;
 
@@ -47,7 +22,7 @@ const handleCustomEventsReminderWorker = async (job: any) => {
         participantsId.map(async participantId => {
             try {
                 const user = await client.users.fetch(participantId);
-                await user.send(`Salut ! L'événement "${event.title}" commence bientôt !`);
+                await user.send(`Salut ! L'événement "${event.name}" commence bientôt !`);
             } catch (error) {
                 console.error(error);
             }
@@ -56,21 +31,11 @@ const handleCustomEventsReminderWorker = async (job: any) => {
 };
 
 export default function (): void {
-    const workerCustomEventsStart = new Worker(
-        'customEventsStart',
-        handleCustomEventsStartWorker,
-        redisConnectionOptions
-    );
-
     const workerCustomEventsReminder = new Worker(
         'customEventsReminder',
         handleCustomEventsReminderWorker,
         redisConnectionOptions
     );
-
-    workerCustomEventsStart.on('failed', (job, err) => {
-        console.log(`${job?.id} has failed with ${err.message} in 'customEventsStart'`);
-    });
 
     workerCustomEventsReminder.on('failed', (job, err) => {
         console.log(`${job?.id} has failed with ${err.message} in 'customEventsFiveMinutes'`);

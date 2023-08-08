@@ -1,30 +1,13 @@
 import {
-    ActionRowBuilder,
     ApplicationCommandOptionType,
-    ButtonBuilder,
-    ButtonStyle,
     ChatInputCommandInteraction,
     Client,
-    EmbedBuilder,
     PermissionsBitField
 } from 'discord.js';
-import { Colors } from '../../../../utils/consts';
+import { CustomErrors } from '../../../../utils/errors';
 import CustomEventService from '../../services/customEventService';
 import { IEvent } from '../../models';
 import { addToAppropriateQueue } from '../../tasks/CustomEvents.queue';
-
-const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-        .setCustomId('event_join_button')
-        .setEmoji('👍')
-        .setLabel('Rejoindre')
-        .setStyle(ButtonStyle.Success),
-    new ButtonBuilder()
-        .setCustomId('event_manage_button')
-        .setEmoji('⚙')
-        .setLabel('Options')
-        .setStyle(ButtonStyle.Secondary)
-);
 
 module.exports = {
     data: {
@@ -32,14 +15,8 @@ module.exports = {
         description: 'Créer un évènement',
         options: [
             {
-                name: 'titre',
-                description: "Titre de l'évènement",
-                type: ApplicationCommandOptionType.String,
-                required: true
-            },
-            {
-                name: 'dateheure',
-                description: "Date et heure de l'évènement (AAAA-MM-JJ HH:mm)",
+                name: 'url-id',
+                description: "url ou id de l'évènement",
                 type: ApplicationCommandOptionType.String,
                 required: true
             },
@@ -50,119 +27,75 @@ module.exports = {
                 required: false
             },
             {
-                name: 'imageurl',
-                description: "URL de l'image (png|jpg|jpeg|gif|webp)",
-                type: ApplicationCommandOptionType.String,
-                required: false
-            },
-            {
                 name: 'maxparticipants',
                 description: "Nombre de participants max, les autres seront en file d'attente",
                 type: ApplicationCommandOptionType.Number,
-                required: false
-            },
-            {
-                name: 'duree',
-                description: "Durée de l'évènement",
-                type: ApplicationCommandOptionType.String,
                 required: false
             }
         ]
     },
     category: 'events',
     permissions: [PermissionsBitField.Flags.ManageEvents],
-    usage: `event [titre][description][dateheure]<durée><maxparticipants><imageURL>
-\`\`\`\`\`\`md
-# Format de date valides
-Conseillée :  
-[YYYY-MM-DD HH:mm](ig: 2023-02-25 23:15)
-
-Acceptées :  
-[YYYY/MM/DD HH:mm](eg: 2023/02/25 23:15)
-[MM/DD/YYYY HH:mm](eg: 02/25/2023 23:15)
-
-> Les mois sont en anglais (raccourcis sur trois lettre passe aussi) !
-[YYYY/month/DD HH:mm](eg: 2023 march 12 23:15)
-[month/DD/YYYY HH:mm](eg: feb 12 2023 23:15)
-[DD/month/YYYY HH:mm](eg: 12 april 2023 23:15)
-\`\`\`\`\`\`
-    `,
-    examples: [
-        'event Soirée jeu de rôle Ca va être incroyable 2023-02-28T20:00:00Z',
-        'event Soirée jeu de rôle On va beaucoup rigoler ! 2023-02-28T20:00:00Z https://example.com/image.jpg 30min'
-    ],
+    guildOnly: false,
+    usage: '',
+    examples: [''],
 
     async execute(client: Client, interaction: ChatInputCommandInteraction) {
-        const date = new Date(interaction.options.getString('dateheure')!);
-        const dateNow = new Date();
-        if (date < dateNow)
-            return interaction.reply({
-                content: 'https://media.tenor.com/HheHJfLHhcIAAAAd/time-travel.gif',
-                ephemeral: true
-            });
-
-        const title = interaction.options.getString('titre')!;
-        const description = interaction.options.getString('description');
-
-        const timestamp = Math.floor(date.getTime() / 1000);
+        const eventInput = interaction.options.getString('url-id')!;
+        let description =
+            interaction.options.getString('description')?.replaceAll('\\n', '\n\n') ?? '';
         const maxParticipants = interaction.options.getNumber('maxparticipants');
 
-        let imageURL = interaction.options.getString('imageurl');
-        if (imageURL && !imageURL?.match(/https?:\/\/.+\.(?:png|jpg|jpeg|gif|webp)/gi))
-            imageURL = null;
+        const urlRegex = /event=/;
+        const urlRegex2 = /\/events\/(\d+)\/(\d+)/;
+        let eventId = eventInput;
 
-        const duration = interaction.options.getString('duree');
+        if (urlRegex.test(eventInput)) {
+            eventId = eventInput.split(urlRegex)[1];
+        }
 
+        if (urlRegex2.test(eventInput)) {
+            eventId = eventInput.split(urlRegex2)[2];
+        }
+
+        //const tryEvent = await CustomEventService.getEventById(eventId);
+        //if (tryEvent) throw CustomErrors.EventAlreadyExistsError;
+
+        const discordEvent = await interaction.guild!.scheduledEvents.fetch(eventId);
+        if (!discordEvent) throw CustomErrors.EventNotFoundError;
+
+        const subs = await discordEvent.fetchSubscribers();
+
+        const inviteURL = await discordEvent.createInviteURL({ maxAge: 0, unique: false });
+        const date = new Date(discordEvent.scheduledStartTimestamp!);
         const event: IEvent = {
-            title,
+            id: eventId,
+            name: discordEvent.name,
             description,
+            maxParticipants: maxParticipants,
             date,
-            imageURL,
-            maxParticipants,
-            duration,
-            participantsId: [],
             guildId: interaction.guildId!,
-            channelId: interaction.channelId
+            participantsId: [],
+            channelId: interaction.channelId,
+            messageId: ''
         };
-
-        const eventId = await CustomEventService.createEvent(event);
-        const embed = new EmbedBuilder()
-            .setTitle(title)
-            .setDescription(description)
-            .addFields([
-                {
-                    name: '**Date**',
-                    value: `<t:${timestamp}:F> (<t:${timestamp}:R>)`
-                }
-            ])
-            .setFooter({ text: `${eventId}` })
-            .setColor(Colors.random)
-            .setTimestamp();
-
-        if (duration) {
-            embed.addFields([{ name: '**Durée**', value: `${duration}` }]);
+        for (const sub of subs) {
+            event.participantsId.push(sub[0]);
         }
 
-        if (imageURL) {
-            embed.setImage(imageURL);
-        }
+        description = CustomEventService.updateMessage(event) + '\n\n' + inviteURL;
 
-        if (maxParticipants) {
-            embed.addFields({
-                name: `Participants (0/${maxParticipants})`,
-                value: '> Aucun participant'
-            });
-        } else {
-            embed.addFields({
-                name: `Participants (0)`,
-                value: '> Aucun participant'
-            });
-        }
-        addToAppropriateQueue(eventId, event);
+        const message = await interaction.channel!.send({
+            content: `${description}`
+        });
 
         await interaction.reply({
-            embeds: [embed],
-            components: [row]
+            content: 'Event créé avec succès !',
+            ephemeral: true
         });
+
+        event.messageId = message.id;
+        addToAppropriateQueue(eventId, event);
+        await CustomEventService.createEvent(event);
     }
 };

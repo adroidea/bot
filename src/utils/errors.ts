@@ -39,6 +39,7 @@ export const CustomErrors = {
     //               Events related err               //
     ////////////////////////////////////////////////////
     EventNotFoundError: new CustomError("L'évenement en question n'existe pas."),
+    EventAlreadyExistsError: new CustomError("L'évenement existe déjà en base."),
 
     AlreadyParticipantError: new CustomError(
         'Je sais que cet évènement est incroyable mais tu es déjà dans la liste des participants, prend ton mal en patience !'
