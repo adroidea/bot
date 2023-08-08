@@ -12,3 +12,4 @@ export const Colors: { [key: string]: ColorResolvable } = {
 
 export const OWNER_ID = '294916386072035328';
 export const OWNER_SERVER_ID = '814621177770541076';
+export const LOG_CHANNEL_ID = '816172869339185163';
