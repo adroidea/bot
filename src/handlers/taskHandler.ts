@@ -9,8 +9,8 @@ let nbFailedTasks = 0;
 
 export default async () => {
     const tasksFolders = [
-        path.join(__dirname, '../modules/core/tasks'),
-        path.join(__dirname, '../modules/twitchlive/tasks'),
+        //path.join(__dirname, '../modules/core/tasks'),
+        path.join(__dirname, '../modules/twitchLive/tasks'),
         path.join(__dirname, '../modules/qotd/tasks'),
         path.join(__dirname, '../modules/customEvents/tasks')
     ];
