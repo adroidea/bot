@@ -47,8 +47,8 @@ process.on('exit', (code: number) => {
     Logger.client(`Process stopped with the code ${code}`);
 });
 
-process.on('uncaughtException', async (err: Error, origin: Error) => {
-    Logger.error(`UNCAUGHT_EXCEPTION: ${err}`, origin, filePath);
+process.on('uncaughtException', (err: Error, origin: Error) => {
+    Logger.error(`UNCAUGHT_EXCEPTION: ${err}`, origin);
 });
 
 process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
