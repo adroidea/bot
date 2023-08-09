@@ -1,33 +1,51 @@
 {
-    "name": "adroid_ea",
-    "version": "2.3.5",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "node index.js",
-        "lint": "eslint \"**/*.{js,jsx}\"",
-        "lint:fix": "eslint --fix \"**/*.{js,jsx}\"",
-        "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
-    },
-    "extends": [
-        "plugin:prettier/recommended"
-    ],
-    "keywords": [],
-    "author": "adan_ea",
-    "license": "ISC",
-    "dependencies": {
-        "chalk": "^4.1.2",
-        "dayjs": "^1.11.2",
-        "discord.js": "^14.7.1",
-        "dotenv": "^16.0.0",
-        "glob": "^7.2.0",
-        "mongoose": "^6.2.3",
-        "node-twitch": "^0.5.0"
-    },
-    "devDependencies": {
-        "eslint": "^8.15.0",
-        "eslint-config-prettier": "^8.5.0",
-        "eslint-plugin-prettier": "^4.0.0",
-        "prettier": "^2.6.2"
-    }
+  "name": "adroid_ea",
+  "version": "3.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"**/*.ts\"",
+    "clean": "npm run lint:fix && npm run format",
+    "watch": "tsc -w",
+    "start": "tsc && node dist/index.js",
+    "build": "tsc",
+    "reg-cmds": "node dist/deploy-commands.js",
+    "delete-cmds": "node dist/delete-commands.js",
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*": [
+      "npm run lint:fix",
+      "npm run format"
+    ]
+  },
+  "author": "adan_ea",
+  "license": "ISC",
+  "dependencies": {
+    "ansis": "^1.5.5",
+    "bullmq": "^3.12.0",
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.0.3",
+    "mongoose": "^7.0.0",
+    "node-cron": "^3.0.2",
+    "node-twitch": "^0.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.0",
+    "@types/node-cron": "^3.0.7",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "eslint": "^8.35.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsdoc": "^40.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.4"
+  }
 }
