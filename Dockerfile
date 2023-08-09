@@ -1,13 +1,12 @@
-FROM node:16.14.0-alpine
+FROM node:20-alpine
 
-RUN mkdir -p /usr/src/bot && apk update && apk add git
-WORKDIR /usr/src/bot
+RUN mkdir -p /usr/src/adroid
+WORKDIR /usr/src/adroid
 
-COPY package.json /usr/src/bot
-RUN npm install
-RUN npm install pm2 -g
+COPY package.json /usr/src/adroid
+RUN npm install --omit=dev --ignore-scripts
 
-COPY . /usr/src/bot
+COPY dist /usr/src/adroid
 RUN ln -snf /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo Europe/Paris > /etc/timezone
 
-CMD ["pm2-runtime", "index.js"]
+CMD ["node", "index.js"]
