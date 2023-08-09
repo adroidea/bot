@@ -2,16 +2,17 @@ version: "3.8"
 services:
 
   adroid_ea:
-    image: adanea/adroid_ea:test
+    image: adanea/adroid_ea:latest
     container_name: adroid_ea
     environment:
-      - MONGO_URI=xxx
+      - DISCORD_APP_ID=xxx
       - DISCORD_TOKEN=xxx
-      - DISCORD_CLIENT_ID=xxx
+      - MONGO_URI=xxx
+      - NODE_ENV=production
+      - REDIS_HOST=xxx
       - TWITCH_CLIENT_ID=xxx
       - TWITCH_CLIENT_SECRET=xxx
-      - REDIS_HOST=xxx
-      - NODE_ENV=production
+      - WEBHOOK_LOG_URL=xxx
     restart: unless-stopped
     depends_on:
       - mongo
@@ -54,5 +55,5 @@ services:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30
+    command: --schedule 0 0 * * * *
     restart: unless-stopped

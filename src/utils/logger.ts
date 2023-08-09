@@ -1,8 +1,6 @@
-import { TextBasedChannel, codeBlock } from 'discord.js';
+import { EmbedBuilder, WebhookClient, codeBlock } from 'discord.js';
 import ansis, { AnsiColors } from 'ansis';
-import { Embed } from './embedsUtil';
-import { LOG_CHANNEL_ID } from './consts';
-import { client } from '..';
+import { Colors } from './consts';
 
 const format = '{tstamp} : {tag} {txt} \n';
 
@@ -35,14 +33,12 @@ export default class Logger {
         Logger.write(`${content} \n${filePath}`, 'black', 'bgRed', 'ERROR', true);
         console.error(error);
 
-        const logChannel = await client.channels.fetch(LOG_CHANNEL_ID);
-        const embed = Embed.error(`${error.name}: ${error.message}`);
-        embed.setDescription(codeBlock(error.stack!));
-        (logChannel as TextBasedChannel).send({ embeds: [embed] });
+        sendLogWebhook(logType.ERROR, `${error.name}: ${error.message}`, codeBlock(error.stack!));
     }
 
     static warn(content: string) {
         Logger.write(content, 'black', 'bgYellow', 'WARN', false);
+        sendLogWebhook(logType.WARN, '', content);
     }
 
     static info(content: string) {
@@ -51,5 +47,29 @@ export default class Logger {
 
     static client(content: string) {
         Logger.write(content, 'black', 'bgBlue', 'CLIENT', false);
+        sendLogWebhook(logType.CLIENT, content);
     }
 }
+
+enum logType {
+    ERROR = 'error',
+    WARN = 'warning',
+    CLIENT = 'client'
+}
+
+const sendLogWebhook = (logType: logType, title?: string, description?: string) => {
+    const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_LOG_URL! });
+    const embed = new EmbedBuilder().setColor(Colors[logType]).setTimestamp();
+
+    if (title) embed.setTitle(title);
+    if (description) embed.setDescription(description);
+
+    webhookClient
+        .send({
+            username: 'adroid_ea',
+            avatarURL:
+                'https://cdn.discordapp.com/attachments/763373898779197481/887428474766229574/worldbot.png',
+            embeds: [embed]
+        })
+        .catch(error => console.error(error));
+};
