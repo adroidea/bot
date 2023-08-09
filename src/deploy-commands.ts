@@ -7,7 +7,6 @@ import path from 'node:path';
 
 dotenv.config();
 export const regCMD = (clientId: string) => {
-    // Gets slash commands
     const commands: any[] = [];
     const guildCommands: any[] = [];
 
@@ -15,6 +14,7 @@ export const regCMD = (clientId: string) => {
         path.join(__dirname, 'modules/core/commands'),
         //path.join(__dirname, 'modules/twitchLive/commands'),
         path.join(__dirname, 'modules/qotd/commands'),
+        path.join(__dirname, 'modules/tempVoice/commands'),
         path.join(__dirname, 'modules/customEvents/commands')
     ];
 

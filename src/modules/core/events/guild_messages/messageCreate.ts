@@ -37,7 +37,7 @@ module.exports = {
                 return;
 
             case frenchDadRegex.test(message.content):
-                if (randomReact > 0.0) {
+                if (randomReact > 0.6) {
                     const input = message.content
                         .slice(frenchMatch!.index + frenchMatch![0].length)
                         .trim();
@@ -48,7 +48,7 @@ module.exports = {
                 return;
 
             case englishDadRegex.test(message.content):
-                if (randomReact > 0.0) {
+                if (randomReact > 0.5) {
                     const input = message.content
                         .slice(englishMatch!.index + englishMatch![0].length)
                         .trim();
