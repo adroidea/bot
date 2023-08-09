@@ -11,6 +11,7 @@ import {
 } from 'discord.js';
 import { CustomErrors } from './errors';
 import Logger from './logger';
+import { client } from '..';
 import path from 'path';
 
 const filePath = path.join(__dirname, __filename);
@@ -31,6 +32,15 @@ export const createNewTempChannel = async (newState: VoiceState) => {
                             PermissionsBitField.Flags.ViewChannel,
                             PermissionsBitField.Flags.Connect,
                             PermissionsBitField.Flags.Speak,
+                            PermissionsBitField.Flags.ReadMessageHistory
+                        ]
+                    },
+                    {
+                        id: client.user.id,
+                        allow: [
+                            PermissionsBitField.Flags.MoveMembers,
+                            PermissionsBitField.Flags.ViewChannel,
+                            PermissionsBitField.Flags.Connect,
                             PermissionsBitField.Flags.ReadMessageHistory
                         ]
                     }

@@ -1,6 +1,5 @@
 import { ActivityType, Client, Events } from 'discord.js';
 import Logger from '../../../../utils/logger';
-import { deleteCMD } from '../../../../delete-commands';
 import { regCMD } from '../../../../deploy-commands';
 
 module.exports = {
@@ -13,7 +12,6 @@ module.exports = {
             status: 'dnd'
         });
         if (process.env.NODE_ENV === 'production') {
-            await deleteCMD(client.user?.id!);
             regCMD(client.user?.id!);
         }
     }
