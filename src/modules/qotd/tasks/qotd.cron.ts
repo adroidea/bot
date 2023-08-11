@@ -8,7 +8,7 @@ import cron from 'node-cron';
 import qotddService from '../services/qotdService';
 
 export default function (): cron.ScheduledTask {
-    return cron.schedule('0 9 * * *', async () => {
+    return cron.schedule('0 7 * * *', async () => {
         const guilds = await GuildModel.find().exec();
         for (const guildData of guilds) {
             const guild: Guild = client.guilds.cache.get(guildData.id);
