@@ -8,9 +8,10 @@ import {
     PermissionsBitField,
     TextChannel
 } from 'discord.js';
-import { checkBotPermission, checkNotificationsSubModule } from '../../../../utils/botUtil';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from '../../../../models';
+import { checkBotPermission } from '../../../../utils/botUtil';
+import { isNotifSMEnabled } from '../../../../utils/modulesUil';
 
 module.exports = {
     data: {
@@ -80,7 +81,7 @@ module.exports = {
             });
         }
 
-        if (!checkNotificationsSubModule(guildSettings, 'privateLogs')) return;
+        if (!isNotifSMEnabled(guildSettings.modules.notifications, 'privateLogs')) return;
 
         const privateLogChannel = guildSettings.modules.notifications.privateLogs.privateLogChannel;
 

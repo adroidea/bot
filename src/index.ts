@@ -55,3 +55,7 @@ process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
     Logger.warn(`UNHANDLED_REJECTION : ${reason}`);
     console.log(promise);
 });
+
+process.on('warning', (warning) => {
+    console.warn(`Un avertissement a été émis`, warning);
+});

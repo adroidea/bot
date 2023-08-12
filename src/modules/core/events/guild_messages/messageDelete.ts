@@ -1,29 +1,23 @@
 import { Client, EmbedBuilder, Events, Message, TextChannel } from 'discord.js';
 import { Colors, OWNER_ID } from '../../../../utils/consts';
-import { IGuild } from '../../../../models';
 import guildService from '../../../../services/guildService';
+import { isNotifSMEnabled } from '../../../../utils/modulesUil';
 
 module.exports = {
     name: Events.MessageDelete,
     async execute(client: Client, message: Message) {
-        const guildSettings: IGuild = await guildService.getorCreateGuild(message.guildId!);
+        const {
+            modules: { notifications }
+        } = await guildService.getorCreateGuild(message.guildId!);
+        if (!isNotifSMEnabled(notifications, 'privateLogs')) return;
 
-        if (
-            !guildSettings.modules.notifications.enabled &&
-            !guildSettings.modules.notifications.privateLogs.enabled
-        )
-            return;
+        const { privateLogChannel, notLoggedChannels } = notifications.privateLogs;
 
-        const moduleSettings = guildSettings.modules.notifications.privateLogs;
-        const registeredLogChannel = moduleSettings.privateLogChannel;
-
-        if (!registeredLogChannel) {
+        if (!privateLogChannel) {
             return;
         }
 
-        const notLoggedChannels = moduleSettings.notLoggedChannels;
-
-        const logChannel = client.channels.cache.get(registeredLogChannel);
+        const logChannel = client.channels.cache.get(privateLogChannel);
 
         if (message.content && logChannel) {
             if (
