@@ -10,7 +10,7 @@ import {
 } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from '../../../../models';
-import { checkTemporaryVoiceModule } from '../../../../utils/botUtil';
+import { isTemporaryVoiceModuleEnabled } from '../../../../utils/modulesUil';
 
 module.exports = {
     data: {
@@ -66,7 +66,7 @@ module.exports = {
     guildOnly: false,
 
     async execute(client: Client, interaction: CommandInteraction, guildSettings: IGuild) {
-        if (!checkTemporaryVoiceModule(guildSettings)) throw CustomErrors.ModuleDisabledError;
+        if (!isTemporaryVoiceModuleEnabled(guildSettings, true)) return;
 
         const member = interaction.member as GuildMember;
 

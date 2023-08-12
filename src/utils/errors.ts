@@ -14,12 +14,12 @@ export const CustomErrors = {
     UnknownCommandError: new CustomError(
         'Mmh, il semblerait que je ne connais pas cette commande.'
     ),
-    ModuleDisabledError: new CustomError("Le module n'est pas activé sur ce serveur."),
     GuildNotFoundError: new CustomError("Le serveur n'a pas été trouvé."),
 
     ////////////////////////////////////////////////////
     //             Temp voice related err             //
     ////////////////////////////////////////////////////
+    TempVoiceDisabledError: new CustomError("Le module TempVoice n'est pas activé sur ce serveur."),
     CreateNewTempChannelError: new CustomError("J'ai eu un souci lors de la création du salon."),
     NotVoiceOwnerError: new CustomError(
         "Si t'es dans un salon vocal, il ne t'appartient pas. Pas touche la mouche."
@@ -38,17 +38,22 @@ export const CustomErrors = {
     ////////////////////////////////////////////////////
     //               Events related err               //
     ////////////////////////////////////////////////////
-    EventNotFoundError: new CustomError("L'évenement en question n'existe pas."),
-    EventAlreadyExistsError: new CustomError("L'évenement existe déjà en base."),
-
-    AlreadyParticipantError: new CustomError(
-        'Je sais que cet évènement est incroyable mais tu es déjà dans la liste des participants, prend ton mal en patience !'
+    ScheduledEventDisabledError: new CustomError(
+        "Le module ScheduledEvent n'est pas activé sur ce serveur."
     ),
-
-    ParticipantNotFoundError: new CustomError("Tu n'es pas un participant !"),
+    EventNotFoundError: new CustomError(
+        "L'évenement en question n'existe pas ou je n'y ai pas accès."
+    ),
+    EventAlreadyExistsError: new CustomError("L'évenement existe déjà en base."),
 
     ////////////////////////////////////////////////////
     //                QOtD related err                //
     ////////////////////////////////////////////////////
-    BlacklistedUserError: new CustomError('Tu es blacklisté, tu ne peux pas envoyer de question.')
+    QOtDeDisabledError: new CustomError('Les QdJ ne sont pas activées sur ce serveur.'),
+    BlacklistedUserError: new CustomError('Les requêtes personnalisées sont désactivés pour toi.'),
+
+    ////////////////////////////////////////////////////
+    //               Twitch related err               //
+    ////////////////////////////////////////////////////
+    TwitchDisabledError: new CustomError("Le module TwitchLive n'est pas activé sur ce serveur.")
 };
