@@ -2,7 +2,7 @@ import { EmbedBuilder, WebhookClient, codeBlock } from 'discord.js';
 import ansis, { AnsiColors } from 'ansis';
 import { Colors } from './consts';
 
-const format = '{tstamp} : {tag} {txt} \n';
+const format = '{tag} {txt} \n';
 
 export default class Logger {
     private static write(
@@ -12,18 +12,9 @@ export default class Logger {
         tag: string,
         error = false
     ) {
-        const now = new Date();
-        const day = String(now.getDate()).padStart(2, '0');
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-
-        const timestamp = `[${day}/${month} - ${hours}:${minutes}:${seconds}]`;
         const logTag = `[${tag}]`;
         const stream = error ? process.stderr : process.stdout;
         const item = format
-            .replace('{tstamp}', ansis.gray(timestamp))
             .replace('{tag}', ansis[bgTagColor][tagColor](logTag))
             .replace('{txt}', ansis.white(content));
         stream.write(item);
@@ -33,12 +24,16 @@ export default class Logger {
         Logger.write(`${content} \n${filePath}`, 'black', 'bgRed', 'ERROR', true);
         console.error(error);
 
-        sendLogWebhook(logType.ERROR, `${error.name}: ${error.message}`, codeBlock(error.stack!));
+        sendInternalLogWebhook(
+            logType.ERROR,
+            `${error.name}: ${error.message}`,
+            codeBlock(error.stack!)
+        );
     }
 
     static warn(content: string) {
         Logger.write(content, 'black', 'bgYellow', 'WARN', false);
-        sendLogWebhook(logType.WARN, '', content);
+        sendInternalLogWebhook(logType.WARN, '', content);
     }
 
     static info(content: string) {
@@ -47,23 +42,26 @@ export default class Logger {
 
     static client(content: string) {
         Logger.write(content, 'black', 'bgBlue', 'CLIENT', false);
-        sendLogWebhook(logType.CLIENT, content);
+        sendInternalLogWebhook(logType.CLIENT, content);
     }
 }
 
-enum logType {
+export enum logType {
     ERROR = 'error',
     WARN = 'warning',
     CLIENT = 'client'
 }
 
-const sendLogWebhook = (logType: logType, title?: string, description?: string) => {
-    const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_LOG_URL! });
+const sendInternalLogWebhook = (logType: logType, title?: string, description?: string) => {
     const embed = new EmbedBuilder().setColor(Colors[logType]).setTimestamp();
 
     if (title) embed.setTitle(title);
     if (description) embed.setDescription(description);
+    senddWebhook(embed);
+};
 
+const senddWebhook = (embed: EmbedBuilder) => {
+    const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_LOG_URL! });
     webhookClient
         .send({
             username: 'adroid_ea',

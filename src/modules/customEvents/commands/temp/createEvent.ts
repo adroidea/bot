@@ -7,7 +7,9 @@ import {
 import { CustomErrors } from '../../../../utils/errors';
 import CustomEventService from '../../services/customEventService';
 import { IEvent } from '../../models';
+import { IGuild } from '../../../../models';
 import { addToAppropriateQueue } from '../../tasks/CustomEvents.queue';
+import { isEventManagementModuleEnabled } from '../../../../utils/modulesUil';
 
 module.exports = {
     data: {
@@ -40,7 +42,9 @@ module.exports = {
     usage: '',
     examples: [''],
 
-    async execute(client: Client, interaction: ChatInputCommandInteraction) {
+    async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
+        if (!isEventManagementModuleEnabled(guildSettings, true)) return;
+
         const eventInput = interaction.options.getString('url-id')!;
         let description =
             interaction.options.getString('description')?.replaceAll('\\n', '\n\n') ?? '';
@@ -58,8 +62,8 @@ module.exports = {
             eventId = eventInput.split(urlRegex2)[2];
         }
 
-        //const tryEvent = await CustomEventService.getEventById(eventId);
-        //if (tryEvent) throw CustomErrors.EventAlreadyExistsError;
+        const tryEvent = await CustomEventService.getEventById(eventId);
+        if (tryEvent) throw CustomErrors.EventAlreadyExistsError;
 
         const discordEvent = await interaction.guild!.scheduledEvents.fetch(eventId);
         if (!discordEvent) throw CustomErrors.EventNotFoundError;
