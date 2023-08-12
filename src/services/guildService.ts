@@ -53,12 +53,17 @@ const createGuild = async (id: string): Promise<IGuild> => {
 };
 
 const getorCreateGuild = async (id: string): Promise<IGuild> => {
-    let guildSettings: IGuild | null = await GuildModel.findOne({ id });
+    try {
+        let guildSettings: IGuild | null = await GuildModel.findOne({ id });
 
-    if (!guildSettings) {
-        guildSettings = await guildService.createGuild(id);
+        if (!guildSettings) {
+            guildSettings = await guildService.createGuild(id);
+        }
+        return guildSettings;
+    } catch (err) {
+        console.log(err);
+        throw err;
     }
-    return guildSettings;
 };
 
 const updateGuild = async (guildData: IGuild): Promise<IGuild | null> => {

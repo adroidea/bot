@@ -2,7 +2,6 @@ import { GuildMember, PermissionFlagsBits, PermissionsBitField, Role } from 'dis
 import { checkBotPermission } from './botUtil';
 
 export const addRole = (member: GuildMember, memberRole: Role | undefined) => {
-    // Check if the bot has the Manage Roles permission.
     if (checkBotPermission(member.guild, PermissionFlagsBits.ManageRoles)) {
         const hasRole = checkMemberRole(member, memberRole);
 
@@ -13,7 +12,6 @@ export const addRole = (member: GuildMember, memberRole: Role | undefined) => {
 };
 
 export const removeRole = (member: GuildMember, memberRole: Role) => {
-    // Check if the bot has the Manage Roles permission.
     if (checkBotPermission(member.guild, PermissionFlagsBits.ManageRoles)) {
         const hasRole = checkMemberRole(member, memberRole);
 

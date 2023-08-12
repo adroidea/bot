@@ -16,6 +16,7 @@ import { Colors, LOG_CHANNEL_ID, OWNER_SERVER_ID } from '../../../../utils/const
 import { IQOtD, IQuestions } from '../../models';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from '../../../../models';
+import { isQOtDModuleEnabled } from '../../../../utils/modulesUil';
 import qotddService from '../../services/qotdService';
 
 const adminRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -63,7 +64,7 @@ module.exports = {
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildData: IGuild) {
         const { qotd }: { qotd: IQOtD } = guildData.modules;
-        if (!qotd.enabled) throw CustomErrors.ModuleDisabledError;
+        if (!isQOtDModuleEnabled(guildData, true)) return;
 
         if (qotd.blacklistUsers?.includes(interaction.user.id))
             throw CustomErrors.BlacklistedUserError;
