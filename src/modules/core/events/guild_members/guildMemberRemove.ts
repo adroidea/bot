@@ -1,22 +1,19 @@
 import { Client, EmbedBuilder, Events, GuildMember, TextChannel } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
-import { IGuild } from '../../../../models';
 import guildService from '../../../../services/guildService';
+import { isNotifSMEnabled } from '../../../../utils/modulesUil';
 import { timestampToDate } from '../../../../utils/botUtil';
 
 module.exports = {
     name: Events.GuildMemberRemove,
     async execute(client: Client, member: GuildMember) {
-        const guildSettings: IGuild = await guildService.getorCreateGuild(member.guild.id);
+        const {
+            modules: { notifications }
+        } = await guildService.getorCreateGuild(member.guild.id);
+        if (!isNotifSMEnabled(notifications, 'privateLogs')) return;
+        const { privateLogs } = notifications;
 
-        if (
-            !guildSettings.modules.notifications.enabled &&
-            !guildSettings.modules.notifications.privateLogs.enabled
-        )
-            return;
-
-        const moduleSettings = guildSettings.modules.notifications.privateLogs;
-        const registeredLogChannel = moduleSettings.privateLogChannel;
+        const registeredLogChannel = privateLogs.privateLogChannel;
 
         if (!registeredLogChannel) {
             return;

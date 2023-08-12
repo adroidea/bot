@@ -1,11 +1,11 @@
 import { ColorResolvable } from 'discord.js';
 
 export const Colors: { [key: string]: ColorResolvable } = {
+    client: [0, 255, 255],
     error: [255, 0, 0],
+    info: [0, 0, 255],
     success: [0, 255, 0],
     warning: [255, 255, 0],
-    info: [0, 0, 255],
-    client: [0, 255, 255],
     red: [176, 32, 32],
     twitch: [145, 70, 255],
     kick: [0, 231, 1],
