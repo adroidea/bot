@@ -53,7 +53,7 @@ process.on('uncaughtException', (err: Error, origin: Error) => {
 
 process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
     Logger.warn(`UNHANDLED_REJECTION : ${reason}`);
-    console.log(promise);
+    console.warn(promise);
 });
 
 process.on('warning', (warning) => {
