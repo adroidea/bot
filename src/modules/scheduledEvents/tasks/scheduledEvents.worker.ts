@@ -1,6 +1,6 @@
 import { Job, Worker, WorkerOptions } from 'bullmq';
-import CustomEventService from '../services/customEventService';
 import { IEvent } from '../models';
+import ScheduledEventService from '../services/scheduledEventService';
 import { client } from '../../..';
 
 const redisConnectionOptions: WorkerOptions = {
@@ -10,9 +10,9 @@ const redisConnectionOptions: WorkerOptions = {
     }
 };
 
-// Fonction pour traiter le Worker 'customEventsReminder'
-const handleCustomEventsReminderWorker = async (job: Job) => {
-    const event: IEvent | null = await CustomEventService.getEventById(job.name);
+// Fonction pour traiter le Worker 'scheduledEventsReminder'
+const handleScheduledEventsReminderWorker = async (job: Job) => {
+    const event: IEvent | null = await ScheduledEventService.getEventById(job.name);
     if (!event) return;
 
     const { participantsId } = event;
@@ -31,13 +31,13 @@ const handleCustomEventsReminderWorker = async (job: Job) => {
 };
 
 export default function (): void {
-    const workerCustomEventsReminder = new Worker(
-        'customEventsReminder',
-        handleCustomEventsReminderWorker,
+    const workerScheduledEventsReminder = new Worker(
+        'scheduledEventsReminder',
+        handleScheduledEventsReminderWorker,
         redisConnectionOptions
     );
 
-    workerCustomEventsReminder.on('failed', (job, err) => {
-        console.log(`${job?.id} has failed with ${err.message} in 'customEventsFiveMinutes'`);
+    workerScheduledEventsReminder.on('failed', (job, err) => {
+        console.log(`${job?.id} has failed with ${err.message} in 'ScheduledEventsFiveMinutes'`);
     });
 }
