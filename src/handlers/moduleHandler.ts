@@ -9,7 +9,7 @@ import path from 'path';
 export default (client: any) => {
     const moduleFolders = [
         path.join(__dirname, '../modules/core'),
-        path.join(__dirname, '../modules/customEvents'),
+        path.join(__dirname, '../modules/scheduledEvents'),
         path.join(__dirname, '../modules/qotd'),
         path.join(__dirname, '../modules/tempVoice'),
         path.join(__dirname, '../modules/twitchLive')

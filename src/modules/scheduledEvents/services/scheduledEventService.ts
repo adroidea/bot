@@ -36,7 +36,7 @@ const removeParticipantFromEvent = async (
     const event = await EventModel.findOne({ id: eventId });
     if (!event) return null;
 
-    const participantIndex = event.participantsId.findIndex(id => id === participantId);
+    const participantIndex = event.participantsId.findIndex((id: string) => id === participantId);
     if (participantIndex === -1) {
         return event;
     }
@@ -61,7 +61,9 @@ const updateMessage = (eventData: IEvent): string => {
     let participants = '';
 
     const nbParticipants = eventData.participantsId.length;
-    const participantsList = eventData.participantsId.map(id => quote(userMention(id))).join('\n');
+    const participantsList = eventData.participantsId
+        .map((id: string) => quote(userMention(id)))
+        .join('\n');
 
     if (eventData.maxParticipants) {
         participants += `**Participants (${
@@ -71,14 +73,14 @@ const updateMessage = (eventData: IEvent): string => {
             nbParticipants > 0
                 ? `\n${eventData.participantsId
                       .slice(0, eventData.maxParticipants)
-                      .map(id => quote(userMention(id)))
+                      .map((id: string) => quote(userMention(id)))
                       .join('\n')}`
                 : '\n> Aucun participant';
 
         if (nbParticipants > eventData.maxParticipants) {
             const waitingList = eventData.participantsId
                 .slice(eventData.maxParticipants)
-                .map(id => quote(userMention(id)))
+                .map((id: string) => quote(userMention(id)))
                 .join('\n');
 
             participants += `\n\n**File d'attente (${
@@ -93,7 +95,7 @@ const updateMessage = (eventData: IEvent): string => {
     return description + '\n\n' + participants;
 };
 
-const CustomEventService = {
+const ScheduledEventService = {
     addParticipantToEvent,
     createEvent,
     deleteEvent,
@@ -102,4 +104,4 @@ const CustomEventService = {
     updateMessage
 };
 
-export default CustomEventService;
+export default ScheduledEventService;
