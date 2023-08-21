@@ -11,13 +11,13 @@ import {
     PermissionsBitField,
     userMention
 } from 'discord.js';
-import { Colors, OWNER_SERVER_ID } from '../../../../utils/consts';
-import { IQOtD, IQuestions } from '../../models';
-import { CustomErrors } from '../../../../utils/errors';
-import { Embed } from '../../../../utils/embedsUtil';
-import { IGuild } from '../../../../models';
-import { isQOtDModuleEnabled } from '../../../../utils/modulesUil';
-import qotddService from '../../services/qotdService';
+import { Colors, OWNER_SERVER_ID } from '../../../utils/consts';
+import { IQOtD, IQuestions } from '../models';
+import { CustomErrors } from '../../../utils/errors';
+import { Embed } from '../../../utils/embedsUtil';
+import { IGuild } from '../../../models';
+import { isQOtDModuleEnabled } from '../../../utils/modulesUil';
+import qotddService from '../services/qotdService';
 
 const adminRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()

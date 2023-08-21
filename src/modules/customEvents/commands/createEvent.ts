@@ -4,12 +4,12 @@ import {
     Client,
     PermissionsBitField
 } from 'discord.js';
-import { CustomErrors } from '../../../../utils/errors';
-import CustomEventService from '../../services/customEventService';
-import { IEvent } from '../../models';
-import { IGuild } from '../../../../models';
-import { addToAppropriateQueue } from '../../tasks/CustomEvents.queue';
-import { isEventManagementModuleEnabled } from '../../../../utils/modulesUil';
+import { CustomErrors } from '../../../utils/errors';
+import CustomEventService from '../services/customEventService';
+import { IEvent } from '../models';
+import { IGuild } from '../../../models';
+import { addToAppropriateQueue } from '../tasks/CustomEvents.queue';
+import { isEventManagementModuleEnabled } from '../../../utils/modulesUil';
 
 module.exports = {
     data: {

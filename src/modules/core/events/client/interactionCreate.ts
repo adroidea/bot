@@ -38,7 +38,7 @@ const handleCommandInteraction = async (
     client: IDiscordClient,
     interaction: CommandInteraction
 ) => {
-    const guildSettings: IGuild = await guildService.getorCreateGuild(interaction.guildId!);
+    const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guildId!);
     const command = client.commands.get(interaction.commandName);
 
     try {
