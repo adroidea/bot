@@ -5,10 +5,10 @@ import {
     PermissionsBitField
 } from 'discord.js';
 import { CustomErrors } from '../../../utils/errors';
-import CustomEventService from '../services/customEventService';
 import { IEvent } from '../models';
 import { IGuild } from '../../../models';
-import { addToAppropriateQueue } from '../tasks/CustomEvents.queue';
+import ScheduledEventService from '../services/scheduledEventService';
+import { addToAppropriateQueue } from '../tasks/scheduledEvents.queue';
 import { isEventManagementModuleEnabled } from '../../../utils/modulesUil';
 
 module.exports = {
@@ -29,14 +29,14 @@ module.exports = {
                 required: false
             },
             {
-                name: 'maxparticipants',
+                name: 'max-participants',
                 description: "Nombre de participants max, les autres seront en file d'attente",
                 type: ApplicationCommandOptionType.Number,
                 required: false
             }
         ]
     },
-    category: 'events',
+    category: 'scheduledEvent',
     permissions: [PermissionsBitField.Flags.ManageEvents],
     guildOnly: false,
     usage: '',
@@ -48,7 +48,7 @@ module.exports = {
         const eventInput = interaction.options.getString('url-id')!;
         let description =
             interaction.options.getString('description')?.replaceAll('\\n', '\n\n') ?? '';
-        const maxParticipants = interaction.options.getNumber('maxparticipants');
+        const maxParticipants = interaction.options.getNumber('max-participants');
 
         const urlRegex = /event=/;
         const urlRegex2 = /\/events\/(\d+)\/(\d+)/;
@@ -62,7 +62,7 @@ module.exports = {
             eventId = eventInput.split(urlRegex2)[2];
         }
 
-        const tryEvent = await CustomEventService.getEventById(eventId);
+        const tryEvent = await ScheduledEventService.getEventById(eventId);
         if (tryEvent) throw CustomErrors.EventAlreadyExistsError;
 
         const discordEvent = await interaction.guild!.scheduledEvents.fetch(eventId);
@@ -87,7 +87,7 @@ module.exports = {
             event.participantsId.push(sub[0]);
         }
 
-        description = CustomEventService.updateMessage(event) + '\n\n' + inviteURL;
+        description = ScheduledEventService.updateMessage(event) + '\n\n' + inviteURL;
 
         const message = await interaction.channel!.send({
             content: `${description}`
@@ -100,6 +100,6 @@ module.exports = {
 
         event.messageId = message.id;
         addToAppropriateQueue(eventId, event);
-        await CustomEventService.createEvent(event);
+        await ScheduledEventService.createEvent(event);
     }
 };
