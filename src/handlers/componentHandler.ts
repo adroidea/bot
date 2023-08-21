@@ -1,73 +1,63 @@
 import Logger from '../utils/logger';
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 
-export default async (client: any) => {
-    const categoryFolders = [
-        //path.join(__dirname, '../modules/customEvents/components'),
-        path.join(__dirname, '../modules/qotd/components'),
-        path.join(__dirname, '../modules/tempVoice/components')
-        //path.join(__dirname, '../modules/twitchLive/components'),
-    ];
+export const handleComponents = (client: any, compPath: string): Record<string, number> => {
+    const result: Record<string, number> = {};
 
-    const componentFolders = ['buttons', 'modals', 'selectMenus'];
-    const counts: Record<string, Record<string, number>> = {};
+    const subFolders = fs.readdirSync(compPath);
+    for (const subFolder of subFolders) {
+        const stat = fs.lstatSync(path.join(compPath, subFolder));
 
-    for (const category of categoryFolders) {
-        try {
-            const stats = await fs.stat(category);
-            if (!stats.isDirectory()) {
-                Logger.warn(`"${category}" is not a directory.`);
-                continue;
-            }
-        } catch (error: any) {
-            Logger.warn(`Error checking "${category}": ${error.message}`);
-            continue;
+        if (stat.isDirectory()) {
+            result[subFolder] = handleSubComponent(client, compPath, subFolder);
         }
+    }
 
-        counts[category] = {};
+    return result;
+};
 
-        for (const folder of componentFolders) {
-            const folderPath = path.join(category, folder);
-            try {
-                const stats = await fs.stat(folderPath);
-                if (!stats.isDirectory()) continue;
-            } catch (error: any) {
-                continue;
-            }
+const handleSubComponent = (client: any, compPath: string, compFolder: string): number => {
+    let result = 0;
+    const subCompPath = path.join(compPath, compFolder);
+    const files = fs.readdirSync(subCompPath);
+    for (const file of files) {
+        const filePath = path.join(subCompPath, file);
+        const stat = fs.lstatSync(filePath);
 
-            const componentFiles = (await fs.readdir(folderPath)).filter(file =>
-                file.endsWith('.js')
-            );
-            counts[category][folder] = 0;
+        if (stat.isDirectory()) {
+            result += handleSubComponent(client, subCompPath, file);
+        } else if (file.endsWith('.js')) {
+            const component = require(filePath);
 
-            for (const file of componentFiles) {
-                try {
-                    const filePath = path.join(folderPath, file);
-                    const component = require(filePath);
-                    client[folder].set(component.data.name, component);
-                    counts[category][folder]++;
-                } catch (error: any) {
-                    Logger.warn(
-                        `Error loading ${path.basename(
-                            category
-                        )}/${folder} component from file ${file}: ${error.message}`
-                    );
-                }
+            const hasWarning = checkComponentOptions(component, filePath);
+            if (!hasWarning) {
+                client[compFolder].set(component.data.name, component);
+                result += 1;
             }
         }
     }
 
-    for (const category of categoryFolders) {
-        let categoryMsg = `${category.split(path.sep).slice(-2, -1)[0]} :`;
+    return result;
+};
 
-        const componentCounts: string[] = [];
-        for (const folder of componentFolders) {
-            const count = counts[category][folder];
-            if (count ?? 0) componentCounts.push(`${count} ${folder}`);
-        }
-
-        categoryMsg += ` ${componentCounts.join(' | ')} were loaded.`;
-        Logger.info(categoryMsg);
+const checkComponentOptions = (component: any, filePath: string): boolean => {
+    let hasError = false;
+    const errorList: string[] = [];
+    if (!component.data.name) {
+        errorList.push('NAME');
+        hasError = true;
     }
+
+    if (!('execute' in component)) {
+        errorList.push('EXECUTE');
+        hasError = true;
+    }
+
+    if (hasError) {
+        Logger.warn(`File: ${filePath}`);
+        Logger.warn(`${errorList.join(', ')} required. Skipping...`);
+    }
+
+    return hasError;
 };

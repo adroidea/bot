@@ -1,34 +1,31 @@
 import { Client } from 'discord.js';
 import Logger from '../utils/logger';
+import fs from 'fs';
 import path from 'path';
-import { readdirSync } from 'fs';
 
-export default async (client: Client) => {
-    const eventPath = path.resolve(__dirname, '../modules/core/events');
-    const eventFolders = readdirSync(eventPath);
+export const handleEvent = (client: Client, eventPath: string): number => {
+    let result = 0;
+    const files = fs.readdirSync(eventPath);
+    for (const file of files) {
+        const filePath = path.join(eventPath, file);
+        const stat = fs.lstatSync(filePath);
 
-    let nbEvents = 0;
-
-    for (const folder of eventFolders) {
-        const events = path.join(eventPath, folder);
-        const eventFiles = readdirSync(events).filter(file => file.endsWith('.js'));
-
-        for (const file of eventFiles) {
-            const filePath = path.join(eventPath, folder, file);
+        if (stat.isDirectory()) {
+            result += handleEvent(client, filePath);
+        } else if (file.endsWith('.js')) {
             const event = require(filePath);
-
             if (event.once) {
                 client.once(event.name, (...args: any) => event.execute(client, ...args));
             } else {
                 try {
                     client.on(event.name, async (...args: any) => event.execute(client, ...args));
-                } catch (err) {
-                    console.error(err);
+                } catch (err: any) {
+                    Logger.error('Error importing this event', err, filePath);
                 }
             }
-            nbEvents++;
+            result++;
         }
     }
 
-    if (nbEvents !== 0) Logger.info(`${nbEvents} events loaded.`);
+    return result;
 };
