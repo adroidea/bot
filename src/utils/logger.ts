@@ -2,57 +2,57 @@ import { EmbedBuilder, WebhookClient, codeBlock } from 'discord.js';
 import ansis, { AnsiColors } from 'ansis';
 import { Colors } from './consts';
 
-const format = '{tag} {txt} \n';
+const write = (
+    content: string,
+    tagColor: AnsiColors,
+    bgTagColor: AnsiColors,
+    tag: string,
+    error = false
+) => {
+    const stream = error ? process.stderr : process.stdout;
+    const item = `${ansis[bgTagColor][tagColor](`[${tag}]`)} ${ansis.white(content)}\n`;
+    stream.write(item);
+};
 
-export default class Logger {
-    private static write(
-        content: string,
-        tagColor: AnsiColors,
-        bgTagColor: AnsiColors,
-        tag: string,
-        error = false
-    ) {
-        const logTag = `[${tag}]`;
-        const stream = error ? process.stderr : process.stdout;
-        const item = format
-            .replace('{tag}', ansis[bgTagColor][tagColor](logTag))
-            .replace('{txt}', ansis.white(content));
-        stream.write(item);
-    }
+const error = (content: string, error: Error, filePath?: string) => {
+    write(`${content} \n${filePath}`, 'black', 'bgRed', 'ERROR', true);
+    console.error(error);
 
-    static async error(content: string, error: Error, filePath?: string) {
-        Logger.write(`${content} \n${filePath}`, 'black', 'bgRed', 'ERROR', true);
-        console.error(error);
+    sendInternalLogWebhook(
+        logType.ERROR,
+        `${error.name}: ${error.message}`,
+        codeBlock(error.stack!)
+    );
+};
 
-        sendInternalLogWebhook(
-            logType.ERROR,
-            `${error.name}: ${error.message}`,
-            codeBlock(error.stack!)
-        );
-    }
+const warn = (content: string) => {
+    write(content, 'black', 'bgYellow', 'WARN', false);
+    sendInternalLogWebhook(logType.WARN, '', content);
+};
 
-    static warn(content: string) {
-        Logger.write(content, 'black', 'bgYellow', 'WARN', false);
-        sendInternalLogWebhook(logType.WARN, '', content);
-    }
+const info = (content: string) => {
+    write(content, 'black', 'bgGreen', 'INFO', false);
+};
 
-    static info(content: string) {
-        Logger.write(content, 'black', 'bgGreen', 'INFO', false);
-    }
+const client = (content: string) => {
+    write(content, 'black', 'bgBlue', 'CLIENT', false);
+    sendInternalLogWebhook(logType.CLIENT, content);
+};
 
-    static client(content: string) {
-        Logger.write(content, 'black', 'bgBlue', 'CLIENT', false);
-        sendInternalLogWebhook(logType.CLIENT, content);
-    }
-}
+export const logType: { [key: string]: string } = {
+    ERROR: 'error',
+    WARN: 'warning',
+    CLIENT: 'client'
+};
 
-export enum logType {
-    ERROR = 'error',
-    WARN = 'warning',
-    CLIENT = 'client'
-}
+export default {
+    error,
+    warn,
+    info,
+    client
+};
 
-const sendInternalLogWebhook = (logType: logType, title?: string, description?: string) => {
+const sendInternalLogWebhook = (logType: string, title?: string, description?: string) => {
     const embed = new EmbedBuilder().setColor(Colors[logType]).setTimestamp();
 
     if (title) embed.setTitle(title);

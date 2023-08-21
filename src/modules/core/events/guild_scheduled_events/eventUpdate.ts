@@ -15,7 +15,7 @@ import { timestampToDate } from '../../../../utils/botUtil';
 module.exports = {
     name: Events.GuildScheduledEventUpdate,
     async execute(client: Client, oldEvent: GuildScheduledEvent, newEvent: GuildScheduledEvent) {
-        const guildSettings: IGuild = await guildService.getorCreateGuild(oldEvent.guildId);
+        const guildSettings: IGuild = await guildService.getOrCreateGuild(oldEvent.guildId);
 
         const event = await CustomEventService.getEventById(oldEvent.id);
         if (!event) return;
