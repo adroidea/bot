@@ -7,17 +7,17 @@ import {
     GuildScheduledEventStatus,
     MessageCreateOptions
 } from 'discord.js';
-import CustomEventService from '../../../../modules/customEvents/services/customEventService';
 import { IGuild } from '../../../../models';
+import ScheduledEventService from '../../../../modules/scheduledEvents/services/scheduledEventService';
 import guildService from '../../../../services/guildService';
 import { timestampToDate } from '../../../../utils/botUtil';
 
 module.exports = {
     name: Events.GuildScheduledEventUpdate,
     async execute(client: Client, oldEvent: GuildScheduledEvent, newEvent: GuildScheduledEvent) {
-        const guildSettings: IGuild = await guildService.getorCreateGuild(oldEvent.guildId);
+        const guildSettings: IGuild = await guildService.getOrCreateGuild(oldEvent.guildId);
 
-        const event = await CustomEventService.getEventById(oldEvent.id);
+        const event = await ScheduledEventService.getEventById(oldEvent.id);
         if (!event) return;
 
         const eventManagement = guildSettings.modules.eventManagement;
@@ -154,7 +154,7 @@ export const eventCanceled = (event: GuildScheduledEvent): MessageCreateOptions 
             }
         ])
         .setTimestamp();
-    CustomEventService.deleteEvent(event.id);
+    ScheduledEventService.deleteEvent(event.id);
     return {
         content: `Salut ! Mauvaise nouvelle, l'événement "${event.name}" prévu le <t:${timestamp}:F> a été annulé.`,
         embeds: [cancelEmbed]

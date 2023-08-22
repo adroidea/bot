@@ -34,7 +34,7 @@ export default function (): cron.ScheduledTask {
                     .setTitle(question)
                     .setColor(Colors.random)
                     .setFooter({
-                        text: 'Question du jour'
+                        text: 'Question du jour • /qdj pour ajouter une question'
                     });
 
                 const author: User = await client.users.fetch(authorId);
@@ -54,7 +54,7 @@ export default function (): cron.ScheduledTask {
                 await sentMessage.pin();
 
                 await deletePinNotification(channel, sentMessage.id);
-                qotddService.deleteQOtDById(randomQuestion[0]._id!);
+                await qotddService.deleteQOtDById(randomQuestion[0]._id!);
             } catch (error: any) {
                 Logger.error('Error sending question:', error);
             }

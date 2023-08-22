@@ -22,7 +22,6 @@ module.exports = {
         };
 
         const qotdId = await qotddService.createQOtD(questionBuilder);
-        console.log(qotdId);
 
         const newEmbed = new EmbedBuilder()
             .setAuthor({

@@ -2,7 +2,8 @@ import { Colors } from './consts';
 import { EmbedBuilder } from 'discord.js';
 
 export const Embed = {
-    error: (text: string): EmbedBuilder => new EmbedBuilder().setTitle(text).setColor(Colors.error),
-    success: (text: string): EmbedBuilder =>
-        new EmbedBuilder().setTitle(text).setColor(Colors.success)
+    error: (title: string): EmbedBuilder =>
+        new EmbedBuilder().setTitle(title).setColor(Colors.error),
+    success: (title: string): EmbedBuilder =>
+        new EmbedBuilder().setTitle(title).setColor(Colors.success)
 };

@@ -4,7 +4,6 @@ import Logger from './utils/logger';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import path from 'node:path';
-import { readdirSync } from 'fs';
 
 dotenv.config();
 
@@ -13,15 +12,10 @@ export const client: any = new DiscordClient({
     partials: [Partials.Channel]
 });
 
-const filePath = path.join(__dirname, __filename);
 client.commands = new Collection();
 
-const handlersPath = path.join(__dirname, 'handlers');
-const handlerFiles = readdirSync(handlersPath).filter(file => file.endsWith('Handler.js'));
-handlerFiles.forEach((handlerFile: any) => {
-    const filePath = path.join(handlersPath, handlerFile);
-    import(filePath).then(handler => handler.default(client));
-});
+const filePath = path.join(__dirname, 'handlers/moduleHandler.js');
+import(filePath).then(handler => handler.default(client));
 
 mongoose.set('strictQuery', false);
 mongoose
@@ -34,7 +28,7 @@ mongoose
     })
     .then(() => Logger.info('🍃 MongoDB connected'))
     .catch((err: any) => {
-        Logger.error("Couldn't connect to database", err, filePath);
+        Logger.error("Couldn't connect to database", err);
     });
 
 client.login(process.env.TOKEN);
@@ -52,10 +46,13 @@ process.on('uncaughtException', (err: Error, origin: Error) => {
 });
 
 process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
-    Logger.warn(`UNHANDLED_REJECTION : ${reason}`);
-    console.log(promise);
+    Logger.warn(`UNHANDLED_REJECTION :`);
+    if (reason instanceof Error) console.warn(reason.stack);
+    else console.warn(reason);
+    Logger.warn(`Promise :`);
+    console.warn(promise);
 });
 
-process.on('warning', (warning) => {
+process.on('warning', warning => {
     console.warn(`Un avertissement a été émis`, warning);
 });
