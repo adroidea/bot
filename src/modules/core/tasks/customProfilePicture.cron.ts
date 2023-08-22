@@ -7,11 +7,12 @@ import cron from 'node-cron';
 const dpp = {
     default:
         'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
-    petitdej: 'URL_OF_PETITDEJ_IMAGE',
-    dej: 'URL_OF_DEJ_IMAGE',
-    gouter: 'URL_OF_GOUTER_IMAGE',
-    diner: 'URL_OF_DINER_IMAGE',
-    dodo: 'URL_OF_DODO_IMAGE'
+    petitdej:
+        'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
+    dej: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
+    gouter: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
+    diner: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
+    dodo: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.pngE'
 };
 
 export default function (): cron.ScheduledTask {

@@ -9,15 +9,15 @@ import {
     EmbedBuilder,
     GuildMember,
     PermissionsBitField,
-    TextBasedChannel,
     userMention
 } from 'discord.js';
-import { Colors, LOG_CHANNEL_ID, OWNER_SERVER_ID } from '../../../../utils/consts';
-import { IQOtD, IQuestions } from '../../models';
-import { CustomErrors } from '../../../../utils/errors';
-import { IGuild } from '../../../../models';
-import { isQOtDModuleEnabled } from '../../../../utils/modulesUil';
-import qotddService from '../../services/qotdService';
+import { Colors, OWNER_SERVER_ID } from '../../../utils/consts';
+import { IQOtD, IQuestions } from '../models';
+import { CustomErrors } from '../../../utils/errors';
+import { Embed } from '../../../utils/embedsUtil';
+import { IGuild } from '../../../models';
+import { isQOtDModuleEnabled } from '../../../utils/modulesUil';
+import qotddService from '../services/qotdService';
 
 const adminRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
@@ -35,6 +35,13 @@ const adminRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
         .setEmoji('🔨')
         .setLabel('Blacklister utilisateur')
         .setStyle(ButtonStyle.Danger)
+);
+
+const stealRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+        .setCustomId('qotd_accept_steal_button')
+        .setEmoji('👍')
+        .setStyle(ButtonStyle.Success)
 );
 
 module.exports = {
@@ -79,39 +86,60 @@ module.exports = {
             guildId: interaction.guild!.id
         };
 
+        const questionEmbed = new EmbedBuilder()
+            .setTitle(question)
+            .setColor(Colors.random)
+            .addFields([
+                {
+                    name: 'Auteur',
+                    value: userMention(user.id),
+                    inline: true
+                }
+            ])
+            .setFooter({ text: 'Requête de QdJ' })
+            .setTimestamp();
+
+        questionEmbed.setAuthor({
+            name: `${user.username} (${user.id})`,
+            iconURL: user.displayAvatarURL()
+        });
+
         if (
             qotd.trustedUsers?.includes(interaction.user.id) ||
             interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageMessages)
         ) {
             qotddService.createQOtD(questionBuilder);
-
-            return interaction.reply({
-                content: 'Question ajoutée !',
-                ephemeral: true
-            });
+            const successEmbed = Embed.success('Question ajoutée !');
+            if (interaction.guildId !== OWNER_SERVER_ID) {
+                await interaction.reply({
+                    embeds: [
+                        questionEmbed,
+                        successEmbed.setDescription(
+                            "Est ce que tu es d'accord pour que ta question soit aussi proposée sur le serveur d'Adan ? (Tu peux ignorer le message si tu ne veux pas)"
+                        )
+                    ],
+                    components: [stealRow],
+                    ephemeral: true
+                });
+            } else {
+                await interaction.reply({
+                    embeds: [successEmbed],
+                    ephemeral: true
+                });
+            }
         } else {
-            const questionEmbed = new EmbedBuilder()
-                .setTitle(question)
-                .setColor(Colors.random)
-                .addFields(
-                    {
-                        name: 'Auteur',
-                        value: userMention(user.id),
-                        inline: true
-                    },
+            questionEmbed
+                .addFields([
                     {
                         name: 'Statut',
                         value: '⏳ En attente',
                         inline: true
                     }
-                )
-                .setFooter({ text: 'Requête de QdJ' })
-                .setTimestamp();
-
-            questionEmbed.setAuthor({
-                name: `${user.username} (${user.id})`,
-                iconURL: user.displayAvatarURL()
-            });
+                ])
+                .setAuthor({
+                    name: `${user.username} (${user.id})`,
+                    iconURL: user.displayAvatarURL()
+                });
 
             const requestChannel: Channel | undefined = client.channels.cache.get(
                 qotd.requestChannelId
@@ -122,20 +150,24 @@ module.exports = {
                 embeds: [questionEmbed],
                 components: [adminRow]
             });
-
+            const successEmbed = Embed.success('Requête envoyée !');
             if (interaction.guildId !== OWNER_SERVER_ID) {
-                const ownerRequestChannel: Channel | undefined =
-                    client.channels.cache.get(LOG_CHANNEL_ID);
-                (ownerRequestChannel as TextBasedChannel).send({
-                    embeds: [questionEmbed],
-                    components: [adminRow]
+                await interaction.reply({
+                    embeds: [
+                        questionEmbed,
+                        successEmbed.setDescription(
+                            "Est ce que tu es d'accord pour que ta question soit aussi proposée sur le serveur d'Adan ? (Tu peux ignorer le message si tu ne veux pas)"
+                        )
+                    ],
+                    components: [stealRow],
+                    ephemeral: true
+                });
+            } else {
+                await interaction.reply({
+                    embeds: [successEmbed],
+                    ephemeral: true
                 });
             }
-
-            await interaction.reply({
-                content: 'Requête envoyée !',
-                ephemeral: true
-            });
         }
     }
 };

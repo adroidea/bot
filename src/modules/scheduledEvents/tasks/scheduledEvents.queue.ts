@@ -13,12 +13,12 @@ const redisConnectionOptions = {
     }
 };
 
-const customEventsQueues = {
-    reminderQueue: new Queue('customEventsReminder', redisConnectionOptions)
+const scheduledEventsQueues = {
+    reminderQueue: new Queue('scheduledEventsReminder', redisConnectionOptions)
 };
 
 export default function (): void {
-    customEventsQueues.reminderQueue;
+    scheduledEventsQueues.reminderQueue;
 }
 
 export const addToAppropriateQueue = async (eventId: string, event: IEvent) => {
@@ -34,7 +34,7 @@ export const addToAppropriateQueue = async (eventId: string, event: IEvent) => {
     try {
         timeIntervals.forEach(interval => {
             if (delay > interval.delay) {
-                customEventsQueues.reminderQueue.add(
+                scheduledEventsQueues.reminderQueue.add(
                     eventId,
                     { event },
                     { delay: delay - interval.delay }

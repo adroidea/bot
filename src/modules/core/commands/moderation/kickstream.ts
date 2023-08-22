@@ -45,8 +45,6 @@ module.exports = {
     examples: 'channel list all',
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
-        //Export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive, guild: Guild) => {
-
         const streamData = {
             game_id: interaction.options.getString('gameid')!,
             title: interaction.options.getString('title')!,

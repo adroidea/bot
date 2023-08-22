@@ -8,9 +8,9 @@ import {
     GuildMember,
     PermissionsBitField
 } from 'discord.js';
-import { CustomErrors } from '../../../../utils/errors';
-import { IGuild } from '../../../../models';
-import { isTemporaryVoiceModuleEnabled } from '../../../../utils/modulesUil';
+import { CustomErrors } from '../../../utils/errors';
+import { IGuild } from '../../../models';
+import { isTemporaryVoiceModuleEnabled } from '../../../utils/modulesUil';
 
 module.exports = {
     data: {
