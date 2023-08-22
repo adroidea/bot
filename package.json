@@ -13,7 +13,8 @@
         "build": "tsc",
         "reg-cmds": "node dist/deploy-commands.js",
         "delete-cmds": "node dist/delete-commands.js",
-        "pre-commit": "lint-staged"
+        "pre-commit": "lint-staged",
+        "publish": "node .github/publish.js"
     },
     "lint-staged": {
         "*.{ts}": [
@@ -28,8 +29,9 @@
         "bullmq": "^3.12.0",
         "discord.js": "^14.11.0",
         "dotenv": "^16.0.3",
-        "mongoose": "^7.0.0",
+        "mongoose": "^7.4.3",
         "node-cron": "^3.0.2",
+        "node-fetch": "^3.3.2",
         "node-twitch": "^0.5.0"
     },
     "devDependencies": {
