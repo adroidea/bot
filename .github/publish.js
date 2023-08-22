@@ -6,7 +6,7 @@ const exec = util.promisify(require('child_process').exec);
 const spawn = require('child_process').spawnSync;
 
 async function version(versionType) {
-    const { stdout, stderr } = await exec(`npm version ${versionType} --no-git-tag-version --force`);
+    const { stdout, stderr } = await exec(`npm version ${versionType} --no-git-tag-version`);
     if (stderr) throw stderr;
     return stdout;
 }
@@ -35,8 +35,8 @@ const run = async () => {
 
   } catch (err) {
     console.log('Something went wrong:');
-    console.error(err.message);
-    console.error('\nPlease use this format: \nnpm run commit [patch|minor|major] "Commit message"');
+    console.error(err);
+    console.error('\nPlease use this format: \nnpm run publish [patch|minor|major] "Commit message"');
   }
 };
 
