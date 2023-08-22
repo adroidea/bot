@@ -3,6 +3,7 @@ import Logger from '../../../utils/logger';
 import { OWNER_SERVER_ID } from '../../../utils/consts';
 import { client } from '../../../index';
 import cron from 'node-cron';
+const fetch = require('node-fetch');
 
 const dpp = {
     default:
@@ -20,7 +21,14 @@ export default function (): cron.ScheduledTask {
         try {
             const responsePromise: Promise<string> = fetch(
                 `https://api.crunchprank.net/twitch/uptime/adan_ea`
-            ).then(response => response.text());
+            )
+                .then((response: any) => response.text())
+                .catch((error: any) =>
+                    Logger.error(
+                        'Error fetching api.crunchprank.net in customProfilePicture.cron.js',
+                        error
+                    )
+                );
 
             responsePromise.then(response => {
                 if (response !== `adan_ea is offline`) return;
