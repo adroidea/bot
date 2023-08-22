@@ -5,6 +5,8 @@ import { Stream } from 'node-twitch/dist/types/objects';
 import TwitchApi from 'node-twitch';
 import { client } from '../../../index';
 import cron from 'node-cron';
+import logger from '../../../utils/logger';
+const fetch = require('node-fetch');
 
 if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
     throw new Error('TWITCH_CLIENT_ID or TWITCH_CLIENT_SECRET is not defined');
@@ -96,7 +98,14 @@ const toggleStreamersRole = async (
         const hasRole: boolean = member.roles.cache.some(role => role.id === streamingRoleId);
         const response: Promise<string> = (
             await fetch(`https://api.crunchprank.net/twitch/uptime/${streamer.streamer}`)
-        ).text();
+        )
+            .text()
+            .catch((err: any) =>
+                logger.error(
+                    'Error fetching api.crunchprank.net in toggleStreamersRole => twitchAlert.cron.js',
+                    err
+                )
+            );
 
         if ((await response) === `${streamer.streamer} is offline`) {
             if (hasRole) {
@@ -119,7 +128,14 @@ export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive,
 
     const twitchAvatarURL: string = await (
         await fetch(`https://api.crunchprank.net/twitch/avatar/${user_name}`)
-    ).text();
+    )
+        .text()
+        .catch((err: any) =>
+            logger.error(
+                'Error fetching api.crunchprank.net in sendLiveEmbed => twitchAlert.cron.js',
+                err
+            )
+        );
 
     const embed = new EmbedBuilder()
         .setAuthor({
