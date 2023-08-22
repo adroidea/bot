@@ -1,6 +1,7 @@
 import { EmbedBuilder, WebhookClient, codeBlock } from 'discord.js';
 import ansis, { AnsiColors } from 'ansis';
 import { Colors } from './consts';
+import { client as discordClient } from '../';
 
 const write = (
     content: string,
@@ -57,6 +58,11 @@ const sendInternalLogWebhook = (logType: string, title?: string, description?: s
 
     if (title) embed.setTitle(title);
     if (description) embed.setDescription(description);
+    if (discordClient)
+        embed.setFooter({
+            text: discordClient.user?.tag,
+            iconURL: discordClient.user?.displayAvatarURL()
+        });
     senddWebhook(embed);
 };
 
