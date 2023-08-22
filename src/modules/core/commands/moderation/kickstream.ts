@@ -11,6 +11,8 @@ import { liveStart, randomizeArray } from '../../../../modules/twitchLive/tasks/
 import { Colors } from '../../../../utils/consts';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from '../../../../models';
+import logger from '../../../../utils/logger';
+const fetch = require('node-fetch');
 
 module.exports = {
     data: {
@@ -61,7 +63,11 @@ module.exports = {
 
         const twitchAvatarURL: string = await (
             await fetch(`https://api.crunchprank.net/twitch/avatar/adan_ea/`)
-        ).text();
+        )
+            .text()
+            .catch((err: any) =>
+                logger.error('Error fetching api.crunchprank.net in kickstream.js', err)
+            );
 
         const embed = new EmbedBuilder()
             .setAuthor({
