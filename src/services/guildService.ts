@@ -1,4 +1,5 @@
 import { GuildModel, IGuild } from '../models';
+import Logger from '../utils/logger';
 
 const createGuild = async (id: string): Promise<IGuild> => {
     const guild = new GuildModel({
@@ -52,7 +53,7 @@ const createGuild = async (id: string): Promise<IGuild> => {
     return guild;
 };
 
-const getorCreateGuild = async (id: string): Promise<IGuild> => {
+const getOrCreateGuild = async (id: string): Promise<IGuild> => {
     try {
         let guildSettings: IGuild | null = await GuildModel.findOne({ id });
 
@@ -60,8 +61,8 @@ const getorCreateGuild = async (id: string): Promise<IGuild> => {
             guildSettings = await guildService.createGuild(id);
         }
         return guildSettings;
-    } catch (err) {
-        console.log(err);
+    } catch (err: any) {
+        Logger.error('Error creating or getting guild at getOrCreateGuild()', err);
         throw err;
     }
 };
@@ -76,7 +77,7 @@ const deleteGuild = async (id: string): Promise<void> => {
 
 const guildService = {
     createGuild,
-    getorCreateGuild,
+    getOrCreateGuild,
     updateGuild,
     deleteGuild
 };

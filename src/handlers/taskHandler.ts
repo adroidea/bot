@@ -4,37 +4,25 @@ import path from 'path';
 
 export type TaskFunction = () => void;
 
-let nbTasks = 0;
-let nbFailedTasks = 0;
+export const handleTask = (taskPath: string): number => {
+    let result = 0;
+    const files = fs.readdirSync(taskPath);
+    for (const file of files) {
+        const filePath = path.join(taskPath, file);
+        const stat = fs.lstatSync(filePath);
 
-export default async () => {
-    const tasksFolders = [
-        //path.join(__dirname, '../modules/core/tasks'),
-        path.join(__dirname, '../modules/twitchLive/tasks'),
-        path.join(__dirname, '../modules/qotd/tasks'),
-        path.join(__dirname, '../modules/customEvents/tasks')
-    ];
-
-    const taskFiles: [string, string][] = [];
-
-    tasksFolders.forEach((tasksFolder: string) => {
-        if (fs.existsSync(tasksFolder)) {
-            const files = fs.readdirSync(tasksFolder).filter(file => file.endsWith('.js'));
-            taskFiles.push(...files.map(file => [tasksFolder, file] as [string, string]));
+        if (stat.isDirectory()) {
+            result += handleTask(filePath);
+        } else if (file.endsWith('.js')) {
+            const taskModule: { default: TaskFunction } = require(filePath);
+            const taskFunction = taskModule.default;
+            if (!taskFunction) {
+                Logger.warn(`File : ${file}`);
+                Logger.warn(`Task function not found. Skipping...`);
+            }
+            taskFunction();
+            result++;
         }
-    });
-
-    taskFiles.forEach(([tasksFolder, file]: [string, string]) => {
-        const taskModule: { default: TaskFunction } = require(path.join(tasksFolder, file));
-        const taskFunction = taskModule.default;
-        if (!taskFunction) {
-            Logger.warn(`Not initialised Task.\nFile : ${file}`);
-            return nbFailedTasks++;
-        }
-        nbTasks++;
-        taskFunction();
-    });
-
-    if (nbFailedTasks !== 0) Logger.warn(`${nbFailedTasks} tasks not loaded.`);
-    if (nbTasks !== 0) Logger.info(`${nbTasks} tasks loaded.`);
+    }
+    return result;
 };

@@ -1,6 +1,7 @@
 import { GuildModel, IQuestions, QuestionsModel } from '../../../models';
 import { CustomErrors } from '../../../utils/errors';
 import Logger from '../../../utils/logger';
+import mongoose from 'mongoose';
 
 const addToQotdBlacklist = async (guildId: string, userId: string): Promise<void> => {
     try {
@@ -61,10 +62,9 @@ const createQOtD = async (qotd: IQuestions): Promise<string> => {
 
 const deleteQOtDById = async (qotdId: string): Promise<void> => {
     try {
-        QuestionsModel.findByIdAndDelete(qotdId);
+        await QuestionsModel.findByIdAndDelete(new mongoose.Types.ObjectId(qotdId));
     } catch (error: any) {
         Logger.error("Une erreur est survenue lors de la suppression d'une qdj :", error);
-        throw CustomErrors.UnknownError;
     }
 };
 

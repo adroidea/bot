@@ -15,7 +15,7 @@ export const regCMD = (clientId: string) => {
         //path.join(__dirname, 'modules/twitchLive/commands'),
         path.join(__dirname, 'modules/qotd/commands'),
         path.join(__dirname, 'modules/tempVoice/commands'),
-        path.join(__dirname, 'modules/customEvents/commands')
+        path.join(__dirname, 'modules/scheduledEvents/commands')
     ];
 
     const readCommands = (dir: string) => {
