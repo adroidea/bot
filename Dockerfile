@@ -1,4 +1,10 @@
 FROM node:20-alpine
+
+RUN addgroup -S nonroot \
+    &amp;&amp; adduser -S nonroot -G nonroot
+
+USER nonroot
+
 ENV TZ="Europe/Paris"
 
 RUN mkdir -p /usr/src/adroid

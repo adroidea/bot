@@ -1,11 +1,17 @@
-name: "Auto Assign"
+name: Auto Assign
 on:
-  pull_request:
-    types: [opened, ready_for_review]
   issues:
-    types: [opened]
+    types: [opened, edited, labeled, unlabeled]
+  pull_request:
+    types: [opened, edited, labeled, unlabeled]
 jobs:
-  add-reviews:
+  run:
     runs-on: ubuntu-latest
     steps:
-      - uses: kentaro-m/auto-assign-action@v1.2.5
+      - uses: wow-actions/auto-assign@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          reviewers: adan-ea
+          assignees: adan-ea
+          skipKeywords: wip, draft
