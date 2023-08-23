@@ -66,8 +66,7 @@ module.exports = {
             .setFooter({
                 text: oldEmbed.footer?.text!
             });
-        const ownerRequestChannel: Channel | undefined =
-            client.channels.cache.get(LOG_CHANNEL_ID);
+        const ownerRequestChannel: Channel | undefined = client.channels.cache.get(LOG_CHANNEL_ID);
         (ownerRequestChannel as TextBasedChannel).send({
             embeds: [questionEmbed],
             components: [adminRow]
