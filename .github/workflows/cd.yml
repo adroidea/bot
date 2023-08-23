@@ -38,4 +38,4 @@ jobs:
         uses: cl8dep/action-discord@main
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: "Build de l'image adanea/adroid_ea:${{ $RELEASE_VERSION }} terminé"
+          message: "Build de l'image adanea/adroid_ea:$RELEASE_VERSION terminé"
