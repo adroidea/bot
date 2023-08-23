@@ -1,9 +1,12 @@
-import { Guild } from 'discord.js';
+import { Guild, codeBlock } from 'discord.js';
 import Logger from '../../../utils/logger';
 import { OWNER_SERVER_ID } from '../../../utils/consts';
-import { client } from '../../../index';
+import { client } from '../../../';
 import cron from 'node-cron';
+import path from 'path';
 const fetch = require('node-fetch');
+
+const filePath = path.join(__dirname, __filename);
 
 const dpp = {
     default:
@@ -13,7 +16,7 @@ const dpp = {
     dej: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
     gouter: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
     diner: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
-    dodo: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.pngE'
+    dodo: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png'
 };
 
 export default function (): cron.ScheduledTask {
@@ -34,7 +37,6 @@ export default function (): cron.ScheduledTask {
                 if (response !== `adan_ea is offline`) return;
             });
 
-            const guild: Guild = client.guilds.fetch(OWNER_SERVER_ID);
             const currentHour = new Date().getHours();
 
             let newProfilePicture;
@@ -57,7 +59,20 @@ export default function (): cron.ScheduledTask {
                     newProfilePicture = null;
             }
 
-            if (newProfilePicture) guild.setIcon(newProfilePicture);
+            const guild: Guild = client.guilds.fetch(OWNER_SERVER_ID);
+            Logger.warn(
+                "J'ai tenté de fetch le serveur dans customProfilePicture : \n" +
+                    codeBlock('json', guild.toString())
+            );
+            if (newProfilePicture)
+                guild
+                    .setIcon(newProfilePicture)
+                    .then(() => {
+                        Logger.info('Profile picture changed');
+                    })
+                    .catch((err: any) => {
+                        Logger.error('Error changing profile picture:', err, filePath);
+                    });
         } catch (error: any) {
             Logger.error('Error changing profile picture:', error);
         }
