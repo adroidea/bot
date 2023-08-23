@@ -1,6 +1,6 @@
-import { Collection, Partials } from 'discord.js';
 import DiscordClient from './client';
 import Logger from './utils/logger';
+import { Partials } from 'discord.js';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import path from 'node:path';
@@ -11,8 +11,6 @@ export const client: any = new DiscordClient({
     intents: 3276799,
     partials: [Partials.Channel]
 });
-
-client.commands = new Collection();
 
 const filePath = path.join(__dirname, 'handlers/moduleHandler.js');
 import(filePath).then(handler => handler.default(client));
