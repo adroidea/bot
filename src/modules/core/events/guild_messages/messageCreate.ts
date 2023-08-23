@@ -22,7 +22,7 @@ module.exports = {
             if (match && randomReact > 1 - reactThreshold / 100) {
                 const input = message.content.slice(match.index + match[0].length).trim();
                 const name = extractNameFromMessage(input);
-                if (!name || name.length > 100) return false;
+                if (!name || name.length > 50) return false;
                 return message.reply(replyTemplate.replace('${name}', name));
             }
         };
@@ -45,13 +45,13 @@ module.exports = {
                 );
 
             case /quoi(\s|\.|\?|!|;|:|,|\/)*$/gim.test(message.content):
-                return sendReply('feur <3', 40);
+                return sendReply('feur <3', 15);
 
             case frenchDadRegex.test(message.content):
-                return handleDadReply(frenchDadRegex, 'Salut ${name}, je suis ton père !', 50);
+                return handleDadReply(frenchDadRegex, 'Salut ${name}, je suis ton père !', 15);
 
             case englishDadRegex.test(message.content):
-                return handleDadReply(englishDadRegex, "Hi ${name}, I'm dad!", 50);
+                return handleDadReply(englishDadRegex, "Hi ${name}, I'm dad!", 15);
             default:
                 return;
         }
@@ -59,7 +59,7 @@ module.exports = {
 };
 
 const extractNameFromMessage = (input: string) => {
-    const regex = /[^,.:;!?)]+/im;
+    const regex = /[(<^,.:;!?">)]|xd|md+d*r*|pour/im;
     const match = regex.exec(input);
 
     if (match) {
