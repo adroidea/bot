@@ -4,7 +4,6 @@ import { OWNER_SERVER_ID } from '../../../utils/consts';
 import { client } from '../../../';
 import cron from 'node-cron';
 import path from 'path';
-const fetch = require('node-fetch');
 
 const filePath = path.join(__dirname, __filename);
 
@@ -24,14 +23,7 @@ export default function (): cron.ScheduledTask {
         try {
             const responsePromise: Promise<string> = fetch(
                 `https://api.crunchprank.net/twitch/uptime/adan_ea`
-            )
-                .then((response: any) => response.text())
-                .catch((error: any) =>
-                    Logger.error(
-                        'Error fetching api.crunchprank.net in customProfilePicture.cron.js',
-                        error
-                    )
-                );
+            ).then((response: any) => response.text());
 
             responsePromise.then(response => {
                 if (response !== `adan_ea is offline`) return;

@@ -58,15 +58,15 @@ const sendInternalLogWebhook = (logType: string, title?: string, description?: s
 
     if (title) embed.setTitle(title);
     if (description) embed.setDescription(description);
-    if (discordClient)
+    if (discordClient.isReady())
         embed.setFooter({
-            text: discordClient.user?.tag,
+            text: discordClient.user.username,
             iconURL: discordClient.user?.displayAvatarURL()
         });
-    senddWebhook(embed);
+    sendWebhook(embed);
 };
 
-const senddWebhook = (embed: EmbedBuilder) => {
+const sendWebhook = (embed: EmbedBuilder) => {
     const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_LOG_URL! });
     webhookClient
         .send({

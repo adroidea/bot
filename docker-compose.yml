@@ -1,70 +1,84 @@
-version: "3.8"
+version: '3.8'
 services:
+    adroid_ea:
+        image: adanea/adroid_ea:latest
+        container_name: adroid_ea
+        environment:
+            - DISCORD_APP_ID=xxx
+            - DISCORD_TOKEN=xxx
+            - MONGO_URI=xxx
+            - NODE_ENV=production
+            - REDIS_HOST=xxx
+            - TWITCH_CLIENT_ID=xxx
+            - TWITCH_CLIENT_SECRET=xxx
+            - WEBHOOK_LOG_URL=xxx
+        restart: unless-stopped
+        depends_on:
+            - mongo
+            - redis
 
-  adroid_ea:
-    image: adanea/adroid_ea:latest
-    container_name: adroid_ea
-    environment:
-      - DISCORD_APP_ID=xxx
-      - DISCORD_TOKEN=xxx
-      - MONGO_URI=xxx
-      - NODE_ENV=production
-      - REDIS_HOST=xxx
-      - TWITCH_CLIENT_ID=xxx
-      - TWITCH_CLIENT_SECRET=xxx
-      - WEBHOOK_LOG_URL=xxx
-    restart: unless-stopped
-    depends_on:
-      - mongo
-      - redis
+    mongo:
+        image: mongo
+        container_name: database
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: xxx
+            MONGO_INITDB_ROOT_PASSWORD: xxx
+        restart: unless-stopped
+        volumes:
+            - mongo_data:/data/db
 
-  mongo:
-    image: mongo
-    container_name: database
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: xxx
-      MONGO_INITDB_ROOT_PASSWORD: xxx
-    restart: unless-stopped
-    volumes:
-      - /home/adanea/Documents/Docker/volumes:/data/db
+    mongo-express:
+        image: mongo-express
+        container_name: admin-interface
+        ports:
+            - 8081:8081
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: xxx
+            ME_CONFIG_MONGODB_ADMINPASSWORD: xxx
+            ME_CONFIG_MONGODB_URL: mongodb://xxx:xxx@mongo:27017/
+        restart: unless-stopped
+        depends_on:
+            - mongo
 
-  mongo-express:
-    image: mongo-express
-    container_name: admin-interface
-    ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: xxx
-      ME_CONFIG_MONGODB_ADMINPASSWORD: xxx
-      ME_CONFIG_MONGODB_URL: mongodb://xxx:xxx@mongo:27017/
-    restart: unless-stopped
-    depends_on:
-      - mongo
+    redis:
+        image: redis/redis-stack
+        container_name: redis
+        restart: unless-stopped
+        ports:
+            - 6379:6379
+            - 8001:8001
+        volumes:
+            - redis_data:/data
+        cap_add:
+            - sys_ressource
 
-  redis:
-    image: redis/redis-stack
-    container_name: redis
-    restart: unless-stopped
-    ports:
-      - 6379:6379
-      - 8001:8001
-    volumes:
-      - /home/adanea/Documents/Docker/volumes:/data
+    watchtower:
+        image: containrrr/watchtower
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        command: --schedule 0 0 * * * *
+        restart: unless-stopped
 
-  watchtower:
-    image: containrrr/watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --schedule 0 0 * * * *
-    restart: unless-stopped
+    tinyadmin:
+        image: ombrelin/tiny-admin:latest
+        container_name: tinyadmin
+        privileged: true
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        environment:
+            - TARGET_CONTAINER=adroid_ea
+        depends_on:
+            - adroid_ea
 
-  tinyadmin:
-    image: ombrelin/tiny-admin:latest
-    container_name: tinyadmin
-    privileged: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - TARGET_CONTAINER=adroid_ea
-    depends_on:
-      - adroid_ea
+volumes:
+    mongo_data:
+        driver_opts:
+            type: none
+            device: /home/adanea/Documents/Docker/volumes
+            o: bind
+
+    redis_data:
+        driver_opts:
+            type: none
+            device: /home/adanea/Documents/Docker/volumes
+            o: bind
