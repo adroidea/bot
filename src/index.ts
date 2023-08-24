@@ -1,4 +1,5 @@
 import DiscordClient from './client';
+import IORedis from 'ioredis';
 import Logger from './utils/logger';
 import { Partials } from 'discord.js';
 import dotenv from 'dotenv';
@@ -27,6 +28,18 @@ mongoose
     .then(() => Logger.info('🍃 MongoDB connected'))
     .catch((err: any) => {
         Logger.error("Couldn't connect to database", err);
+    });
+
+export const connection = new IORedis({
+    host: process.env.REDIS_HOST,
+    port: 12000
+})
+    .on('connect', () => {
+        Logger.info('🔴 Redis connected');
+    })
+    .on('error', (error: any) => {
+        if (error.code === 'ECONNREFUSED') return;
+        else Logger.error(`Redis error:`, error);
     });
 
 client.login(process.env.TOKEN);

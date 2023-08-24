@@ -6,7 +6,6 @@ import TwitchApi from 'node-twitch';
 import { client } from '../../../index';
 import cron from 'node-cron';
 import logger from '../../../utils/logger';
-const fetch = require('node-fetch');
 
 if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
     throw new Error('TWITCH_CLIENT_ID or TWITCH_CLIENT_SECRET is not defined');
@@ -96,23 +95,23 @@ const toggleStreamersRole = async (
         if (!role) return;
 
         const hasRole: boolean = member.roles.cache.some(role => role.id === streamingRoleId);
-        const response: Promise<string> = (
-            await fetch(`https://api.crunchprank.net/twitch/uptime/${streamer.streamer}`)
-        )
-            .text()
-            .catch((err: any) =>
-                logger.error(
-                    'Error fetching api.crunchprank.net in toggleStreamersRole => twitchAlert.cron.js',
-                    err
-                )
-            );
+        try {
+            const response: Promise<string> = (
+                await fetch(`https://api.crunchprank.net/twitch/uptime/${streamer.streamer}`)
+            ).text();
 
-        if ((await response) === `${streamer.streamer} is offline`) {
-            if (hasRole) {
-                member.roles.remove(role);
+            if ((await response) === `${streamer.streamer} is offline`) {
+                if (hasRole) {
+                    member.roles.remove(role);
+                }
+            } else if (!hasRole) {
+                member.roles.add(role);
             }
-        } else if (!hasRole) {
-            member.roles.add(role);
+        } catch (err: any) {
+            logger.error(
+                'Error fetching api.crunchprank.net in toggleStreamersRole => twitchAlert.cron.js',
+                err
+            );
         }
     }
 };
@@ -128,14 +127,7 @@ export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive,
 
     const twitchAvatarURL: string = await (
         await fetch(`https://api.crunchprank.net/twitch/avatar/${user_name}`)
-    )
-        .text()
-        .catch((err: any) =>
-            logger.error(
-                'Error fetching api.crunchprank.net in sendLiveEmbed => twitchAlert.cron.js',
-                err
-            )
-        );
+    ).text();
 
     const embed = new EmbedBuilder()
         .setAuthor({
