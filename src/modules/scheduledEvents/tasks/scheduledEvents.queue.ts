@@ -1,24 +1,27 @@
 import { IEvent } from '../models';
 import Logger from '../../../utils/logger';
 import { Queue } from 'bullmq';
+import { connection } from '../../..';
 
-const redisConnectionOptions = {
-    connection: {
-        host: process.env.REDIS_HOST,
-        port: 6379
-    },
+const connectionOptions = {
+    connection,
     defaultJobOptions: {
         removeOnComplete: true,
         removeOnFail: 1000
     }
 };
 
+if (connection.status !== 'ready') {
+    throw new Error('Redis connection is undefined.');
+}
+
+console.log('Initializing scheduled events queues...');
 const scheduledEventsQueues = {
-    reminderQueue: new Queue('scheduledEventsReminder', redisConnectionOptions)
+    reminderQueue: new Queue('scheduledEventsReminder', connectionOptions)
 };
 
 export default function (): void {
-    scheduledEventsQueues.reminderQueue;
+    console.log('Scheduled events queues initialized.');
 }
 
 export const addToAppropriateQueue = async (eventId: string, event: IEvent) => {
