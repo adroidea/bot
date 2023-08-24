@@ -17,7 +17,7 @@
         "publish": "node .github/publish.js"
     },
     "lint-staged": {
-        "*.{ts}": [
+        "*.ts": [
             "eslint",
             "prettier --write"
         ]
