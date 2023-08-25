@@ -1,11 +1,8 @@
-import { Guild, codeBlock } from 'discord.js';
+import { Guild } from 'discord.js';
 import Logger from '../../../utils/logger';
 import { OWNER_SERVER_ID } from '../../../utils/consts';
 import { client } from '../../../';
 import cron from 'node-cron';
-import path from 'path';
-
-const filePath = path.join(__dirname, __filename);
 
 const dpp = {
     default:
@@ -51,20 +48,8 @@ export default function (): cron.ScheduledTask {
                     newProfilePicture = null;
             }
 
-            const guild: Guild = client.guilds.fetch(OWNER_SERVER_ID);
-            Logger.warn(
-                "J'ai tenté de fetch le serveur dans customProfilePicture : \n" +
-                    codeBlock('json', guild.toString())
-            );
-            if (newProfilePicture)
-                guild
-                    .setIcon(newProfilePicture)
-                    .then(() => {
-                        Logger.info('Profile picture changed');
-                    })
-                    .catch((err: any) => {
-                        Logger.error('Error changing profile picture:', err, filePath);
-                    });
+            const guild: Guild = client.guilds.cache.get(OWNER_SERVER_ID);
+            if (newProfilePicture) guild.setIcon(newProfilePicture);
         } catch (error: any) {
             Logger.error('Error changing profile picture:', error);
         }
