@@ -32,7 +32,7 @@ mongoose
 
 export const connection = new IORedis({
     host: process.env.REDIS_HOST,
-    port: 12000
+    port: 6379
 })
     .on('connect', () => {
         Logger.info('🔴 Redis connected');
