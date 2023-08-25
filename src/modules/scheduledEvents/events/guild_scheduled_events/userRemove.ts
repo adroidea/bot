@@ -1,6 +1,6 @@
 import { Client, Events, GuildScheduledEvent, TextBasedChannel, User } from 'discord.js';
 import { IGuild } from '../../../../models';
-import ScheduledEventService from '../../../../modules/scheduledEvents/services/scheduledEventService';
+import ScheduledEventService from '../../services/scheduledEventService';
 import guildService from '../../../../services/guildService';
 
 module.exports = {
