@@ -36,7 +36,7 @@ module.exports = {
     },
     async execute(interaction: ButtonInteraction) {
         const oldEmbed = interaction.message.embeds[0];
-        const authorId = oldEmbed.author?.name.split('(')[1].slice(0, -1);
+        const authorId = oldEmbed.author!.name.split('(')[1].slice(0, -1);
 
         const questionEmbed = new EmbedBuilder()
             .setAuthor({
@@ -48,7 +48,7 @@ module.exports = {
             .addFields(
                 {
                     name: 'Auteur',
-                    value: userMention(authorId!),
+                    value: userMention(authorId),
                     inline: true
                 },
                 {

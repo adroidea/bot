@@ -39,9 +39,15 @@ export default function (): cron.ScheduledTask {
                 case 16:
                     newProfilePicture = dpp.gouter;
                     break;
+                case 19:
+                    newProfilePicture = dpp.diner;
+                    break;
+                case 23:
+                    newProfilePicture = dpp.dodo;
+                    break;
                 case 9:
                 case 14:
-                case 18:
+                case 17:
                     newProfilePicture = dpp.default;
                     break;
                 default:

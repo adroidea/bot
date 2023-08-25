@@ -12,9 +12,9 @@ module.exports = {
             throw CustomErrors.UserNoPermissionsError;
 
         const oldEmbed = interaction.message.embeds[0];
-        const authorId = oldEmbed.author?.name.split('(')[1].slice(0, -1);
+        const authorId = oldEmbed.author!.name.split('(')[1].slice(0, -1);
 
-        await qotddService.addToQotdBlacklist(interaction.guildId!, authorId!);
+        await qotddService.addToQotdBlacklist(interaction.guildId!, authorId);
 
         const newEmbed = new EmbedBuilder()
             .setAuthor({
@@ -26,7 +26,7 @@ module.exports = {
             .addFields(
                 {
                     name: 'Auteur',
-                    value: '[BLACKLISTÉ] ' + userMention(authorId!),
+                    value: '[BLACKLISTÉ] ' + userMention(authorId),
                     inline: true
                 },
                 {

@@ -3,7 +3,6 @@ import {
     ChannelType,
     ChatInputCommandInteraction,
     Client,
-    CommandInteraction,
     GuildChannel,
     GuildMember,
     PermissionsBitField
@@ -44,6 +43,20 @@ module.exports = {
                 ]
             },
             {
+                name: 'whitelist',
+                description:
+                    'autorise un utilisateur à rejoindre malgré les permissions du serveur',
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: 'membre',
+                        description: 'Le membre à whitelist',
+                        type: ApplicationCommandOptionType.User,
+                        required: true
+                    }
+                ]
+            },
+            {
                 name: 'limite',
                 description: 'Limiter le nombre de membres dans ton salon',
                 type: ApplicationCommandOptionType.Subcommand,
@@ -59,13 +72,13 @@ module.exports = {
         ]
     },
     category: 'voice',
-    cooldown: 30,
+    cooldown: 10,
     permissions: [PermissionsBitField.Flags.SendMessages],
     usage: 'voice [commande] [member] ou [option]',
     examples: 'voice ban @adan_ea#3945',
     guildOnly: false,
 
-    async execute(client: Client, interaction: CommandInteraction, guildSettings: IGuild) {
+    async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
         if (!isTemporaryVoiceModuleEnabled(guildSettings, true)) return;
 
         const member = interaction.member as GuildMember;
@@ -78,11 +91,12 @@ module.exports = {
 
         const voiceChannel = await interaction.guild!.channels.fetch(memberVoiceChannel.id);
 
-        const subcommand = (interaction as ChatInputCommandInteraction).options.getSubcommand();
+        const subcommand = interaction.options.getSubcommand();
 
         switch (subcommand) {
             case 'ban': {
                 const target = interaction.options.getMember('membre') as GuildMember;
+                if(target.user.id === client.user!.id) throw CustomErrors.BotBanError;
 
                 if (isMembersInSameVoice(member, target)) {
                     await target.voice.disconnect();
@@ -101,9 +115,20 @@ module.exports = {
 
             case 'unban': {
                 const target = interaction.options.getMember('membre') as GuildMember;
+                await (voiceChannel as GuildChannel).permissionOverwrites.delete(target.id);
+
+                return interaction.reply({
+                    content: `${target} a été débanni du salon.`,
+                    ephemeral: true
+                });
+            }
+
+            case 'whitelist': {
+                const target = interaction.options.getMember('membre') as GuildMember;
                 await (voiceChannel as GuildChannel).permissionOverwrites.edit(target.id, {
-                    ViewChannel: null,
-                    Connect: null
+                    ViewChannel: true,
+                    Connect: true,
+                    Speak: true
                 });
 
                 return interaction.reply({
@@ -113,10 +138,7 @@ module.exports = {
             }
 
             case 'limite': {
-                const userLimit = (interaction as ChatInputCommandInteraction).options.getNumber(
-                    'limite',
-                    true
-                );
+                const userLimit = interaction.options.getNumber('limite', true);
 
                 if (voiceChannel && voiceChannel.type === ChannelType.GuildVoice) {
                     await voiceChannel.setUserLimit(userLimit);
