@@ -39,6 +39,11 @@ module.exports = {
                     'https://tenor.com/view/hello-there-general-kenobi-star-wars-grevious-gif-17774326'
                 );
 
+            case /JPPFC/gm.test(message.content):
+                if (message.guildId === '743969889177436211')
+                    return sendReply(randomizeArray(jppfc));
+                return;
+
             case /jpp/gim.test(message.content):
                 return sendReply(
                     'https://cdn.discordapp.com/attachments/771934231647223848/938389858802606160/jpp_jean-pierre.png',
@@ -47,11 +52,6 @@ module.exports = {
 
             case /quoi(\s|\.|\?|!|;|:|,|\/)*$/gim.test(message.content):
                 return sendReply('feur <3', 15);
-
-            case /JPPFC/gm.test(message.content):
-                if (message.guildId === '743969889177436211')
-                    return sendReply(randomizeArray(jppfc));
-                return;
 
             case frenchDadRegex.test(message.content):
                 return handleDadReply(frenchDadRegex, 'Salut ${name}, je suis ton père !', 15);
@@ -115,3 +115,4 @@ const jppfc = [
     'https://media.discordapp.net/attachments/1144537559238721597/1144550171577958410/YCaxYgCzqswG6qLkO8onmT8lcgLY2rmc8ytZi7iTIIMH3SEeKtpp2ngyrwO96P8BlHEbUfFpoucAAAAASUVORK5CYII.png',
     'https://media.discordapp.net/attachments/1144537559238721597/1144550139881603132/bNYE0XRaTkgAAAABJRU5ErkJggg.png'
 ];
+
