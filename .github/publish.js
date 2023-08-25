@@ -32,6 +32,7 @@ const run = async () => {
     await spawn('git', ['status'], { stdio: 'inherit' });
     const currentBranch = await branch();
     await spawn('git', ['push', 'origin', currentBranch.trim()], { stdio: 'inherit' });
+    await spawn('git', ['push', 'origin', 'v'+npmVersion], { stdio: 'inherit' });
 
   } catch (err) {
     console.log('Something went wrong:');
