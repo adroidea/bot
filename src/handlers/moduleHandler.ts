@@ -9,7 +9,7 @@ import path from 'path';
 export default (client: any) => {
     const moduleFolders = [
         path.join(__dirname, '../modules/core'),
-        path.join(__dirname, '../modules/scheduledEvents'),
+        //path.join(__dirname, '../modules/scheduledEvents'),
         path.join(__dirname, '../modules/qotd'),
         path.join(__dirname, '../modules/tempVoice'),
         path.join(__dirname, '../modules/twitchLive')
@@ -18,7 +18,6 @@ export default (client: any) => {
     const counts: Record<string, Record<string, any>> = {};
 
     for (const module of moduleFolders) {
-        //read the content of the folder
         const moduleContent = fs.readdirSync(module);
 
         const moduleName = path.basename(module);

@@ -11,7 +11,8 @@ const write = (
     error = false
 ) => {
     const stream = error ? process.stderr : process.stdout;
-    const item = `${ansis[bgTagColor][tagColor](`[${tag}]`)} ${ansis.white(content)}\n`;
+    const tagLabel = `[${tag}]`;
+    const item = `${ansis[bgTagColor][tagColor](tagLabel)} ${ansis.white(content)}\n`;
     stream.write(item);
 };
 

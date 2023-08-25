@@ -15,7 +15,6 @@ if (connection.status !== 'ready') {
     throw new Error('Redis connection is undefined.');
 }
 
-console.log('Initializing scheduled events queues...');
 const scheduledEventsQueues = {
     reminderQueue: new Queue('scheduledEventsReminder', connectionOptions)
 };
