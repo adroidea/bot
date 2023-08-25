@@ -76,12 +76,12 @@ module.exports = {
         if (qotd.blacklistUsers?.includes(interaction.user.id))
             throw CustomErrors.BlacklistedUserError;
 
-        const question = interaction.options.getString('question');
+        const question = interaction.options.getString('question', true);
         const author = interaction.options.getUser('auteur');
         const user = (interaction.member as GuildMember).user;
 
         const questionBuilder: IQuestions = {
-            question: question!,
+            question: question,
             authorId: author ? author.id : user.id,
             guildId: interaction.guild!.id
         };

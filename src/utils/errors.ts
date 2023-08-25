@@ -28,6 +28,9 @@ export const CustomErrors = {
     SelfBanError: new CustomError(
         'Tu ne peux pas te ban toi même. Peu importe à quel point tu te déteste.'
     ),
+    BotBanError: new CustomError(
+        'Tu ne peux pas me ban de ce salon. Peu importe à quel point tu me déteste, il faut que je puisse le gérer.'
+    ),
 
     SwitchVoiceOwnerError: new CustomError(
         "Trop de responsabilité pour moi.. je n'ai pas réussi à changer de propriétaire."

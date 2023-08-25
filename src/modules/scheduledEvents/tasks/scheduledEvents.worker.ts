@@ -29,8 +29,6 @@ export default function (): void {
     if (connection.status !== 'ready') {
         throw new Error('Redis connection is undefined.');
     }
-
-    console.log('Initializing scheduled events workers...');
     const workerScheduledEventsReminder = new Worker(
         'scheduledEventsReminder',
         handleScheduledEventsReminderWorker,
@@ -38,6 +36,6 @@ export default function (): void {
     );
 
     workerScheduledEventsReminder.on('failed', (job, err) => {
-        console.log(`${job?.id} has failed with ${err.message} in 'ScheduledEventsFiveMinutes'`);
+        console.error(`${job?.id} has failed with ${err.message} in 'ScheduledEventsFiveMinutes'`);
     });
 }

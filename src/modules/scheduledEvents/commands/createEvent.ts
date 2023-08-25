@@ -45,7 +45,7 @@ module.exports = {
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
         if (!isEventManagementModuleEnabled(guildSettings, true)) return;
 
-        const eventInput = interaction.options.getString('url-id')!;
+        const eventInput = interaction.options.getString('url-id', true);
         let description =
             interaction.options.getString('description')?.replaceAll('\\n', '\n\n') ?? '';
         const maxParticipants = interaction.options.getNumber('max-participants');

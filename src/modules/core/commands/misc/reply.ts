@@ -25,7 +25,7 @@ module.exports = {
     examples: ["still don't know"],
 
     async execute(client: Client, interaction: ChatInputCommandInteraction) {
-        const message = interaction.options.getString('r')!;
+        const message = interaction.options.getString('r', true);
 
         await interaction.channel?.sendTyping();
         await interaction.channel!.send(message);

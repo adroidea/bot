@@ -1,4 +1,4 @@
-import { Client, Events, VoiceState } from 'discord.js';
+import { Client, Events, VoiceBasedChannel, VoiceState } from 'discord.js';
 import {
     createNewTempChannel,
     deleteEmptyChannel,
@@ -7,38 +7,21 @@ import {
 import { IGuild } from '../../../../models';
 import guildService from '../../../../services/guildService';
 
-const isProtectedVoice = async (
-    hostChannels: string[] | undefined,
-    protectedChannels: string[] | undefined,
-    state: VoiceState
-): Promise<boolean> => {
-    if (await isHostVoice(hostChannels, state)) {
-        return true;
-    }
-    if (!protectedChannels) return false;
-    return protectedChannels.includes(state.channel!.id);
+const isProtectedVoice = (hostC: string[], protectedC: string[], voiceId: string): boolean => {
+    return isHostVoice(hostC, voiceId) || (protectedC && protectedC.includes(voiceId));
 };
 
-const isHostVoice = async (
-    hostChannels: string[] | undefined,
-    state: VoiceState
-): Promise<boolean> => {
-    if (!hostChannels) return false;
-    if (!state.channel) return false;
-    return hostChannels.includes(state.channel.id);
+const isHostVoice = (hostC: string[], voiceId: string): boolean => {
+    return hostC && hostC.includes(voiceId);
 };
 
-const getVoiceUpdateType = (oldState: VoiceState, newState: VoiceState): string => {
-    const oldChannel = oldState.channel;
-    const newChannel = newState.channel;
-
-    if (oldChannel === null && newChannel !== null) {
-        return 'JOINED_VOICE';
-    } else if (oldChannel !== null && newChannel === null) {
-        return 'LEFT_VOICE';
-    } else if (oldChannel !== null && newChannel !== null && oldChannel !== newChannel) {
-        return 'MOVED_VOICE';
-    }
+const getVoiceUpdateType = (
+    oldC: VoiceBasedChannel | null,
+    newC: VoiceBasedChannel | null
+): string => {
+    if (!oldC && newC) return 'JOINED_VOICE';
+    else if (oldC && !newC) return 'LEFT_VOICE';
+    else if (oldC && newC && oldC.id !== newC.id) return 'MOVED_VOICE';
     return '';
 };
 
@@ -47,39 +30,33 @@ module.exports = {
     async execute(client: Client, oldState: VoiceState, newState: VoiceState) {
         const guildSettings: IGuild = await guildService.getOrCreateGuild(newState.guild.id);
 
-        if (!guildSettings.modules.temporaryVoice.enabled) return;
+        const { temporaryVoice } = guildSettings.modules;
+        if (!temporaryVoice.enabled) return;
 
-        const hostChannels = guildSettings.modules.temporaryVoice.hostChannels;
-        const protectedChannels = guildSettings.modules.temporaryVoice.protectedChannels;
+        const hostC = temporaryVoice?.hostChannels ?? [''];
+        const protectedC = temporaryVoice?.protectedChannels ?? [''];
 
-        const voiceUpdateType = getVoiceUpdateType(oldState, newState);
+        const voiceUpdateType = getVoiceUpdateType(oldState.channel, newState.channel);
 
         switch (voiceUpdateType) {
-            case 'JOINED_VOICE': {
-                if (await isHostVoice(hostChannels, newState)) {
+            case 'JOINED_VOICE':
+                if (isHostVoice(hostC, newState.channelId!)) {
                     await createNewTempChannel(newState);
                 }
                 break;
-            }
-            case 'LEFT_VOICE': {
-                if (!(await isProtectedVoice(hostChannels, protectedChannels, oldState))) {
-                    await deleteEmptyChannel(oldState);
+
+            case 'MOVED_VOICE':
+            case 'LEFT_VOICE':
+                if (!isProtectedVoice(hostC, protectedC, oldState.channelId!)) {
+                    await deleteEmptyChannel(oldState.channel!);
                     const member = oldState.channel?.members.first();
                     if (member) await switchVoiceOwner(oldState.member!, member);
                 }
-                break;
-            }
-            case 'MOVED_VOICE': {
-                if (!(await isProtectedVoice(hostChannels, protectedChannels, oldState))) {
-                    await deleteEmptyChannel(oldState);
-                    const member = oldState.channel?.members.first();
-                    if (member) await switchVoiceOwner(oldState.member!, member);
-                }
-                if (await isHostVoice(hostChannels, newState)) {
+                if (voiceUpdateType === 'MOVED_VOICE' && isHostVoice(hostC, newState.channelId!)) {
                     await createNewTempChannel(newState);
                 }
                 break;
-            }
+
             default:
                 break;
         }

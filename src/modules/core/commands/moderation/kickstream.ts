@@ -46,9 +46,9 @@ module.exports = {
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
         const streamData = {
-            game_id: interaction.options.getString('gameid')!,
-            title: interaction.options.getString('title')!,
-            game_name: interaction.options.getString('game')!
+            game_id: interaction.options.getString('gameid', true),
+            title: interaction.options.getString('title', true),
+            game_name: interaction.options.getString('game', true)
         };
 
         const { game_id, title } = streamData;

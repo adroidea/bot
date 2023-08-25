@@ -65,7 +65,7 @@ export const createNewTempChannel = async (newState: VoiceState) => {
                 );
                 channel.send({
                     content: `Hey ${userMention(newState.member!.id)} !
-          \nTu peux gérer ton salon vocal depuis ici ! Il te suffit de faire :\`/voice\` pour avoir toutes les options 
+          \nTu peux gérer ton salon vocal depuis ici ! Il te suffit de faire : \`/voice\` pour avoir toutes les options 
           \n(bonus: Tu peux déco quelqu'un avec un clic droit sur leur nom)`,
                     components: [row]
                 });
@@ -123,8 +123,8 @@ export const switchVoiceOwner = async (user: GuildMember, target: GuildMember) =
     }
 };
 
-export const checkVoicePrivacy = async (voiceChannel: VoiceBasedChannel) => {
-    const permissions = voiceChannel.permissionsFor(voiceChannel.guild.roles.everyone);
+export const checkVoicePrivacy = async (voiceC: VoiceBasedChannel) => {
+    const permissions = voiceC.permissionsFor(voiceC.guild.roles.everyone);
     if (!permissions) return false;
 
     return permissions.has([
@@ -133,12 +133,12 @@ export const checkVoicePrivacy = async (voiceChannel: VoiceBasedChannel) => {
     ]);
 };
 
-export const checkVoiceOwnership = async (voiceChannel: VoiceBasedChannel, member: GuildMember) => {
-    return voiceChannel.permissionsFor(member)?.has(PermissionsBitField.Flags.MoveMembers);
+export const checkVoiceOwnership = async (voiceC: VoiceBasedChannel, member: GuildMember) => {
+    return voiceC.permissionsFor(member)?.has(PermissionsBitField.Flags.MoveMembers);
 };
 
-export const deleteEmptyChannel = async (state: VoiceState) => {
-    if (state.channel!.members.size > 0) return;
+export const deleteEmptyChannel = async (voiceC: VoiceBasedChannel) => {
+    if (voiceC.members.size > 0) return;
 
-    return state.channel!.delete();
+    return voiceC.delete();
 };
