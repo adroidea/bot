@@ -8,7 +8,7 @@ import {
     MessageCreateOptions
 } from 'discord.js';
 import { IGuild } from '../../../../models';
-import ScheduledEventService from '../../../../modules/scheduledEvents/services/scheduledEventService';
+import ScheduledEventService from '../../services/scheduledEventService';
 import guildService from '../../../../services/guildService';
 import { timestampToDate } from '../../../../utils/botUtil';
 
