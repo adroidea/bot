@@ -8,11 +8,11 @@ import { IGuild } from '../../../../models';
 import guildService from '../../../../services/guildService';
 
 const isProtectedVoice = (hostC: string[], protectedC: string[], voiceId: string): boolean => {
-    return isHostVoice(hostC, voiceId) || (protectedC && protectedC.includes(voiceId));
+    return isHostVoice(hostC, voiceId) || protectedC.includes(voiceId);
 };
 
 const isHostVoice = (hostC: string[], voiceId: string): boolean => {
-    return hostC && hostC.includes(voiceId);
+    return hostC.includes(voiceId);
 };
 
 const getVoiceUpdateType = (
