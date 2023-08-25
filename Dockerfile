@@ -1,7 +1,6 @@
 FROM node:20-alpine
 
-RUN addgroup -S nonroot \
-    &amp;&amp; adduser -S nonroot -G nonroot
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 
 USER nonroot
 
