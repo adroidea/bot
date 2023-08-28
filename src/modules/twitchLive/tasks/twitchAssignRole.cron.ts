@@ -1,7 +1,8 @@
 import { Guild, GuildMember, Role } from 'discord.js';
-import { GuildModel, IStreamersData } from '../../../models';
+import { IStreamersData } from '../../../models';
 import { client } from '../../../index';
 import cron from 'node-cron';
+import { guildsCache } from '../../core/tasks/createCache.cron';
 import logger from '../../../utils/logger';
 
 if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
@@ -14,26 +15,19 @@ export const randomizeArray = (array: string[]): string => {
 };
 
 export default function (): cron.ScheduledTask {
-    return cron.schedule('* * * * *', () => {
-        GuildModel.find()
-            .exec()
-            .then(guilds => {
-                for (const guild of guilds) {
-                    const guildData: Guild = client.guilds.cache.get(guild.id);
-                    if (!guildData) continue;
+    return cron.schedule('* 5 * * *', () => {
+        for (const guild of guildsCache) {
+            const guildData: Guild = client.guilds.cache.get(guild.id);
+            if (!guildData) continue;
 
-                    const { twitchLive } = guild.modules;
-                    const { enabled, streamers, streamingRoleId } = twitchLive;
-                    if (!enabled) continue;
+            const { twitchLive } = guild.modules;
+            const { enabled, streamers, streamingRoleId } = twitchLive;
+            if (!enabled) continue;
 
-                    if (streamers && streamingRoleId) {
-                        toggleStreamersRole(guildData, streamers, streamingRoleId);
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching guilds:', error);
-            });
+            if (streamers && streamingRoleId) {
+                toggleStreamersRole(guildData, streamers, streamingRoleId);
+            }
+        }
     });
 }
 
@@ -49,16 +43,20 @@ const toggleStreamersRole = async (
         const role: Role | undefined = guild.roles.cache.get(streamingRoleId);
         if (!role) return;
 
-        const hasRole: boolean = member.roles.cache.some(role => role.id === streamingRoleId);
+        const hasRole: boolean = member.roles.cache.some(r => r.id === role.id);
         try {
-            const response: Promise<string> = (
-                await fetch(`https://api.crunchprank.net/twitch/uptime/${streamer.streamer}`)
+            const response: string = await (
+                await fetch(`https://decapi.me/twitch/uptime/${streamer.streamer}`)
             ).text();
 
-            if ((await response) === `${streamer.streamer} is offline`) {
+            if (response === `${streamer.streamer} is offline`) {
                 if (hasRole) {
                     member.roles.remove(role);
                 }
+            } else if (
+                response === '[Error from Twitch API] 400: Bad Request - Malformed query params.'
+            ) {
+                return;
             } else if (!hasRole) {
                 member.roles.add(role);
             }
