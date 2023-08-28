@@ -1,10 +1,15 @@
 import { EmbedBuilder, Guild, TextChannel, roleMention } from 'discord.js';
-import { GuildModel, IGuild, ITwitchLive } from '../../../models';
+import { IGuild, ITwitchLive } from '../../../models';
 import { Colors } from '../../../utils/consts';
 import { Stream } from 'node-twitch/dist/types/objects';
 import TwitchApi from 'node-twitch';
 import { client } from '../../../index';
 import cron from 'node-cron';
+import { guildsCache } from '../../core/tasks/createCache.cron';
+import logger from '../../../utils/logger';
+import path from 'path';
+
+const filePath = path.join(__dirname, __filename);
 
 if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
     throw new Error('TWITCH_CLIENT_ID or TWITCH_CLIENT_SECRET is not defined');
@@ -12,7 +17,8 @@ if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
 
 const twitch = new TwitchApi({
     client_id: process.env.TWITCH_CLIENT_ID,
-    client_secret: process.env.TWITCH_CLIENT_SECRET
+    client_secret: process.env.TWITCH_CLIENT_SECRET,
+    throw_ratelimit_errors: true
 });
 
 export const randomizeArray = (array: string[]): string => {
@@ -30,14 +36,14 @@ const streamersList = new Map<string, LiveStatus>();
 
 export default function (): cron.ScheduledTask {
     return cron.schedule('* * * * *', () => {
-        if (!client.accessToken) throw new Error('Client access token is not defined');
-        GuildModel.find()
-            .exec()
-            .then(guilds => {
-                for (const guild of guilds) {
-                    handleGuild(guild);
-                }
-            });
+        try {
+            if (!twitch.access_token) logger.warn('Twitch access token is not defined');
+            for (const guild of guildsCache) {
+                handleGuild(guild);
+            }
+        } catch (err: any) {
+            logger.error('Error :', err, filePath);
+        }
     });
 }
 
