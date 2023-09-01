@@ -12,6 +12,45 @@ export const Colors: { [key: string]: ColorResolvable } = {
     random: 'Random'
 };
 
+export const Modules = {
+    core: {
+        name: 'core',
+        label: 'Base',
+        description: 'Module de base',
+        emoji: '📦'
+    },
+    party: {
+        name: 'party',
+        label: 'Party',
+        description: 'Module de la party',
+        emoji: '🎉'
+    },
+    qotd: {
+        name: 'qotd',
+        label: 'Question du Jour',
+        description: 'Module de la question du jour',
+        emoji: '❓'
+    },
+    scheduledEvents: {
+        name: 'scheduled_events',
+        label: 'Evenements',
+        description: 'Module de gestion des événements',
+        emoji: '📅'
+    },
+    swiftVoice: {
+        name: 'swift_voice',
+        label: 'SwiftVoice',
+        description: 'Module de SwiftVoice',
+        emoji: '🎤'
+    },
+    twitch: {
+        name: 'twitch',
+        label: 'Twitch',
+        description: 'Module Twitch',
+        emoji: '📺'
+    }
+};
+
 export const OWNER_ID = '294916386072035328';
-export const OWNER_SERVER_ID = '814621177770541076';
-export const LOG_CHANNEL_ID = '816172869339185163';
+export const OWNER_SERVER_ID = '605053128148254724';
+export const LOG_CHANNEL_ID = '949252153225150524';
