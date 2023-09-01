@@ -12,29 +12,34 @@ export const regCMD = (clientId: string) => {
 
     const categoryFolders = [
         path.join(__dirname, 'modules/core/commands'),
-        //path.join(__dirname, 'modules/twitchLive/commands'),
         path.join(__dirname, 'modules/qotd/commands'),
-        path.join(__dirname, 'modules/tempVoice/commands'),
-        path.join(__dirname, 'modules/scheduledEvents/commands')
+        path.join(__dirname, 'modules/setup/commands'),
+        path.join(__dirname, 'modules/scheduledEvents/commands'),
+        path.join(__dirname, 'modules/tempVoice/commands')
+        //path.join(__dirname, 'modules/twitchLive/commands'),
     ];
 
     const readCommands = (dir: string) => {
-        const files = fs.readdirSync(dir);
+        try {
+            const files = fs.readdirSync(dir);
 
-        for (const file of files) {
-            const filePath = path.join(dir, file);
-            const stat = fs.lstatSync(filePath);
+            for (const file of files) {
+                const filePath = path.join(dir, file);
+                const stat = fs.lstatSync(filePath);
 
-            if (stat.isDirectory()) {
-                readCommands(filePath);
-            } else if (file.endsWith('.js')) {
-                const command = require(filePath);
-
-                if (command.guildOnly) guildCommands.push(command.data);
-                else commands.push(command.data);
+                if (stat.isDirectory()) {
+                    readCommands(filePath);
+                } else if (file.endsWith('.js')) {
+                    const command = require(filePath);
+                    if (command.guildOnly) guildCommands.push(command.data);
+                    else commands.push(command.data);
+                }
             }
+        } catch (error: any) {
+            Logger.error('Error while reading commands', error);
         }
     };
+
     for (const cmdPath of categoryFolders) {
         readCommands(cmdPath);
     }
