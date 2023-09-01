@@ -56,13 +56,15 @@ const toggleStreamersRole = async (
             } else if (
                 response === '[Error from Twitch API] 400: Bad Request - Malformed query params.'
             ) {
-                return;
+                return logger.warn(
+                    `Error from Twitch API for ${streamer.streamer} in ${guild.name} (${guild.id})`
+                );
             } else if (!hasRole) {
                 member.roles.add(role);
             }
         } catch (err: any) {
             logger.error(
-                'Error fetching api.crunchprank.net in toggleStreamersRole => twitchAlert.cron.js',
+                'Error fetching decapi.me in toggleStreamersRole => twitchAlert.cron.js',
                 err
             );
         }
