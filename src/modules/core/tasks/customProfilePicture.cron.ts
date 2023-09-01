@@ -19,7 +19,7 @@ export default function (): cron.ScheduledTask {
     return cron.schedule('0 * * * *', () => {
         try {
             const responsePromise: Promise<string> = fetch(
-                `https://api.crunchprank.net/twitch/uptime/adan_ea`
+                `https://decapi.me/twitch/uptime/adan_ea`
             ).then((response: any) => response.text());
 
             responsePromise.then(response => {
