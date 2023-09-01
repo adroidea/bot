@@ -112,7 +112,7 @@ export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive,
     if (!channel) return;
 
     const twitchAvatarURL: string = await (
-        await fetch(`https://api.crunchprank.net/twitch/avatar/${user_name}`)
+        await fetch(`https://decapi.me/twitch/avatar/${user_name}`)
     ).text();
 
     const embed = new EmbedBuilder()
