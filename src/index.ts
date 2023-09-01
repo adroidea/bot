@@ -65,5 +65,8 @@ process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
 });
 
 process.on('warning', warning => {
+    if (warning.message.includes('The Fetch API is an experimental feature')) {
+        return;
+    }
     console.warn(`Un avertissement a été émis`, warning);
 });
