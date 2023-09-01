@@ -14,7 +14,8 @@
         "reg-cmds": "node dist/deploy-commands.js",
         "delete-cmds": "node dist/delete-commands.js",
         "pre-commit": "lint-staged",
-        "publish": "node .github/publish.js"
+        "publish": "node .github/publish.js",
+        "test": "jest"
     },
     "lint-staged": {
         "*.ts": [
@@ -35,6 +36,7 @@
         "node-twitch": "^0.5.0"
     },
     "devDependencies": {
+        "@types/jest": "^29.5.4",
         "@types/node": "^20.4.0",
         "@types/node-cron": "^3.0.7",
         "@typescript-eslint/eslint-plugin": "^5.54.0",
@@ -47,8 +49,10 @@
         "eslint-plugin-jsdoc": "^40.0.0",
         "eslint-plugin-prettier": "^4.2.1",
         "husky": "^8.0.3",
+        "jest": "^29.6.4",
         "lint-staged": "^13.2.2",
         "prettier": "^2.8.4",
+        "ts-jest": "^29.1.1",
         "typescript": "5.1.6"
     }
 }
