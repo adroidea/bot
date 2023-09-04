@@ -132,7 +132,7 @@ module.exports = {
                 });
 
                 return interaction.reply({
-                    content: `${target} a été débanni du salon.`,
+                    content: `${target} a été whitelist.`,
                     ephemeral: true
                 });
             }
