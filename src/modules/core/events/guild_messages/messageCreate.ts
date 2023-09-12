@@ -115,4 +115,3 @@ const jppfc = [
     'https://media.discordapp.net/attachments/1144537559238721597/1144550171577958410/YCaxYgCzqswG6qLkO8onmT8lcgLY2rmc8ytZi7iTIIMH3SEeKtpp2ngyrwO96P8BlHEbUfFpoucAAAAASUVORK5CYII.png',
     'https://media.discordapp.net/attachments/1144537559238721597/1144550139881603132/bNYE0XRaTkgAAAABJRU5ErkJggg.png'
 ];
-
