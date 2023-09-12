@@ -1,11 +1,11 @@
 import {
     ActionRowBuilder,
+    BaseGuildVoiceChannel,
     ButtonBuilder,
     ButtonStyle,
     ChannelType,
     GuildMember,
     PermissionsBitField,
-    VoiceBasedChannel,
     VoiceState,
     userMention
 } from 'discord.js';
@@ -115,7 +115,7 @@ export const switchVoiceOwner = async (user: GuildMember, target: GuildMember) =
         });
     } catch (err: any) {
         Logger.error(
-            `An error occurred while changing the privacy of a voice channel`,
+            `An error occurred while changing the owner of a voice channel`,
             err,
             filePath
         );
@@ -123,7 +123,7 @@ export const switchVoiceOwner = async (user: GuildMember, target: GuildMember) =
     }
 };
 
-export const checkVoicePrivacy = async (voiceC: VoiceBasedChannel) => {
+export const checkVoicePrivacy = async (voiceC: BaseGuildVoiceChannel) => {
     const permissions = voiceC.permissionsFor(voiceC.guild.roles.everyone);
     if (!permissions) return false;
 
@@ -133,12 +133,15 @@ export const checkVoicePrivacy = async (voiceC: VoiceBasedChannel) => {
     ]);
 };
 
-export const checkVoiceOwnership = async (voiceC: VoiceBasedChannel, member: GuildMember) => {
+export const checkVoiceOwnership = async (voiceC: BaseGuildVoiceChannel, member: GuildMember) => {
     return voiceC.permissionsFor(member)?.has(PermissionsBitField.Flags.MoveMembers);
 };
 
-export const deleteEmptyChannel = async (voiceC: VoiceBasedChannel) => {
-    if (voiceC.members.size > 0) return;
-
-    return voiceC.delete();
+export const deleteEmptyChannel = async (voiceC: BaseGuildVoiceChannel) => {
+    try {
+        if (voiceC.members.size > 0) return;
+        await voiceC.delete();
+    } catch (err: any) {
+        Logger.error(`An error occurred while deleting a voice channel`, err, filePath);
+    }
 };
