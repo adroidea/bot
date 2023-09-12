@@ -1,16 +1,15 @@
 import { EmbedBuilder, Guild, MessageType, TextBasedChannel, User } from 'discord.js';
 import { IQOtD, IQuestions, QuestionsModel } from '../models';
 import { Colors } from '../../../utils/consts';
-import { GuildModel } from '../../../models';
 import Logger from '../../../utils/logger';
 import { client } from '../../..';
 import cron from 'node-cron';
+import { guildsCache } from '../../core/tasks/createCache.cron';
 import qotddService from '../services/qotdService';
 
 export default function (): cron.ScheduledTask {
     return cron.schedule('0 7 * * *', async () => {
-        const guilds = await GuildModel.find().exec();
-        for (const guildData of guilds) {
+        for (const guildData of guildsCache) {
             const guild: Guild = client.guilds.cache.get(guildData.id);
             if (!guild) continue;
 

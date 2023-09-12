@@ -41,7 +41,7 @@ module.exports = {
     examples: ['purge 10', 'purge 100 @adan_ea'],
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
-        if (!checkBotPermission(interaction.guild!, PermissionsBitField.Flags.ManageMessages))
+        if (!checkBotPermission(interaction.guild!, [PermissionsBitField.Flags.ManageMessages]))
             throw CustomErrors.SelfNoPermissionsError;
 
         const amountToDelete = interaction.options.getNumber('montant', true);
