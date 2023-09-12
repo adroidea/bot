@@ -8,18 +8,18 @@ const dpp = {
     default:
         'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
     petitdej:
-        'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
-    dej: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
-    gouter: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
-    diner: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
-    dodo: 'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png'
+        'https://cdn.discordapp.com/attachments/1050382523261276210/1149031651867897918/ptitdej.png',
+    dej: 'https://cdn.discordapp.com/attachments/1050382523261276210/1149030238546821120/dej.png',
+    gouter: 'https://cdn.discordapp.com/attachments/1050382523261276210/1149031573522497586/gouter.png',
+    diner: 'https://cdn.discordapp.com/attachments/1050382523261276210/1149030250467049512/diner.png',
+    dodo: 'https://cdn.discordapp.com/attachments/1050382523261276210/1149030268544491609/dodo.png'
 };
 
 export default function (): cron.ScheduledTask {
     return cron.schedule('0 * * * *', () => {
         try {
             const responsePromise: Promise<string> = fetch(
-                `https://api.crunchprank.net/twitch/uptime/adan_ea`
+                `https://decapi.me/twitch/uptime/adan_ea`
             ).then((response: any) => response.text());
 
             responsePromise.then(response => {
@@ -30,6 +30,9 @@ export default function (): cron.ScheduledTask {
 
             let newProfilePicture;
             switch (currentHour) {
+                case 0:
+                    newProfilePicture = dpp.dodo;
+                    break;
                 case 8:
                     newProfilePicture = dpp.petitdej;
                     break;
@@ -42,12 +45,10 @@ export default function (): cron.ScheduledTask {
                 case 19:
                     newProfilePicture = dpp.diner;
                     break;
-                case 23:
-                    newProfilePicture = dpp.dodo;
-                    break;
                 case 9:
                 case 14:
                 case 17:
+                case 20:
                     newProfilePicture = dpp.default;
                     break;
                 default:
