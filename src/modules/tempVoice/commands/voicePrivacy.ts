@@ -3,9 +3,9 @@ import {
     ChannelType,
     ChatInputCommandInteraction,
     Client,
-    GuildChannel,
     GuildMember,
-    PermissionsBitField
+    PermissionsBitField,
+    VoiceBasedChannel
 } from 'discord.js';
 import { CustomErrors } from '../../../utils/errors';
 import { IGuild } from '../../../models';
@@ -82,7 +82,6 @@ module.exports = {
         if (!isTemporaryVoiceModuleEnabled(guildSettings, true)) return;
 
         const member = interaction.member as GuildMember;
-
         const memberVoiceChannel = member.voice.channel;
 
         if (!memberVoiceChannel) {
@@ -90,80 +89,133 @@ module.exports = {
         }
 
         const voiceChannel = await interaction.guild!.channels.fetch(memberVoiceChannel.id);
+        if (!voiceChannel!.isVoiceBased()) throw CustomErrors.NotVoiceChannelError;
 
         const subcommand = interaction.options.getSubcommand();
 
         switch (subcommand) {
-            case 'ban': {
-                const target = interaction.options.getMember('membre') as GuildMember;
-                if(target.user.id === client.user!.id) throw CustomErrors.BotBanError;
-
-                if (isMembersInSameVoice(member, target)) {
-                    await target.voice.disconnect();
-                }
-
-                await (voiceChannel as GuildChannel).permissionOverwrites.edit(target.id, {
-                    ViewChannel: false,
-                    Connect: false
-                });
-
-                return interaction.reply({
-                    content: `${target} a été banni du salon.`,
-                    ephemeral: true
-                });
-            }
-
-            case 'unban': {
-                const target = interaction.options.getMember('membre') as GuildMember;
-                await (voiceChannel as GuildChannel).permissionOverwrites.delete(target.id);
-
-                return interaction.reply({
-                    content: `${target} a été débanni du salon.`,
-                    ephemeral: true
-                });
-            }
-
-            case 'whitelist': {
-                const target = interaction.options.getMember('membre') as GuildMember;
-                await (voiceChannel as GuildChannel).permissionOverwrites.edit(target.id, {
-                    ViewChannel: true,
-                    Connect: true,
-                    Speak: true
-                });
-
-                return interaction.reply({
-                    content: `${target} a été whitelist.`,
-                    ephemeral: true
-                });
-            }
-
-            case 'limite': {
-                const userLimit = interaction.options.getNumber('limite', true);
-
-                if (voiceChannel && voiceChannel.type === ChannelType.GuildVoice) {
-                    await voiceChannel.setUserLimit(userLimit);
-                    if (userLimit > 0) {
-                        return interaction.reply({
-                            content: `Le nombre de place dans le salon est maintenant limité à ${userLimit}.`,
-                            ephemeral: true
-                        });
-                    } else {
-                        return interaction.reply({
-                            content: `La limite d'utilisateurs a été supprimée.`,
-                            ephemeral: true
-                        });
-                    }
-                }
-
+            case 'ban':
+                await handleBanCommand(client, interaction, member, voiceChannel);
                 break;
-            }
 
-            default: {
+            case 'unban':
+                await handleUnbanCommand(interaction, member, voiceChannel);
+                break;
+
+            case 'whitelist':
+                await handleWhitelistCommand(interaction, member, voiceChannel);
+                break;
+
+            case 'limite':
+                await handleLimitCommand(interaction, voiceChannel);
+                break;
+
+            default:
                 throw CustomErrors.UnknownCommandError;
-            }
         }
     }
 };
+
+async function handleBanCommand(
+    client: Client,
+    interaction: ChatInputCommandInteraction,
+    member: GuildMember,
+    voiceChannel: VoiceBasedChannel
+) {
+    const target = interaction.options.getMember('membre') as GuildMember;
+
+    if (target.user.id === client.user!.id) throw CustomErrors.BotBanError;
+
+    if (isMembersInSameVoice(member, target)) {
+        await target.voice.disconnect();
+    }
+
+    await voiceChannel.permissionOverwrites.edit(target.id, {
+        ViewChannel: false,
+        Connect: false
+    });
+
+    return interaction.reply({
+        content: `${target} a été banni du salon.`,
+        ephemeral: true
+    });
+}
+
+async function handleUnbanCommand(
+    interaction: ChatInputCommandInteraction,
+    member: GuildMember,
+    voiceChannel: VoiceBasedChannel
+) {
+    const target = interaction.options.getMember('membre') as GuildMember;
+    const isBanned = voiceChannel.permissionOverwrites.cache
+        .get(target.id)
+        ?.deny.has(PermissionsBitField.Flags.Connect);
+
+    if (isBanned) {
+        await voiceChannel.permissionOverwrites.delete(target.id);
+
+        return interaction.reply({
+            content: `${target} a été débanni du salon.`,
+            ephemeral: true
+        });
+    } else {
+        return interaction.reply({
+            content: `${target} n'est pas banni de ce salon. Aucune modification effectuée.`,
+            ephemeral: true
+        });
+    }
+}
+
+async function handleWhitelistCommand(
+    interaction: ChatInputCommandInteraction,
+    member: GuildMember,
+    voiceChannel: VoiceBasedChannel
+) {
+    const target = interaction.options.getMember('membre') as GuildMember;
+    const isWhitelisted = voiceChannel.permissionOverwrites.cache
+        .get(target.id)
+        ?.allow.has(PermissionsBitField.Flags.Connect);
+
+    if (isWhitelisted) {
+        await voiceChannel.permissionOverwrites.edit(target.id, {
+            ViewChannel: true,
+            Connect: true,
+            Speak: true
+        });
+
+        return interaction.reply({
+            content: `${target} a été whitelist.`,
+            ephemeral: true
+        });
+    } else {
+        return interaction.reply({
+            content: `${target} est déjà whitelist. Aucune modification effectuée.`,
+            ephemeral: true
+        });
+    }
+}
+
+async function handleLimitCommand(
+    interaction: ChatInputCommandInteraction,
+    voiceChannel: VoiceBasedChannel
+) {
+    const userLimit = interaction.options.getNumber('limite', true);
+
+    if (voiceChannel && voiceChannel.type === ChannelType.GuildVoice) {
+        await voiceChannel.setUserLimit(userLimit);
+        if (userLimit > 0) {
+            return interaction.reply({
+                content: `Le nombre de places dans le salon est maintenant limité à ${userLimit}.`,
+                ephemeral: true
+            });
+        } else {
+            return interaction.reply({
+                content: `La limite d'utilisateurs a été supprimée.`,
+                ephemeral: true
+            });
+        }
+    }
+}
 
 const isMembersInSameVoice = (member: GuildMember, target: GuildMember) => {
     const memberVoiceChannel = member.voice.channel;
