@@ -1,7 +1,7 @@
 module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint', 'jsdoc', 'prettier'],
+    plugins: ['@typescript-eslint', 'prettier'],
     extends: ['eslint:recommended', 'prettier'],
     parserOptions: {
         project: ['./tsconfig.json', './tests/tsconfig.test.json']
@@ -11,7 +11,6 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 0,
         'import/prefer-default-export': 0,
         'import/no-cycle': 0,
-        'react/jsx-filename-extension': 0,
         'class-methods-use-this': 0,
         'max-len': [
             'error',
