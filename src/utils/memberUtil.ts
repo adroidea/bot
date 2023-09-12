@@ -2,7 +2,7 @@ import { GuildMember, PermissionFlagsBits, PermissionsBitField, Role } from 'dis
 import { checkBotPermission } from './botUtil';
 
 export const addRole = (member: GuildMember, memberRole: Role | undefined) => {
-    if (checkBotPermission(member.guild, PermissionFlagsBits.ManageRoles)) {
+    if (checkBotPermission(member.guild, [PermissionFlagsBits.ManageRoles])) {
         const hasRole = checkMemberRole(member, memberRole);
 
         if (!hasRole && memberRole) {
@@ -12,7 +12,7 @@ export const addRole = (member: GuildMember, memberRole: Role | undefined) => {
 };
 
 export const removeRole = (member: GuildMember, memberRole: Role) => {
-    if (checkBotPermission(member.guild, PermissionFlagsBits.ManageRoles)) {
+    if (checkBotPermission(member.guild, [PermissionFlagsBits.ManageRoles])) {
         const hasRole = checkMemberRole(member, memberRole);
 
         if (hasRole) {

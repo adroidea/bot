@@ -32,6 +32,10 @@ export const CustomErrors = {
         'Tu ne peux pas me ban de ce salon. Peu importe à quel point tu me déteste, il faut que je puisse le gérer.'
     ),
 
+    NotVoiceChannelError: new CustomError(
+        "Je n'arrive pas à accéder au salon vocal dans lequel tu es."
+    ),
+
     SwitchVoiceOwnerError: new CustomError(
         "Trop de responsabilité pour moi.. je n'ai pas réussi à changer de propriétaire."
     ),
