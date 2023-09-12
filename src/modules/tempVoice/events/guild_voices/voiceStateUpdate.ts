@@ -36,29 +36,37 @@ module.exports = {
         const hostC = temporaryVoice?.hostChannels ?? [''];
         const protectedC = temporaryVoice?.protectedChannels ?? [''];
 
-        const voiceUpdateType = getVoiceUpdateType(oldState.channel, newState.channel);
+        try {
+            const voiceUpdateType = getVoiceUpdateType(oldState.channel, newState.channel);
 
-        switch (voiceUpdateType) {
-            case 'JOINED_VOICE':
-                if (isHostVoice(hostC, newState.channelId!)) {
-                    await createNewTempChannel(newState);
-                }
-                break;
+            switch (voiceUpdateType) {
+                case 'JOINED_VOICE':
+                    if (isHostVoice(hostC, newState.channelId!)) {
+                        await createNewTempChannel(newState);
+                    }
+                    break;
 
-            case 'MOVED_VOICE':
-            case 'LEFT_VOICE':
-                if (!isProtectedVoice(hostC, protectedC, oldState.channelId!)) {
-                    await deleteEmptyChannel(oldState.channel!);
-                    const member = oldState.channel?.members.first();
-                    if (member) await switchVoiceOwner(oldState.member!, member);
-                }
-                if (voiceUpdateType === 'MOVED_VOICE' && isHostVoice(hostC, newState.channelId!)) {
-                    await createNewTempChannel(newState);
-                }
-                break;
+                case 'MOVED_VOICE':
+                case 'LEFT_VOICE':
+                    if (!isProtectedVoice(hostC, protectedC, oldState.channelId!)) {
+                        await deleteEmptyChannel(oldState.channel!);
+                        const member = oldState.channel?.members.first();
+                        if (member) await switchVoiceOwner(oldState.member!, member);
+                    }
+                    if (
+                        voiceUpdateType === 'MOVED_VOICE' &&
+                        isHostVoice(hostC, newState.channelId!)
+                    ) {
+                        await createNewTempChannel(newState);
+                    }
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
+        } catch (err: any) {
+            console.log(err);
+            console.log('An error occurred while updating voice state');
         }
     }
 };
