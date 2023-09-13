@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Move issue to ${{ env.todo }}
         uses: leonsteinhaeuser/project-beta-automations@v2.1.0
-        if: $${{ ! contains(github.event.issue.labels.*.name, 'NTH') && ! contains(github.event.issue.labels.*.name, 'invalid')}}
+        if: ${{ ! contains(github.event.issue.labels.*.name, 'NTH') && ! contains(github.event.issue.labels.*.name, 'invalid')}}
         with:
           gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           user: adan-ea
