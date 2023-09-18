@@ -18,15 +18,15 @@ export interface INotifications {
 }
 
 const notificationsSchema = new mongoose.Schema<INotifications>({
-    enabled: { type: Boolean, default: false },
+    enabled: { type: Boolean, default: false, required: true },
     publicLogs: {
-        enabled: { type: Boolean, default: false },
-        publicLogChannel: { type: String, default: '' }
+        enabled: { type: Boolean, default: false, required: true },
+        publicLogChannel: { type: String, default: '', required: true }
     },
     privateLogs: {
-        enabled: { type: Boolean, default: false },
-        privateLogChannel: { type: String, default: '' },
-        notLoggedChannels: { type: [String], default: [] }
+        enabled: { type: Boolean, default: false, required: true },
+        privateLogChannel: { type: String, default: '', required: true },
+        notLoggedChannels: { type: [String], default: [], required: true }
     }
 });
 
@@ -35,7 +35,7 @@ export interface IEventManagement {
 }
 
 const eventManagementSchema = new mongoose.Schema<IEventManagement>({
-    enabled: { type: Boolean, default: false }
+    enabled: { type: Boolean, default: false, required: true }
 });
 
 export interface IGuild {
