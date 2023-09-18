@@ -1,6 +1,7 @@
 import { EmbedBuilder, Guild, MessageType, TextBasedChannel, User } from 'discord.js';
 import { IQOtD, IQuestions, QuestionsModel } from '../models';
 import { Colors } from '../../../utils/consts';
+import { Embed } from '../../../utils/embedsUtil';
 import Logger from '../../../utils/logger';
 import { client } from '../../..';
 import cron from 'node-cron';
@@ -24,6 +25,7 @@ export default function (): cron.ScheduledTask {
 
                 if (randomQuestion?.length <= 0) continue;
 
+                handleLowQuestionsCount(guild, qotd);
                 const { question, authorId } = randomQuestion[0];
 
                 const channel = guild.channels.cache.get(qotd.channelId);
@@ -78,4 +80,24 @@ const deletePinNotification = async (chan: TextBasedChannel, sentMsgId: string):
         )
             pinMessage[1].delete();
     }
+};
+
+const handleLowQuestionsCount = async (guild: Guild, qotd: IQOtD): Promise<void> => {
+    const totalQuestions: number = await QuestionsModel.countDocuments({
+        guildId: guild.id
+    });
+
+    if (totalQuestions <= qotd.questionsThreshold && qotd.warnOnLowQuestions) {
+        let channel = guild.channels.cache.get(qotd.requestChannelId);
+        if (!channel?.isTextBased()) return;
+
+        channel.send({
+            embeds: [
+                Embed.rc(
+                    `Il ne reste plus que ${totalQuestions} questions du jour ! Pensez à en ajouter avec la commande /qdj`
+                )
+            ]
+        });
+    }
+    return;
 };
