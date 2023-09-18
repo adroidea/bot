@@ -2,30 +2,30 @@
 
 This is a discord bot primarly made for my discord server (this is why some values are hard coded) but feel free to use the code for yourself.
 
+I self-host the bot but my code isn't yet strong enough to give an invitation link. But feel free to contribute !
+
 <p align="center">
-  <a href="#">
+  <a href="https://discord.gg/29URgahg">
     <img src="https://media.discordapp.net/attachments/763373898779197481/887428474766229574/worldbot.png"  alt="Discord bot icon" width="50%" style="border-radius:5000px"/>
   </a>
 </p>
 
-
-<div align="center">
-  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white">
-  
-</div>
 <div align="center">
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/adan-ea/adroid_ea?style=flat-square">
+  <a href="https://github.com/adan-ea/adroid_ea/issues">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues/adan-ea/adroid_ea?style=flat-square">
-  <a href="https://codecov.io/github/adan-ea/adroid_ea" > 
- <img src="https://codecov.io/github/adan-ea/adroid_ea/branch/main/graph/badge.svg?token=8GMJCHJ6OY"/> 
- </a>
+  </a>
+  <a href="https://discord.gg/29URgahg">
+    <img alt="Invite Discord" src="https://img.shields.io/badge/Discord-5865F2?style=flat-square?style=for-the-badge&logo=discord&logoColor=white">
+  </a>
+
 </div>
 
 # ✨ Features
 
 ## Modules 
 
-### Events management
+### 📅 Events management
 
 - Create and delete events (administrator)
 - Join created events (you can unRSVP)
@@ -38,8 +38,7 @@ This is a discord bot primarly made for my discord server (this is why some valu
 
 ### Notifications
 
-- Custom role for streamers of your choice
-- Twitch Alert for a Twitch Streamer when going live or changing category 
+> Rework in progress, will change soon
 
 - Private logs
    - Message update, delete
@@ -47,44 +46,67 @@ This is a discord bot primarly made for my discord server (this is why some valu
 - Public logs
    - Member arrival, departure
 
-### Voices
+### 🎉 Party Mode
 
-> TODO : Update this screenshot. It's better now, so much better
+>🚧 WIP, it will come... soon enough
+
+### ❓ QotD (Question of the Day)
+
+- Everyday, sends a new question in the channel of your choice and pin it. (Provided there are questions in the database)
+![qotd](/assets/qotd/qotd.png)
+
+- People can give their own questions
+![qotd](/assets/qotd/request.png)
+  
+
+### 🎤 SwiftVoice
+
 - Auto manage voice channels, deletes and creates channels so only one is needed
-![image](/assets/voice-channel-feature.gif)
+![create](/assets/swiftVoice/create.gif)
 
 The voice owner can : 
 - Lock the channel to everyone
+![lock](/assets/swiftVoice/lock.gif)
+
 - Transfer ownership
+![transfer-ownership](/assets/swiftVoice/transfer-ownership.gif)
+
 - Ban someone in particular (will kick them out)
+![voice-ban](/assets/swiftVoice/voice-ban.gif)
+
 - Set a user limit to the channel
+![limit](/assets/swiftVoice/limit.gif)
+
+### 📺 Twitch
+
+- Alerts for a Twitch Streamer when going live or changing category 
+![alert](/assets/twitch/alert.png)
+
+- Add a custom role when a friend goes live and removes it once they stop.
 
 
-### Misc
+## Misc
 
 - Some memes stuff like "hello there" and some private jokes
-![image](/assets/hello_there.png)
-
-# To-Do
-
-- EVERYTHING FFS
+![hello_there](/assets/hello_there.png)
 
 # 🏗 Development
 
 env: 
 ```
-MONGO_URI
+DISCORD_APP_ID
 DISCORD_TOKEN
-DISCORD_CLIENT_ID
+MONGO_URI
+NODE_ENV # will push the commands to your server if set to production
 REDIS_HOST
-# You will get an error but these are not required
 TWITCH_CLIENT_ID
 TWITCH_CLIENT_SECRET
+WEBHOOK_LOG_URL
 ```
 
 ```
-npm install
-npm run dev
+npm i
+npm start
 ```
 
 # 💻 Production
@@ -97,8 +119,6 @@ npm start
 # 🐋 Docker
 
 To start your application:
-
-> Not actually working, but i intend on setting it up :')
 
 ```
 docker-compose up -d
