@@ -5,5 +5,6 @@ export const Embed = {
     error: (title: string): EmbedBuilder =>
         new EmbedBuilder().setTitle(title).setColor(Colors.error),
     success: (title: string): EmbedBuilder =>
-        new EmbedBuilder().setTitle(title).setColor(Colors.success)
+        new EmbedBuilder().setTitle(title).setColor(Colors.success),
+    rc: (title: string): EmbedBuilder => new EmbedBuilder().setTitle(title).setColor(Colors.random)
 };
