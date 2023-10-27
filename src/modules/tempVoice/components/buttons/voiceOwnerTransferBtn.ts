@@ -7,7 +7,7 @@ import {
 import { CustomErrors } from '../../../../utils/errors';
 import { checkVoiceOwnership } from '../../../../utils/voiceUtil';
 
-module.exports = {
+export default {
     data: {
         name: `voiceOwnerTransferBtn`
     },

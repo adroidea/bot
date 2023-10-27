@@ -5,7 +5,7 @@ import {
     PermissionsBitField
 } from 'discord.js';
 
-module.exports = {
+export default {
     data: {
         name: 'r',
         description: 'r',

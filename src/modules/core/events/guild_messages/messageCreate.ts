@@ -1,7 +1,7 @@
 import { Client, Events, Message } from 'discord.js';
 import { randomizeArray } from '../../../twitchLive/tasks/twitchAlert.cron';
 
-module.exports = {
+export default {
     name: Events.MessageCreate,
     execute(client: Client, message: Message) {
         if (message.author.bot) return;

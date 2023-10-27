@@ -11,7 +11,7 @@ import { CustomErrors } from '../../../utils/errors';
 import { IGuild } from '../../../models';
 import { isTemporaryVoiceModuleEnabled } from '../../../utils/modulesUil';
 
-module.exports = {
+export default {
     data: {
         name: 'voice',
         description: 'Gère ton salon vocal temporaire',
@@ -174,7 +174,7 @@ async function handleWhitelistCommand(
     const target = interaction.options.getMember('membre') as GuildMember;
     const isWhitelisted = voiceChannel.permissionOverwrites.cache
         .get(target.id)
-        ?.allow.has(PermissionsBitField.Flags.Connect);
+        ?.allow.has([PermissionsBitField.Flags.Connect, PermissionsBitField.Flags.ViewChannel]);
 
     if (isWhitelisted) {
         await voiceChannel.permissionOverwrites.edit(target.id, {

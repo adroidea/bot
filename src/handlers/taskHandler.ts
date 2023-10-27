@@ -4,25 +4,32 @@ import path from 'path';
 
 export type TaskFunction = () => void;
 
-export const handleTask = (taskPath: string): number => {
+export const handleTask = async (taskPath: string): Promise<number> => {
     let result = 0;
     const files = fs.readdirSync(taskPath);
+
     for (const file of files) {
         const filePath = path.join(taskPath, file);
         const stat = fs.lstatSync(filePath);
 
         if (stat.isDirectory()) {
-            result += handleTask(filePath);
+            result += await handleTask(filePath);
         } else if (file.endsWith('.js')) {
-            const taskModule: { default: TaskFunction } = require(filePath);
-            const taskFunction = taskModule.default;
-            if (!taskFunction) {
-                Logger.warn(`File : ${file}`);
-                Logger.warn(`Task function not found. Skipping...`);
+            try {
+                const { default: taskFunction } = await import(filePath);
+
+                if (taskFunction) {
+                    await taskFunction();
+                    result++;
+                } else {
+                    Logger.warn(`File: ${file}`);
+                    Logger.warn(`Task function not found. Skipping...`);
+                }
+            } catch (error: any) {
+                Logger.error(`Error importing task from file: ${file}`, error);
             }
-            taskFunction();
-            result++;
         }
     }
+
     return result;
 };

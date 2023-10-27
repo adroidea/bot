@@ -44,7 +44,7 @@ const stealRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
         .setStyle(ButtonStyle.Success)
 );
 
-module.exports = {
+export default {
     data: {
         name: 'qdj',
         description: "Envoie une demande d'ajout de la question du jour (auto accepté pour admins)",

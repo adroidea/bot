@@ -12,7 +12,7 @@ import {
 } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
 
-module.exports = {
+export default {
     data: {
         name: `voicePrivacyBtn`
     },

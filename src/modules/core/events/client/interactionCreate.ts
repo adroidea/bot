@@ -19,7 +19,7 @@ import { client } from '../../../../';
 import guildService from '../../../../services/guildService';
 import { timestampToDate } from '../../../../utils/botUtil';
 
-module.exports = {
+export default {
     name: Events.InteractionCreate,
     async execute(client: IDiscordClient, interaction: Interaction) {
         if (interaction instanceof CommandInteraction) {

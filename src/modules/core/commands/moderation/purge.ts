@@ -14,7 +14,7 @@ import { IGuild } from '../../../../models';
 import { checkBotPermission } from '../../../../utils/botUtil';
 import { isNotifSMEnabled } from '../../../../utils/modulesUil';
 
-module.exports = {
+export default {
     data: {
         name: 'purge',
         description:

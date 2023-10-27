@@ -2,7 +2,7 @@ import { GuildMember, StringSelectMenuInteraction, userMention } from 'discord.j
 import { checkVoiceOwnership, switchVoiceOwner } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
 
-module.exports = {
+export default {
     data: {
         name: `voiceOwnerTransferMenu`
     },
