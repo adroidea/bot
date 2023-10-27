@@ -2,7 +2,7 @@ import { ButtonInteraction, EmbedBuilder, PermissionsBitField, userMention } fro
 import { CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
 
-module.exports = {
+export default {
     data: {
         name: 'qotd_reject_button'
     },

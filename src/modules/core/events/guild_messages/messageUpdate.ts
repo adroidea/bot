@@ -3,7 +3,7 @@ import { OWNER_ID } from '../../../../utils/consts';
 import guildService from '../../../../services/guildService';
 import { isNotifSMEnabled } from '../../../../utils/modulesUil';
 
-module.exports = {
+export default {
     name: Events.MessageUpdate,
     async execute(client: Client, oldMessage: Message, newMessage: Message) {
         const {

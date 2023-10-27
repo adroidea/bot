@@ -3,7 +3,7 @@ import { IGuild } from '../../../../models';
 import ScheduledEventService from '../../services/scheduledEventService';
 import guildService from '../../../../services/guildService';
 
-module.exports = {
+export default {
     name: Events.GuildScheduledEventUserRemove,
     async execute(client: Client, event: GuildScheduledEvent, user: User) {
         const guildSettings: IGuild = await guildService.getOrCreateGuild(event.guildId);

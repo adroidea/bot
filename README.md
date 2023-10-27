@@ -48,7 +48,7 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
 
 ### 🎉 Party Mode
 
->🚧 WIP, it will come... soon enough
+>🚧 WIP, it will come back... soon enough
 
 ### ❓ QotD (Question of the Day)
 
@@ -59,23 +59,23 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
 ![qotd](/assets/qotd/request.png)
   
 
-### 🎤 SwiftVoice
+### 🎤 TempVoice
 
 - Auto manage voice channels, deletes and creates channels so only one is needed
-![create](/assets/swiftVoice/create.gif)
+![create](/assets/tempVoice/create.gif)
 
 The voice owner can : 
 - Lock the channel to everyone
-![lock](/assets/swiftVoice/lock.gif)
+![lock](/assets/tempVoice/lock.gif)
 
 - Transfer ownership
-![transfer-ownership](/assets/swiftVoice/transfer-ownership.gif)
+![transfer-ownership](/assets/tempVoice/transfer-ownership.gif)
 
 - Ban someone in particular (will kick them out)
-![voice-ban](/assets/swiftVoice/voice-ban.gif)
+![voice-ban](/assets/tempVoice/voice-ban.gif)
 
 - Set a user limit to the channel
-![limit](/assets/swiftVoice/limit.gif)
+![limit](/assets/tempVoice/limit.gif)
 
 ### 📺 Twitch
 

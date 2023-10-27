@@ -12,7 +12,7 @@ import ScheduledEventService from '../../services/scheduledEventService';
 import guildService from '../../../../services/guildService';
 import { timestampToDate } from '../../../../utils/botUtil';
 
-module.exports = {
+export default {
     name: Events.GuildScheduledEventUpdate,
     async execute(client: Client, oldEvent: GuildScheduledEvent, newEvent: GuildScheduledEvent) {
         const guildSettings: IGuild = await guildService.getOrCreateGuild(oldEvent.guildId);

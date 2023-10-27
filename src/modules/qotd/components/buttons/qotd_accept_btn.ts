@@ -4,7 +4,7 @@ import { Embed } from '../../../../utils/embedsUtil';
 import { IQuestions } from '../../models';
 import qotddService from '../../services/qotdService';
 
-module.exports = {
+export default {
     data: {
         name: 'qotd_accept_button'
     },

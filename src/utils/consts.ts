@@ -12,7 +12,14 @@ export const Colors: { [key: string]: ColorResolvable } = {
     random: 'Random'
 };
 
-export const Modules = {
+export interface IModule {
+    name: string;
+    label: string;
+    description: string;
+    emoji: string;
+}
+
+export const Modules: { [key: string]: IModule } = {
     core: {
         name: 'core',
         label: 'Base',
@@ -37,10 +44,10 @@ export const Modules = {
         description: 'Module de gestion des événements',
         emoji: '📅'
     },
-    swiftVoice: {
-        name: 'swift_voice',
-        label: 'SwiftVoice',
-        description: 'Module de SwiftVoice',
+    tempVoice: {
+        name: 'temp_voice',
+        label: 'tempVoice',
+        description: 'Module de tempVoice',
         emoji: '🎤'
     },
     twitch: {
