@@ -29,7 +29,7 @@ const handleSubComponent = async (client: any, compPath: string, compFolder: str
 
         if (stat.isDirectory()) {
             result += await handleSubComponent(client, subCompPath, file);
-        } else if (file.endsWith('.js')) {
+        } else if (['Btn.js', 'Menu.js', 'Modal.js'].some(extension => file.endsWith(extension))) {
             const { default: component } = await import(filePath);
 
             const hasWarning = checkComponentOptions(component, filePath);

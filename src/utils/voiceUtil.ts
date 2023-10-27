@@ -2,13 +2,13 @@ import {
     ActionRowBuilder,
     BaseGuildVoiceChannel,
     ButtonBuilder,
-    ButtonStyle,
     ChannelType,
     GuildMember,
     PermissionsBitField,
     VoiceState,
     userMention
 } from 'discord.js';
+import { voiceOwnerTransferBtn, voicePrivacyBtn } from '../modules/tempVoice/components/buttons';
 import { CustomErrors } from './errors';
 import Logger from './logger';
 import { client } from '..';
@@ -52,16 +52,8 @@ export const createNewTempChannel = async (newState: VoiceState) => {
                 });
                 newState.member!.voice.setChannel(channel.id);
                 const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-                    new ButtonBuilder()
-                        .setCustomId('voicePrivacyBtn')
-                        .setLabel('Vérouiller')
-                        .setEmoji('🔒')
-                        .setStyle(ButtonStyle.Primary),
-                    new ButtonBuilder()
-                        .setCustomId('voiceOwnerTransferBtn')
-                        .setLabel('Transférer la propriété')
-                        .setEmoji('🤝')
-                        .setStyle(ButtonStyle.Danger)
+                    voicePrivacyBtn,
+                    voiceOwnerTransferBtn
                 );
                 channel.send({
                     content: `Hey ${userMention(newState.member!.id)} !

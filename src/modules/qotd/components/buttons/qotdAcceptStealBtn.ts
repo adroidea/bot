@@ -1,5 +1,4 @@
 import {
-    ActionRowBuilder,
     ButtonBuilder,
     ButtonInteraction,
     ButtonStyle,
@@ -10,29 +9,17 @@ import {
 } from 'discord.js';
 import { Embed } from '../../../../utils/embedsUtil';
 import { LOG_CHANNEL_ID } from '../../../../utils/consts';
+import { adminRow } from '.';
 import { client } from '../../../..';
 
-const adminRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-        .setCustomId('qotd_accept_button')
-        .setEmoji('👍')
-        .setLabel('Accepter')
-        .setStyle(ButtonStyle.Success),
-    new ButtonBuilder()
-        .setCustomId('qotd_reject_button')
-        .setEmoji('👎')
-        .setLabel('Rejeter')
-        .setStyle(ButtonStyle.Danger),
-    new ButtonBuilder()
-        .setCustomId('qotd_blacklist_reject_button')
-        .setEmoji('🔨')
-        .setLabel('Blacklister utilisateur')
-        .setStyle(ButtonStyle.Danger)
-);
+export const qotdAcceptStealButton = new ButtonBuilder()
+    .setCustomId('qotdAcceptStealBtn')
+    .setEmoji('👍')
+    .setStyle(ButtonStyle.Success);
 
 export default {
     data: {
-        name: 'qotd_accept_steal_button'
+        name: 'qotdAcceptStealBtn'
     },
     async execute(interaction: ButtonInteraction) {
         const oldEmbed = interaction.message.embeds[0];
