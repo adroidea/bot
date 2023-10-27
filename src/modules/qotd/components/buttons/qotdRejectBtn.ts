@@ -1,10 +1,23 @@
-import { ButtonInteraction, EmbedBuilder, PermissionsBitField, userMention } from 'discord.js';
+import {
+    ButtonBuilder,
+    ButtonInteraction,
+    ButtonStyle,
+    EmbedBuilder,
+    PermissionsBitField,
+    userMention
+} from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
 
+export const qotdRejectButton = new ButtonBuilder()
+    .setCustomId('qotdRejectBtn')
+    .setEmoji('👎')
+    .setLabel('Rejeter')
+    .setStyle(ButtonStyle.Danger);
+
 export default {
     data: {
-        name: 'qotd_reject_button'
+        name: 'qotdRejectBtn'
     },
     async execute(interaction: ButtonInteraction) {
         if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageMessages))

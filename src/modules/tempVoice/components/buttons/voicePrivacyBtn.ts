@@ -11,6 +11,13 @@ import {
     switchVoicePrivacy
 } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
+import { voiceOwnerTransferBtn } from './';
+
+export const voicePrivacyBtn = new ButtonBuilder()
+    .setCustomId('voicePrivacyBtn')
+    .setLabel('Vérouiller')
+    .setEmoji('🔒')
+    .setStyle(ButtonStyle.Primary);
 
 export default {
     data: {
@@ -33,11 +40,7 @@ export default {
 
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
             newButton,
-            new ButtonBuilder()
-                .setCustomId('voiceOwnerTransferBtn')
-                .setLabel('Transférer la propriété')
-                .setEmoji('🤝')
-                .setStyle(ButtonStyle.Danger)
+            voiceOwnerTransferBtn
         );
 
         switchVoicePrivacy(member);
