@@ -22,7 +22,7 @@ interface RollResult {
 
 type Operator = '+' | '-' | '/' | '*';
 
-module.exports = {
+export default {
     data: {
         name: 'roll',
         description: 'Lance des dés',

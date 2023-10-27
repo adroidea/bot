@@ -30,7 +30,7 @@ const adminRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
         .setStyle(ButtonStyle.Danger)
 );
 
-module.exports = {
+export default {
     data: {
         name: 'qotd_accept_steal_button'
     },

@@ -25,7 +25,7 @@ const getVoiceUpdateType = (
     return '';
 };
 
-module.exports = {
+export default {
     name: Events.VoiceStateUpdate,
     async execute(client: Client, oldState: VoiceState, newState: VoiceState) {
         const guildSettings: IGuild = await guildService.getOrCreateGuild(newState.guild.id);

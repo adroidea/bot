@@ -2,33 +2,35 @@ import Logger from '../utils/logger';
 import fs from 'fs';
 import path from 'path';
 
-export const handleComponents = (client: any, compPath: string): Record<string, number> => {
+export const handleComponents = async (client: any, compPath: string): Promise<Record<string, number>> => {
     const result: Record<string, number> = {};
 
     const subFolders = fs.readdirSync(compPath);
+
     for (const subFolder of subFolders) {
         const stat = fs.lstatSync(path.join(compPath, subFolder));
 
         if (stat.isDirectory()) {
-            result[subFolder] = handleSubComponent(client, compPath, subFolder);
+            result[subFolder] = await handleSubComponent(client, compPath, subFolder);
         }
     }
 
     return result;
 };
 
-const handleSubComponent = (client: any, compPath: string, compFolder: string): number => {
+const handleSubComponent = async (client: any, compPath: string, compFolder: string): Promise<number> => {
     let result = 0;
     const subCompPath = path.join(compPath, compFolder);
     const files = fs.readdirSync(subCompPath);
+
     for (const file of files) {
         const filePath = path.join(subCompPath, file);
         const stat = fs.lstatSync(filePath);
 
         if (stat.isDirectory()) {
-            result += handleSubComponent(client, subCompPath, file);
+            result += await handleSubComponent(client, subCompPath, file);
         } else if (file.endsWith('.js')) {
-            const component = require(filePath);
+            const { default: component } = await import(filePath);
 
             const hasWarning = checkComponentOptions(component, filePath);
             if (!hasWarning) {

@@ -3,7 +3,7 @@ import { EmbedBuilder } from '@discordjs/builders';
 import guildService from '../../../../services/guildService';
 import { isNotifSMEnabled } from '../../../../utils/modulesUil';
 
-module.exports = {
+export default {
     name: Events.GuildMemberUpdate,
     async execute(client: Client, oldMember: GuildMember, newMember: GuildMember) {
         const {

@@ -3,7 +3,7 @@ import { CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
 import qotddService from '../../services/qotdService';
 
-module.exports = {
+export default {
     data: {
         name: 'qotd_blacklist_reject_button'
     },

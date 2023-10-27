@@ -7,7 +7,7 @@ import {
 import { IGuild } from '../../../../models';
 import { Modules } from '../../../../utils/consts';
 
-module.exports = {
+export default {
     data: {
         name: `modulesMenu`
     },
@@ -21,7 +21,9 @@ module.exports = {
     }
 };
 
-export const buildSelectMenu = (guildSettings: IGuild) => {
+export const buildSelectMenu = (
+    guildSettings: IGuild
+): ActionRowBuilder<StringSelectMenuBuilder> => {
     const selectMenu = new StringSelectMenuBuilder()
         .setCustomId('modulesMenu')
         .setPlaceholder('Choisir le module à configurer')
@@ -59,14 +61,14 @@ export const buildSelectMenu = (guildSettings: IGuild) => {
                 .setEmoji(Modules.scheduledEvents.emoji),
 
             new StringSelectMenuOptionBuilder()
-                .setLabel(Modules.swiftVoice.label)
-                .setValue(Modules.swiftVoice.name)
+                .setLabel(Modules.tempVoice.label)
+                .setValue(Modules.tempVoice.name)
                 .setDescription(
                     `[${guildSettings.modules.temporaryVoice.enabled ? 'ON' : 'OFF'}] ${
-                        Modules.swiftVoice.description
+                        Modules.tempVoice.description
                     }`
                 )
-                .setEmoji(Modules.swiftVoice.emoji),
+                .setEmoji(Modules.tempVoice.emoji),
 
             new StringSelectMenuOptionBuilder()
                 .setLabel(Modules.twitch.label)
