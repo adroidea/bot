@@ -18,12 +18,12 @@ export interface ITwitchLive {
 
 export const twitchLiveSchema = new mongoose.Schema<ITwitchLive>({
     enabled: { type: Boolean, default: false, required: true },
-    defaultProfilePicture: { type: String, default: '', required: true },
-    liveProfilePicture: { type: String, default: '', required: true },
-    streamerName: { type: String, default: 'adan_ea', required: true },
-    infoLiveChannel: { type: String, default: '', required: true },
-    pingedRole: { type: String, default: '', required: true },
-    streamingRoleId: { type: String, default: '', required: true },
+    defaultProfilePicture: { type: String, default: '' },
+    liveProfilePicture: { type: String, default: '' },
+    streamerName: { type: String, default: 'adan_ea' },
+    infoLiveChannel: { type: String, default: '' },
+    pingedRole: { type: String, default: '' },
+    streamingRoleId: { type: String, default: '' },
     streamers: [
         {
             streamer: String,

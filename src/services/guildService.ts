@@ -68,7 +68,16 @@ const getOrCreateGuild = async (id: string): Promise<IGuild> => {
 };
 
 const updateGuild = async (guildData: IGuild): Promise<IGuild | null> => {
-    return GuildModel.findOneAndUpdate({ id: guildData.id }, guildData);
+    try {
+        const updatedGuild = await GuildModel.findOneAndUpdate({ id: guildData.id }, guildData, {
+            new: true
+        });
+
+        return updatedGuild;
+    } catch (err: any) {
+        Logger.error('Error updating guild at updateGuild()', err);
+        throw err;
+    }
 };
 
 const deleteGuild = async (id: string): Promise<void> => {
