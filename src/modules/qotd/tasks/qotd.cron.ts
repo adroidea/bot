@@ -87,7 +87,7 @@ const handleLowQuestionsCount = async (guild: Guild, qotd: IQOtD): Promise<void>
         guildId: guild.id
     });
 
-    if (totalQuestions <= qotd.questionsThreshold && qotd.warnOnLowQuestions) {
+    if (totalQuestions <= qotd.questionsThreshold && qotd.questionsThreshold !== 0) {
         let channel = guild.channels.cache.get(qotd.requestChannelId);
         if (!channel?.isTextBased()) return;
 

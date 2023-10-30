@@ -7,7 +7,6 @@ export interface IQOtD {
     requestChannelId: string;
     blacklistUsers: string[];
     trustedUsers: string[];
-    warnOnLowQuestions: boolean;
     questionsThreshold: number;
 }
 
@@ -20,13 +19,12 @@ export interface IQuestions {
 
 export const qotdSchema = new mongoose.Schema<IQOtD>({
     enabled: { type: Boolean, default: false, required: true },
-    channelId: { type: String, default: '', required: true },
-    pingedRoleId: { type: String, default: '', required: true },
-    requestChannelId: { type: String, default: '', required: true },
-    blacklistUsers: { type: [String], default: [], required: true },
-    trustedUsers: { type: [String], default: [], required: true },
-    warnOnLowQuestions: { type: Boolean, default: true, required: true },
-    questionsThreshold: { type: Number, default: 7, required: true }
+    channelId: { type: String, default: '' },
+    pingedRoleId: { type: String, default: '' },
+    requestChannelId: { type: String, default: '' },
+    blacklistUsers: { type: [String], default: [] },
+    trustedUsers: { type: [String], default: [] },
+    questionsThreshold: { type: Number, default: 7 }
 });
 
 export const questionsSchema = new mongoose.Schema<IQuestions>({
