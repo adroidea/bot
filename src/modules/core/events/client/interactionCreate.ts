@@ -2,13 +2,17 @@ import {
     AnySelectMenuInteraction,
     BaseInteraction,
     ButtonInteraction,
+    ChannelSelectMenuInteraction,
     Collection,
     CommandInteraction,
     Events,
     Interaction,
+    MentionableSelectMenuInteraction,
     ModalSubmitInteraction,
     PermissionsBitField,
-    StringSelectMenuInteraction
+    RoleSelectMenuInteraction,
+    StringSelectMenuInteraction,
+    UserSelectMenuInteraction
 } from 'discord.js';
 import { CustomError, CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
@@ -27,7 +31,11 @@ export default {
         } else if (
             interaction instanceof ButtonInteraction ||
             interaction instanceof ModalSubmitInteraction ||
-            interaction instanceof StringSelectMenuInteraction
+            interaction instanceof StringSelectMenuInteraction ||
+            interaction instanceof UserSelectMenuInteraction ||
+            interaction instanceof RoleSelectMenuInteraction ||
+            interaction instanceof MentionableSelectMenuInteraction ||
+            interaction instanceof ChannelSelectMenuInteraction
         ) {
             await handleComponentInteraction(client, interaction);
         }
