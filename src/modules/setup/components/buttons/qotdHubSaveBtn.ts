@@ -8,9 +8,9 @@ import {
     quote,
     userMention
 } from 'discord.js';
+import { GuildModel } from '../../../../models';
 import { IQOtD } from '../../../qotd/models';
 import { Modules } from '../../../../utils/consts';
-import guildService from '../../../../services/guildService';
 
 export const buildQotdHubEmbed = (d: IQOtD): EmbedBuilder => {
     return new EmbedBuilder()
@@ -93,22 +93,18 @@ export default {
     },
     async execute(interaction: StringSelectMenuInteraction) {
         const channelId = interaction.values[0];
-        const guildData = await guildService.getOrCreateGuild(interaction.guildId!);
-        const qotd = guildData.modules.qotd;
-        const updatedGuild = await guildService.updateGuild({
-            id: interaction.guildId!,
-            modules: {
-                ...guildData.modules,
-                qotd: {
-                    enabled: qotd.enabled,
-                    channelId: channelId!,
-                    requestChannelId: qotd.requestChannelId,
-                    blacklistUsers: qotd.blacklistUsers,
-                    trustedUsers: qotd.trustedUsers,
-                    questionsThreshold: qotd.questionsThreshold
+        console.log(channelId);
+        const updatedGuild = await GuildModel.findOneAndUpdate(
+            { id: interaction.guildId! },
+            {
+                modules: {
+                    qotd: {
+                        channelId: channelId!
+                    }
                 }
-            }
-        });
+            },
+            { new: true }
+        );
 
         return interaction.update({
             content: `Nouveau salon ${channelMention(updatedGuild?.modules.qotd.channelId!)}`

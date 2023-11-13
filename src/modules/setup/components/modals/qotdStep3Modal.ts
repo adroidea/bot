@@ -30,13 +30,20 @@ export default {
     async execute(interaction: ModalMessageModalSubmitInteraction) {
 
         const questionsThreshold = interaction.fields.getTextInputValue('questionsThresholdInput');
+        let questionsThresholdNumber = 0;
+        if (questionsThreshold !== '') {
+            questionsThresholdNumber = parseInt(questionsThreshold);
+            if (isNaN(questionsThresholdNumber)) {
+                questionsThresholdNumber = 0;
+            }
+        }
         const oldEmbed = interaction.message!.embeds[0];
         let oldChannel = oldEmbed?.fields[3].value;
 
         if (oldChannel.includes(' => '))
             oldChannel = oldChannel.slice(0, oldChannel.indexOf(' => '));
 
-        const newThreshold = oldChannel + ' => ' + questionsThreshold + ' questions';
+        const newThreshold = oldChannel + ' => ' + questionsThresholdNumber + ' questions';
 
         const newEmbed = new EmbedBuilder()
             .setTitle(oldEmbed.title)
