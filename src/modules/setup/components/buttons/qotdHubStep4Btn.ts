@@ -1,5 +1,6 @@
 import { qotdHubButtons, qotdHubSaveBtn } from '.';
 import { ButtonInteraction } from 'discord.js';
+import { buildQotdStep4Menu } from '../selectMenus';
 
 export default {
     data: {
@@ -7,7 +8,7 @@ export default {
     },
     async execute(interaction: ButtonInteraction) {
         interaction.update({
-            components: [qotdHubButtons(4), qotdHubSaveBtn]
+            components: [qotdHubButtons(4), buildQotdStep4Menu(), qotdHubSaveBtn]
         });
     }
 };

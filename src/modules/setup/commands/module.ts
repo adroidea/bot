@@ -3,7 +3,6 @@ import {
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     Client,
-    GuildBasedChannel,
     PermissionsBitField,
     StringSelectMenuBuilder
 } from 'discord.js';
@@ -29,32 +28,10 @@ export default {
                 description: 'Le module à configurer',
                 type: ApplicationCommandOptionType.String,
                 required: false,
-                choices: [
-                    {
-                        name: Modules.core.label,
-                        value: Modules.core.name
-                    },
-                    {
-                        name: Modules.party.label,
-                        value: Modules.party.name
-                    },
-                    {
-                        name: Modules.qotd.label,
-                        value: Modules.qotd.name
-                    },
-                    {
-                        name: Modules.scheduledEvents.label,
-                        value: Modules.scheduledEvents.name
-                    },
-                    {
-                        name: Modules.tempVoice.label,
-                        value: Modules.tempVoice.name
-                    },
-                    {
-                        name: Modules.twitch.label,
-                        value: Modules.twitch.name
-                    }
-                ]
+                choices: Object.values(Modules).map(module => ({
+                    name: module.label,
+                    value: module.name
+                }))
             }
         ]
     },
@@ -67,8 +44,7 @@ export default {
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
         const moduleString = interaction.options.getString('module') ?? 'list';
 
-        const selectMenu: ActionRowBuilder<StringSelectMenuBuilder> =
-            buildSelectMenu(guildSettings);
+        const selectMenu: ActionRowBuilder<StringSelectMenuBuilder> = buildSelectMenu();
 
         switch (moduleString) {
             case Modules.core.name:
@@ -84,16 +60,7 @@ export default {
             case Modules.qotd.name:
                 return interaction.reply({
                     embeds: [buildQotdHubEmbed(guildSettings.modules.qotd)],
-                    components: [
-                        qotdHubButtons(1),
-                        buildQotdStep1Menu(
-                            interaction.guild?.channels.cache.filter((ch: GuildBasedChannel) =>
-                                ch.isTextBased()
-                            ),
-                            guildSettings.modules.qotd.channelId
-                        ),
-                        qotdHubSaveBtn
-                    ],
+                    components: [qotdHubButtons(1), buildQotdStep1Menu(), qotdHubSaveBtn],
                     ephemeral: true
                 });
             case Modules.scheduledEvents.name:
@@ -104,7 +71,10 @@ export default {
             case Modules.tempVoice.name:
                 return interaction.reply({
                     embeds: [buildTempVoiceHubEmbed(guildSettings.modules.temporaryVoice)],
-                    components: [tempVoiceAddMenu, buildTempVoiceDeleteMenu(guildSettings.modules.temporaryVoice.hostChannels)],
+                    components: [
+                        tempVoiceAddMenu,
+                        buildTempVoiceDeleteMenu(guildSettings.modules.temporaryVoice.hostChannels)
+                    ],
                     ephemeral: true
                 });
             case Modules.twitch.name:
