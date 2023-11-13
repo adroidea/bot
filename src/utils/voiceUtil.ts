@@ -63,6 +63,7 @@ export const createNewTempChannel = async (newState: VoiceState) => {
                         .setEmoji('🤝')
                         .setStyle(ButtonStyle.Danger)
                 );
+                client.tempVoice.set(channel.id, channel);
                 channel.send({
                     content: `Hey ${userMention(newState.member!.id)} !
           \nTu peux gérer ton salon vocal depuis ici ! Il te suffit de faire : \`/voice\` pour avoir toutes les options 
@@ -140,6 +141,7 @@ export const checkVoiceOwnership = async (voiceC: BaseGuildVoiceChannel, member:
 export const deleteEmptyChannel = async (voiceC: BaseGuildVoiceChannel) => {
     try {
         if (voiceC.members.size > 0) return;
+        client.tempVoice.delete(voiceC.id);
         await voiceC.delete();
     } catch (err: any) {
         Logger.error(`An error occurred while deleting a voice channel`, err, filePath);
