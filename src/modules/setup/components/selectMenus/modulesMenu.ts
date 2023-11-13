@@ -1,11 +1,21 @@
 import {
     ActionRowBuilder,
+    ChannelSelectMenuBuilder,
+    GuildBasedChannel,
     StringSelectMenuBuilder,
     StringSelectMenuInteraction,
     StringSelectMenuOptionBuilder
 } from 'discord.js';
+import { buildQotdHubEmbed, qotdHubButtons, qotdHubSaveBtn } from '../buttons';
+import {
+    buildQotdStep1Menu,
+    buildTempVoiceDeleteMenu,
+    buildTempVoiceHubEmbed,
+    tempVoiceAddMenu
+} from '.';
 import { IGuild } from '../../../../models';
 import { Modules } from '../../../../utils/consts';
+import guildService from '../../../../services/guildService';
 
 export default {
     data: {
@@ -13,11 +23,42 @@ export default {
     },
     async execute(interaction: StringSelectMenuInteraction) {
         const moduleName = interaction.values[0];
-        console.log(moduleName);
+        const guildData = await guildService.getOrCreateGuild(interaction.guildId!);
+        const { hostChannels } = guildData.modules.temporaryVoice;
 
-        return interaction.reply({
-            content: `Mais bien sûr avec plaisir.`
-        });
+        switch (moduleName) {
+            case Modules.qotd.name:
+                return interaction.update({
+                    embeds: [buildQotdHubEmbed(guildData.modules.qotd)],
+                    components: [
+                        qotdHubButtons(1)
+                        //    buildQotdStep1Menu(
+                        //        interaction.guild?.channels.cache.filter((ch: GuildBasedChannel) =>
+                        //            ch.isTextBased()
+                        //        ),
+                        //        guildData.modules.qotd.channelId
+                        //    ),
+                        //    qotdHubSaveBtn
+                    ]
+                });
+            case Modules.tempVoice.name: {
+                const components: ActionRowBuilder<
+                    ChannelSelectMenuBuilder | StringSelectMenuBuilder
+                >[] = [tempVoiceAddMenu];
+
+                if (hostChannels.length > 0) {
+                    components.push(buildTempVoiceDeleteMenu(hostChannels));
+                }
+
+                return interaction.update({
+                    embeds: [buildTempVoiceHubEmbed(guildData.modules.temporaryVoice)],
+                    components
+                });
+            }
+
+            default:
+                break;
+        }
     }
 };
 

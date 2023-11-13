@@ -3,9 +3,17 @@ import {
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     Client,
+    GuildBasedChannel,
     PermissionsBitField,
     StringSelectMenuBuilder
 } from 'discord.js';
+import { buildQotdHubEmbed, qotdHubButtons, qotdHubSaveBtn } from '../components/buttons/';
+import {
+    buildQotdStep1Menu,
+    buildTempVoiceDeleteMenu,
+    buildTempVoiceHubEmbed,
+    tempVoiceAddMenu
+} from '../components/selectMenus';
 import { IGuild } from '../../../models';
 import { Modules } from '../../../utils/consts';
 import { buildSelectMenu } from '../components/selectMenus/modulesMenu';
@@ -75,7 +83,17 @@ export default {
                 });
             case Modules.qotd.name:
                 return interaction.reply({
-                    content: 'Liste des menus du module qdj',
+                    embeds: [buildQotdHubEmbed(guildSettings.modules.qotd)],
+                    components: [
+                        qotdHubButtons(1),
+                        buildQotdStep1Menu(
+                            interaction.guild?.channels.cache.filter((ch: GuildBasedChannel) =>
+                                ch.isTextBased()
+                            ),
+                            guildSettings.modules.qotd.channelId
+                        ),
+                        qotdHubSaveBtn
+                    ],
                     ephemeral: true
                 });
             case Modules.scheduledEvents.name:
@@ -85,7 +103,8 @@ export default {
                 });
             case Modules.tempVoice.name:
                 return interaction.reply({
-                    content: 'Liste des menus du module Voc temporaires',
+                    embeds: [buildTempVoiceHubEmbed(guildSettings.modules.temporaryVoice)],
+                    components: [tempVoiceAddMenu, buildTempVoiceDeleteMenu(guildSettings.modules.temporaryVoice.hostChannels)],
                     ephemeral: true
                 });
             case Modules.twitch.name:
