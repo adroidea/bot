@@ -1,34 +1,21 @@
 import {
     ActionRowBuilder,
-    Collection,
+    ChannelSelectMenuBuilder,
+    ChannelType,
     EmbedBuilder,
-    GuildBasedChannel,
-    StringSelectMenuBuilder,
     StringSelectMenuInteraction,
-    StringSelectMenuOptionBuilder,
     channelMention
 } from 'discord.js';
 
-export const buildQotdStep1Menu = (
-    textChannelList: Collection<string, GuildBasedChannel> | undefined,
-    defaultChannel?: string | undefined
-): ActionRowBuilder<StringSelectMenuBuilder> => {
-    const selectMenu = new StringSelectMenuBuilder()
+export const buildQotdStep1Menu = (): ActionRowBuilder<ChannelSelectMenuBuilder> => {
+    const selectMenu = new ChannelSelectMenuBuilder()
         .setCustomId('qotdStep1Menu')
-        .setPlaceholder('Salon où la QdJ sera envoyée');
+        .setPlaceholder('Salon où la QdJ sera envoyée')
+        .addChannelTypes(ChannelType.GuildText)
+        .setMinValues(0)
+        .setMaxValues(1);
 
-    if (textChannelList)
-        for (const channel of textChannelList) {
-            const option = new StringSelectMenuOptionBuilder()
-                .setLabel(channel[1].name)
-                .setValue(channel[0]);
-            if (channel[0] === defaultChannel) option.setDefault(true);
-            selectMenu.addOptions(option);
-        }
-
-    selectMenu.setMinValues(1).setMaxValues(textChannelList?.size || 10);
-
-    const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(selectMenu);
+    const row = new ActionRowBuilder<ChannelSelectMenuBuilder>().addComponents(selectMenu);
     return row;
 };
 
