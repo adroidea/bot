@@ -5,10 +5,11 @@ import {
     switchVoiceOwner
 } from '../../../../utils/voiceUtil';
 import { IGuild } from '../../../../models';
+import { client } from '../../../..';
 import guildService from '../../../../services/guildService';
 
-const isProtectedVoice = (hostC: string[], protectedC: string[], voiceId: string): boolean => {
-    return isHostVoice(hostC, voiceId) || protectedC.includes(voiceId);
+const isTempVoice = (voiceId: string): boolean => {
+    return client.tempVoice.has(voiceId);
 };
 
 const isHostVoice = (hostC: string[], voiceId: string): boolean => {
@@ -34,7 +35,6 @@ export default {
         if (!temporaryVoice.enabled) return;
 
         const hostC = temporaryVoice?.hostChannels ?? [''];
-        const protectedC = temporaryVoice?.protectedChannels ?? [''];
 
         try {
             const voiceUpdateType = getVoiceUpdateType(oldState.channel, newState.channel);
@@ -48,7 +48,7 @@ export default {
 
                 case 'MOVED_VOICE':
                 case 'LEFT_VOICE':
-                    if (!isProtectedVoice(hostC, protectedC, oldState.channelId!)) {
+                    if (isTempVoice(oldState.channelId!)) {
                         await deleteEmptyChannel(oldState.channel!);
                         const member = oldState.channel?.members.first();
                         if (member) await switchVoiceOwner(oldState.member!, member);

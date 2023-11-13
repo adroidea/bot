@@ -176,7 +176,7 @@ async function handleWhitelistCommand(
         .get(target.id)
         ?.allow.has([PermissionsBitField.Flags.Connect, PermissionsBitField.Flags.ViewChannel]);
 
-    if (isWhitelisted) {
+    if (!isWhitelisted) {
         await voiceChannel.permissionOverwrites.edit(target.id, {
             ViewChannel: true,
             Connect: true,
