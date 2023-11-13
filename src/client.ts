@@ -6,6 +6,7 @@ export interface IDiscordClient {
     modals: Collection<string, any>;
     selectMenus: Collection<string, any>;
     cooldowns: Collection<string, any>;
+    tempVoice: Collection<string, any>;
 }
 
 export default class DiscordClient extends Client implements IDiscordClient {
@@ -14,6 +15,7 @@ export default class DiscordClient extends Client implements IDiscordClient {
     public modals: Collection<string, any>;
     public selectMenus: Collection<string, any>;
     public cooldowns: Collection<string, any>;
+    public tempVoice: Collection<string, any>;
 
     constructor(options: ClientOptions) {
         super(options);
@@ -22,5 +24,6 @@ export default class DiscordClient extends Client implements IDiscordClient {
         this.modals = new Collection();
         this.selectMenus = new Collection();
         this.cooldowns = new Collection();
+        this.tempVoice = new Collection();
     }
 }
