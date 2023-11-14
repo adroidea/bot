@@ -26,7 +26,8 @@ export default {
                 name: 'question',
                 description: 'question du jour',
                 type: ApplicationCommandOptionType.String,
-                required: true
+                required: true,
+                max_length: 256
             },
             {
                 name: 'auteur',
