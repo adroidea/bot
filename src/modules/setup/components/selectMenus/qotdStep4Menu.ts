@@ -1,10 +1,10 @@
 import {
     ActionRowBuilder,
     EmbedBuilder,
-    StringSelectMenuInteraction,
-    UserSelectMenuBuilder
+    UserSelectMenuBuilder,
+    UserSelectMenuInteraction
 } from 'discord.js';
-import { formatFields } from '../../../../utils/embedsUtil';
+import { formatCustomList, formatFields } from '../../../../utils/embedsUtil';
 
 export const buildQotdStep4Menu = (): ActionRowBuilder<UserSelectMenuBuilder> => {
     const selectMenu = new UserSelectMenuBuilder()
@@ -20,20 +20,24 @@ export default {
     data: {
         name: `qotdStep4Menu`
     },
-    async execute(interaction: StringSelectMenuInteraction) {
+    async execute(interaction: UserSelectMenuInteraction) {
         const oldEmbed = interaction.message.embeds[0];
-        console.log(oldEmbed.fields);
 
         const customField = {
             name: oldEmbed.fields[5].name,
-            value: 'tea',
+            value:
+                '=>\n' +
+                formatCustomList(
+                    interaction.users.map(user => user.id),
+                    'user'
+                ),
             inline: true
         };
 
         const newEmbed = new EmbedBuilder()
             .setTitle(oldEmbed.title)
             .setColor(oldEmbed.color)
-            .addFields(...formatFields(oldEmbed.fields, customField, 5))
+            .addFields(formatFields(oldEmbed.fields, customField, 5))
             .setFooter({ text: oldEmbed.footer?.text! });
 
         return interaction.update({

@@ -28,7 +28,7 @@ export default {
             case Modules.qotd.name:
                 return interaction.update({
                     embeds: [buildQotdHubEmbed(guildData.modules.qotd)],
-                    components: [qotdHubButtons(1), buildQotdStep1Menu(), qotdHubSaveBtn]
+                    components: [qotdHubButtons(1), buildQotdStep1Menu(guildData.modules.qotd.channelId), qotdHubSaveBtn]
                 });
             case Modules.tempVoice.name: {
                 const components: ActionRowBuilder<
