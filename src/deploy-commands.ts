@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'node:path';
 
 dotenv.config();
-export const regCMD = (clientId: string) => {
+export const regCMD = async (clientId: string) => {
     const commands: any[] = [];
     const guildCommands: any[] = [];
 
@@ -14,50 +14,46 @@ export const regCMD = (clientId: string) => {
         path.join(__dirname, 'modules/core/commands'),
         path.join(__dirname, 'modules/qotd/commands'),
         path.join(__dirname, 'modules/setup/commands'),
-        path.join(__dirname, 'modules/scheduledEvents/commands'),
+        //path.join(__dirname, 'modules/scheduledEvents/commands'),
         path.join(__dirname, 'modules/tempVoice/commands')
         //path.join(__dirname, 'modules/twitchLive/commands'),
     ];
 
-    const readCommands = (dir: string) => {
+    const readCommands = async (dir: string) => {
         try {
             const files = fs.readdirSync(dir);
 
-            for (const file of files) {
+            const promises = files.map(async file => {
                 const filePath = path.join(dir, file);
                 const stat = fs.lstatSync(filePath);
 
                 if (stat.isDirectory()) {
-                    readCommands(filePath);
+                    return readCommands(filePath);
                 } else if (file.endsWith('.js')) {
-                    const command = require(filePath);
+                    const { default: command } = await import(filePath);
                     if (command.guildOnly) guildCommands.push(command.data);
                     else commands.push(command.data);
                 }
-            }
+            });
+
+            await Promise.all(promises);
         } catch (error: any) {
             Logger.error('Error while reading commands', error);
         }
     };
 
-    for (const cmdPath of categoryFolders) {
-        readCommands(cmdPath);
-    }
+    await Promise.all(categoryFolders.map(readCommands));
 
     const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 
     try {
-        rest.put(Routes.applicationGuildCommands(clientId, OWNER_SERVER_ID), {
+        await rest.put(Routes.applicationGuildCommands(clientId, OWNER_SERVER_ID), {
             body: guildCommands
-        }).then(() =>
-            Logger.info(
-                `Successfully registered ${guildCommands.length} guild application commands.`
-            )
-        );
+        });
+        Logger.info(`Successfully registered ${guildCommands.length} guild application commands.`);
 
-        rest.put(Routes.applicationCommands(clientId), { body: commands }).then(() =>
-            Logger.info(`Successfully registered ${commands.length} application commands.`)
-        );
+        await rest.put(Routes.applicationCommands(clientId), { body: commands });
+        Logger.info(`Successfully registered ${commands.length} application commands.`);
     } catch (error: any) {
         Logger.error('Error while registering application commands', error);
     }
