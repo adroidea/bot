@@ -53,11 +53,13 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
 ### ❓ QotD (Question of the Day)
 
 - Everyday, sends a new question in the channel of your choice and pin it. (Provided there are questions in the database)
+
 ![qotd](/assets/qotd/qotd.png)
 
 - People can give their own questions
+
 ![qotd](/assets/qotd/request.png)
-  
+
 
 ### 🎤 TempVoice
 

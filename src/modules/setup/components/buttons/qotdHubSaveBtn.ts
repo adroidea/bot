@@ -1,16 +1,16 @@
 import {
     ActionRowBuilder,
     ButtonBuilder,
+    ButtonInteraction,
     ButtonStyle,
     EmbedBuilder,
-    StringSelectMenuInteraction,
-    channelMention,
-    quote,
-    userMention
+    channelMention
 } from 'discord.js';
-import { GuildModel } from '../../../../models';
+import { IGuild } from '../../../../models';
 import { IQOtD } from '../../../qotd/models';
 import { Modules } from '../../../../utils/consts';
+import { formatCustomList } from '../../../../utils/embedsUtil';
+import guildService from '../../../../services/guildService';
 
 export const buildQotdHubEmbed = (d: IQOtD): EmbedBuilder => {
     return new EmbedBuilder()
@@ -35,30 +35,18 @@ export const buildQotdHubEmbed = (d: IQOtD): EmbedBuilder => {
             { name: '\u200B', value: '\u200B' },
             {
                 name: '4️⃣ Utilisateurs blacklistés',
-                value: formatUserList(d.blacklistUsers),
+                value: formatCustomList(d.blacklistUsers, 'user', 5),
                 inline: true
             },
             {
                 name: '5️⃣ Utilisateurs de confiance',
-                value: formatUserList(d.trustedUsers),
+                value: formatCustomList(d.trustedUsers, 'user', 5),
                 inline: true
             }
         ])
         .setFooter({
             text: d.enabled ? '✅ Module Activé' : '❌ Module Désactivé'
         });
-
-    function formatUserList(users: string[]): string {
-        if (users.length === 0) return '> Aucun utilisateur';
-        const displayUsers = users
-            .slice(0, 5)
-            .map(id => quote(userMention(id)))
-            .join('\n');
-        if (users.length > 5) {
-            return displayUsers + `\n> +${users.length - 5} autres`;
-        }
-        return displayUsers;
-    }
 };
 
 export const qotdHubButtons = (primaryButtonIndex: number): ActionRowBuilder<ButtonBuilder> => {
@@ -74,7 +62,8 @@ export const qotdHubButtons = (primaryButtonIndex: number): ActionRowBuilder<But
         return new ButtonBuilder()
             .setCustomId(customId)
             .setEmoji(emoji)
-            .setStyle(isPrimary ? ButtonStyle.Primary : ButtonStyle.Secondary);
+            .setStyle(isPrimary ? ButtonStyle.Primary : ButtonStyle.Secondary)
+            .setDisabled(isPrimary);
     }
 };
 
@@ -91,23 +80,27 @@ export default {
     data: {
         name: `qotdHubSaveBtn`
     },
-    async execute(interaction: StringSelectMenuInteraction) {
-        const channelId = interaction.values[0];
-        console.log(channelId);
-        const updatedGuild = await GuildModel.findOneAndUpdate(
-            { id: interaction.guildId! },
-            {
-                modules: {
-                    qotd: {
-                        channelId: channelId!
-                    }
-                }
-            },
-            { new: true }
-        );
+    async execute(interaction: ButtonInteraction) {
+        const embed = interaction.message.embeds[0];
+
+        const cField = embed.fields[0].value;
+        const channel = cField.includes('=>')
+            ? cField.slice(cField.lastIndexOf('<#') + 2, cField.lastIndexOf('>'))
+            : undefined;
+
+        const cRField = embed.fields[1].value;
+        const requestChannel = cRField.includes('=>')
+            ? cRField.slice(cRField.lastIndexOf('<#') + 2, cRField.lastIndexOf('>'))
+            : undefined;
+
+        const updatedGuild = await guildService.updateGuild(interaction.guildId!, {
+            'modules.qotd.channelId': channel,
+            'modules.qotd.requestChannelId': requestChannel
+        } as Partial<IGuild>);
 
         return interaction.update({
-            content: `Nouveau salon ${channelMention(updatedGuild?.modules.qotd.channelId!)}`
+            content: `Nouveau salon ${channelMention(updatedGuild?.modules.qotd.channelId!)}`,
+            embeds: [buildQotdHubEmbed(updatedGuild!.modules.qotd)]
         });
     }
 };

@@ -7,13 +7,17 @@ import {
     channelMention
 } from 'discord.js';
 
-export const buildQotdStep1Menu = (): ActionRowBuilder<ChannelSelectMenuBuilder> => {
+export const buildQotdStep1Menu = (
+    channelId: string
+): ActionRowBuilder<ChannelSelectMenuBuilder> => {
     const selectMenu = new ChannelSelectMenuBuilder()
         .setCustomId('qotdStep1Menu')
         .setPlaceholder('Salon où la QdJ sera envoyée')
         .addChannelTypes(ChannelType.GuildText)
         .setMinValues(0)
         .setMaxValues(1);
+
+    if (channelId !== '') selectMenu.addDefaultChannels(channelId);
 
     const row = new ActionRowBuilder<ChannelSelectMenuBuilder>().addComponents(selectMenu);
     return row;
