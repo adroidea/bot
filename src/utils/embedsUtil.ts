@@ -1,4 +1,11 @@
-import { APIEmbedField, EmbedBuilder } from 'discord.js';
+import {
+    APIEmbedField,
+    EmbedBuilder,
+    channelMention,
+    quote,
+    roleMention,
+    userMention
+} from 'discord.js';
 import { Colors } from './consts';
 
 export const Embed = {
@@ -15,9 +22,6 @@ export const formatFields = (
     numFieldsBeforeCustom: number
 ) => {
     fields = fields.map(field => {
-        if (field.name === '' && field.value === '') {
-            return { name: '\u200B', value: '\u200B' };
-        }
         return field;
     });
 
@@ -25,9 +29,52 @@ export const formatFields = (
         ...fields.slice(0, numFieldsBeforeCustom).map((field: any) => ({
             name: field.name,
             value: field.value,
-            inline: true
+            inline: field.inline
         })),
         customField,
         ...fields.slice(numFieldsBeforeCustom + 1)
     ];
+};
+export const formatCustomList = (
+    list: string[],
+    type: 'role' | 'user' | 'channel',
+    customListLength?: number
+): string => {
+    if (list.length === 0) {
+        switch (type) {
+            case 'role':
+                return '> Aucun rôle';
+            case 'user':
+                return '> Aucun utilisateur';
+            case 'channel':
+                return '> Aucun salon';
+            default:
+                throw new Error('Invalid type');
+        }
+    }
+
+    const mention = (id: string) => {
+        switch (type) {
+            case 'role':
+                return roleMention(id);
+            case 'user':
+                return userMention(id);
+            case 'channel':
+                return channelMention(id);
+            default:
+                throw new Error('Invalid type');
+        }
+    };
+
+    const displayListLength = customListLength ?? list.length; 
+    const displayUsers = list
+        .slice(0, displayListLength)
+        .map(id => quote(mention(id)))
+        .join('\n');
+
+    if (list.length > displayListLength) {
+        return displayUsers + `\n> +${list.length - displayListLength} autres`;
+    }
+
+    return displayUsers;
 };

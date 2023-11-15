@@ -100,27 +100,32 @@ const handleCooldown = (userId: string, commandName: string, cooldownAmount: num
 };
 
 const handleComponentInteraction = async (client: IDiscordClient, interaction: BaseInteraction) => {
+    const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guildId!);
     if (interaction.isButton()) {
         const button = client.buttons.get(interaction.customId);
         if (button) {
-            await executeButtonInteraction(button, interaction);
+            await executeButtonInteraction(button, interaction, guildSettings);
         }
     } else if (interaction.isAnySelectMenu()) {
         const selectMenu = client.selectMenus.get(interaction.customId);
         if (selectMenu) {
-            await executeSelectMenuInteraction(selectMenu, interaction);
+            await executeSelectMenuInteraction(selectMenu, interaction, guildSettings);
         }
     } else if (interaction.isModalSubmit()) {
         const modal = client.modals.get(interaction.customId);
         if (modal) {
-            await executeModalSubmitInteraction(modal, interaction);
+            await executeModalSubmitInteraction(modal, interaction, guildSettings);
         }
     }
 };
 
-const executeButtonInteraction = async (button: any, interaction: ButtonInteraction) => {
+const executeButtonInteraction = async (
+    button: any,
+    interaction: ButtonInteraction,
+    guildSettings: IGuild
+) => {
     try {
-        await button.execute(interaction);
+        await button.execute(interaction, guildSettings);
     } catch (err) {
         handleError(interaction, err);
     }
@@ -128,18 +133,23 @@ const executeButtonInteraction = async (button: any, interaction: ButtonInteract
 
 const executeSelectMenuInteraction = async (
     selectMenu: any,
-    interaction: AnySelectMenuInteraction
+    interaction: AnySelectMenuInteraction,
+    guildSettings: IGuild
 ) => {
     try {
-        await selectMenu.execute(interaction);
+        await selectMenu.execute(interaction, guildSettings);
     } catch (err) {
         handleError(interaction, err);
     }
 };
 
-const executeModalSubmitInteraction = async (modal: any, interaction: ModalSubmitInteraction) => {
+const executeModalSubmitInteraction = async (
+    modal: any,
+    interaction: ModalSubmitInteraction,
+    guildSettings: IGuild
+) => {
     try {
-        await modal.execute(interaction);
+        await modal.execute(interaction, guildSettings);
     } catch (err) {
         handleError(interaction, err);
     }

@@ -67,16 +67,29 @@ const getOrCreateGuild = async (id: string): Promise<IGuild> => {
     }
 };
 
-const updateGuild = async (guildData: IGuild): Promise<IGuild | null> => {
+const updateGuild = async (id: string, update: Partial<IGuild>): Promise<IGuild | null> => {
     try {
-        const updatedGuild = await GuildModel.findOneAndUpdate({ id: guildData.id }, guildData, {
-            new: true
-        });
+        const currentGuild = await GuildModel.findOne({ id });
+
+        if (!currentGuild) {
+            return createGuild(id);
+        }
+
+        const $set: Record<string, any> = {};
+        for (const [key, value] of Object.entries(update)) {
+            $set[key] = value;
+        }
+
+        const updatedGuild = await GuildModel.findOneAndUpdate(
+            { id },
+            { $set },
+            { new: true }
+        );
 
         return updatedGuild;
-    } catch (err: any) {
-        Logger.error('Error updating guild at updateGuild()', err);
-        throw err;
+    } catch (error) {
+        console.error('Error updating guild:', error);
+        return null;
     }
 };
 

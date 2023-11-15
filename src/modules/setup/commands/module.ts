@@ -59,8 +59,9 @@ export default {
                 });
             case Modules.qotd.name:
                 return interaction.reply({
+                    content: '',
                     embeds: [buildQotdHubEmbed(guildSettings.modules.qotd)],
-                    components: [qotdHubButtons(1), buildQotdStep1Menu(), qotdHubSaveBtn],
+                    components: [qotdHubButtons(1), buildQotdStep1Menu(guildSettings.modules.qotd.channelId), qotdHubSaveBtn],
                     ephemeral: true
                 });
             case Modules.scheduledEvents.name:
@@ -70,6 +71,7 @@ export default {
                 });
             case Modules.tempVoice.name:
                 return interaction.reply({
+                    content: '',
                     embeds: [buildTempVoiceHubEmbed(guildSettings.modules.temporaryVoice)],
                     components: [
                         tempVoiceAddMenu,
