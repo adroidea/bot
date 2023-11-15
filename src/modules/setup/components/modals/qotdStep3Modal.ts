@@ -28,7 +28,6 @@ export default {
         name: `qotdStep3Modal`
     },
     async execute(interaction: ModalMessageModalSubmitInteraction) {
-
         const questionsThreshold = interaction.fields.getTextInputValue('questionsThresholdInput');
         let questionsThresholdNumber = 0;
         if (questionsThreshold !== '') {

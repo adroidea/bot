@@ -9,11 +9,11 @@ import {
 import { CustomErrors } from '../../../../utils/errors';
 import { checkVoiceOwnership } from '../../../../utils/voiceUtil';
 
-export const voiceOwnerTransferBtn =  new ButtonBuilder()
-.setCustomId('voiceOwnerTransferBtn')
-.setLabel('Transférer la propriété')
-.setEmoji('🤝')
-.setStyle(ButtonStyle.Danger);
+export const voiceOwnerTransferBtn = new ButtonBuilder()
+    .setCustomId('voiceOwnerTransferBtn')
+    .setLabel('Transférer la propriété')
+    .setEmoji('🤝')
+    .setStyle(ButtonStyle.Danger);
 
 export default {
     data: {

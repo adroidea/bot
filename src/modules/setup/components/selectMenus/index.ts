@@ -11,5 +11,5 @@ export {
     buildQotdStep4Menu,
     buildTempVoiceDeleteMenu,
     buildTempVoiceHubEmbed,
-    tempVoiceAddMenu,
+    tempVoiceAddMenu
 };
