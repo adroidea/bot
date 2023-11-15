@@ -1,14 +1,20 @@
-import { ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder, PermissionsBitField, userMention } from 'discord.js';
+import {
+    ButtonBuilder,
+    ButtonInteraction,
+    ButtonStyle,
+    EmbedBuilder,
+    PermissionsBitField,
+    userMention
+} from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
 import qotddService from '../../services/qotdService';
 
 export const qotdBlacklistRejectButton = new ButtonBuilder()
-.setCustomId('qotdBlacklistRejectBtn')
-.setEmoji('🔨')
-.setLabel('Blacklister utilisateur')
-.setStyle(ButtonStyle.Danger)
-
+    .setCustomId('qotdBlacklistRejectBtn')
+    .setEmoji('🔨')
+    .setLabel('Blacklister utilisateur')
+    .setStyle(ButtonStyle.Danger);
 
 export default {
     data: {

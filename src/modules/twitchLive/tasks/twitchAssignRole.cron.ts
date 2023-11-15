@@ -46,6 +46,7 @@ const toggleStreamersRole = async (
         const hasRole: boolean = member.roles.cache.some(r => r.id === role.id);
         try {
             const response: string = await (
+                // @ts-ignore
                 await fetch(`https://decapi.me/twitch/uptime/${streamer.streamer}`)
             ).text();
 

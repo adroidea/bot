@@ -18,6 +18,7 @@ const dpp = {
 export default function (): cron.ScheduledTask {
     return cron.schedule('0 * * * *', () => {
         try {
+            // @ts-ignore
             const responsePromise: Promise<string> = fetch(
                 `https://decapi.me/twitch/uptime/adan_ea`
             ).then((response: any) => response.text());

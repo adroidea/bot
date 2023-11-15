@@ -2,7 +2,10 @@ import Logger from '../utils/logger';
 import fs from 'fs';
 import path from 'path';
 
-export const handleComponents = async (client: any, compPath: string): Promise<Record<string, number>> => {
+export const handleComponents = async (
+    client: any,
+    compPath: string
+): Promise<Record<string, number>> => {
     const result: Record<string, number> = {};
 
     const subFolders = fs.readdirSync(compPath);
@@ -18,7 +21,11 @@ export const handleComponents = async (client: any, compPath: string): Promise<R
     return result;
 };
 
-const handleSubComponent = async (client: any, compPath: string, compFolder: string): Promise<number> => {
+const handleSubComponent = async (
+    client: any,
+    compPath: string,
+    compFolder: string
+): Promise<number> => {
     let result = 0;
     const subCompPath = path.join(compPath, compFolder);
     const files = fs.readdirSync(subCompPath);

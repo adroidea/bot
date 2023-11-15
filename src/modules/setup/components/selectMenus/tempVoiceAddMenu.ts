@@ -22,12 +22,10 @@ export default {
         name: `tempVoiceAddMenu`
     },
     async execute(interaction: ChannelSelectMenuInteraction) {
-
         const selectedVC = interaction.values;
         console.log(selectedVC);
         const guildData = await guildService.getOrCreateGuild(interaction.guildId!);
 
-        
         const tempVoice = guildData.modules.temporaryVoice;
         return interaction.update({
             embeds: [buildTempVoiceHubEmbed(tempVoice)]
