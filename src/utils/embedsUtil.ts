@@ -16,25 +16,6 @@ export const Embed = {
     rc: (title: string): EmbedBuilder => new EmbedBuilder().setTitle(title).setColor(Colors.random)
 };
 
-export const formatFields = (
-    fields: APIEmbedField[],
-    customField: APIEmbedField,
-    numFieldsBeforeCustom: number
-) => {
-    fields = fields.map(field => {
-        return field;
-    });
-
-    return [
-        ...fields.slice(0, numFieldsBeforeCustom).map((field: any) => ({
-            name: field.name,
-            value: field.value,
-            inline: field.inline
-        })),
-        customField,
-        ...fields.slice(numFieldsBeforeCustom + 1)
-    ];
-};
 export const formatCustomList = (
     list: string[],
     type: 'role' | 'user' | 'channel',
@@ -48,8 +29,6 @@ export const formatCustomList = (
                 return '> Aucun utilisateur';
             case 'channel':
                 return '> Aucun salon';
-            default:
-                throw new Error('Invalid type');
         }
     }
 
@@ -61,20 +40,50 @@ export const formatCustomList = (
                 return userMention(id);
             case 'channel':
                 return channelMention(id);
-            default:
-                throw new Error('Invalid type');
         }
     };
 
-    const displayListLength = customListLength ?? list.length; 
+    const displayListLength = customListLength ?? list.length;
     const displayUsers = list
         .slice(0, displayListLength)
         .map(id => quote(mention(id)))
         .join('\n');
 
     if (list.length > displayListLength) {
-        return displayUsers + `\n> +${list.length - displayListLength} autres`;
+        return displayUsers
+            ? displayUsers + `\n> +${list.length - displayListLength} autres`
+            : `> +${list.length - displayListLength} autres`;
     }
 
     return displayUsers;
+};
+
+export const formatFields = (
+    fields: APIEmbedField[],
+    customField: APIEmbedField,
+    replaceIndex: number
+) => {
+    if (fields.length === 0) {
+        return [customField];
+    }
+
+    if (replaceIndex >= fields.length) {
+        return [...fields, customField];
+    }
+
+    return fields.map((field, index) => {
+        if (index === replaceIndex) {
+            return {
+                name: customField.name,
+                value: customField.value,
+                inline: customField.inline
+            };
+        } else {
+            return {
+                name: field.name,
+                value: field.value,
+                inline: field.inline
+            };
+        }
+    });
 };
