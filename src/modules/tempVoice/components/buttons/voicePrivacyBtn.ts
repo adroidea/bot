@@ -1,49 +1,35 @@
-import {
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonInteraction,
-    ButtonStyle,
-    GuildMember
-} from 'discord.js';
+import { ButtonBuilder, ButtonInteraction, ButtonStyle, GuildMember } from 'discord.js';
 import {
     checkVoiceOwnership,
     checkVoicePrivacy,
     switchVoicePrivacy
 } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
-import { voiceOwnerTransferBtn } from './';
+import { IGuild } from '../../../../models';
 
 export const voicePrivacyBtn = new ButtonBuilder()
     .setCustomId('voicePrivacyBtn')
-    .setLabel('Vérouiller')
-    .setEmoji('🔒')
-    .setStyle(ButtonStyle.Primary);
+    .setEmoji('🔐')
+    .setStyle(ButtonStyle.Secondary);
 
 export default {
     data: {
         name: `voicePrivacyBtn`
     },
-    async execute(interaction: ButtonInteraction) {
+    cooldown: 10,
+    async execute(interaction: ButtonInteraction, guildSettings: IGuild) {
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
 
-        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel, member)))
+        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel.id, member.id)))
             throw CustomErrors.NotVoiceOwnerError;
 
-        let isPublic: boolean = await checkVoicePrivacy(voiceChannel);
+        await interaction.deferReply({ ephemeral: true });
+        let isPublic: boolean = checkVoicePrivacy(voiceChannel.id);
 
-        const newButton = new ButtonBuilder()
-            .setCustomId('voicePrivacyBtn')
-            .setLabel(isPublic ? 'Déverrouiller' : 'Verrouiller')
-            .setEmoji(isPublic ? '🔓' : '🔒')
-            .setStyle(isPublic ? ButtonStyle.Success : ButtonStyle.Danger);
-
-        const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-            newButton,
-            voiceOwnerTransferBtn
-        );
-
-        switchVoicePrivacy(member);
-        await interaction.update({ components: [row] });
+        switchVoicePrivacy(member, guildSettings.modules.temporaryVoice.nameModel);
+        await interaction.editReply({
+            content: `Le salon est maintenant ${isPublic ? 'privé' : 'public'}.`
+        });
     }
 };

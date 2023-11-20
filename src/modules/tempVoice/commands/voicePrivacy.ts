@@ -1,6 +1,5 @@
 import {
     ApplicationCommandOptionType,
-    ChannelType,
     ChatInputCommandInteraction,
     Client,
     GuildMember,
@@ -9,6 +8,7 @@ import {
 } from 'discord.js';
 import { CustomErrors } from '../../../utils/errors';
 import { IGuild } from '../../../models';
+import { setVoiceLimit } from '../../../utils/voiceUtil';
 import { isTemporaryVoiceModuleEnabled } from '../../../utils/modulesUil';
 
 export default {
@@ -63,7 +63,7 @@ export default {
                 options: [
                     {
                         name: 'limite',
-                        description: '1 à 99, 0 retire la limite',
+                        description: '0 à 99, 0 retire la limite',
                         type: ApplicationCommandOptionType.Number,
                         required: true
                     }
@@ -75,7 +75,7 @@ export default {
     cooldown: 10,
     permissions: [PermissionsBitField.Flags.SendMessages],
     usage: 'voice [commande] [member] ou [option]',
-    examples: 'voice ban @adan_ea#3945',
+    examples: 'voice ban @adan_ea',
     guildOnly: false,
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
@@ -107,7 +107,7 @@ export default {
                 break;
 
             case 'limite':
-                await handleLimitCommand(interaction, voiceChannel);
+                await setVoiceLimit(interaction, voiceChannel);
                 break;
 
             default:
@@ -192,28 +192,6 @@ async function handleWhitelistCommand(
             content: `${target} est déjà whitelist. Aucune modification effectuée.`,
             ephemeral: true
         });
-    }
-}
-
-async function handleLimitCommand(
-    interaction: ChatInputCommandInteraction,
-    voiceChannel: VoiceBasedChannel
-) {
-    const userLimit = interaction.options.getNumber('limite', true);
-
-    if (voiceChannel && voiceChannel.type === ChannelType.GuildVoice) {
-        await voiceChannel.setUserLimit(userLimit);
-        if (userLimit > 0) {
-            return interaction.reply({
-                content: `Le nombre de places dans le salon est maintenant limité à ${userLimit}.`,
-                ephemeral: true
-            });
-        } else {
-            return interaction.reply({
-                content: `La limite d'utilisateurs a été supprimée.`,
-                ephemeral: true
-            });
-        }
     }
 }
 

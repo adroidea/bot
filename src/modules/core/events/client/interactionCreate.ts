@@ -82,10 +82,11 @@ const calculateCooldownAmount = (command: any): number => {
     return (command.cooldown ?? defaultCooldownDuration) * 1000;
 };
 
-const handleCooldown = (userId: string, commandName: string, cooldownAmount: number) => {
+export const handleCooldown = (userId: string, commandName: string, cooldownAmount: number) => {
     if (!client.cooldowns.has(commandName)) {
         client.cooldowns.set(commandName, new Collection());
     }
+
     const now = Date.now();
     const timestamps = client.cooldowns.get(commandName);
     if (timestamps?.has(userId)) {
@@ -101,20 +102,37 @@ const handleCooldown = (userId: string, commandName: string, cooldownAmount: num
 
 const handleComponentInteraction = async (client: IDiscordClient, interaction: BaseInteraction) => {
     const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guildId!);
+
     if (interaction.isButton()) {
-        const button = client.buttons.get(interaction.customId);
-        if (button) {
-            await executeButtonInteraction(button, interaction, guildSettings);
+        try {
+            const button = client.buttons.get(interaction.customId);
+            if (button) {
+                const cooldownAmount = calculateCooldownAmount(button);
+                handleCooldown(interaction.user.id, button.data.name, cooldownAmount);
+                await executeButtonInteraction(button, interaction, guildSettings);
+            }
+        } catch (err) {
+            handleError(interaction, err);
         }
     } else if (interaction.isAnySelectMenu()) {
-        const selectMenu = client.selectMenus.get(interaction.customId);
-        if (selectMenu) {
-            await executeSelectMenuInteraction(selectMenu, interaction, guildSettings);
+        try {
+            const selectMenu = client.selectMenus.get(interaction.customId);
+            if (selectMenu) {
+                const cooldownAmount = calculateCooldownAmount(selectMenu);
+                handleCooldown(interaction.user.id, selectMenu.data.name, cooldownAmount);
+                await executeSelectMenuInteraction(selectMenu, interaction, guildSettings);
+            }
+        } catch (err) {
+            handleError(interaction, err);
         }
     } else if (interaction.isModalSubmit()) {
-        const modal = client.modals.get(interaction.customId);
-        if (modal) {
-            await executeModalSubmitInteraction(modal, interaction, guildSettings);
+        try {
+            const modal = client.modals.get(interaction.customId);
+            if (modal) {
+                await executeModalSubmitInteraction(modal, interaction, guildSettings);
+            }
+        } catch (err) {
+            handleError(interaction, err);
         }
     }
 };
