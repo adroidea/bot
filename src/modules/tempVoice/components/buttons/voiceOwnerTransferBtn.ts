@@ -1,19 +1,11 @@
 import {
     ActionRowBuilder,
-    ButtonBuilder,
     ButtonInteraction,
-    ButtonStyle,
     GuildMember,
     StringSelectMenuBuilder
 } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
 import { checkVoiceOwnership } from '../../../../utils/voiceUtil';
-
-export const voiceOwnerTransferBtn = new ButtonBuilder()
-    .setCustomId('voiceOwnerTransferBtn')
-    .setLabel('Transférer la propriété')
-    .setEmoji('🤝')
-    .setStyle(ButtonStyle.Danger);
 
 export default {
     data: {
@@ -24,7 +16,7 @@ export default {
 
         const member = interaction.member as GuildMember;
 
-        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel, member)))
+        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel.id, member.id)))
             throw CustomErrors.NotVoiceOwnerError;
 
         const members = voiceChannel.members.map(member => {

@@ -42,7 +42,7 @@ export default {
             switch (voiceUpdateType) {
                 case 'JOINED_VOICE':
                     if (isHostVoice(hostC, newState.channelId!)) {
-                        await createNewTempChannel(newState);
+                        await createNewTempChannel(newState, temporaryVoice);
                     }
                     break;
 
@@ -51,13 +51,14 @@ export default {
                     if (isTempVoice(oldState.channelId!)) {
                         await deleteEmptyChannel(oldState.channel!);
                         const member = oldState.channel?.members.first();
-                        if (member) await switchVoiceOwner(oldState.member!, member);
+                        if (member)
+                            await switchVoiceOwner(oldState.member!, member, temporaryVoice);
                     }
                     if (
                         voiceUpdateType === 'MOVED_VOICE' &&
                         isHostVoice(hostC, newState.channelId!)
                     ) {
-                        await createNewTempChannel(newState);
+                        await createNewTempChannel(newState, temporaryVoice);
                     }
                     break;
 

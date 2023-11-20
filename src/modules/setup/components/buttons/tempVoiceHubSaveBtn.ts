@@ -39,26 +39,26 @@ export default {
         name: `tempVoicedHubMenu`
     },
     async execute(interaction: StringSelectMenuInteraction) {
-        const channelId = interaction.values[0];
-        const guildData = await guildService.getOrCreateGuild(interaction.guildId!);
-        const qotd = guildData.modules.qotd;
-        const updatedGuild = await guildService.updateGuild({
-            id: interaction.guildId!,
-            modules: {
-                ...guildData.modules,
-                qotd: {
-                    enabled: qotd.enabled,
-                    channelId: channelId!,
-                    requestChannelId: qotd.requestChannelId,
-                    blacklistUsers: qotd.blacklistUsers,
-                    trustedUsers: qotd.trustedUsers,
-                    questionsThreshold: qotd.questionsThreshold
-                }
-            }
-        });
+        //const channelId = interaction.values[0];
+        //const guildData = await guildService.getOrCreateGuild(interaction.guildId!);
+        //const qotd = guildData.modules.qotd;
+        //const updatedGuild = await guildService.updateGuild({
+        //    id: interaction.guildId!,
+        //    modules: {
+        //        ...guildData.modules,
+        //        qotd: {
+        //            enabled: qotd.enabled,
+        //            channelId: channelId!,
+        //            requestChannelId: qotd.requestChannelId,
+        //            blacklistUsers: qotd.blacklistUsers,
+        //            trustedUsers: qotd.trustedUsers,
+        //            questionsThreshold: qotd.questionsThreshold
+        //        }
+        //    }
+        //});
 
         return interaction.update({
-            content: `Nouveau salon ${channelMention(updatedGuild?.modules.qotd.channelId!)}`
+            content: `Nouveau salon ` //${channelMention(updatedGuild?.modules.qotd.channelId!)}
         });
     }
 };
