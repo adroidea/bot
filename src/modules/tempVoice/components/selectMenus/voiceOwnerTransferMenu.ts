@@ -1,12 +1,13 @@
 import { GuildMember, StringSelectMenuInteraction, userMention } from 'discord.js';
 import { checkVoiceOwnership, switchVoiceOwner } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
+import { IGuild } from '../../../../models';
 
 export default {
     data: {
         name: `voiceOwnerTransferMenu`
     },
-    async execute(interaction: StringSelectMenuInteraction) {
+    async execute(interaction: StringSelectMenuInteraction, guildSettings: IGuild) {
         const targetId = interaction.values[0];
         const target: GuildMember = await interaction.guild!.members.fetch(targetId);
         const user = interaction.member as GuildMember;
@@ -21,11 +22,11 @@ export default {
             });
         }
         const voiceChannel = (interaction.member as GuildMember)!.voice.channel;
-        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel, user))) {
+        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel.id, user.id))) {
             throw CustomErrors.NotVoiceOwnerError;
         }
 
-        switchVoiceOwner(user, target);
+        switchVoiceOwner(user, target, guildSettings.modules.temporaryVoice);
 
         return interaction.update({
             content: `La propriété du salon a été transféré à ${userMention(target.id)}.`,

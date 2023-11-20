@@ -1,84 +1,100 @@
 import {
-    ActionRowBuilder,
     BaseGuildVoiceChannel,
-    ButtonBuilder,
     ChannelType,
+    ChatInputCommandInteraction,
+    Guild,
     GuildMember,
+    ModalMessageModalSubmitInteraction,
+    OverwriteResolvable,
     PermissionsBitField,
+    VoiceBasedChannel,
     VoiceState,
     userMention
 } from 'discord.js';
-import { voiceOwnerTransferBtn, voicePrivacyBtn } from '../modules/tempVoice/components/buttons';
-import { CustomErrors } from './errors';
+import { CustomError, CustomErrors } from './errors';
+import { Embed } from './embedsUtil';
+import { ITemporaryVoice } from '../models';
 import Logger from './logger';
 import { client } from '..';
+import { handleCooldown } from '../modules/core/events/client/interactionCreate';
 import path from 'path';
+import { tempVoiceComponents } from '../modules/tempVoice/components/buttons';
 
 const filePath = path.join(__dirname, __filename);
 
-export const createNewTempChannel = async (newState: VoiceState) => {
+export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITemporaryVoice) => {
     try {
-        const username = newState.member!.user.username;
+        handleCooldown(newState.member!.user.id, 'voiceCreate', 60 * 1000);
+        const member = newState.member as GuildMember;
+        const username = member.user.username;
+        const { userSettings, nameModel } = tempVoice;
+        const isPublic = userSettings[member.id]?.isPublic ?? true;
+        const permOverwrite = setPerms(userSettings, member.id, newState.guild, isPublic);
+
         await newState.guild.channels
             .create({
-                name: `🔊Voc ${username}`,
+                name: nameModel[isPublic ? 'unlocked' : 'locked'].replace('{USERNAME}', username),
                 type: ChannelType.GuildVoice,
-                topic: newState.member!.user.id,
-                permissionOverwrites: [
-                    {
-                        id: newState.member!.user.id,
-                        allow: [
-                            PermissionsBitField.Flags.MoveMembers,
-                            PermissionsBitField.Flags.ViewChannel,
-                            PermissionsBitField.Flags.Connect,
-                            PermissionsBitField.Flags.Speak,
-                            PermissionsBitField.Flags.ReadMessageHistory
-                        ]
-                    },
-                    {
-                        id: client.user.id,
-                        allow: [
-                            PermissionsBitField.Flags.MoveMembers,
-                            PermissionsBitField.Flags.ViewChannel,
-                            PermissionsBitField.Flags.Connect,
-                            PermissionsBitField.Flags.ReadMessageHistory
-                        ]
-                    }
-                ]
+                topic: member.user.id,
+                permissionOverwrites: permOverwrite
             })
             .then(channel => {
                 channel.setParent(newState.channel!.parentId, {
                     lockPermissions: false
                 });
-                newState.member!.voice.setChannel(channel.id);
-                const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-                    voicePrivacyBtn,
-                    voiceOwnerTransferBtn
-                );
-                client.tempVoice.set(channel.id, channel);
+
+                member.voice.setChannel(channel.id);
+
+                client.tempVoice.set(channel.id, {
+                    ownerId: member.user.id,
+                    isPublic
+                });
+
                 channel.send({
-                    content: `Hey ${userMention(newState.member!.id)} !
+                    content: `Hey ${userMention(member.id)} !
           \nTu peux gérer ton salon vocal depuis ici ! Il te suffit de faire : \`/voice\` pour avoir toutes les options 
           \n(bonus: Tu peux déco quelqu'un avec un clic droit sur leur nom)`,
-                    components: [row]
+                    components: tempVoiceComponents
                 });
             });
     } catch (err: any) {
-        Logger.error(`An error occurred while creating a voice channel`, err, filePath);
-        throw CustomErrors.CreateNewTempChannelError;
+        if (err instanceof CustomError) {
+            const embed = Embed.error(err.message);
+            newState.member?.voice.disconnect();
+            newState.member?.send({ embeds: [embed] });
+        } else {
+            Logger.error(`An error occurred while creating a voice channel`, err, filePath);
+            throw CustomErrors.CreateNewTempChannelError;
+        }
     }
 };
 
-export const switchVoicePrivacy = async (member: GuildMember) => {
+export const switchVoicePrivacy = async (
+    member: GuildMember,
+    nameModel: ITemporaryVoice['nameModel']
+) => {
+    const voiceChannel = member.voice.channel;
+    if (!voiceChannel) return;
+
     try {
-        const voiceChannel = member.voice.channel;
-        if (!voiceChannel) return;
-
-        const isPublic: boolean = await checkVoicePrivacy(voiceChannel);
-
-        await voiceChannel.permissionOverwrites.edit(member.guild.roles.everyone, {
+        const isPublic = checkVoicePrivacy(voiceChannel.id);
+        const permissions = {
             ViewChannel: isPublic ? false : null,
-            Connect: isPublic ? false : null
+            Connect: isPublic ? false : null,
+            Speak: isPublic ? false : null,
+            ReadMessageHistory: isPublic ? false : null
+        };
+
+        await voiceChannel.permissionOverwrites.edit(member.guild.roles.everyone, permissions);
+
+        const name = nameModel[isPublic ? 'locked' : 'unlocked'].replace(
+            '{USERNAME}',
+            member.user.username
+        );
+        await voiceChannel.setName(name);
+        client.tempVoice.set(voiceChannel.id, {
+            ownerId: member.id,
+            isPublic: !isPublic
         });
     } catch (err: any) {
         Logger.error(
@@ -90,21 +106,30 @@ export const switchVoicePrivacy = async (member: GuildMember) => {
     }
 };
 
-export const switchVoiceOwner = async (user: GuildMember, target: GuildMember) => {
+export const switchVoiceOwner = async (
+    user: GuildMember,
+    target: GuildMember,
+    tempVoice: ITemporaryVoice
+) => {
     try {
         const voiceChannel = target.voice.channel;
         if (!voiceChannel) return;
 
-        const isUserOwner = voiceChannel.name === '🔊Voc ' + user.user.username;
-        if (!isUserOwner) return;
+        const ownerId = client.tempVoice.get(voiceChannel.id)?.ownerId;
+        if (ownerId !== user.id) return;
 
-        await voiceChannel.setName(`🔊Voc ${target.user.username}`);
+        const isPublic = checkVoicePrivacy(voiceChannel.id);
+        const permOverwrite = setPerms(tempVoice.userSettings, target.id, target.guild, isPublic);
 
-        await voiceChannel.permissionOverwrites.delete(user.id);
-        await voiceChannel.permissionOverwrites.edit(target.id, {
-            MoveMembers: true,
-            ViewChannel: true,
-            Connect: true
+        const name = tempVoice.nameModel[isPublic ? 'unlocked' : 'locked'].replace(
+            '{USERNAME}',
+            target.user.username
+        );
+        await voiceChannel.setName(name);
+        await voiceChannel.permissionOverwrites.set(permOverwrite);
+        client.tempVoice.set(voiceChannel.id, {
+            ownerId: target.id,
+            isPublic
         });
     } catch (err: any) {
         Logger.error(
@@ -116,18 +141,12 @@ export const switchVoiceOwner = async (user: GuildMember, target: GuildMember) =
     }
 };
 
-export const checkVoicePrivacy = async (voiceC: BaseGuildVoiceChannel) => {
-    const permissions = voiceC.permissionsFor(voiceC.guild.roles.everyone);
-    if (!permissions) return false;
-
-    return permissions.has([
-        PermissionsBitField.Flags.Connect,
-        PermissionsBitField.Flags.ViewChannel
-    ]);
+export const checkVoicePrivacy = (voiceId: string): boolean => {
+    return client.tempVoice.get(voiceId)?.isPublic;
 };
 
-export const checkVoiceOwnership = async (voiceC: BaseGuildVoiceChannel, member: GuildMember) => {
-    return voiceC.permissionsFor(member)?.has(PermissionsBitField.Flags.MoveMembers);
+export const checkVoiceOwnership = async (voiceId: string, memberId: string) => {
+    return client.tempVoice.get(voiceId)?.ownerId === memberId;
 };
 
 export const deleteEmptyChannel = async (voiceC: BaseGuildVoiceChannel) => {
@@ -138,4 +157,91 @@ export const deleteEmptyChannel = async (voiceC: BaseGuildVoiceChannel) => {
     } catch (err: any) {
         Logger.error(`An error occurred while deleting a voice channel`, err, filePath);
     }
+};
+
+export async function setVoiceLimit(
+    interaction: ChatInputCommandInteraction | ModalMessageModalSubmitInteraction,
+    voiceChannel: VoiceBasedChannel
+) {
+    let userLimit;
+
+    if (interaction instanceof ChatInputCommandInteraction) {
+        userLimit = interaction.options.getNumber('limite', true);
+    } else {
+        userLimit = parseInt(interaction.fields.getTextInputValue('LimitThresholdInput'));
+    }
+    if (isNaN(userLimit)) userLimit = 0;
+
+    if (voiceChannel && voiceChannel.type === ChannelType.GuildVoice) {
+        await voiceChannel.setUserLimit(userLimit);
+        if (userLimit > 0) {
+            return interaction.reply({
+                content: `Le nombre de places dans le salon est maintenant limité à ${userLimit}.`,
+                ephemeral: true
+            });
+        } else {
+            return interaction.reply({
+                content: `La limite d'utilisateurs a été supprimée.`,
+                ephemeral: true
+            });
+        }
+    }
+}
+
+const permissions = [
+    PermissionsBitField.Flags.ViewChannel,
+    PermissionsBitField.Flags.Connect,
+    PermissionsBitField.Flags.Speak,
+    PermissionsBitField.Flags.ReadMessageHistory
+];
+
+const setPerms = (
+    userSettings: ITemporaryVoice['userSettings'],
+    userId: string,
+    guild: Guild,
+    isPublic = true
+) => {
+    const trustedUsers = userSettings[userId]?.trustedUsers || [];
+    const blockedUsers = userSettings[userId]?.blockedUsers || [];
+
+    const permissionsOverwrites: OverwriteResolvable[] = [
+        {
+            id: userId,
+            allow: permissions.concat([PermissionsBitField.Flags.MoveMembers])
+        },
+        {
+            id: client.user.id,
+            allow: permissions.concat([PermissionsBitField.Flags.MoveMembers])
+        }
+    ];
+
+    trustedUsers.forEach(user => {
+        if (guild.members.cache.has(user))
+            permissionsOverwrites.push({
+                id: user,
+                allow: permissions
+            });
+    });
+
+    blockedUsers.forEach(user => {
+        if (guild.members.cache.has(user))
+            permissionsOverwrites.push({
+                id: user,
+                deny: permissions
+            });
+    });
+
+    if (isPublic) {
+        permissionsOverwrites.push({
+            id: guild.roles.everyone,
+            allow: permissions
+        });
+    } else {
+        permissionsOverwrites.push({
+            id: guild.roles.everyone,
+            deny: permissions
+        });
+    }
+
+    return permissionsOverwrites;
 };

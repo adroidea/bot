@@ -22,14 +22,7 @@ export const formatCustomList = (
     customListLength?: number
 ): string => {
     if (list.length === 0) {
-        switch (type) {
-            case 'role':
-                return '> Aucun rôle';
-            case 'user':
-                return '> Aucun utilisateur';
-            case 'channel':
-                return '> Aucun salon';
-        }
+        return `> Aucun ${type === 'user' ? 'utilisateur' : type === 'role' ? 'rôle' : 'salon'}`;
     }
 
     const mention = (id: string) => {
