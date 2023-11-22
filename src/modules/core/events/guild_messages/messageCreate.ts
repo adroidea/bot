@@ -1,4 +1,5 @@
 import { Client, Events, Message } from 'discord.js';
+import { Guilds } from '../../../../utils/consts';
 import { randomizeArray } from '../../../twitchLive/tasks/twitchAlert.cron';
 
 export default {
@@ -40,7 +41,7 @@ export default {
                 );
 
             case /JPPFC/gm.test(message.content):
-                if (message.guildId === '743969889177436211')
+                if (message.guildId === Guilds.LeMondeDLaure)
                     return sendReply(randomizeArray(jppfc));
                 return;
 

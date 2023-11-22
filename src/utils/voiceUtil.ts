@@ -22,6 +22,14 @@ import { tempVoiceComponents } from '../modules/tempVoice/components/buttons';
 
 const filePath = path.join(__dirname, __filename);
 
+/**
+ * Creates a new temporary voice channel.
+ * 
+ * @param newState - The new state of the voice channel.
+ * @param tempVoice - The temporary voice settings.
+ * @returns A Promise that resolves when the new channel is created.
+ * @throws {CustomError} If an error occurs while creating the channel.
+ */
 export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITemporaryVoice) => {
     try {
         handleCooldown(newState.member!.user.id, 'voiceCreate', 60 * 1000);
@@ -69,6 +77,13 @@ export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITem
     }
 };
 
+
+/**
+ * Switches the voice privacy of a member in a voice channel.
+ * @param member The guild member whose voice privacy is being switched.
+ * @param nameModel The name model used to generate the new voice channel name.
+ * @throws {CustomErrors.SwitchVoicePrivacyError} If an error occurs while changing the privacy of the voice channel.
+ */
 export const switchVoicePrivacy = async (
     member: GuildMember,
     nameModel: ITemporaryVoice['nameModel']
@@ -106,6 +121,14 @@ export const switchVoicePrivacy = async (
     }
 };
 
+/**
+ * Switches the owner of a voice channel to the specified user.
+ * 
+ * @param user - The user who wants to switch the owner of the voice channel.
+ * @param target - The user to whom the ownership of the voice channel will be switched.
+ * @param tempVoice - The temporary voice channel settings.
+ * @throws {CustomErrors.SwitchVoiceOwnerError} If an error occurs while changing the owner of the voice channel.
+ */
 export const switchVoiceOwner = async (
     user: GuildMember,
     target: GuildMember,
@@ -141,14 +164,29 @@ export const switchVoiceOwner = async (
     }
 };
 
+/**
+ * Checks the privacy status of a voice channel.
+ * @param voiceId - The ID of the voice to check.
+ * @returns A boolean indicating whether the voice is public or not.
+ */
 export const checkVoicePrivacy = (voiceId: string): boolean => {
     return client.tempVoice.get(voiceId)?.isPublic;
 };
 
+/**
+ * Checks if a member is the owner of a voice channel.
+ * @param voiceId - The ID of the voice channel.
+ * @param memberId - The ID of the member.
+ * @returns A boolean indicating whether the member is the owner of the voice channel.
+ */
 export const checkVoiceOwnership = async (voiceId: string, memberId: string) => {
     return client.tempVoice.get(voiceId)?.ownerId === memberId;
 };
 
+/**
+ * Deletes a voice channel if it is empty.
+ * @param voiceC - The voice channel to delete.
+ */
 export const deleteEmptyChannel = async (voiceC: BaseGuildVoiceChannel) => {
     try {
         if (voiceC.members.size > 0) return;
@@ -159,6 +197,14 @@ export const deleteEmptyChannel = async (voiceC: BaseGuildVoiceChannel) => {
     }
 };
 
+
+/**
+ * Sets the user limit for a voice channel.
+ * 
+ * @param interaction - The interaction object representing the command or modal submit interaction.
+ * @param voiceChannel - The voice channel to set the user limit for.
+ * @returns A Promise that resolves when the user limit is set.
+ */
 export async function setVoiceLimit(
     interaction: ChatInputCommandInteraction | ModalMessageModalSubmitInteraction,
     voiceChannel: VoiceBasedChannel

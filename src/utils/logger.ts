@@ -1,6 +1,6 @@
+import { Channels, Colors } from './consts';
 import { EmbedBuilder, WebhookClient, codeBlock } from 'discord.js';
 import ansis, { AnsiColors } from 'ansis';
-import { Colors } from './consts';
 import { client as discordClient } from '../';
 
 const write = (
@@ -71,6 +71,7 @@ const sendWebhook = (embed: EmbedBuilder) => {
     const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_LOG_URL! });
     webhookClient
         .send({
+            threadId: Channels.logsThread,
             username: 'adroid_ea',
             avatarURL:
                 'https://cdn.discordapp.com/attachments/763373898779197481/887428474766229574/worldbot.png',
