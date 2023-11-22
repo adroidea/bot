@@ -8,70 +8,75 @@ import {
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
 import { IGuild } from '../../../../models';
+import { client } from '../../../..';
 import { formatCustomList } from '../../../../utils/embedsUtil';
 import guildService from '../../../../services/guildService';
 
 const selectMenu = new UserSelectMenuBuilder()
-    .setCustomId('voiceWhitelistAddMenu')
-    .setPlaceholder('Autorisation pour ces utilisateurs')
+    .setCustomId('voiceBlacklistAddMenu')
+    .setPlaceholder('Interdiction pour ces utilisateurs')
     .setMinValues(0)
     .setMaxValues(25);
 
-export const voiceWhitelistAddRow = new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
+export const voiceBlacklistAddRow = new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
     selectMenu
 );
 
 export default {
     data: {
-        name: `voiceWhitelistAddMenu`
+        name: `voiceBlacklistAddMenu`
     },
     async execute(interaction: UserSelectMenuInteraction, guildSettings: IGuild) {
-        await interaction.deferUpdate();
         const { trustedUsers, blockedUsers } =
             guildSettings.modules.temporaryVoice.userSettings[interaction.user.id];
-        const newTrustedUsers = interaction.users
-            .filter(user => user.id !== interaction.user.id)
+        const newBLUsers = interaction.users
+            .filter(user => user.id !== interaction.user.id && user.id !== client.user!.id)
             .map(user => user.id);
 
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
 
-        for (const userId of newTrustedUsers) {
+        for (const userId of newBLUsers) {
             if (voiceChannel) {
-                const isWhitelisted = voiceChannel.permissionOverwrites.cache
+                const isBlacklisted = voiceChannel.permissionOverwrites.cache
                     .get(userId)
-                    ?.allow.has([
+                    ?.deny.has([
                         PermissionsBitField.Flags.Connect,
                         PermissionsBitField.Flags.ViewChannel
                     ]);
 
-                if (!isWhitelisted) {
+                if (!isBlacklisted) {
                     await voiceChannel.permissionOverwrites.edit(userId, {
-                        ViewChannel: true,
-                        Connect: true,
-                        Speak: true
+                        ViewChannel: false,
+                        Connect: false,
+                        Speak: false
                     });
+                }
+
+                const target = voiceChannel.members.get(userId);
+
+                if (target && !target.permissions.has(PermissionsBitField.Flags.Administrator)) {
+                    await target.voice.disconnect();
                 }
             }
 
-            if (!trustedUsers.includes(userId)) {
-                trustedUsers.push(userId);
-                if (blockedUsers.includes(userId)) {
-                    blockedUsers.splice(blockedUsers.indexOf(userId), 1);
+            if (!blockedUsers.includes(userId)) {
+                blockedUsers.push(userId);
+                if (trustedUsers.includes(userId)) {
+                    trustedUsers.splice(trustedUsers.indexOf(userId), 1);
                 }
             }
         }
 
         guildService.updateGuild(interaction.guild!.id, {
             [`modules.temporaryVoice.userSettings.${interaction.user.id}.trustedUsers`]:
-                newTrustedUsers,
-            [`modules.temporaryVoice.userSettings.${interaction.user.id}.blockedUsers`]:
-                blockedUsers
+                trustedUsers,
+            [`modules.temporaryVoice.userSettings.${interaction.user.id}.blockedUsers`]: newBLUsers
         });
 
         const newEmbed = new EmbedBuilder()
-            .setTitle('Utilisateurs ajoutés')
-            .setDescription(formatCustomList(newTrustedUsers, 'user'))
+            .setTitle('Utilisateurs bloqués')
+            .setDescription(formatCustomList(newBLUsers, 'user'))
             .setColor(Colors.random);
 
         return interaction.update({
