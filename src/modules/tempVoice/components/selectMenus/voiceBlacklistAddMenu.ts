@@ -27,6 +27,7 @@ export default {
         name: `voiceBlacklistAddMenu`
     },
     async execute(interaction: UserSelectMenuInteraction, guildSettings: IGuild) {
+        await interaction.deferUpdate();
         const { trustedUsers, blockedUsers } =
             guildSettings.modules.temporaryVoice.userSettings[interaction.user.id];
         const newBLUsers = interaction.users
@@ -79,7 +80,7 @@ export default {
             .setDescription(formatCustomList(newBLUsers, 'user'))
             .setColor(Colors.random);
 
-        return interaction.update({
+        return interaction.editReply({
             embeds: [newEmbed],
             components: []
         });
