@@ -8,6 +8,7 @@ import { voicePrivacyBtn } from './voicePrivacyBtn';
 import { voiceSetRTCRegionBtn } from './voiceSetRTCRegionBtn';
 import { voiceWhitelistAddBtn } from './voiceWhitelistAddBtn';
 import { voiceWhitelistRemoveBtn } from './voiceWhitelistRemoveBtn';
+import { voiceWhitelistTempAddBtn } from './voiceWhitelistTempAddBtn';
 
 const voiceOwnerTransferBtn = new ButtonBuilder()
     .setCustomId('voiceOwnerTransferBtn')
@@ -24,6 +25,7 @@ export const firstRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
 
 export const secondRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
     voiceWhitelistAddBtn,
+    voiceWhitelistTempAddBtn,
     voiceWhitelistRemoveBtn,
     voiceBlacklistAddBtn,
     voiceBlacklistRemoveBtn
