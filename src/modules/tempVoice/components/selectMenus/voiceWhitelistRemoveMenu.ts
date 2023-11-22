@@ -3,40 +3,50 @@ import {
     EmbedBuilder,
     GuildMember,
     PermissionsBitField,
-    UserSelectMenuBuilder,
+    StringSelectMenuBuilder,
+    User,
     UserSelectMenuInteraction
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
 import { IGuild } from '../../../../models';
+import { client } from '../../../..';
 import { formatCustomList } from '../../../../utils/embedsUtil';
 import guildService from '../../../../services/guildService';
 
-const selectMenu = new UserSelectMenuBuilder()
-    .setCustomId('voiceWhitelistAddMenu')
-    .setPlaceholder('Autorisation pour ces utilisateurs')
-    .setMinValues(0)
-    .setMaxValues(25);
+const buildSelectMenu = (users: string[]) => {
+    const usersData: User[] = users
+        .map(user => client.users.cache.get(user))
+        .filter(user => user !== undefined);
 
-export const voiceWhitelistAddRow = new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
-    selectMenu
-);
+    return new StringSelectMenuBuilder()
+        .setCustomId('voiceWhitelistRemoveMenu')
+        .setPlaceholder("Lever l'autorisation de ces utilisateurs")
+        .addOptions(
+            usersData.map((user: User) => ({
+                label: user.username,
+                value: user.id,
+                emoji: user.bot ? '🤖' : '👤'
+            }))
+        )
+        .setMinValues(1)
+        .setMaxValues(usersData.length);
+};
 
+export const buildVoiceWhitelistRemoveRow = (users: string[]) => {
+    return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(buildSelectMenu(users));
+};
 export default {
     data: {
-        name: `voiceWhitelistAddMenu`
+        name: `voiceWhitelistRemoveMenu`
     },
     async execute(interaction: UserSelectMenuInteraction, guildSettings: IGuild) {
-        await interaction.deferUpdate();
-        const { trustedUsers, blockedUsers } =
+        const { trustedUsers } =
             guildSettings.modules.temporaryVoice.userSettings[interaction.user.id];
-        const newTrustedUsers = interaction.users
-            .filter(user => user.id !== interaction.user.id)
-            .map(user => user.id);
-
+        const selectedUserIds = interaction.values;
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
 
-        for (const userId of newTrustedUsers) {
+        for (const userId of selectedUserIds) {
             if (voiceChannel) {
                 const isWhitelisted = voiceChannel.permissionOverwrites.cache
                     .get(userId)
@@ -45,33 +55,28 @@ export default {
                         PermissionsBitField.Flags.ViewChannel
                     ]);
 
-                if (!isWhitelisted) {
+                if (isWhitelisted) {
                     await voiceChannel.permissionOverwrites.edit(userId, {
-                        ViewChannel: true,
-                        Connect: true,
-                        Speak: true
+                        ViewChannel: null,
+                        Connect: null,
+                        Speak: null
                     });
                 }
             }
 
-            if (!trustedUsers.includes(userId)) {
-                trustedUsers.push(userId);
-                if (blockedUsers.includes(userId)) {
-                    blockedUsers.splice(blockedUsers.indexOf(userId), 1);
-                }
+            if (trustedUsers.includes(userId)) {
+                trustedUsers.splice(trustedUsers.indexOf(userId), 1);
             }
         }
 
         guildService.updateGuild(interaction.guild!.id, {
             [`modules.temporaryVoice.userSettings.${interaction.user.id}.trustedUsers`]:
-                newTrustedUsers,
-            [`modules.temporaryVoice.userSettings.${interaction.user.id}.blockedUsers`]:
-                blockedUsers
+                trustedUsers
         });
 
         const newEmbed = new EmbedBuilder()
-            .setTitle('Utilisateurs ajoutés')
-            .setDescription(formatCustomList(newTrustedUsers, 'user'))
+            .setTitle('Utilisateurs retirés de la whitelist')
+            .setDescription(formatCustomList(selectedUserIds, 'user'))
             .setColor(Colors.random);
 
         return interaction.update({

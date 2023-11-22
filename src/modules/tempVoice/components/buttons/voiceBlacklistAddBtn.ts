@@ -1,4 +1,5 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle } from 'discord.js';
+import { voiceBlacklistAddRow } from '../selectMenus';
 
 export const voiceBlacklistAddBtn = new ButtonBuilder()
     .setCustomId('voiceBlacklistAddBtn')
@@ -10,6 +11,10 @@ export default {
         name: `voiceBlacklistAddBtn`
     },
     async execute(interaction: ButtonInteraction) {
-        console.log(interaction.user.username);
+        
+        return interaction.reply({
+            components: [voiceBlacklistAddRow],
+            ephemeral: true
+        });
     }
 };
