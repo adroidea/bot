@@ -5,6 +5,7 @@ import { voiceDeleteBtn } from './voiceDeleteBtn';
 import { voiceLimitBtn } from './voiceLimitBtn';
 //import { voiceOwnerTransferBtn } from './voiceOwnerTransferBtn';
 import { voicePrivacyBtn } from './voicePrivacyBtn';
+import { voiceSetRTCRegionBtn } from './voiceSetRTCRegionBtn';
 import { voiceWhitelistAddBtn } from './voiceWhitelistAddBtn';
 import { voiceWhitelistRemoveBtn } from './voiceWhitelistRemoveBtn';
 
@@ -15,8 +16,9 @@ const voiceOwnerTransferBtn = new ButtonBuilder()
 
 export const firstRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
     voiceLimitBtn,
-    voicePrivacyBtn,
     voiceOwnerTransferBtn,
+    voicePrivacyBtn,
+    voiceSetRTCRegionBtn,
     voiceDeleteBtn
 );
 

@@ -2,6 +2,7 @@ import {
     BaseGuildVoiceChannel,
     ChannelType,
     ChatInputCommandInteraction,
+    EmbedBuilder,
     Guild,
     GuildMember,
     ModalMessageModalSubmitInteraction,
@@ -12,6 +13,7 @@ import {
     userMention
 } from 'discord.js';
 import { CustomError, CustomErrors } from './errors';
+import { Colors } from './consts';
 import { Embed } from './embedsUtil';
 import { ITemporaryVoice } from '../models';
 import Logger from './logger';
@@ -24,7 +26,6 @@ const filePath = path.join(__dirname, __filename);
 
 /**
  * Creates a new temporary voice channel.
- * 
  * @param newState - The new state of the voice channel.
  * @param tempVoice - The temporary voice settings.
  * @returns A Promise that resolves when the new channel is created.
@@ -58,12 +59,7 @@ export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITem
                     isPublic
                 });
 
-                channel.send({
-                    content: `Hey ${userMention(member.id)} !
-          \nTu peux gérer ton salon vocal depuis ici ! Il te suffit de faire : \`/voice\` pour avoir toutes les options 
-          \n(bonus: Tu peux déco quelqu'un avec un clic droit sur leur nom)`,
-                    components: tempVoiceComponents
-                });
+                channel.send(buildVoiceEmbed(member.user.id));
             });
     } catch (err: any) {
         if (err instanceof CustomError) {
@@ -76,7 +72,6 @@ export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITem
         }
     }
 };
-
 
 /**
  * Switches the voice privacy of a member in a voice channel.
@@ -123,7 +118,6 @@ export const switchVoicePrivacy = async (
 
 /**
  * Switches the owner of a voice channel to the specified user.
- * 
  * @param user - The user who wants to switch the owner of the voice channel.
  * @param target - The user to whom the ownership of the voice channel will be switched.
  * @param tempVoice - The temporary voice channel settings.
@@ -197,10 +191,31 @@ export const deleteEmptyChannel = async (voiceC: BaseGuildVoiceChannel) => {
     }
 };
 
+/**
+ * Builds a voice embed object with a welcome message and options for managing a temporary voice channel.
+ * @param memberId - The ID of the member for whom the embed is being built.
+ * @returns The voice embed object containing the welcome message, embed, and components.
+ */
+export const buildVoiceEmbed = (memberId: string) => {
+    const embed = new EmbedBuilder()
+        .setTitle(`**Tableau de bord**`)
+        .setDescription(
+            'Bienvenue dans ton salon vocal temporaire !\nTu peux tout gérer depuis ici.'
+        )
+        .setColor(Colors.random)
+        //TODO: .setImage('')
+        .setFooter({ text: "bonus: Tu peux déco quelqu'un avec un clic droit sur leur nom" });
+
+    return {
+        content: `Hey ${userMention(memberId)} !`,
+        embeds: [embed],
+        components: tempVoiceComponents
+    };
+};
 
 /**
  * Sets the user limit for a voice channel.
- * 
+ *
  * @param interaction - The interaction object representing the command or modal submit interaction.
  * @param voiceChannel - The voice channel to set the user limit for.
  * @returns A Promise that resolves when the user limit is set.
@@ -241,6 +256,15 @@ const permissions = [
     PermissionsBitField.Flags.ReadMessageHistory
 ];
 
+/**
+ * Sets the permissions for a user in a voice channel.
+ *
+ * @param userSettings - The user settings object.
+ * @param userId - The ID of the user.
+ * @param guild - The guild object.
+ * @param isPublic - Indicates whether the voice channel is public or not. Default is true.
+ * @returns An array of permission overwrites for the voice channel.
+ */
 const setPerms = (
     userSettings: ITemporaryVoice['userSettings'],
     userId: string,
