@@ -1,6 +1,6 @@
 import { REST, Routes } from 'discord.js';
+import { Guilds } from './utils/consts';
 import Logger from './utils/logger';
-import { OWNER_SERVER_ID } from './utils/consts';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'node:path';
@@ -31,6 +31,7 @@ export const regCMD = async (clientId: string) => {
                     return readCommands(filePath);
                 } else if (file.endsWith('.js')) {
                     const { default: command } = await import(filePath);
+                    command.data.dmPermission = false;
                     if (command.guildOnly) guildCommands.push(command.data);
                     else commands.push(command.data);
                 }
@@ -47,7 +48,7 @@ export const regCMD = async (clientId: string) => {
     const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 
     try {
-        await rest.put(Routes.applicationGuildCommands(clientId, OWNER_SERVER_ID), {
+        await rest.put(Routes.applicationGuildCommands(clientId, Guilds.adan_ea), {
             body: guildCommands
         });
         Logger.info(`Successfully registered ${guildCommands.length} guild application commands.`);

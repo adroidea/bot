@@ -8,7 +8,7 @@ import {
     PermissionsBitField,
     userMention
 } from 'discord.js';
-import { Colors, OWNER_SERVER_ID } from '../../../utils/consts';
+import { Colors, Guilds } from '../../../utils/consts';
 import { IQOtD, IQuestions } from '../models';
 import { adminRow, stealRow } from '../components/buttons';
 import { CustomErrors } from '../../../utils/errors';
@@ -84,7 +84,7 @@ export default {
         ) {
             qotddService.createQOtD(questionBuilder);
             const successEmbed = Embed.success('Question ajoutée !');
-            if (interaction.guildId !== OWNER_SERVER_ID) {
+            if (interaction.guildId !== Guilds.adan_ea) {
                 await interaction.reply({
                     embeds: [
                         questionEmbed,
@@ -125,7 +125,7 @@ export default {
                 components: [adminRow]
             });
             const successEmbed = Embed.success('Requête envoyée !');
-            if (interaction.guildId !== OWNER_SERVER_ID) {
+            if (interaction.guildId !== Guilds.adan_ea) {
                 await interaction.reply({
                     embeds: [
                         questionEmbed,

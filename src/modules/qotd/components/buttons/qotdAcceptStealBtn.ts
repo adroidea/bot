@@ -7,8 +7,8 @@ import {
     TextBasedChannel,
     userMention
 } from 'discord.js';
+import { Channels } from '../../../../utils/consts';
 import { Embed } from '../../../../utils/embedsUtil';
-import { LOG_CHANNEL_ID } from '../../../../utils/consts';
 import { adminRow } from '.';
 import { client } from '../../../..';
 
@@ -53,7 +53,9 @@ export default {
             .setFooter({
                 text: oldEmbed.footer?.text!
             });
-        const ownerRequestChannel: Channel | undefined = client.channels.cache.get(LOG_CHANNEL_ID);
+        const ownerRequestChannel: Channel | undefined = client.channels.cache.get(
+            Channels.stealQDJ
+        );
         (ownerRequestChannel as TextBasedChannel).send({
             embeds: [questionEmbed],
             components: [adminRow]

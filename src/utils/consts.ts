@@ -58,6 +58,16 @@ export const Modules: { [key: string]: IModule } = {
     }
 };
 
+export const Guilds = {
+    adanLab: '1131215407559213188',
+    adan_ea: '814621177770541076',
+    LeMondeDLaure: '743969889177436211'
+};
+
+export const Channels = {
+    logsThread: '1138134483149795390',
+    stealQDJ: '949252153225150524',
+    issues: '1159452960825286728'
+};
+
 export const OWNER_ID = '294916386072035328';
-export const OWNER_SERVER_ID = '605053128148254724';
-export const LOG_CHANNEL_ID = '949252153225150524';
