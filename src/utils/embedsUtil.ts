@@ -16,6 +16,13 @@ export const Embed = {
     rc: (title: string): EmbedBuilder => new EmbedBuilder().setTitle(title).setColor(Colors.random)
 };
 
+/**
+ * Formats a custom list of items based on the specified type.
+ * @param list The list of items to format.
+ * @param type The type of items in the list ('role', 'user', or 'channel').
+ * @param customListLength The optional length of the custom list to display.
+ * @returns The formatted custom list as a string.
+ */
 export const formatCustomList = (
     list: string[],
     type: 'role' | 'user' | 'channel',
@@ -51,6 +58,13 @@ export const formatCustomList = (
     return displayUsers;
 };
 
+/**
+ * Formats the fields of an embed by replacing or adding a custom field at a specified index.
+ * @param fields - The array of existing fields.
+ * @param customField - The custom field to replace or add.
+ * @param replaceIndex - The index at which to replace the field. If greater than the length of the fields array, the custom field will be added at the end.
+ * @returns The formatted array of fields.
+ */
 export const formatFields = (
     fields: APIEmbedField[],
     customField: APIEmbedField,

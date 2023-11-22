@@ -26,6 +26,7 @@ import { timestampToDate } from '../../../../utils/botUtil';
 export default {
     name: Events.InteractionCreate,
     async execute(client: IDiscordClient, interaction: Interaction) {
+        if (!interaction.guildId) return;
         if (interaction instanceof CommandInteraction) {
             await handleCommandInteraction(client, interaction);
         } else if (
