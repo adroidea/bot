@@ -50,7 +50,7 @@ export default {
             .setTitle('La région a bien été changée')
             .setColor(Colors.random);
 
-        return interaction.update({
+        return interaction.editReply({
             embeds: [newEmbed],
             components: []
         });

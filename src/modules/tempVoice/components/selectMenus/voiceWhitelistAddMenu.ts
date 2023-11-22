@@ -74,7 +74,7 @@ export default {
             .setDescription(formatCustomList(newTrustedUsers, 'user'))
             .setColor(Colors.random);
 
-        return interaction.update({
+        return interaction.editReply({
             embeds: [newEmbed],
             components: []
         });

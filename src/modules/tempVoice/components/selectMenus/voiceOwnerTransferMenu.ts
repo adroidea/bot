@@ -21,6 +21,8 @@ export default {
                 content: `Tu es déjà propriétaire, quel intérêt de faire ça ?\nAu cas où c'était un miss click :`
             });
         }
+
+        await interaction.deferUpdate();
         const voiceChannel = (interaction.member as GuildMember)!.voice.channel;
         if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel.id, user.id))) {
             throw CustomErrors.NotVoiceOwnerError;
@@ -28,7 +30,7 @@ export default {
 
         switchVoiceOwner(user, target, guildSettings.modules.temporaryVoice);
 
-        return interaction.update({
+        return interaction.editReply({
             content: `La propriété du salon a été transféré à ${userMention(target.id)}.`,
             components: []
         });
