@@ -1,13 +1,13 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle } from 'discord.js';
 
-export const voiceBlockBtn = new ButtonBuilder()
-    .setCustomId('voiceBlockBtn')
-    .setEmoji('🛑')
+export const voiceBlacklistAddBtn = new ButtonBuilder()
+    .setCustomId('voiceBlacklistAddBtn')
+    .setEmoji('📕')
     .setStyle(ButtonStyle.Secondary);
 
 export default {
     data: {
-        name: `voiceBlockBtn`
+        name: `voiceBlacklistAddBtn`
     },
     async execute(interaction: ButtonInteraction) {
         console.log(interaction.user.username);

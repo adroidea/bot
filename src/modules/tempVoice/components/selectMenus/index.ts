@@ -1,3 +1,4 @@
-import { voiceTrustRow } from './voiceTrustMenu';
+import { voiceBlacklistAddRow } from './voiceBlacklistAddMenu';
+import { voiceWhitelistAddRow } from './voiceWhitelistAddMenu';
 
-export { voiceTrustRow };
+export { voiceBlacklistAddRow, voiceWhitelistAddRow };
