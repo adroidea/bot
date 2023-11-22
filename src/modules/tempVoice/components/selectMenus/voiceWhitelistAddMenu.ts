@@ -10,18 +10,18 @@ import { formatCustomList } from '../../../../utils/embedsUtil';
 import guildService from '../../../../services/guildService';
 
 const selectMenu = new UserSelectMenuBuilder()
-    .setCustomId('voiceTrustMenu')
+    .setCustomId('voiceWhitelistAddMenu')
     .setPlaceholder('Ces utilisateurs seront autorisés à rejoindre')
     .setMinValues(0)
     .setMaxValues(25);
 
-export const voiceTrustRow = new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
+export const voiceWhitelistAddRow = new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
     selectMenu
 );
 
 export default {
     data: {
-        name: `voiceTrustMenu`
+        name: `voiceWhitelistAddMenu`
     },
     async execute(interaction: UserSelectMenuInteraction, guildSettings: IGuild) {
         const { trustedUsers, blockedUsers } =

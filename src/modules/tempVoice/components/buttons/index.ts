@@ -1,16 +1,16 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import { voiceBlockBtn } from './voiceBlockBtn';
+import { voiceBlacklistAddBtn } from './voiceBlacklistAddBtn';
+import { voiceBlacklistRemoveBtn } from './voiceBlacklistRemoveBtn';
 import { voiceDeleteBtn } from './voiceDeleteBtn';
 import { voiceLimitBtn } from './voiceLimitBtn';
 //import { voiceOwnerTransferBtn } from './voiceOwnerTransferBtn';
 import { voicePrivacyBtn } from './voicePrivacyBtn';
-import { voiceTrustBtn } from './voiceTrustBtn';
-import { voiceUnblockBtn } from './voiceUnblockBtn';
-import { voiceUntrustBtn } from './voiceUntrustBtn';
+import { voiceWhitelistAddBtn } from './voiceWhitelistAddBtn';
+import { voiceWhitelistRemoveBtn } from './voiceWhitelistRemoveBtn';
 
 const voiceOwnerTransferBtn = new ButtonBuilder()
     .setCustomId('voiceOwnerTransferBtn')
-    .setEmoji('♻')
+    .setEmoji('👑')
     .setStyle(ButtonStyle.Secondary);
 
 export const firstRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -21,10 +21,10 @@ export const firstRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
 );
 
 export const secondRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    voiceTrustBtn,
-    voiceUntrustBtn,
-    voiceBlockBtn,
-    voiceUnblockBtn
+    voiceWhitelistAddBtn,
+    voiceWhitelistRemoveBtn,
+    voiceBlacklistAddBtn,
+    voiceBlacklistRemoveBtn
 );
 
 export const tempVoiceComponents = [firstRow, secondRow];

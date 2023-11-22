@@ -1,18 +1,18 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle } from 'discord.js';
-import { voiceTrustRow } from '../selectMenus';
+import { voiceWhitelistAddRow } from '../selectMenus';
 
-export const voiceTrustBtn = new ButtonBuilder()
-    .setCustomId('voiceTrustBtn')
-    .setEmoji('🤝')
+export const voiceWhitelistAddBtn = new ButtonBuilder()
+    .setCustomId('voiceWhitelistAddBtn')
+    .setEmoji('📗')
     .setStyle(ButtonStyle.Secondary);
 
 export default {
     data: {
-        name: `voiceTrustBtn`
+        name: `voiceWhitelistAddBtn`
     },
     async execute(interaction: ButtonInteraction) {
         return interaction.reply({
-            components: [voiceTrustRow],
+            components: [voiceWhitelistAddRow],
             ephemeral: true
         });
     }
