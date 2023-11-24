@@ -3,6 +3,7 @@ import {
     ButtonBuilder,
     ButtonInteraction,
     ButtonStyle,
+    Guild,
     GuildTextBasedChannel
 } from 'discord.js';
 import { IGuild } from '../../../../models';
@@ -28,18 +29,24 @@ export default {
 
         const sendMessages = guildsCache.map(async (guild: IGuild) => {
             const { privateLogChannel } = guild.modules.notifications.privateLogs;
-
-            if (!privateLogChannel || privateLogChannel === '') return failedGuilds.push(guild.id);
+            let isFailed = false;
+            if (!privateLogChannel || privateLogChannel === '') isFailed = true;
 
             const channel = (await client.channels.fetch(
                 privateLogChannel
             )) as GuildTextBasedChannel;
 
-            if (!channel) return failedGuilds.push(guild.id);
+            if (!channel) isFailed = true;
 
-            await channel
-                .send({ embeds: [interaction.message.embeds[0]] })
-                .catch(() => failedGuilds.push(guild.id));
+            if (!isFailed) {
+                await channel
+                    .send({ embeds: [interaction.message.embeds[0]] })
+                    .catch(() => isFailed = true);
+            } 
+            if (isFailed) {
+                const discordGuild: Guild = await client.guilds.fetch(guild.id);
+                return failedGuilds.push(`${discordGuild.name} (${guild.id})`);
+            }
         });
 
         await Promise.all(sendMessages);

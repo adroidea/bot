@@ -1,6 +1,7 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle } from 'discord.js';
 import { IGuild } from '../../../../models';
 import { buildVoiceBlacklistRemoveRow } from '../selectMenus';
+import { getorCreateUserSettings } from '../../../../utils/modulesUil';
 
 export const voiceBlacklistRemoveBtn = new ButtonBuilder()
     .setCustomId('voiceBlacklistRemoveBtn')
@@ -12,6 +13,7 @@ export default {
         name: `voiceBlacklistRemoveBtn`
     },
     async execute(interaction: ButtonInteraction, guildSettings: IGuild) {
+        getorCreateUserSettings(interaction.user.id, guildSettings);
         const { blockedUsers } =
             guildSettings.modules.temporaryVoice.userSettings[interaction.user.id];
 

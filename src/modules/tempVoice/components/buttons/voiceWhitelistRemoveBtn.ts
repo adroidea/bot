@@ -1,6 +1,7 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle } from 'discord.js';
 import { IGuild } from '../../../../models';
 import { buildVoiceWhitelistRemoveRow } from '../selectMenus';
+import { getorCreateUserSettings } from '../../../../utils/modulesUil';
 export const voiceWhitelistRemoveBtn = new ButtonBuilder()
     .setCustomId('voiceWhitelistRemoveBtn')
     .setEmoji('<:untrust:1176809428981391380>')
@@ -11,8 +12,7 @@ export default {
         name: `voiceWhitelistRemoveBtn`
     },
     async execute(interaction: ButtonInteraction, guildSettings: IGuild) {
-        const trustedUsers =
-            guildSettings.modules.temporaryVoice.userSettings[interaction.user.id].trustedUsers;
+        const { trustedUsers } = await getorCreateUserSettings(interaction.user.id, guildSettings);
 
         if (trustedUsers.length === 0) {
             return interaction.reply({
