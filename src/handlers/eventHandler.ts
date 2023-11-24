@@ -3,6 +3,12 @@ import Logger from '../utils/logger';
 import fs from 'fs';
 import path from 'path';
 
+/**
+ * Handles events recursively in the specified event path.
+ * @param client - The client object.
+ * @param eventPath - The path to the events directory.
+ * @returns A promise that resolves to the number of events handled.
+ */
 export const handleEvent = async (client: Client, eventPath: string): Promise<number> => {
     let result = 0;
     const files = fs.readdirSync(eventPath);

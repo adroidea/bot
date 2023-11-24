@@ -54,6 +54,13 @@ export default {
     client
 };
 
+
+/**
+ * Sends an internal log webhook.
+ * @param logType - The type of the log.
+ * @param title - The title of the log.
+ * @param description - The description of the log.
+ */
 const sendInternalLogWebhook = (logType: string, title?: string, description?: string) => {
     const embed = new EmbedBuilder().setColor(Colors[logType]).setTimestamp();
 
@@ -67,6 +74,10 @@ const sendInternalLogWebhook = (logType: string, title?: string, description?: s
     sendWebhook(embed);
 };
 
+/**
+ * Sends a webhook with the provided embed.
+ * @param embed - The embed to send in the webhook.
+ */
 const sendWebhook = (embed: EmbedBuilder) => {
     const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_LOG_URL! });
     webhookClient

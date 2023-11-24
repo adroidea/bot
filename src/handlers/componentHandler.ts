@@ -2,6 +2,12 @@ import Logger from '../utils/logger';
 import fs from 'fs';
 import path from 'path';
 
+/**
+ * Handles the components in the specified path.
+ * @param client - The client object.
+ * @param compPath - The path to the components.
+ * @returns A promise that resolves to a record containing the names of the subfolders and the number of subcomponents in each folder.
+ */
 export const handleComponents = async (
     client: any,
     compPath: string
@@ -21,6 +27,13 @@ export const handleComponents = async (
     return result;
 };
 
+/**
+ * Handles sub-components recursively and adds valid components to the client.
+ * @param client - The client object.
+ * @param compPath - The path of the main component.
+ * @param compFolder - The folder name of the main component.
+ * @returns The number of valid components added to the client.
+ */
 const handleSubComponent = async (
     client: any,
     compPath: string,
@@ -50,6 +63,12 @@ const handleSubComponent = async (
     return result;
 };
 
+/**
+ * Checks the options of a component.
+ * @param component - The component to check.
+ * @param filePath - The file path of the component.
+ * @returns True if there are errors in the component options, false otherwise.
+ */
 const checkComponentOptions = (component: any, filePath: string): boolean => {
     let hasError = false;
     const errorList: string[] = [];
