@@ -1,7 +1,7 @@
 import { Guild } from 'discord.js';
 
-export const checkBotPermission = (guild: Guild, permissionFlag: bigint[]) => {
-    return guild.members.me!.permissions.has(permissionFlag);
+export const hasBotPermission = (guild: Guild, permissionsFlag: bigint[]) => {
+    return guild.members.me!.permissions.has(permissionsFlag);
 };
 
 export const timestampToDate = (timestamp: number): number => {

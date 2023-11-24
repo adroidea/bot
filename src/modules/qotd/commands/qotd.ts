@@ -1,8 +1,5 @@
 import {
-    ActionRowBuilder,
     ApplicationCommandOptionType,
-    ButtonBuilder,
-    ButtonStyle,
     Channel,
     ChatInputCommandInteraction,
     Client,
@@ -11,40 +8,16 @@ import {
     PermissionsBitField,
     userMention
 } from 'discord.js';
-import { Colors, OWNER_SERVER_ID } from '../../../utils/consts';
+import { Colors, Guilds } from '../../../utils/consts';
 import { IQOtD, IQuestions } from '../models';
+import { adminRow, stealRow } from '../components/buttons';
 import { CustomErrors } from '../../../utils/errors';
 import { Embed } from '../../../utils/embedsUtil';
 import { IGuild } from '../../../models';
 import { isQOtDModuleEnabled } from '../../../utils/modulesUil';
 import qotddService from '../services/qotdService';
 
-const adminRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-        .setCustomId('qotd_accept_button')
-        .setEmoji('👍')
-        .setLabel('Accepter')
-        .setStyle(ButtonStyle.Success),
-    new ButtonBuilder()
-        .setCustomId('qotd_reject_button')
-        .setEmoji('👎')
-        .setLabel('Rejeter')
-        .setStyle(ButtonStyle.Danger),
-    new ButtonBuilder()
-        .setCustomId('qotd_blacklist_reject_button')
-        .setEmoji('🔨')
-        .setLabel('Blacklister utilisateur')
-        .setStyle(ButtonStyle.Danger)
-);
-
-const stealRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-        .setCustomId('qotd_accept_steal_button')
-        .setEmoji('👍')
-        .setStyle(ButtonStyle.Success)
-);
-
-module.exports = {
+export default {
     data: {
         name: 'qdj',
         description: "Envoie une demande d'ajout de la question du jour (auto accepté pour admins)",
@@ -53,7 +26,8 @@ module.exports = {
                 name: 'question',
                 description: 'question du jour',
                 type: ApplicationCommandOptionType.String,
-                required: true
+                required: true,
+                max_length: 256
             },
             {
                 name: 'auteur',
@@ -110,7 +84,7 @@ module.exports = {
         ) {
             qotddService.createQOtD(questionBuilder);
             const successEmbed = Embed.success('Question ajoutée !');
-            if (interaction.guildId !== OWNER_SERVER_ID) {
+            if (interaction.guildId !== Guilds.adan_ea) {
                 await interaction.reply({
                     embeds: [
                         questionEmbed,
@@ -151,7 +125,7 @@ module.exports = {
                 components: [adminRow]
             });
             const successEmbed = Embed.success('Requête envoyée !');
-            if (interaction.guildId !== OWNER_SERVER_ID) {
+            if (interaction.guildId !== Guilds.adan_ea) {
                 await interaction.reply({
                     embeds: [
                         questionEmbed,

@@ -6,7 +6,7 @@ import {
     codeBlock
 } from 'discord.js';
 
-module.exports = {
+export default {
     data: {
         name: 'pingea',
         description: 'Renvoie le ping du bot'

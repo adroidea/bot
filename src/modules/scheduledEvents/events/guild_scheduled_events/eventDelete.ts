@@ -3,7 +3,7 @@ import { IGuild } from '../../../../models';
 import { eventCanceled } from './eventUpdate';
 import guildService from '../../../../services/guildService';
 
-module.exports = {
+export default {
     name: Events.GuildScheduledEventDelete,
     async execute(client: Client, event: GuildScheduledEvent) {
         const guildSettings: IGuild = await guildService.getOrCreateGuild(event.guildId);

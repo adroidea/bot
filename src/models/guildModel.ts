@@ -21,12 +21,12 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
     enabled: { type: Boolean, default: false, required: true },
     publicLogs: {
         enabled: { type: Boolean, default: false, required: true },
-        publicLogChannel: { type: String, default: '', required: true }
+        publicLogChannel: { type: String, default: '' }
     },
     privateLogs: {
         enabled: { type: Boolean, default: false, required: true },
-        privateLogChannel: { type: String, default: '', required: true },
-        notLoggedChannels: { type: [String], default: [], required: true }
+        privateLogChannel: { type: String, default: '' },
+        notLoggedChannels: { type: [String], default: [] }
     }
 });
 

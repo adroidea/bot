@@ -2,8 +2,8 @@ import { timestampToDate } from '../../../src/utils/botUtil';
 
 describe('timestampToDate', () => {
     it('correctly converts a timestamp to a date in seconds', () => {
-        const timestamp = 1630473600000; // A timestamp in milliseconds (e.g., 1630473600000 corresponds to 2021-09-01T00:00:00Z)
-        const expectedResult = 1630473600; // The corresponding date in seconds
+        const timestamp = 1630473600000;
+        const expectedResult = 1630473600;
 
         const result = timestampToDate(timestamp);
 
@@ -11,8 +11,8 @@ describe('timestampToDate', () => {
     });
 
     it('correctly handles negative timestamps', () => {
-        const timestamp = -1630473600000; // A negative timestamp in milliseconds
-        const expectedResult = -1630473600; // The corresponding date in seconds (negative)
+        const timestamp = -1630473600000;
+        const expectedResult = -1630473600;
 
         const result = timestampToDate(timestamp);
 
@@ -20,8 +20,8 @@ describe('timestampToDate', () => {
     });
 
     it('correctly handles a null timestamp', () => {
-        const timestamp = 0; // Null timestamp
-        const expectedResult = 0; // Expected result is also null
+        const timestamp = 0;
+        const expectedResult = 0;
 
         const result = timestampToDate(timestamp);
 

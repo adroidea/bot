@@ -2,7 +2,7 @@ import { ActivityType, Client, Events } from 'discord.js';
 import Logger from '../../../../utils/logger';
 import { regCMD } from '../../../../deploy-commands';
 
-module.exports = {
+export default {
     name: Events.ClientReady,
     once: true,
     async execute(client: Client) {

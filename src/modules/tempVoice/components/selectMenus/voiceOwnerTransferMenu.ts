@@ -1,12 +1,13 @@
 import { GuildMember, StringSelectMenuInteraction, userMention } from 'discord.js';
-import { checkVoiceOwnership, switchVoiceOwner } from '../../../../utils/voiceUtil';
+import { isMemberVoiceOwner, switchVoiceOwner } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
+import { IGuild } from '../../../../models';
 
-module.exports = {
+export default {
     data: {
         name: `voiceOwnerTransferMenu`
     },
-    async execute(interaction: StringSelectMenuInteraction) {
+    async execute(interaction: StringSelectMenuInteraction, guildSettings: IGuild) {
         const targetId = interaction.values[0];
         const target: GuildMember = await interaction.guild!.members.fetch(targetId);
         const user = interaction.member as GuildMember;
@@ -20,14 +21,16 @@ module.exports = {
                 content: `Tu es déjà propriétaire, quel intérêt de faire ça ?\nAu cas où c'était un miss click :`
             });
         }
+
+        await interaction.deferUpdate();
         const voiceChannel = (interaction.member as GuildMember)!.voice.channel;
-        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel, user))) {
+        if (!voiceChannel || !isMemberVoiceOwner(user.id, voiceChannel.id)) {
             throw CustomErrors.NotVoiceOwnerError;
         }
 
-        switchVoiceOwner(user, target);
+        switchVoiceOwner(user, target, guildSettings.modules.temporaryVoice);
 
-        return interaction.update({
+        return interaction.editReply({
             content: `La propriété du salon a été transféré à ${userMention(target.id)}.`,
             components: []
         });

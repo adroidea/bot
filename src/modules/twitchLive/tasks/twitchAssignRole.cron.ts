@@ -9,11 +9,6 @@ if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
     throw new Error('TWITCH_CLIENT_ID or TWITCH_CLIENT_SECRET is not defined');
 }
 
-export const randomizeArray = (array: string[]): string => {
-    const randomNumber = Math.floor(Math.random() * array.length);
-    return array[randomNumber];
-};
-
 export default function (): cron.ScheduledTask {
     return cron.schedule('* 5 * * *', () => {
         for (const guild of guildsCache) {
@@ -31,6 +26,12 @@ export default function (): cron.ScheduledTask {
     });
 }
 
+/**
+ * Toggles the role of streamers based on their streaming status.
+ * @param guild The guild where the streamers are members.
+ * @param streamers An array of streamer data.
+ * @param streamingRoleId The ID of the role to assign to streamers when they are streaming.
+ */
 const toggleStreamersRole = async (
     guild: Guild,
     streamers: IStreamersData[],
@@ -45,9 +46,8 @@ const toggleStreamersRole = async (
 
         const hasRole: boolean = member.roles.cache.some(r => r.id === role.id);
         try {
-            const response: string = await (
-                await fetch(`https://decapi.me/twitch/uptime/${streamer.streamer}`)
-            ).text();
+            const response: string = await // @ts-ignore
+            (await fetch(`https://decapi.me/twitch/uptime/${streamer.streamer}`)).text();
 
             if (response === `${streamer.streamer} is offline`) {
                 if (hasRole) {
