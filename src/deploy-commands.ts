@@ -6,6 +6,11 @@ import fs from 'fs';
 import path from 'node:path';
 
 dotenv.config();
+
+/**
+ * Registers application commands and guild application commands.
+ * @param clientId The client ID of the Discord bot.
+ */
 export const regCMD = async (clientId: string) => {
     const commands: any[] = [];
     const guildCommands: any[] = [];

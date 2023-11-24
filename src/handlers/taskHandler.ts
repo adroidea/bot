@@ -4,6 +4,11 @@ import path from 'path';
 
 export type TaskFunction = () => void;
 
+/**
+ * Handles tasks in the specified directory recursively.
+ * @param taskPath - The path to the directory containing the tasks.
+ * @returns A Promise that resolves to the number of tasks handled.
+ */
 export const handleTask = async (taskPath: string): Promise<number> => {
     let result = 0;
     const files = fs.readdirSync(taskPath);

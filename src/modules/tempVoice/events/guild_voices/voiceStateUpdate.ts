@@ -8,14 +8,31 @@ import { IGuild } from '../../../../models';
 import { client } from '../../../..';
 import guildService from '../../../../services/guildService';
 
+/**
+ * Checks if a voice channel is temporary.
+ * @param voiceId - The ID of the voice channel.
+ * @returns True if the voice channel is temporary, false otherwise.
+ */
 const isTempVoice = (voiceId: string): boolean => {
     return client.tempVoice.has(voiceId);
 };
 
+/**
+ * Checks if a voiceId is included in the hostC array.
+ * @param hostC - The array of host voiceIds.
+ * @param voiceId - The voiceId to check.
+ * @returns - True if the voiceId is included in the hostC array, false otherwise.
+ */
 const isHostVoice = (hostC: string[], voiceId: string): boolean => {
     return hostC.includes(voiceId);
 };
 
+/**
+ * Determines the type of voice update based on the old and new voice channels.
+ * @param oldC The old voice channel.
+ * @param newC The new voice channel.
+ * @returns The type of voice update: 'JOINED_VOICE', 'LEFT_VOICE', 'MOVED_VOICE', or an empty string.
+ */
 const getVoiceUpdateType = (
     oldC: VoiceBasedChannel | null,
     newC: VoiceBasedChannel | null

@@ -1,7 +1,7 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, GuildMember } from 'discord.js';
 import {
-    checkVoiceOwnership,
-    checkVoicePrivacy,
+    isMemberVoiceOwner,
+    isVoicePrivate,
     switchVoicePrivacy
 } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
@@ -21,11 +21,11 @@ export default {
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
 
-        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel.id, member.id)))
+        if (!voiceChannel || !isMemberVoiceOwner(member.id, voiceChannel.id))
             throw CustomErrors.NotVoiceOwnerError;
 
         await interaction.deferReply({ ephemeral: true });
-        let isPublic: boolean = checkVoicePrivacy(voiceChannel.id);
+        let isPublic: boolean = isVoicePrivate(voiceChannel.id);
 
         switchVoicePrivacy(member, guildSettings.modules.temporaryVoice.nameModel);
         await interaction.editReply({

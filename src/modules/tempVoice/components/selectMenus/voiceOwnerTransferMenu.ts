@@ -1,5 +1,5 @@
 import { GuildMember, StringSelectMenuInteraction, userMention } from 'discord.js';
-import { checkVoiceOwnership, switchVoiceOwner } from '../../../../utils/voiceUtil';
+import { isMemberVoiceOwner, switchVoiceOwner } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from '../../../../models';
 
@@ -24,7 +24,7 @@ export default {
 
         await interaction.deferUpdate();
         const voiceChannel = (interaction.member as GuildMember)!.voice.channel;
-        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel.id, user.id))) {
+        if (!voiceChannel || !(isMemberVoiceOwner(user.id, voiceChannel.id))) {
             throw CustomErrors.NotVoiceOwnerError;
         }
 

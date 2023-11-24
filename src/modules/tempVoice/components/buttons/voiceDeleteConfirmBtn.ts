@@ -6,7 +6,7 @@ import {
     GuildMember
 } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
-import { checkVoiceOwnership } from '../../../../utils/voiceUtil';
+import { isMemberVoiceOwner } from '../../../../utils/voiceUtil';
 
 export const voiceDeleteActionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
@@ -24,7 +24,7 @@ export default {
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
 
-        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel.id, member.id)))
+        if (!voiceChannel || !(isMemberVoiceOwner(member.id, voiceChannel.id)))
             throw CustomErrors.NotVoiceOwnerError;
 
         interaction.reply({

@@ -87,7 +87,7 @@ export const switchVoicePrivacy = async (
     if (!voiceChannel) return;
 
     try {
-        const isPublic = checkVoicePrivacy(voiceChannel.id);
+        const isPublic = isVoicePrivate(voiceChannel.id);
         const permissions = {
             ViewChannel: isPublic ? false : null,
             Connect: isPublic ? false : null,
@@ -131,11 +131,11 @@ export const switchVoiceOwner = async (
     try {
         const voiceChannel = target.voice.channel;
         if (!voiceChannel) return;
-
+        
         const ownerId = client.tempVoice.get(voiceChannel.id)?.ownerId;
         if (ownerId !== user.id) return;
 
-        const isPublic = checkVoicePrivacy(voiceChannel.id);
+        const isPublic = isVoicePrivate(voiceChannel.id);
         const permOverwrite = setPerms(tempVoice.userSettings, target.id, target.guild, isPublic);
 
         const name = tempVoice.nameModel[isPublic ? 'unlocked' : 'locked'].replace(
@@ -163,7 +163,7 @@ export const switchVoiceOwner = async (
  * @param voiceId - The ID of the voice to check.
  * @returns A boolean indicating whether the voice is public or not.
  */
-export const checkVoicePrivacy = (voiceId: string): boolean => {
+export const isVoicePrivate = (voiceId: string): boolean => {
     return client.tempVoice.get(voiceId)?.isPublic;
 };
 
@@ -173,7 +173,7 @@ export const checkVoicePrivacy = (voiceId: string): boolean => {
  * @param memberId - The ID of the member.
  * @returns A boolean indicating whether the member is the owner of the voice channel.
  */
-export const checkVoiceOwnership = async (voiceId: string, memberId: string) => {
+export const isMemberVoiceOwner = (memberId: string, voiceId: string) => {
     return client.tempVoice.get(voiceId)?.ownerId === memberId;
 };
 

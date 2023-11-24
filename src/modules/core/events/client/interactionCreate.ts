@@ -18,9 +18,9 @@ import { CustomError, CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
 import { IDiscordClient } from '../../../../client';
 import { IGuild } from '../../../../models';
-import { checkMemberPermission } from '../../../../utils/memberUtil';
 import { client } from '../../../../';
 import guildService from '../../../../services/guildService';
+import { hasMemberPermission } from '../../../../utils/memberUtil';
 import { timestampToDate } from '../../../../utils/botUtil';
 
 export default {
@@ -43,6 +43,11 @@ export default {
     }
 };
 
+/**
+ * Handles a command interaction.
+ * @param client - The Discord client.
+ * @param interaction - The command interaction.
+ */
 const handleCommandInteraction = async (
     client: IDiscordClient,
     interaction: CommandInteraction
@@ -69,20 +74,39 @@ const handleCommandInteraction = async (
     }
 };
 
+/**
+ * Checks if the member has the required permissions to execute a command.
+ * @param memberPermissions The permissions of the member.
+ * @param commandPermissions The required permissions for the command.
+ * @throws {CustomErrors.UserNoPermissionsError} If the member does not have the required permissions.
+ */
 const checkCommandPermissions = (
     memberPermissions: PermissionsBitField,
     commandPermissions: PermissionsBitField[]
 ) => {
-    if (!checkMemberPermission(memberPermissions, commandPermissions)) {
+    if (!hasMemberPermission(memberPermissions, commandPermissions)) {
         throw CustomErrors.UserNoPermissionsError;
     }
 };
 
+/**
+ * Calculates the cooldown amount for a command.
+ * If the command has a custom cooldown, it will be used.
+ * Otherwise, the default cooldown duration will be used.
+ * @param command - The command object.
+ * @returns The cooldown amount in milliseconds.
+ */
 const calculateCooldownAmount = (command: any): number => {
     const defaultCooldownDuration = 5;
     return (command.cooldown ?? defaultCooldownDuration) * 1000;
 };
 
+/**
+ * Handles cooldown for a command.
+ * @param userId - The ID of the user.
+ * @param commandName - The name of the command.
+ * @param cooldownAmount - The cooldown duration in milliseconds.
+ */
 export const handleCooldown = (userId: string, commandName: string, cooldownAmount: number) => {
     if (!client.cooldowns.has(commandName)) {
         client.cooldowns.set(commandName, new Collection());
@@ -101,6 +125,11 @@ export const handleCooldown = (userId: string, commandName: string, cooldownAmou
     setTimeout(() => timestamps.delete(userId), cooldownAmount);
 };
 
+/**
+ * Handles component interactions from the client.
+ * @param client - The Discord client.
+ * @param interaction - The base interaction object.
+ */
 const handleComponentInteraction = async (client: IDiscordClient, interaction: BaseInteraction) => {
     const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guildId!);
 
@@ -138,6 +167,12 @@ const handleComponentInteraction = async (client: IDiscordClient, interaction: B
     }
 };
 
+/**
+ * Executes a button interaction.
+ * @param button - The button to execute.
+ * @param interaction - The button interaction.
+ * @param guildSettings - The guild settings.
+ */
 const executeButtonInteraction = async (
     button: any,
     interaction: ButtonInteraction,
@@ -150,6 +185,12 @@ const executeButtonInteraction = async (
     }
 };
 
+/**
+ * Executes a select menu interaction.
+ * @param selectMenu - The select menu to execute.
+ * @param interaction - The select menu interaction.
+ * @param guildSettings - The guild settings.
+ */
 const executeSelectMenuInteraction = async (
     selectMenu: any,
     interaction: AnySelectMenuInteraction,
@@ -162,6 +203,13 @@ const executeSelectMenuInteraction = async (
     }
 };
 
+/**
+ * Executes the modal submit interaction.
+ * @param modal - The modal object.
+ * @param interaction - The modal submit interaction.
+ * @param guildSettings - The guild settings.
+ * @returns A promise that resolves when the execution is complete.
+ */
 const executeModalSubmitInteraction = async (
     modal: any,
     interaction: ModalSubmitInteraction,
@@ -174,6 +222,11 @@ const executeModalSubmitInteraction = async (
     }
 };
 
+/**
+ * Handles errors that occur during interaction handling.
+ * @param interaction - The interaction object.
+ * @param err - The error object.
+ */
 const handleError = async (
     interaction:
         | CommandInteraction
