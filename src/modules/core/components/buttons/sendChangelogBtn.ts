@@ -41,8 +41,8 @@ export default {
             if (!isFailed) {
                 await channel
                     .send({ embeds: [interaction.message.embeds[0]] })
-                    .catch(() => isFailed = true);
-            } 
+                    .catch(() => (isFailed = true));
+            }
             if (isFailed) {
                 const discordGuild: Guild = await client.guilds.fetch(guild.id);
                 return failedGuilds.push(`${discordGuild.name} (${guild.id})`);

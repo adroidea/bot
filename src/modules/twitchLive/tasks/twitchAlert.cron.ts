@@ -143,9 +143,7 @@ export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive,
     if (!channel) return;
 
     const twitchAvatarURL: string = await // @ts-ignore
-    (
-        await fetch(`https://decapi.me/twitch/avatar/${user_name}`)
-    ).text();
+    (await fetch(`https://decapi.me/twitch/avatar/${user_name}`)).text();
 
     const embed = new EmbedBuilder()
         .setAuthor({

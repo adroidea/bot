@@ -14,7 +14,7 @@ export default {
     },
     cooldown: 120,
     async execute(interaction: ButtonInteraction) {
-        const ownerId = client.tempVoice.get(interaction.channelId!)?.ownerId; 
+        const ownerId = client.tempVoice.get(interaction.channelId!)?.ownerId;
         if (ownerId !== interaction.user.id) throw CustomErrors.NotVoiceOwnerError;
         interaction.showModal(voiceLimitModal);
     }
