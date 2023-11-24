@@ -6,7 +6,7 @@ import {
     ForumChannel,
     PermissionsBitField
 } from 'discord.js';
-import { Channels, Guilds } from '../../../../utils/consts';
+import { Channels, Colors, Guilds } from '../../../../utils/consts';
 
 export default {
     data: {
@@ -58,26 +58,28 @@ export default {
         const description = interaction.options.getString('description', true);
 
         const embed = new EmbedBuilder()
+            .setAuthor({
+                name: `ID : ${interaction.user.username} (${interaction.user.id})`,
+                iconURL: interaction.user.displayAvatarURL()
+            })
             .setTitle(`**${title}**`)
-            .setDescription(description ?? '')
-            .setColor(0xff0000)
-            .setTimestamp()
-            .setFooter({ text: `ID : ${interaction.user.id}` });
+            .setDescription(description ?? '*Aucune description*')
+            .setColor(Colors.Random)
+            .setTimestamp();
 
         const bugChannel = client.guilds.cache
             .get(Guilds.adanLab)
             ?.channels.cache.get(Channels.issues) as ForumChannel;
 
-        bugChannel.threads.create({
+        const thread = await bugChannel.threads.create({
             name: title,
             message: {
-                content: description ?? '',
                 embeds: [embed]
             },
             appliedTags: [bugChannel.availableTags.find(tag => tag.name === issue)!.id]
         });
         await interaction.editReply({
-            content: `Le message a bien été envoyé`
+            content: `Ton message a bien été envoyé. Tu peux le retrouver dans <#${thread.id}> sur ce serveur: https://discord.gg/29URgahg\nMerci pour ta contribution !`
         });
     }
 };
