@@ -98,7 +98,10 @@ export const isTwitchLiveModuleEnabled = (guildSettings: IGuild, throwError = fa
  * @param guildSettings - The guild settings object.
  * @returns The user settings object.
  */
-export const getorCreateUserSettings = async (userId: string, guildSettings: IGuild): Promise<ITempVoiceUserSettings> => { 
+export const getorCreateUserSettings = async (
+    userId: string,
+    guildSettings: IGuild
+): Promise<ITempVoiceUserSettings> => {
     let userSettings = guildSettings.modules.temporaryVoice.userSettings[userId];
 
     if (!userSettings) {
@@ -109,10 +112,12 @@ export const getorCreateUserSettings = async (userId: string, guildSettings: IGu
         };
 
         const updateObject: Record<string, any> = {};
-        updateObject[`modules.temporaryVoice.userSettings.${userId}.trustedUsers`] = userSettings.trustedUsers;
-        updateObject[`modules.temporaryVoice.userSettings.${userId}.blockedUsers`] = userSettings.blockedUsers;
-        updateObject[`modules.temporaryVoice.userSettings.${userId}.isPublic`] = userSettings.isPublic;
-
+        updateObject[`modules.temporaryVoice.userSettings.${userId}.trustedUsers`] =
+            userSettings.trustedUsers;
+        updateObject[`modules.temporaryVoice.userSettings.${userId}.blockedUsers`] =
+            userSettings.blockedUsers;
+        updateObject[`modules.temporaryVoice.userSettings.${userId}.isPublic`] =
+            userSettings.isPublic;
 
         await guildService.updateGuild(guildSettings.id, updateObject);
     }

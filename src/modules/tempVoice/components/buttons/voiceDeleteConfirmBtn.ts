@@ -24,7 +24,7 @@ export default {
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
 
-        if (!voiceChannel || !(isMemberVoiceOwner(member.id, voiceChannel.id)))
+        if (!voiceChannel || !isMemberVoiceOwner(member.id, voiceChannel.id))
             throw CustomErrors.NotVoiceOwnerError;
 
         interaction.reply({
