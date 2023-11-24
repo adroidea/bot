@@ -209,7 +209,7 @@ export const buildVoiceEmbed = (memberId: string) => {
 
 - 📗 Whitelist
 - <:tempWL:1177705708628746250> Whitelist Temporairement
-- <:untrust:1176809428981391380> Retirer de la Whitelist
+- <:untrust:1177755536679251978> Retirer de la Whitelist
 - 📕 Blacklist
 - 📤 Retirer de la Blacklist`
         )
