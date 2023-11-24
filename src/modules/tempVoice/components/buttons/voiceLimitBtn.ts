@@ -5,7 +5,7 @@ import { voiceLimitModal } from '../modals/voiceLimitModal';
 
 export const voiceLimitBtn = new ButtonBuilder()
     .setCustomId('voiceLimitBtn')
-    .setEmoji('🔢')
+    .setEmoji('📶')
     .setStyle(ButtonStyle.Secondary);
 
 export default {

@@ -116,6 +116,6 @@ export const getorCreateUserSettings = async (userId: string, guildSettings: IGu
 
         await guildService.updateGuild(guildSettings.id, updateObject);
     }
-    console.log(userSettings);
+
     return userSettings;
 };
