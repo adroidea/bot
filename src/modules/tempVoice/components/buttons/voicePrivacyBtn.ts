@@ -6,6 +6,7 @@ import {
 } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from '../../../../models';
+import { getorCreateUserSettings } from '../../../../utils/modulesUil';
 
 export const voicePrivacyBtn = new ButtonBuilder()
     .setCustomId('voicePrivacyBtn')
@@ -18,6 +19,7 @@ export default {
     },
     cooldown: 10,
     async execute(interaction: ButtonInteraction, guildSettings: IGuild) {
+        getorCreateUserSettings(interaction.user.id, guildSettings);
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
 

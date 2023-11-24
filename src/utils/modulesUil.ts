@@ -1,5 +1,7 @@
 import { IGuild, INotifications } from '../models';
 import { CustomErrors } from './errors';
+import { ITempVoiceUserSettings } from '../modules/tempVoice/models/temporaryVoiceModel';
+import guildService from '../services/guildService';
 
 /**
  * Checks if the event management module is enabled for the given guild.
@@ -87,4 +89,33 @@ export const isTwitchLiveModuleEnabled = (guildSettings: IGuild, throwError = fa
         }
         return false;
     }
+};
+
+/**
+ * Retrieves or creates user settings for a given user ID and guild settings.
+ * If the user settings do not exist, it creates default settings and updates the guild settings.
+ * @param userId - The ID of the user.
+ * @param guildSettings - The guild settings object.
+ * @returns The user settings object.
+ */
+export const getorCreateUserSettings = async (userId: string, guildSettings: IGuild): Promise<ITempVoiceUserSettings> => { 
+    let userSettings = guildSettings.modules.temporaryVoice.userSettings[userId];
+
+    if (!userSettings) {
+        userSettings = {
+            trustedUsers: [],
+            blockedUsers: [],
+            isPublic: true
+        };
+
+        const updateObject: Record<string, any> = {};
+        updateObject[`modules.temporaryVoice.userSettings.${userId}.trustedUsers`] = userSettings.trustedUsers;
+        updateObject[`modules.temporaryVoice.userSettings.${userId}.blockedUsers`] = userSettings.blockedUsers;
+        updateObject[`modules.temporaryVoice.userSettings.${userId}.isPublic`] = userSettings.isPublic;
+
+
+        await guildService.updateGuild(guildSettings.id, updateObject);
+    }
+    console.log(userSettings);
+    return userSettings;
 };

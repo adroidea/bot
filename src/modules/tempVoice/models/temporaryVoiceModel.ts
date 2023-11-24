@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-interface ITempVoiceUserSettings {
+export interface ITempVoiceUserSettings {
     trustedUsers: string[];
     blockedUsers: string[];
     isPublic: boolean;
