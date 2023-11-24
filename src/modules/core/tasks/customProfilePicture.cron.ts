@@ -1,6 +1,6 @@
 import { Guild } from 'discord.js';
+import { Guilds } from '../../../utils/consts';
 import Logger from '../../../utils/logger';
-import { OWNER_SERVER_ID } from '../../../utils/consts';
 import { client } from '../../../';
 import cron from 'node-cron';
 
@@ -18,6 +18,7 @@ const dpp = {
 export default function (): cron.ScheduledTask {
     return cron.schedule('0 * * * *', () => {
         try {
+            // @ts-ignore
             const responsePromise: Promise<string> = fetch(
                 `https://decapi.me/twitch/uptime/adan_ea`
             ).then((response: any) => response.text());
@@ -55,7 +56,7 @@ export default function (): cron.ScheduledTask {
                     newProfilePicture = null;
             }
 
-            const guild: Guild = client.guilds.cache.get(OWNER_SERVER_ID);
+            const guild: Guild = client.guilds.cache.get(Guilds.adan_ea);
             if (newProfilePicture) guild.setIcon(newProfilePicture);
         } catch (error: any) {
             Logger.error('Error changing profile picture:', error);

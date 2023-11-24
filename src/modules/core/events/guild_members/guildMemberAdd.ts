@@ -4,7 +4,7 @@ import guildService from '../../../../services/guildService';
 import { isNotifSMEnabled } from '../../../../utils/modulesUil';
 import { timestampToDate } from '../../../../utils/botUtil';
 
-module.exports = {
+export default {
     name: Events.GuildMemberAdd,
     async execute(client: Client, member: GuildMember) {
         const {

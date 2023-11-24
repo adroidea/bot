@@ -11,7 +11,7 @@ import ScheduledEventService from '../services/scheduledEventService';
 import { addToAppropriateQueue } from '../tasks/scheduledEvents.queue';
 import { isEventManagementModuleEnabled } from '../../../utils/modulesUil';
 
-module.exports = {
+export default {
     data: {
         name: 'event',
         description: 'Créer un évènement',

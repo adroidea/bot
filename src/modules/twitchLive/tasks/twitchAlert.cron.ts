@@ -21,7 +21,12 @@ const twitch = new TwitchApi({
     throw_ratelimit_errors: true
 });
 
-export const randomizeArray = (array: string[]): string => {
+/**
+ * Randomly selects and returns an element from the given array.
+ * @param array - The array to be randomized.
+ * @returns The randomly selected element from the array.
+ */
+const randomizeArray = (array: string[]): string => {
     const randomNumber = Math.floor(Math.random() * array.length);
     return array[randomNumber];
 };
@@ -37,7 +42,7 @@ const streamersList = new Map<string, LiveStatus>();
 export default function (): cron.ScheduledTask {
     return cron.schedule('* * * * *', () => {
         try {
-            if (!twitch.access_token) logger.warn('Twitch access token is not defined');
+            if (!twitch.access_token) return logger.warn('Twitch access token is not defined');
             for (const guild of guildsCache) {
                 handleGuild(guild);
             }
@@ -47,6 +52,11 @@ export default function (): cron.ScheduledTask {
     });
 }
 
+/**
+ * Handles the guild for Twitch live stream alerts.
+ * @param guild - The guild object.
+ * @returns A Promise that resolves when the guild is handled.
+ */
 const handleGuild = async (guild: IGuild) => {
     const guildData: Guild = client.guilds.cache.get(guild.id);
     if (!guildData) return;
@@ -68,6 +78,13 @@ const handleGuild = async (guild: IGuild) => {
     streamersList.set(guild.id, liveStatus);
 };
 
+/**
+ * Handles the live stream event.
+ * @param streamData - The stream data.
+ * @param liveStatus - The live status.
+ * @param twitchLive - The Twitch Live object.
+ * @param guildData - The guild data.
+ */
 const handleLiveStream = async (
     streamData: Stream,
     liveStatus: LiveStatus,
@@ -78,7 +95,7 @@ const handleLiveStream = async (
         await sendLiveEmbed(streamData, twitchLive, guildData);
         liveStatus.isLive = true;
         liveStatus.currentGame = streamData.game_name;
-        liveStatus.cooldown = 15;
+        liveStatus.cooldown = 30;
     }
     if (streamData.game_name !== liveStatus.currentGame) {
         await sendGameChangeEmbed(streamData, twitchLive, guildData.id);
@@ -87,6 +104,14 @@ const handleLiveStream = async (
     liveStatus.cooldown = liveStatus.cooldown ? --liveStatus.cooldown : liveStatus.cooldown;
 };
 
+/**
+ * Handles the offline stream event.
+ * If the stream is currently live, it updates the guild's icon to the default profile picture,
+ * and resets the live status properties.
+ * @param liveStatus - The current live status.
+ * @param twitchLive - The Twitch live data.
+ * @param guildData - The guild data.
+ */
 const handleOfflineStream = async (
     liveStatus: LiveStatus,
     twitchLive: ITwitchLive,
@@ -102,6 +127,12 @@ const handleOfflineStream = async (
     }
 };
 
+/**
+ * Sends a live embed message to a specified channel with information about a Twitch stream.
+ * @param streamData - The data of the Twitch stream.
+ * @param twitchLive - The Twitch live configuration.
+ * @param guild - The guild where the live embed message will be sent.
+ */
 export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive, guild: Guild) => {
     const { user_name, game_id, title } = streamData;
     const { infoLiveChannel, pingedRole } = twitchLive;
@@ -111,9 +142,8 @@ export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive,
     ) as TextChannel;
     if (!channel) return;
 
-    const twitchAvatarURL: string = await (
-        await fetch(`https://decapi.me/twitch/avatar/${user_name}`)
-    ).text();
+    const twitchAvatarURL: string = await // @ts-ignore
+    (await fetch(`https://decapi.me/twitch/avatar/${user_name}`)).text();
 
     const embed = new EmbedBuilder()
         .setAuthor({
@@ -145,6 +175,12 @@ export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive,
     }
 };
 
+/**
+ * Sends a game change embed message to the specified Twitch live channel.
+ * @param streamData The stream data containing information about the current stream.
+ * @param twitchLive The Twitch live object.
+ * @param guildId The ID of the guild.
+ */
 const sendGameChangeEmbed = async (
     streamData: Stream,
     twitchLive: ITwitchLive,
@@ -164,7 +200,7 @@ const sendGameChangeEmbed = async (
     await channelMessage.send({ embeds: [gameChangeEmbed] });
 };
 
-export const liveStart = [
+const liveStart = [
     'vient tout juste de lancer un stream ! Viens pour voir du',
     'stream actuellement, il manque plus que toi. Rejoins nous pour du',
     'a enfin lancé son stream ! Go prendre tes snacks et regarder du',

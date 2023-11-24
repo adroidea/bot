@@ -1,58 +1,64 @@
 import { REST, Routes } from 'discord.js';
+import { Guilds } from './utils/consts';
 import Logger from './utils/logger';
-import { OWNER_SERVER_ID } from './utils/consts';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'node:path';
 
 dotenv.config();
-export const regCMD = (clientId: string) => {
+
+/**
+ * Registers application commands and guild application commands.
+ * @param clientId The client ID of the Discord bot.
+ */
+export const regCMD = async (clientId: string) => {
     const commands: any[] = [];
     const guildCommands: any[] = [];
 
     const categoryFolders = [
         path.join(__dirname, 'modules/core/commands'),
-        //path.join(__dirname, 'modules/twitchLive/commands'),
         path.join(__dirname, 'modules/qotd/commands'),
-        path.join(__dirname, 'modules/tempVoice/commands'),
-        path.join(__dirname, 'modules/scheduledEvents/commands')
+        //path.join(__dirname, 'modules/scheduledEvents/commands'),
+        path.join(__dirname, 'modules/tempVoice/commands')
+        //path.join(__dirname, 'modules/twitchLive/commands'),
     ];
 
-    const readCommands = (dir: string) => {
-        const files = fs.readdirSync(dir);
+    const readCommands = async (dir: string) => {
+        try {
+            const files = fs.readdirSync(dir);
 
-        for (const file of files) {
-            const filePath = path.join(dir, file);
-            const stat = fs.lstatSync(filePath);
+            const promises = files.map(async file => {
+                const filePath = path.join(dir, file);
+                const stat = fs.lstatSync(filePath);
 
-            if (stat.isDirectory()) {
-                readCommands(filePath);
-            } else if (file.endsWith('.js')) {
-                const command = require(filePath);
+                if (stat.isDirectory()) {
+                    return readCommands(filePath);
+                } else if (file.endsWith('.js')) {
+                    const { default: command } = await import(filePath);
+                    command.data.dmPermission = false;
+                    if (command.guildOnly) guildCommands.push(command.data);
+                    else commands.push(command.data);
+                }
+            });
 
-                if (command.guildOnly) guildCommands.push(command.data);
-                else commands.push(command.data);
-            }
+            await Promise.all(promises);
+        } catch (error: any) {
+            Logger.error('Error while reading commands', error);
         }
     };
-    for (const cmdPath of categoryFolders) {
-        readCommands(cmdPath);
-    }
+
+    await Promise.all(categoryFolders.map(readCommands));
 
     const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 
     try {
-        rest.put(Routes.applicationGuildCommands(clientId, OWNER_SERVER_ID), {
+        await rest.put(Routes.applicationGuildCommands(clientId, Guilds.adan_ea), {
             body: guildCommands
-        }).then(() =>
-            Logger.info(
-                `Successfully registered ${guildCommands.length} guild application commands.`
-            )
-        );
+        });
+        Logger.info(`Successfully registered ${guildCommands.length} guild application commands.`);
 
-        rest.put(Routes.applicationCommands(clientId), { body: commands }).then(() =>
-            Logger.info(`Successfully registered ${commands.length} application commands.`)
-        );
+        await rest.put(Routes.applicationCommands(clientId), { body: commands });
+        Logger.info(`Successfully registered ${commands.length} application commands.`);
     } catch (error: any) {
         Logger.error('Error while registering application commands', error);
     }

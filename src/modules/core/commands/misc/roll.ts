@@ -22,7 +22,7 @@ interface RollResult {
 
 type Operator = '+' | '-' | '/' | '*';
 
-module.exports = {
+export default {
     data: {
         name: 'roll',
         description: 'Lance des dés',
@@ -69,7 +69,12 @@ module.exports = {
     }
 };
 
-function separateDice(configuration: string): Dice {
+/**
+ * Separates the dice configuration string into its individual components.
+ * @param configuration - The dice configuration string in the format "NdF[+-/*]X", where N is the number of dice, F is the number of faces on each die, and X is an optional operand.
+ * @returns The separated dice configuration object.
+ */
+const separateDice = (configuration: string): Dice => {
     const [diceConfig, operatorStr, operandStr] = configuration.split(/([+-/*])/);
     const [nbDicesString, nbFacesString] = diceConfig.split('d');
     const nbDices = parseInt(nbDicesString);
@@ -89,9 +94,14 @@ function separateDice(configuration: string): Dice {
         operator,
         operand
     };
-}
+};
 
-function rollDice(dice: Dice): RollResult {
+/**
+ * Rolls the specified number of dice with the given number of faces and applies the specified operator and operand.
+ * @param dice - The dice configuration.
+ * @returns The result of the dice roll.
+ */
+const rollDice = (dice: Dice): RollResult => {
     const { nbDices, nbFaces } = dice;
 
     let globalResult = 0;
@@ -132,9 +142,14 @@ function rollDice(dice: Dice): RollResult {
         diceResult,
         globalResult
     };
-}
+};
 
-function formatResult(dice: RollResult): string {
+/**
+ * Formats the result of a dice roll into a string.
+ * @param dice - The roll result object containing information about the dice roll.
+ * @returns The formatted result string.
+ */
+const formatResult = (dice: RollResult): string => {
     const actualDice = dice.dice;
     let diceStr = `${actualDice.nbDices}d${actualDice.nbFaces}`;
     let modificator = '';
@@ -154,4 +169,4 @@ function formatResult(dice: RollResult): string {
     resultStr += `)${modificator} = ${dice.globalResult}`;
 
     return resultStr;
-}
+};

@@ -1,12 +1,23 @@
-import { ButtonInteraction, EmbedBuilder, PermissionsBitField, userMention } from 'discord.js';
+import {
+    ButtonBuilder,
+    ButtonInteraction,
+    ButtonStyle,
+    EmbedBuilder,
+    PermissionsBitField,
+    userMention
+} from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
-import { IQuestions } from '../../models';
-import qotddService from '../../services/qotdService';
 
-module.exports = {
+export const qotdRejectButton = new ButtonBuilder()
+    .setCustomId('qotdRejectBtn')
+    .setEmoji('👎')
+    .setLabel('Rejeter')
+    .setStyle(ButtonStyle.Danger);
+
+export default {
     data: {
-        name: 'qotd_accept_button'
+        name: 'qotdRejectBtn'
     },
     async execute(interaction: ButtonInteraction) {
         if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageMessages))
@@ -14,14 +25,6 @@ module.exports = {
 
         const oldEmbed = interaction.message.embeds[0];
         const authorId = oldEmbed.author!.name.split('(')[1].slice(0, -1);
-
-        const questionBuilder: IQuestions = {
-            question: oldEmbed.title!,
-            authorId: authorId,
-            guildId: interaction.guild!.id
-        };
-
-        const qotdId = await qotddService.createQOtD(questionBuilder);
 
         const newEmbed = new EmbedBuilder()
             .setAuthor({
@@ -38,13 +41,8 @@ module.exports = {
                 },
                 {
                     name: 'Statut',
-                    value: `✅ Acceptée par ${userMention(interaction.user.id)}`,
+                    value: `❌ Rejetée par ${userMention(interaction.user.id)}`,
                     inline: true
-                },
-                {
-                    name: 'ID',
-                    value: qotdId,
-                    inline: false
                 }
             )
 
@@ -57,7 +55,7 @@ module.exports = {
             components: []
         });
 
-        const embed = Embed.success('La QdJ a été validée et ajoutée à la base !');
+        const embed = Embed.success('La QdJ a été rejetée.');
         return interaction.reply({
             embeds: [embed],
             ephemeral: true

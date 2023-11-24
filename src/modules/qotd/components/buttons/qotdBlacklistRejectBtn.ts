@@ -1,10 +1,24 @@
-import { ButtonInteraction, EmbedBuilder, PermissionsBitField, userMention } from 'discord.js';
+import {
+    ButtonBuilder,
+    ButtonInteraction,
+    ButtonStyle,
+    EmbedBuilder,
+    PermissionsBitField,
+    userMention
+} from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
+import qotddService from '../../services/qotdService';
 
-module.exports = {
+export const qotdBlacklistRejectButton = new ButtonBuilder()
+    .setCustomId('qotdBlacklistRejectBtn')
+    .setEmoji('🔨')
+    .setLabel('Blacklister utilisateur')
+    .setStyle(ButtonStyle.Danger);
+
+export default {
     data: {
-        name: 'qotd_reject_button'
+        name: 'qotdBlacklistRejectBtn'
     },
     async execute(interaction: ButtonInteraction) {
         if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageMessages))
@@ -12,6 +26,8 @@ module.exports = {
 
         const oldEmbed = interaction.message.embeds[0];
         const authorId = oldEmbed.author!.name.split('(')[1].slice(0, -1);
+
+        await qotddService.addToQotdBlacklist(interaction.guildId!, authorId);
 
         const newEmbed = new EmbedBuilder()
             .setAuthor({
@@ -23,12 +39,12 @@ module.exports = {
             .addFields(
                 {
                     name: 'Auteur',
-                    value: userMention(authorId),
+                    value: '[BLACKLISTÉ] ' + userMention(authorId),
                     inline: true
                 },
                 {
                     name: 'Statut',
-                    value: `❌ Rejetée par ${userMention(interaction.user.id)}`,
+                    value: `🔨 Rejetée et blacklisté par ${userMention(interaction.user.id)}`,
                     inline: true
                 }
             )
@@ -42,7 +58,7 @@ module.exports = {
             components: []
         });
 
-        const embed = Embed.success('La QdJ a été rejetée.');
+        const embed = Embed.success("La QdJ a été rejetée et l'utilisateur blacklisté.");
         return interaction.reply({
             embeds: [embed],
             ephemeral: true

@@ -1,5 +1,4 @@
 import {
-    ActionRowBuilder,
     ButtonBuilder,
     ButtonInteraction,
     ButtonStyle,
@@ -8,31 +7,19 @@ import {
     TextBasedChannel,
     userMention
 } from 'discord.js';
+import { Channels } from '../../../../utils/consts';
 import { Embed } from '../../../../utils/embedsUtil';
-import { LOG_CHANNEL_ID } from '../../../../utils/consts';
+import { adminRow } from '.';
 import { client } from '../../../..';
 
-const adminRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-        .setCustomId('qotd_accept_button')
-        .setEmoji('👍')
-        .setLabel('Accepter')
-        .setStyle(ButtonStyle.Success),
-    new ButtonBuilder()
-        .setCustomId('qotd_reject_button')
-        .setEmoji('👎')
-        .setLabel('Rejeter')
-        .setStyle(ButtonStyle.Danger),
-    new ButtonBuilder()
-        .setCustomId('qotd_blacklist_reject_button')
-        .setEmoji('🔨')
-        .setLabel('Blacklister utilisateur')
-        .setStyle(ButtonStyle.Danger)
-);
+export const qotdAcceptStealButton = new ButtonBuilder()
+    .setCustomId('qotdAcceptStealBtn')
+    .setEmoji('👍')
+    .setStyle(ButtonStyle.Success);
 
-module.exports = {
+export default {
     data: {
-        name: 'qotd_accept_steal_button'
+        name: 'qotdAcceptStealBtn'
     },
     async execute(interaction: ButtonInteraction) {
         const oldEmbed = interaction.message.embeds[0];
@@ -66,7 +53,9 @@ module.exports = {
             .setFooter({
                 text: oldEmbed.footer?.text!
             });
-        const ownerRequestChannel: Channel | undefined = client.channels.cache.get(LOG_CHANNEL_ID);
+        const ownerRequestChannel: Channel | undefined = client.channels.cache.get(
+            Channels.stealQDJ
+        );
         (ownerRequestChannel as TextBasedChannel).send({
             embeds: [questionEmbed],
             components: [adminRow]

@@ -8,7 +8,7 @@ import {
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
 
-module.exports = {
+export default {
     data: {
         name: 'helpea',
         description: 'Affiche un message avec toutes les commandes du bot',

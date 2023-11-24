@@ -1,46 +1,37 @@
+import { ButtonBuilder, ButtonInteraction, ButtonStyle, GuildMember } from 'discord.js';
 import {
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonInteraction,
-    ButtonStyle,
-    GuildMember
-} from 'discord.js';
-import {
-    checkVoiceOwnership,
-    checkVoicePrivacy,
+    isMemberVoiceOwner,
+    isVoicePrivate,
     switchVoicePrivacy
 } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
+import { IGuild } from '../../../../models';
+import { getorCreateUserSettings } from '../../../../utils/modulesUil';
 
-module.exports = {
+export const voicePrivacyBtn = new ButtonBuilder()
+    .setCustomId('voicePrivacyBtn')
+    .setEmoji('🔐')
+    .setStyle(ButtonStyle.Secondary);
+
+export default {
     data: {
         name: `voicePrivacyBtn`
     },
-    async execute(interaction: ButtonInteraction) {
+    cooldown: 300,
+    async execute(interaction: ButtonInteraction, guildSettings: IGuild) {
+        getorCreateUserSettings(interaction.user.id, guildSettings);
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
 
-        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel, member)))
+        if (!voiceChannel || !isMemberVoiceOwner(member.id, voiceChannel.id))
             throw CustomErrors.NotVoiceOwnerError;
 
-        let isPublic: boolean = await checkVoicePrivacy(voiceChannel);
+        await interaction.deferReply({ ephemeral: true });
+        let isPublic: boolean = isVoicePrivate(voiceChannel.id);
 
-        const newButton = new ButtonBuilder()
-            .setCustomId('voicePrivacyBtn')
-            .setLabel(isPublic ? 'Déverrouiller' : 'Verrouiller')
-            .setEmoji(isPublic ? '🔓' : '🔒')
-            .setStyle(isPublic ? ButtonStyle.Success : ButtonStyle.Danger);
-
-        const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-            newButton,
-            new ButtonBuilder()
-                .setCustomId('voiceOwnerTransferBtn')
-                .setLabel('Transférer la propriété')
-                .setEmoji('🤝')
-                .setStyle(ButtonStyle.Danger)
-        );
-
-        switchVoicePrivacy(member);
-        await interaction.update({ components: [row] });
+        switchVoicePrivacy(member, guildSettings.modules.temporaryVoice.nameModel);
+        await interaction.editReply({
+            content: `Le salon est maintenant ${isPublic ? 'privé' : 'public'}.`
+        });
     }
 };

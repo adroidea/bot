@@ -6,7 +6,7 @@ export const CustomErrors = {
     ),
     CooldownError: (cooldownTime: number) =>
         new CustomError(
-            `Comme dirait Orel San, ça va trop vite. Cette commande est en cooldown. tu pourras l'utiliser <t:${cooldownTime}:R>.`
+            `Comme dirait Orel San, ça va trop vite. Cette fonction est en cooldown. tu pourras l'utiliser <t:${cooldownTime}:R>.`
         ),
     UserNoPermissionsError: new CustomError("Eh non, t'as pas les droits, cheh !"),
     SelfNoPermissionsError: new CustomError("Peux pas faire ça, j'ai pas les droits."),
