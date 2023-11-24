@@ -3,7 +3,7 @@ import { voiceWhitelistTempAddRow } from '../selectMenus';
 
 export const voiceWhitelistTempAddBtn = new ButtonBuilder()
     .setCustomId('voiceWhitelistTempAddBtn')
-    .setEmoji('📗')
+    .setEmoji('<:tempWL:1177705708628746250>')
     .setStyle(ButtonStyle.Secondary);
 
 export default {
