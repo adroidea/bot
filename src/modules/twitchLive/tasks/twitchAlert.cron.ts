@@ -42,7 +42,7 @@ const streamersList = new Map<string, LiveStatus>();
 export default function (): cron.ScheduledTask {
     return cron.schedule('* * * * *', () => {
         try {
-            if (!twitch.access_token) return; //logger.warn('Twitch access token is not defined');
+            if (!twitch.access_token) return logger.warn('Twitch access token is not defined');
             for (const guild of guildsCache) {
                 handleGuild(guild);
             }
@@ -142,8 +142,8 @@ export const sendLiveEmbed = async (streamData: Stream, twitchLive: ITwitchLive,
     ) as TextChannel;
     if (!channel) return;
 
-    const twitchAvatarURL: string = await (
-        // @ts-ignore
+    const twitchAvatarURL: string = await // @ts-ignore
+    (
         await fetch(`https://decapi.me/twitch/avatar/${user_name}`)
     ).text();
 
