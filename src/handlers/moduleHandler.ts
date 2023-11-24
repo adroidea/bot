@@ -52,6 +52,10 @@ export default async (client: any) => {
     formatCounts(counts);
 };
 
+/**
+ * Formats the counts in the given record and logs the formatted output.
+ * @param record - The record containing the counts to be formatted.
+ */
 function formatCounts(record: Record<string, Record<string, any>>) {
     for (const [key, innerRecord] of Object.entries(record)) {
         const formattedInnerRecord: string[] = [];

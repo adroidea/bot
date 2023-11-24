@@ -5,7 +5,7 @@ import {
     StringSelectMenuBuilder
 } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
-import { checkVoiceOwnership } from '../../../../utils/voiceUtil';
+import { isMemberVoiceOwner } from '../../../../utils/voiceUtil';
 
 export default {
     data: {
@@ -16,7 +16,7 @@ export default {
 
         const member = interaction.member as GuildMember;
 
-        if (!voiceChannel || !(await checkVoiceOwnership(voiceChannel.id, member.id)))
+        if (!voiceChannel || !isMemberVoiceOwner(member.id, voiceChannel.id))
             throw CustomErrors.NotVoiceOwnerError;
 
         const members = voiceChannel.members.map(member => {

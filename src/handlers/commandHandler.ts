@@ -2,6 +2,12 @@ import Logger from '../utils/logger';
 import fs from 'fs';
 import path from 'path';
 
+/**
+ * Handles commands recursively in the specified directory path.
+ * @param client - The client object.
+ * @param cmdPath - The path to the directory containing the commands.
+ * @returns A promise that resolves to the number of commands handled.
+ */
 export const handleCommand = async (client: any, cmdPath: string): Promise<number> => {
     let result = 0;
     const files = fs.readdirSync(cmdPath);
@@ -25,6 +31,12 @@ export const handleCommand = async (client: any, cmdPath: string): Promise<numbe
     return result;
 };
 
+/**
+ * Checks the command options for validity.
+ * @param cmd - The command object to check.
+ * @param filePath - The file path of the command handler.
+ * @returns Returns true if there are errors, false otherwise.
+ */
 const checkCommandOptions = (cmd: any, filePath: string): boolean => {
     let hasWarning = false;
     let hasError = false;

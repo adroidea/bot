@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, Client, GuildMember, PermissionsBitField }
 import { CustomErrors } from '../../../utils/errors';
 import { IGuild } from '../../../models';
 import { buildVoiceEmbed } from '../../../utils/voiceUtil';
-import { isTemporaryVoiceModuleEnabled } from '../../../utils/modulesUil';
+import { isTempVoiceModuleEnabled } from '../../../utils/modulesUil';
 
 export default {
     data: {
@@ -17,7 +17,7 @@ export default {
     guildOnly: false,
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
-        if (!isTemporaryVoiceModuleEnabled(guildSettings, true)) return;
+        if (!isTempVoiceModuleEnabled(guildSettings, true)) return;
 
         const member = interaction.member as GuildMember;
         const memberVoiceChannel = member.voice.channel;

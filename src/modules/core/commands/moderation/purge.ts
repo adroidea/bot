@@ -11,7 +11,7 @@ import {
 import { CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
 import { IGuild } from '../../../../models';
-import { checkBotPermission } from '../../../../utils/botUtil';
+import { hasBotPermission } from '../../../../utils/botUtil';
 import { isNotifSMEnabled } from '../../../../utils/modulesUil';
 
 export default {
@@ -41,7 +41,7 @@ export default {
     examples: ['purge 10', 'purge 100 @adan_ea'],
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
-        if (!checkBotPermission(interaction.guild!, [PermissionsBitField.Flags.ManageMessages]))
+        if (!hasBotPermission(interaction.guild!, [PermissionsBitField.Flags.ManageMessages]))
             throw CustomErrors.SelfNoPermissionsError;
 
         const amountToDelete = interaction.options.getNumber('montant', true);
@@ -97,6 +97,13 @@ export default {
     }
 };
 
+/**
+ * Handles bulk deletion of messages in a text channel.
+ * @param channel - The text channel where the messages will be deleted.
+ * @param amountToDelete - The number of messages to delete.
+ * @param target - Optional. The target user whose messages will be deleted.
+ * @returns The number of messages that were successfully deleted.
+ */
 const handleBulkDelete = async (
     channel: TextChannel,
     amountToDelete: number,
