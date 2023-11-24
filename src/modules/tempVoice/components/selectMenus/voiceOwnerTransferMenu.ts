@@ -24,7 +24,7 @@ export default {
 
         await interaction.deferUpdate();
         const voiceChannel = (interaction.member as GuildMember)!.voice.channel;
-        if (!voiceChannel || !(isMemberVoiceOwner(user.id, voiceChannel.id))) {
+        if (!voiceChannel || !isMemberVoiceOwner(user.id, voiceChannel.id)) {
             throw CustomErrors.NotVoiceOwnerError;
         }
 

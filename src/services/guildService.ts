@@ -49,8 +49,8 @@ const createGuild = async (id: string): Promise<IGuild> => {
                 enabled: false,
                 hostChannels: [],
                 nameModel: {
-                    unlocked: "🔊 Vocal {USERNAME}",
-                    locked: "🔒 Vocal {USERNAME}"
+                    unlocked: '🔊 Vocal {USERNAME}',
+                    locked: '🔒 Vocal {USERNAME}'
                 },
                 userSettings: {}
             },
@@ -103,11 +103,7 @@ const updateGuild = async (id: string, update: Partial<IGuild>): Promise<IGuild 
             $set[key] = value;
         }
 
-        const updatedGuild = await GuildModel.findOneAndUpdate(
-            { id },
-            { $set },
-            { new: true }
-        );
+        const updatedGuild = await GuildModel.findOneAndUpdate({ id }, { $set }, { new: true });
 
         return updatedGuild;
     } catch (error) {

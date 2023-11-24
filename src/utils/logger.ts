@@ -54,7 +54,6 @@ export default {
     client
 };
 
-
 /**
  * Sends an internal log webhook.
  * @param logType - The type of the log.
