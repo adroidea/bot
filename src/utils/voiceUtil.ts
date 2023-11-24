@@ -131,7 +131,7 @@ export const switchVoiceOwner = async (
     try {
         const voiceChannel = target.voice.channel;
         if (!voiceChannel) return;
-        
+
         const ownerId = client.tempVoice.get(voiceChannel.id)?.ownerId;
         if (ownerId !== user.id) return;
 
@@ -200,10 +200,20 @@ export const buildVoiceEmbed = (memberId: string) => {
     const embed = new EmbedBuilder()
         .setTitle(`**Tableau de bord**`)
         .setDescription(
-            'Bienvenue dans ton salon vocal temporaire !\nTu peux tout gérer depuis ici.'
+            `Bienvenue dans ton salon vocal temporaire ! Tu peux tout gérer depuis ici.
+- 📶 Limite d'utilisateurs 
+- 👑 Transfert de propriété
+- 🔐 Visibilité
+- 🌍 Région
+- 🚮 Supprimer
+
+- 📗 Whitelist
+- <:tempWL:1177705708628746250> Whitelist Temporairement
+- <:untrust:1176809428981391380> Retirer de la Whitelist
+- 📕 Blacklist
+- 📤 Retirer de la Blacklist`
         )
         .setColor(Colors.random)
-        //TODO: .setImage('')
         .setFooter({ text: "bonus: Tu peux déco quelqu'un avec un clic droit sur leur nom" });
 
     return {
