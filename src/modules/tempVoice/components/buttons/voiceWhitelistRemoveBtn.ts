@@ -4,7 +4,7 @@ import { buildVoiceWhitelistRemoveRow } from '../selectMenus';
 import { getorCreateUserSettings } from '../../../../utils/modulesUil';
 export const voiceWhitelistRemoveBtn = new ButtonBuilder()
     .setCustomId('voiceWhitelistRemoveBtn')
-    .setEmoji('<:untrust:1176809428981391380>')
+    .setEmoji('<:untrust:1177755536679251978>')
     .setStyle(ButtonStyle.Secondary);
 
 export default {

@@ -4,6 +4,7 @@ import {
     Client,
     EmbedBuilder,
     ForumChannel,
+    GuildForumThreadMessageCreateOptions,
     PermissionsBitField
 } from 'discord.js';
 import { Channels, Colors, Guilds } from '../../../../utils/consts';
@@ -40,7 +41,13 @@ export default {
                 name: 'description',
                 description: 'La description du bug',
                 type: ApplicationCommandOptionType.String,
-                required: true
+                required: false
+            },
+            {
+                name: 'fichier',
+                description: 'Les pièces jointes du bug',
+                type: ApplicationCommandOptionType.Attachment,
+                required: false
             }
         ]
     },
@@ -55,7 +62,8 @@ export default {
         await interaction.deferReply({ ephemeral: true });
         const issue = interaction.options.getString('type', true);
         const title = interaction.options.getString('title', true);
-        const description = interaction.options.getString('description', true);
+        const description = interaction.options.getString('description', false);
+        const attachment = interaction.options.getAttachment('fichier', false);
 
         const embed = new EmbedBuilder()
             .setAuthor({
@@ -64,18 +72,23 @@ export default {
             })
             .setTitle(`**${title}**`)
             .setDescription(description ?? '*Aucune description*')
-            .setColor(Colors.Random)
+            .setColor(Colors.random)
             .setTimestamp();
 
+        const message: GuildForumThreadMessageCreateOptions = {
+            embeds: [embed]
+        };
+
+        if (attachment) {
+            message.files = [attachment];
+        }
         const bugChannel = client.guilds.cache
             .get(Guilds.adanLab)
             ?.channels.cache.get(Channels.issues) as ForumChannel;
 
         const thread = await bugChannel.threads.create({
             name: title,
-            message: {
-                embeds: [embed]
-            },
+            message,
             appliedTags: [bugChannel.availableTags.find(tag => tag.name === issue)!.id]
         });
         await interaction.editReply({
