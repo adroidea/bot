@@ -17,7 +17,7 @@ export default {
     data: {
         name: `voicePrivacyBtn`
     },
-    cooldown: 10,
+    cooldown: 300,
     async execute(interaction: ButtonInteraction, guildSettings: IGuild) {
         getorCreateUserSettings(interaction.user.id, guildSettings);
         const member = interaction.member as GuildMember;
