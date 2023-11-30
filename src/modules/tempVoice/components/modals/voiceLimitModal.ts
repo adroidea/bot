@@ -17,7 +17,7 @@ export const voiceLimitModal = new ModalBuilder()
         new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
             new TextInputBuilder()
                 .setCustomId('LimitThresholdInput')
-                .setLabel('Nombre de questions (0-99)')
+                .setLabel("Nombre d'utilisateurs (0-99)")
                 .setPlaceholder('0 ou vide pour désactiver')
                 .setMaxLength(2)
                 .setStyle(TextInputStyle.Short)

@@ -38,7 +38,7 @@ export default {
 
         const embed = new EmbedBuilder()
             .setColor(Colors.random)
-            .setTitle(`<a:flocon:1107932689291554897> Voici toutes les commandes du bot !`)
+            .setTitle(`<a:flocon:1177616024959455242> Voici toutes les commandes du bot !`)
             .setDescription(`${commandsList}`)
             .addFields({
                 name: 'version',
