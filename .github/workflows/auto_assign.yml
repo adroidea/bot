@@ -1,22 +1,19 @@
 name: Auto Assign
 on:
   issues:
-    types: [opened, edited, labeled, unlabeled]
+    types: [opened]
   pull_request:
-    types: [opened, edited, labeled, unlabeled]
+    types: [opened]
 jobs:
   run:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
-      - uses: wow-actions/auto-assign@v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          addReviewers: true
-          addAssignees: true
-          numberOfReviewers: 0
-          numberOfAssignees: 0
-          reviewers: |
-            adan-ea
-          assignees: |
-            adan-ea
-          skipKeywords: wip, draft
+    - name: 'Auto-assign issue'
+      uses: pozil/auto-assign-issue@v1
+      with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          assignees: adan-ea
+          numOfAssignee: 1
