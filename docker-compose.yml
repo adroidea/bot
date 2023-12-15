@@ -7,7 +7,7 @@ services:
             - DISCORD_APP_ID=xxx
             - DISCORD_TOKEN=xxx
             - MONGO_URI=xxx
-            - NODE_ENV=production
+            - NODE_ENV=PRODUCTION
             - REDIS_HOST=xxx
             - TWITCH_CLIENT_ID=xxx
             - TWITCH_CLIENT_SECRET=xxx

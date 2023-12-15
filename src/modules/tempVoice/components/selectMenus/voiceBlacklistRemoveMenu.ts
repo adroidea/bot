@@ -73,7 +73,7 @@ export default {
             }
         }
 
-        guildService.updateGuild(interaction.guild!.id, {
+        guildService.updateGuild(interaction.guild!, {
             [`modules.temporaryVoice.userSettings.${interaction.user.id}.blockedUsers`]:
                 blockedUsers
         });

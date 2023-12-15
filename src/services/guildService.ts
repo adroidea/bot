@@ -1,14 +1,18 @@
 import { GuildModel, IGuild } from '../models';
+import { Guild } from 'discord.js';
 import Logger from '../utils/logger';
 
 /**
  * Creates a new guild with the specified ID.
- * @param id The ID of the guild.
+ * @param guild The guild.
  * @returns A Promise that resolves to the created guild.
  */
-const createGuild = async (id: string): Promise<IGuild> => {
-    const guild = new GuildModel({
-        id,
+const createGuild = async (guild: Guild): Promise<IGuild> => {
+    const guildData = new GuildModel({
+        id: guild.id,
+        name: guild.name,
+        icon: guild.icon,
+        banner: guild.banner,
         modules: {
             notifications: {
                 enabled: false,
@@ -59,22 +63,22 @@ const createGuild = async (id: string): Promise<IGuild> => {
             }
         }
     });
-    await guild.save();
-    return guild;
+    await guildData.save();
+    return guildData;
 };
 
 /**
  * Retrieves an existing guild or creates a new one based on the provided ID.
- * @param id The ID of the guild.
+ * @param guild The guild.
  * @returns A promise that resolves to the retrieved or created guild.
  * @throws If there is an error creating or getting the guild.
  */
-const getOrCreateGuild = async (id: string): Promise<IGuild> => {
+const getOrCreateGuild = async (guild: Guild): Promise<IGuild> => {
     try {
-        let guildSettings: IGuild | null = await GuildModel.findOne({ id });
+        let guildSettings: IGuild | null = await GuildModel.findOne({ id: guild.id });
 
         if (!guildSettings) {
-            guildSettings = await guildService.createGuild(id);
+            guildSettings = await guildService.createGuild(guild);
         }
         return guildSettings;
     } catch (err: any) {
@@ -86,16 +90,18 @@ const getOrCreateGuild = async (id: string): Promise<IGuild> => {
 /**
  * Updates a guild with the specified ID.
  * If the guild does not exist, a new guild will be created.
- * @param id - The ID of the guild to update.
+ * @param guild - The guild to update.
  * @param update - The partial guild object containing the fields to update.
  * @returns A promise that resolves to the updated guild object, or null if an error occurs.
  */
-const updateGuild = async (id: string, update: Partial<IGuild>): Promise<IGuild | null> => {
+const updateGuild = async (guild: Guild, update: Partial<IGuild>): Promise<IGuild | null> => {
+    const { id } = guild;
+
     try {
         const currentGuild = await GuildModel.findOne({ id });
 
         if (!currentGuild) {
-            return createGuild(id);
+            return createGuild(guild);
         }
 
         const $set: Record<string, any> = {};

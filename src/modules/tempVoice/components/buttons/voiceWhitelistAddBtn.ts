@@ -1,4 +1,4 @@
-import { ButtonBuilder, ButtonInteraction, ButtonStyle } from 'discord.js';
+import { ButtonBuilder, ButtonInteraction, ButtonStyle, GuildMember } from 'discord.js';
 import { IGuild } from '../../../../models';
 import { getorCreateUserSettings } from '../../../../utils/modulesUil';
 import { voiceWhitelistAddRow } from '../selectMenus';
@@ -13,7 +13,7 @@ export default {
         name: `voiceWhitelistAddBtn`
     },
     async execute(interaction: ButtonInteraction, guildSettings: IGuild) {
-        getorCreateUserSettings(interaction.user.id, guildSettings);
+        getorCreateUserSettings(interaction.member as GuildMember, guildSettings);
         return interaction.reply({
             components: [voiceWhitelistAddRow],
             ephemeral: true

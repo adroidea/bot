@@ -19,7 +19,7 @@ export default {
     },
     cooldown: 300,
     async execute(interaction: ButtonInteraction, guildSettings: IGuild) {
-        getorCreateUserSettings(interaction.user.id, guildSettings);
+        getorCreateUserSettings(interaction.member as GuildMember, guildSettings);
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
 

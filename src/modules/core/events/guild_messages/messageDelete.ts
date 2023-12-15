@@ -8,7 +8,7 @@ export default {
     async execute(client: Client, message: Message) {
         const {
             modules: { notifications }
-        } = await guildService.getOrCreateGuild(message.guildId!);
+        } = await guildService.getOrCreateGuild(message.guild!);
         if (!isNotifSMEnabled(notifications, 'privateLogs')) return;
 
         const { privateLogChannel, notLoggedChannels } = notifications.privateLogs;

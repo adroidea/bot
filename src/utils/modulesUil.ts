@@ -1,5 +1,6 @@
 import { IGuild, INotifications } from '../models';
 import { CustomErrors } from './errors';
+import { GuildMember } from 'discord.js';
 import { ITempVoiceUserSettings } from '../modules/tempVoice/models/temporaryVoiceModel';
 import guildService from '../services/guildService';
 
@@ -99,10 +100,11 @@ export const isTwitchLiveModuleEnabled = (guildSettings: IGuild, throwError = fa
  * @returns The user settings object.
  */
 export const getorCreateUserSettings = async (
-    userId: string,
+    member: GuildMember,
     guildSettings: IGuild
 ): Promise<ITempVoiceUserSettings> => {
-    let userSettings = guildSettings.modules.temporaryVoice.userSettings[userId];
+    const { id, guild } = member;
+    let userSettings = guildSettings.modules.temporaryVoice.userSettings[id];
 
     if (!userSettings) {
         userSettings = {
@@ -112,14 +114,13 @@ export const getorCreateUserSettings = async (
         };
 
         const updateObject: Record<string, any> = {};
-        updateObject[`modules.temporaryVoice.userSettings.${userId}.trustedUsers`] =
+        updateObject[`modules.temporaryVoice.userSettings.${id}.trustedUsers`] =
             userSettings.trustedUsers;
-        updateObject[`modules.temporaryVoice.userSettings.${userId}.blockedUsers`] =
+        updateObject[`modules.temporaryVoice.userSettings.${id}.blockedUsers`] =
             userSettings.blockedUsers;
-        updateObject[`modules.temporaryVoice.userSettings.${userId}.isPublic`] =
-            userSettings.isPublic;
+        updateObject[`modules.temporaryVoice.userSettings.${id}.isPublic`] = userSettings.isPublic;
 
-        await guildService.updateGuild(guildSettings.id, updateObject);
+        await guildService.updateGuild(guild, updateObject);
     }
 
     return userSettings;

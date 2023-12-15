@@ -11,7 +11,7 @@ export default {
             activities: [{ name: 'adan_ea sur twitch !', type: ActivityType.Watching }],
             status: 'dnd'
         });
-        if (process.env.NODE_ENV === 'production') {
+        if (process.env.NODE_ENV === 'PRODUCTION') {
             regCMD(client.user?.id!);
         }
     }

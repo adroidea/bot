@@ -37,12 +37,17 @@ interface LiveStatus {
     cooldown: number | null;
 }
 
+let errorNumber = 0;
+
 const streamersList = new Map<string, LiveStatus>();
 
 export default function (): cron.ScheduledTask {
     return cron.schedule('* * * * *', () => {
         try {
-            if (!twitch.access_token) return logger.warn('Twitch access token is not defined');
+            if (!twitch.access_token && errorNumber < 5) {
+                errorNumber++;
+                return logger.warn('Twitch access token is not defined');
+            }
             for (const guild of guildsCache) {
                 handleGuild(guild);
             }

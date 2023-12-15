@@ -9,7 +9,7 @@ export default {
     async execute(client: Client, member: GuildMember) {
         const {
             modules: { notifications }
-        } = await guildService.getOrCreateGuild(member.guild.id);
+        } = await guildService.getOrCreateGuild(member.guild);
         if (!isNotifSMEnabled(notifications, 'privateLogs')) return;
         const { privateLogs } = notifications;
 

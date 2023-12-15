@@ -52,7 +52,7 @@ const handleCommandInteraction = async (
     client: IDiscordClient,
     interaction: CommandInteraction
 ) => {
-    const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guildId!);
+    const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guild!);
     const command = client.commands.get(interaction.commandName);
 
     try {
@@ -131,7 +131,7 @@ export const handleCooldown = (userId: string, commandName: string, cooldownAmou
  * @param interaction - The base interaction object.
  */
 const handleComponentInteraction = async (client: IDiscordClient, interaction: BaseInteraction) => {
-    const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guildId!);
+    const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guild!);
 
     if (interaction.isButton()) {
         try {

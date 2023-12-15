@@ -6,7 +6,13 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import path from 'node:path';
 
-dotenv.config();
+let envPath = '.env.development';
+
+if (process.env.NODE_ENV === 'PRODUCTION') {
+    envPath = '.env.production';
+}
+
+dotenv.config({ path: envPath });
 
 export const client: any = new DiscordClient({
     intents: 3276799,
