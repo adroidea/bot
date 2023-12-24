@@ -17,8 +17,7 @@ if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
 
 const twitch = new TwitchApi({
     client_id: process.env.TWITCH_CLIENT_ID,
-    client_secret: process.env.TWITCH_CLIENT_SECRET,
-    throw_ratelimit_errors: true
+    client_secret: process.env.TWITCH_CLIENT_SECRET
 });
 
 /**
@@ -46,7 +45,7 @@ export default function (): cron.ScheduledTask {
         try {
             if (!twitch.access_token && errorNumber < 5) {
                 errorNumber++;
-                return logger.warn('Twitch access token is not defined');
+                logger.warn('Twitch access token is not defined');
             }
             for (const guild of guildsCache) {
                 handleGuild(guild);
