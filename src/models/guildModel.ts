@@ -40,9 +40,6 @@ const eventManagementSchema = new mongoose.Schema<IEventManagement>({
 
 export interface IGuild {
     id: string;
-    name: string;
-    icon: string | null;
-    banner: string | null;
     modules: {
         eventManagement: IEventManagement;
         notifications: INotifications;
@@ -56,18 +53,6 @@ const guildSchema = new mongoose.Schema<IGuild>({
     id: {
         type: String,
         required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    icon: {
-        type: String,
-        required: false
-    },
-    banner: {
-        type: String,
-        required: false
     },
     modules: {
         eventManagement: eventManagementSchema,

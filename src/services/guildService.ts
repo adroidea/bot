@@ -10,9 +10,6 @@ import Logger from '../utils/logger';
 const createGuild = async (guild: Guild): Promise<IGuild> => {
     const guildData = new GuildModel({
         id: guild.id,
-        name: guild.name,
-        icon: guild.icon,
-        banner: guild.banner,
         modules: {
             notifications: {
                 enabled: false,
