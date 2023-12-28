@@ -1,7 +1,24 @@
 {
     "name": "adroid_ea",
-    "version": "3.8.0",
     "description": "",
+    "version": "3.7.1",
+    "author": "adan_ea",
+    "license": "AGPL-3.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/adroidea/bot.git"
+    },
+    "bugs": {
+        "url": "https://github.com/adroidea/bot/issues",
+        "email": "adan.ea+adroid@proton.me"
+    },
+    "keywords": [
+		"discord",
+		"bot",
+		"adroid_ea",
+		"typescript",
+        "discord.js"
+	],
     "main": "index.js",
     "scripts": {
         "lint": "eslint . --ext .ts",
@@ -23,8 +40,6 @@
             "prettier --write"
         ]
     },
-    "author": "adan_ea",
-    "license": "ISC",
     "dependencies": {
         "ansis": "^1.5.5",
         "bullmq": "^3.12.0",
