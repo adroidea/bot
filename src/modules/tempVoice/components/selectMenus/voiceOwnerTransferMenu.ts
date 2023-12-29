@@ -1,7 +1,7 @@
 import { GuildMember, StringSelectMenuInteraction, userMention } from 'discord.js';
 import { isMemberVoiceOwner, switchVoiceOwner } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 
 export default {
     data: {
@@ -28,7 +28,7 @@ export default {
             throw CustomErrors.NotVoiceOwnerError;
         }
 
-        switchVoiceOwner(user, target, guildSettings.modules.temporaryVoice);
+        switchVoiceOwner(user, target, guildSettings.modules.tempVoice);
 
         return interaction.editReply({
             content: `La propriété du salon a été transféré à ${userMention(target.id)}.`,

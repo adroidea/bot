@@ -2,7 +2,7 @@ import { Client, ClientOptions, Collection } from 'discord.js';
 
 interface ItempVoiceSettings {
     ownerId: string;
-    isPublic: boolean;
+    isPrivate: boolean;
 }
 
 export interface IDiscordClient {

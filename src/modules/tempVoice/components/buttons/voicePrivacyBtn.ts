@@ -5,7 +5,7 @@ import {
     switchVoicePrivacy
 } from '../../../../utils/voiceUtil';
 import { CustomErrors } from '../../../../utils/errors';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import { getorCreateUserSettings } from '../../../../utils/modulesUil';
 
 export const voicePrivacyBtn = new ButtonBuilder()
@@ -29,7 +29,7 @@ export default {
         await interaction.deferReply({ ephemeral: true });
         let isPublic: boolean = isVoicePrivate(voiceChannel.id);
 
-        switchVoicePrivacy(member, guildSettings.modules.temporaryVoice.nameModel);
+        switchVoicePrivacy(member, guildSettings.modules.tempVoice.nameModel);
         await interaction.editReply({
             content: `Le salon est maintenant ${isPublic ? 'privé' : 'public'}.`
         });

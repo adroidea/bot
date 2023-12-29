@@ -4,7 +4,7 @@ import {
     deleteEmptyChannel,
     switchVoiceOwner
 } from '../../../../utils/voiceUtil';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import { client } from '../../../..';
 import guildService from '../../../../services/guildService';
 
@@ -48,10 +48,10 @@ export default {
     async execute(client: Client, oldState: VoiceState, newState: VoiceState) {
         const guildSettings: IGuild = await guildService.getOrCreateGuild(newState.guild);
 
-        const { temporaryVoice } = guildSettings.modules;
-        if (!temporaryVoice.enabled) return;
+        const { tempVoice } = guildSettings.modules;
+        if (!tempVoice.enabled) return;
 
-        const hostC = temporaryVoice?.hostChannels ?? [''];
+        const hostC = tempVoice?.hostChannels ?? [''];
 
         try {
             const voiceUpdateType = getVoiceUpdateType(oldState.channel, newState.channel);
@@ -59,7 +59,7 @@ export default {
             switch (voiceUpdateType) {
                 case 'JOINED_VOICE':
                     if (isHostVoice(hostC, newState.channelId!)) {
-                        await createNewTempChannel(newState, temporaryVoice);
+                        await createNewTempChannel(newState, tempVoice);
                     }
                     break;
 
@@ -68,14 +68,13 @@ export default {
                     if (isTempVoice(oldState.channelId!)) {
                         await deleteEmptyChannel(oldState.channel!);
                         const member = oldState.channel?.members.first();
-                        if (member)
-                            await switchVoiceOwner(oldState.member!, member, temporaryVoice);
+                        if (member) await switchVoiceOwner(oldState.member!, member, tempVoice);
                     }
                     if (
                         voiceUpdateType === 'MOVED_VOICE' &&
                         isHostVoice(hostC, newState.channelId!)
                     ) {
-                        await createNewTempChannel(newState, temporaryVoice);
+                        await createNewTempChannel(newState, tempVoice);
                     }
                     break;
 

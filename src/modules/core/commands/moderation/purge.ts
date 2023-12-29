@@ -10,9 +10,8 @@ import {
 } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import { hasBotPermission } from '../../../../utils/botUtil';
-import { isNotifSMEnabled } from '../../../../utils/modulesUil';
 
 export default {
     data: {
@@ -70,12 +69,12 @@ export default {
             ephemeral: true
         });
 
-        const { notifications } = guildSettings.modules;
-        if (!isNotifSMEnabled(notifications, 'privateLogs')) return;
-        const { privateLogChannel } = notifications.privateLogs;
+        const { logs } = guildSettings.modules;
+        if (!logs.MessageBulkDelete.enabled) return;
+        const { privateLogsChannel } = logs;
 
-        if (privateLogChannel) {
-            const logChannel = client.channels.cache.get(privateLogChannel);
+        if (privateLogsChannel) {
+            const logChannel = client.channels.cache.get(privateLogsChannel);
             if (!logChannel?.isTextBased()) return;
 
             const embed = new EmbedBuilder()

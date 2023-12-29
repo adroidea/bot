@@ -1,3 +1,3 @@
-import { IQOtD, IQuestions, QuestionsModel, qotdSchema } from './qotd.model';
+import { IQuestions, QuestionsModel, qotdSchema } from './qotd.model';
 
-export { IQOtD, IQuestions, QuestionsModel, qotdSchema };
+export { IQuestions, QuestionsModel, qotdSchema };

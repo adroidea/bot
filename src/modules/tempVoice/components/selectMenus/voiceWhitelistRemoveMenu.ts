@@ -8,7 +8,7 @@ import {
     UserSelectMenuInteraction
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import { client } from '../../../..';
 import { formatCustomList } from '../../../../utils/embedsUtil';
 import guildService from '../../../../services/guildService';
@@ -41,8 +41,7 @@ export default {
     },
     async execute(interaction: UserSelectMenuInteraction, guildSettings: IGuild) {
         await interaction.deferUpdate();
-        const { trustedUsers } =
-            guildSettings.modules.temporaryVoice.userSettings[interaction.user.id];
+        const { trustedUsers } = guildSettings.modules.tempVoice.userSettings[interaction.user.id];
         const selectedUserIds = interaction.values;
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
@@ -71,7 +70,7 @@ export default {
         }
 
         guildService.updateGuild(interaction.guild!, {
-            [`modules.temporaryVoice.userSettings.${interaction.user.id}.trustedUsers`]:
+            [`modules.tempVoice.userSettings.${interaction.user.id}.trustedUsers`]:
                 trustedUsers
         });
 

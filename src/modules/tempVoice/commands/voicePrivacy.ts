@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, Client, GuildMember, PermissionsBitField } from 'discord.js';
 import { CustomErrors } from '../../../utils/errors';
-import { IGuild } from '../../../models';
+import { IGuild } from 'adroi.d.ea';
 import { buildVoiceEmbed } from '../../../utils/voiceUtil';
 import { isTempVoiceModuleEnabled } from '../../../utils/modulesUil';
 

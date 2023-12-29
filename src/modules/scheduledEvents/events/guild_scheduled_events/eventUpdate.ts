@@ -7,7 +7,7 @@ import {
     GuildScheduledEventStatus,
     MessageCreateOptions
 } from 'discord.js';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import ScheduledEventService from '../../services/scheduledEventService';
 import guildService from '../../../../services/guildService';
 import { timestampToDate } from '../../../../utils/botUtil';
@@ -20,8 +20,8 @@ export default {
         const event = await ScheduledEventService.getEventById(oldEvent.id);
         if (!event) return;
 
-        const eventManagement = guildSettings.modules.eventManagement;
-        if (!eventManagement.enabled) return;
+        //const eventManagement = guildSettings.modules.eventManagement;
+        //if (!eventManagement.enabled) return;
 
         let message: MessageCreateOptions;
 

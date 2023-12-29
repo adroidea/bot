@@ -6,10 +6,10 @@ import {
 } from 'discord.js';
 import { CustomErrors } from '../../../utils/errors';
 import { IEvent } from '../models';
-import { IGuild } from '../../../models';
+import { IGuild } from 'adroi.d.ea';
 import ScheduledEventService from '../services/scheduledEventService';
 import { addToAppropriateQueue } from '../tasks/scheduledEvents.queue';
-import { isEventManagementModuleEnabled } from '../../../utils/modulesUil';
+//import { isEventManagementModuleEnabled } from '../../../utils/modulesUil';
 
 export default {
     data: {
@@ -43,7 +43,7 @@ export default {
     examples: [''],
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
-        if (!isEventManagementModuleEnabled(guildSettings, true)) return;
+        //        if (!isEventManagementModuleEnabled(guildSettings, true)) return;
 
         const eventInput = interaction.options.getString('url-id', true);
         let description =

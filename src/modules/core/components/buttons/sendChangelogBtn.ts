@@ -6,7 +6,7 @@ import {
     Guild,
     GuildTextBasedChannel
 } from 'discord.js';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import { client } from '../../../..';
 import { guildsCache } from '../../tasks/createCache.cron';
 
@@ -28,12 +28,12 @@ export default {
         const failedGuilds: string[] = [];
 
         const sendMessages = guildsCache.map(async (guild: IGuild) => {
-            const { privateLogChannel } = guild.modules.notifications.privateLogs;
+            const { privateLogsChannel } = guild.modules.logs;
             let isFailed = false;
-            if (!privateLogChannel || privateLogChannel === '') isFailed = true;
+            if (!privateLogsChannel || privateLogsChannel === '') isFailed = true;
 
             const channel = (await client.channels.fetch(
-                privateLogChannel
+                privateLogsChannel
             )) as GuildTextBasedChannel;
 
             if (!channel) isFailed = true;

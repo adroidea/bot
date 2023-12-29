@@ -1,14 +1,5 @@
+import { IQOTDModule } from 'adroi.d.ea';
 import mongoose from 'mongoose';
-
-export interface IQOtD {
-    enabled: boolean;
-    channelId: string;
-    pingedRoleId?: string;
-    requestChannelId: string;
-    blacklistUsers: string[];
-    trustedUsers: string[];
-    questionsThreshold: number;
-}
 
 export interface IQuestions {
     _id?: string;
@@ -17,13 +8,13 @@ export interface IQuestions {
     guildId: string;
 }
 
-export const qotdSchema = new mongoose.Schema<IQOtD>({
+export const qotdSchema = new mongoose.Schema<IQOTDModule>({
     enabled: { type: Boolean, default: false, required: true },
     channelId: { type: String, default: '' },
+    proposedChannelId: { type: String, default: '' },
     pingedRoleId: { type: String, default: '' },
-    requestChannelId: { type: String, default: '' },
-    blacklistUsers: { type: [String], default: [] },
-    trustedUsers: { type: [String], default: [] },
+    blacklist: { type: [String], default: [] },
+    whitelist: { type: [String], default: [] },
     questionsThreshold: { type: Number, default: 7 }
 });
 

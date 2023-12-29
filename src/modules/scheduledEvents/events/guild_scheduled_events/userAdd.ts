@@ -1,5 +1,5 @@
 import { Client, Events, GuildScheduledEvent, TextBasedChannel, User } from 'discord.js';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import ScheduledEventService from '../../services/scheduledEventService';
 import guildService from '../../../../services/guildService';
 
@@ -8,8 +8,8 @@ export default {
     async execute(client: Client, event: GuildScheduledEvent, user: User) {
         const guildSettings: IGuild = await guildService.getOrCreateGuild(event.guild!);
 
-        const eventManagement = guildSettings.modules.eventManagement;
-        if (!eventManagement.enabled) return;
+        //const eventManagement = guildSettings.modules.eventManagement;
+        //if (!eventManagement.enabled) return;
 
         const savedEvent = await ScheduledEventService.addParticipantToEvent(event.id, user.id);
         if (!savedEvent) return;

@@ -9,11 +9,12 @@ import {
     userMention
 } from 'discord.js';
 import { Colors, Guilds } from '../../../utils/consts';
-import { IQOtD, IQuestions } from '../models';
 import { adminRow, stealRow } from '../components/buttons';
 import { CustomErrors } from '../../../utils/errors';
 import { Embed } from '../../../utils/embedsUtil';
-import { IGuild } from '../../../models';
+import { IGuild } from 'adroi.d.ea';
+import { IQOTDModule } from 'adroi.d.ea';
+import { IQuestions } from '../models';
 import { isQOtDModuleEnabled } from '../../../utils/modulesUil';
 import qotddService from '../services/qotdService';
 
@@ -44,10 +45,10 @@ export default {
     guildOnly: false,
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildData: IGuild) {
-        const { qotd }: { qotd: IQOtD } = guildData.modules;
+        const { qotd }: { qotd: IQOTDModule } = guildData.modules;
         if (!isQOtDModuleEnabled(guildData, true)) return;
 
-        if (qotd.blacklistUsers?.includes(interaction.user.id))
+        if (qotd.blacklist?.includes(interaction.user.id))
             throw CustomErrors.BlacklistedUserError;
 
         const question = interaction.options.getString('question', true);
@@ -79,7 +80,7 @@ export default {
         });
 
         if (
-            qotd.trustedUsers?.includes(interaction.user.id) ||
+            qotd.whitelist?.includes(interaction.user.id) ||
             interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageMessages)
         ) {
             qotddService.createQOtD(questionBuilder);
@@ -116,7 +117,7 @@ export default {
                 });
 
             const requestChannel: Channel | undefined = client.channels.cache.get(
-                qotd.requestChannelId
+                qotd.proposedChannelId
             );
 
             if (!requestChannel?.isTextBased()) return;
