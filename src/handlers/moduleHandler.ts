@@ -9,6 +9,7 @@ import path from 'path';
 export default async (client: any) => {
     const moduleFolders = [
         path.join(__dirname, '../modules/core'),
+        path.join(__dirname, '../modules/logs'),
         //path.join(__dirname, '../modules/scheduledEvents'),
         path.join(__dirname, '../modules/qotd'),
         path.join(__dirname, '../modules/tempVoice'),

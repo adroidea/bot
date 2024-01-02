@@ -43,6 +43,23 @@ export const isQOtDModuleEnabled = (guildSettings: IGuild, throwError = false): 
 };
 
 /**
+ * Checks if the logs module is enabled for the given guild.
+ * @param guildSettings - The guild settings object.
+ * @param throwError - Optional. Specifies whether to throw an error if the module is disabled. Default is false.
+ * @returns A boolean indicating whether the logs module is enabled.
+ */
+export const isLogsModuleEnabled = (guildSettings: IGuild, throwError = false): boolean => {
+    if (guildSettings.modules.logs.enabled) {
+        return true;
+    } else {
+        if (throwError) {
+            throw CustomErrors.LogsDisabledError;
+        }
+        return false;
+    }
+    }
+
+/**
  * Checks if the temporary voice module is enabled for a guild.
  * @param guildSettings - The guild settings object.
  * @param throwError - Optional. Specifies whether to throw an error if the module is disabled. Default is false.
