@@ -1,9 +1,8 @@
-import { IGuild } from 'adroi.d.ea';
+import { IGuild, createGuildObject } from 'adroi.d.ea';
 import { Guild } from 'discord.js';
 import { GuildModel } from '../models';
 import Logger from '../utils/logger';
 
-//TODO: FIX THIS ASAP
 /**
  * Creates a new guild with the specified ID.
  * @param guild The guild.
