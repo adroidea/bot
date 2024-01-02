@@ -13,7 +13,7 @@ export default async (client: any) => {
         //path.join(__dirname, '../modules/scheduledEvents'),
         path.join(__dirname, '../modules/qotd'),
         path.join(__dirname, '../modules/tempVoice'),
-        path.join(__dirname, '../modules/twitchLive')
+        path.join(__dirname, '../modules/twitch')
     ];
 
     const counts: Record<string, Record<string, any>> = {};

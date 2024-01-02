@@ -82,7 +82,7 @@ export const isTempVoiceModuleEnabled = (guildSettings: IGuild, throwError = fal
  * @param throwError - Optional. Specifies whether to throw an error if the module is disabled. Default is false.
  * @returns A boolean indicating whether the Twitch Live module is enabled.
  */
-export const isTwitchLiveModuleEnabled = (guildSettings: IGuild, throwError = false): boolean => {
+export const isTwitchModuleEnabled = (guildSettings: IGuild, throwError = false): boolean => {
     if (guildSettings.modules.twitch.enabled) {
         return true;
     } else {

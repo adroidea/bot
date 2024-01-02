@@ -23,7 +23,7 @@ const guildSchema = new mongoose.Schema<IGuild>({
         logs: logsSchema,
         qotd: qotdSchema,
         tempVoice: tempVoiceSchema,
-        twitchLive: twitchSchema
+        twitch: twitchSchema
     }
 });
 

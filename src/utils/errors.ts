@@ -62,7 +62,7 @@ export const CustomErrors = {
     ////////////////////////////////////////////////////
     //               Twitch related err               //
     ////////////////////////////////////////////////////
-    TwitchDisabledError: new CustomError("Le module TwitchLive n'est pas activé sur ce serveur."),
+    TwitchDisabledError: new CustomError("Le module Twitch n'est pas activé sur ce serveur."),
 
     ////////////////////////////////////////////////////
     //               Logs related err                 //
