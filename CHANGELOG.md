@@ -6,26 +6,26 @@ All notable changes to this project will be documented in this file.
 
 ### ✨ Added
 
-- Logs: guildBan Add/Remove; GuildRole Create/Update/Delete - [#67]
+❄️ Logs: guildBan Add/Remove; GuildRole Create/Update/Delete - [[#67](https://github.com/adroidea/bot/issues/67)]
 
 ### 🧱 Changed
 
-- Logs: message Update/Delete; guildMember Add/Update/Remove - [#67]
+❄️ Logs: message Update/Delete; guildMember Add/Update/Remove - [[#67](https://github.com/adroidea/bot/issues/67)]
 
-- Twitch: separate Alerts and auto role
+❄️ Twitch: separate Alerts and auto role
 
 ### 🚮 Removed
 
-- `/r` Never used
+❄️ `/r` Never used
 
 ### 🐛 Fixed
-- Twitch: Reworked, will refresh token by itself and no longer use [node-twitch](https://github.com/Plazide/node-twitch)
+❄️ Twitch: Reworked, will refresh token by itself and no longer use [node-twitch](https://github.com/Plazide/node-twitch)
 
 ## 🚀 [3.7.0] - 2023-11-25
 
 ### ✨ Added
 
-❄️  A beautiful changelog via discord (I promise it won't be spammed) - [#64]
+❄️ A beautiful changelog via discord (I promise it won't be spammed) - [[#64](https://github.com/adroidea/bot/issues/64)]
 
 ❄️ `/report` to report a bug or suggest a great new feature
 
@@ -35,11 +35,11 @@ All notable changes to this project will be documented in this file.
 
   - New control interface
 
-  - White and black lists, now in memory bliss. No more repetitive "Live, live, die!" scenarios - [#60]
+  - White and black lists, now in memory bliss. No more repetitive "Live, live, die!" scenarios - [[#60](https://github.com/adroidea/bot/issues/60)]
 
-  - Do you want your voice channel to be set private automatically? It's possible now! - [#65]
+  - Do you want your voice channel to be set private automatically? It's possible now! - [[#65](https://github.com/adroidea/bot/issues/65)]
 
-  - Channel names can be customized by the server owner - [#65]
+  - Channel names can be customized by the server owner - [[#65](https://github.com/adroidea/bot/issues/65)]
 
 ### 🚮 Removed
 
@@ -50,7 +50,7 @@ All notable changes to this project will be documented in this file.
 
 ### ✨ Added
 
-- ❄️ A lot of stuff i don't remember. And i'm too lazy to check every commit :')
+❄️ A lot of stuff i don't remember. And i'm too lazy to check every commit :')
 
 [Unreleased - 4.0.0]: https://github.com/adroidea/bot
 [3.7.0]: https://github.com/adroidea/bot/releases/tag/v3.7.0
