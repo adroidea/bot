@@ -6,7 +6,7 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
 
 <p align="center">
   <a href="https://discord.gg/29URgahg">
-    <img src="https://media.discordapp.net/attachments/763373898779197481/887428474766229574/worldbot.png"  alt="Discord bot icon" width="50%" style="border-radius:5000px"/>
+    <img src="./assets/adroid_ea.png"  alt="Discord bot icon" width="50%" style="border-radius:100%"/>
   </a>
 </p>
 
@@ -92,7 +92,7 @@ The voice owner can :
 - Some memes stuff like "hello there" and some private jokes
 ![hello_there](/assets/hello_there.png)
 
-# 🏗 Development
+# 🏗️ Development
 
 env: 
 ```
