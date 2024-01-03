@@ -20,7 +20,7 @@ export const logsSchema = new mongoose.Schema<ILogsModule>({
         channelId: { type: String, default: '' },
         ignoreBots: { type: Boolean, default: false }
     },
-    MessageBulkDelete: {
+    messageBulkDelete: {
         enabled: { type: Boolean, default: false },
         channelId: { type: String, default: '' },
         ignoredChannels: { type: [String], default: [] }
@@ -29,13 +29,15 @@ export const logsSchema = new mongoose.Schema<ILogsModule>({
         enabled: { type: Boolean, default: false },
         channelId: { type: String, default: '' },
         ignoreBots: { type: Boolean, default: false },
-        ignoredChannels: { type: [String], default: [] }
+        ignoredChannels: { type: [String], default: [] },
+        ignoredUsers: { type: [String], default: [] }
     },
     messageUpdate: {
         enabled: { type: Boolean, default: false },
         channelId: { type: String, default: '' },
         ignoreBots: { type: Boolean, default: false },
-        ignoredChannels: { type: [String], default: [] }
+        ignoredChannels: { type: [String], default: [] },
+        ignoredUsers: { type: [String], default: [] }
     },
     guildBanAdd: {
         enabled: { type: Boolean, default: false },

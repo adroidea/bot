@@ -69,12 +69,12 @@ export default {
             ephemeral: true
         });
 
-        const { logs } = guildSettings.modules;
-        if (!logs.MessageBulkDelete.enabled) return;
-        const { privateLogsChannel } = logs;
+        const { messageBulkDelete } = guildSettings.modules.logs;
+        if (!messageBulkDelete.enabled) return;
+        const { channelId } = messageBulkDelete;
 
-        if (privateLogsChannel) {
-            const logChannel = client.channels.cache.get(privateLogsChannel);
+        if (channelId) {
+            const logChannel = client.channels.cache.get(channelId);
             if (!logChannel?.isTextBased()) return;
 
             const embed = new EmbedBuilder()
@@ -82,14 +82,8 @@ export default {
                     name: `${interaction.user.username}`,
                     iconURL: interaction.user.avatarURL()!
                 })
-                .setDescription(
-                    `Suppression de masse (Bulk Delete) de ${amountDeleted} messages effectuée dans <#${channel.id}>`
-                )
-                .setFooter({ text: `Suppression de masse.` })
-                .setColor(
-                    interaction.user.hexAccentColor ? interaction.user.hexAccentColor : '#0FF0FF'
-                )
-                .setTimestamp();
+                .setTitle(`Suppression de masse (Bulk Delete) effectuée`)
+                .setColor([45, 249, 250]);
 
             await logChannel.send({ embeds: [embed] });
         }
