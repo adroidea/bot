@@ -28,7 +28,7 @@ export default {
         const failedGuilds: string[] = [];
 
         const sendMessages = guildsCache.map(async (guild: IGuild) => {
-            const { privateLogsChannel } = guild.modules.logs;
+            const { privateLogsChannel } = guild.modules.auditLogs;
             let isFailed = false;
             if (!privateLogsChannel || privateLogsChannel === '') isFailed = true;
 

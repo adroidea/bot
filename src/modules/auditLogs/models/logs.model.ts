@@ -1,7 +1,7 @@
-import { ILogsModule } from 'adroi.d.ea';
+import { IAuditLogsModule } from 'adroi.d.ea';
 import mongoose from 'mongoose';
 
-export const logsSchema = new mongoose.Schema<ILogsModule>({
+export const auditLogsSchema = new mongoose.Schema<IAuditLogsModule>({
     enabled: { type: Boolean, default: false },
     publicLogsChannel: { type: String, default: '' },
     privateLogsChannel: { type: String, default: '' },

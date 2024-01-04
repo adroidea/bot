@@ -1,5 +1,5 @@
 import { IGuild } from 'adroi.d.ea';
-import { logsSchema } from '../modules/logs/models';
+import { auditLogsSchema } from '../modules/auditLogs/models';
 import mongoose from 'mongoose';
 import { qotdSchema } from '../modules/qotd/models';
 import { tempVoiceSchema } from '../modules/tempVoice/models';
@@ -20,7 +20,7 @@ const guildSchema = new mongoose.Schema<IGuild>({
     },
     modules: {
         eventManagement: eventManagementSchema,
-        logs: logsSchema,
+        auditLogs: auditLogsSchema,
         qotd: qotdSchema,
         tempVoice: tempVoiceSchema,
         twitch: twitchSchema

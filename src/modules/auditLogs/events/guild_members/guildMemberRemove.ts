@@ -1,6 +1,6 @@
 import { Client, EmbedBuilder, Events, GuildMember, TextChannel } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
-import { ILogsModule } from 'adroi.d.ea';
+import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
 import { timestampToDate } from '../../../../utils/botUtil';
 
@@ -8,9 +8,10 @@ export default {
     name: Events.GuildMemberRemove,
     async execute(client: Client, member: GuildMember) {
         const {
-            modules: { logs }
+            modules: {
+                auditLogs: { guildMemberRemove }
+            }
         } = await guildService.getOrCreateGuild(member.guild);
-        const { guildMemberRemove } = logs;
 
         if (shouldIgnoreMemberRemove(guildMemberRemove, member)) return;
 
@@ -54,7 +55,7 @@ export default {
 };
 
 const shouldIgnoreMemberRemove = (
-    guildMemberRemove: ILogsModule['guildMemberRemove'],
+    guildMemberRemove: IAuditLogsModule['guildMemberRemove'],
     member: GuildMember
 ) =>
     !guildMemberRemove.enabled ||

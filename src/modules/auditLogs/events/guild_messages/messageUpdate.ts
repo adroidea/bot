@@ -1,5 +1,5 @@
 import { Client, EmbedBuilder, Events, Message, TextChannel } from 'discord.js';
-import { ILogsModule } from 'adroi.d.ea';
+import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -11,9 +11,10 @@ export default {
         if (oldText === newText || !oldMessage.guild) return;
 
         const {
-            modules: { logs }
+            modules: {
+                auditLogs: { messageUpdate }
+            }
         } = await guildService.getOrCreateGuild(oldMessage.guild);
-        const { messageUpdate } = logs;
 
         if (shouldIgnoreUpdate(messageUpdate, oldMessage)) return;
 
@@ -47,7 +48,7 @@ export default {
     }
 };
 
-const shouldIgnoreUpdate = (messageUpdate: ILogsModule['messageUpdate'], oldMessage: Message) =>
+const shouldIgnoreUpdate = (messageUpdate: IAuditLogsModule['messageUpdate'], oldMessage: Message) =>
     !messageUpdate.enabled ||
     (messageUpdate.ignoreBots && oldMessage.author.bot) ||
     messageUpdate.ignoredChannels.includes(oldMessage.channelId) ||

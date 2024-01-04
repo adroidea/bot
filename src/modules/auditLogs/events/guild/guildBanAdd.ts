@@ -8,7 +8,7 @@ import {
     userMention
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
-import { ILogsModule } from 'adroi.d.ea';
+import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -22,9 +22,10 @@ export default {
         const executor = fetchedLogs.entries.first()?.executor;
 
         const {
-            modules: { logs }
+            modules: {
+                auditLogs: { guildBanAdd }
+            }
         } = await guildService.getOrCreateGuild(ban.guild);
-        const { guildBanAdd } = logs;
 
         if (shouldIgnoreBanAdd(guildBanAdd)) return;
 
@@ -50,11 +51,14 @@ export default {
                     name: `${executor.username} (${executor.id})`,
                     iconURL: executor.avatarURL()!
                 })
-                .addFields({
-                    name: '❄ Bourreau',
-                    value: userMention(executor.id),
-                    inline: true
-                });
+                .addFields([
+                    { name: '\u200B', value: '\u200B', inline: true },
+                    {
+                        name: '❄ Bourreau',
+                        value: userMention(executor.id),
+                        inline: true
+                    }
+                ]);
 
         if (ban.reason)
             embed.addFields({
@@ -67,5 +71,5 @@ export default {
     }
 };
 
-const shouldIgnoreBanAdd = (guildBanAdd: ILogsModule['guildBanAdd']) =>
+const shouldIgnoreBanAdd = (guildBanAdd: IAuditLogsModule['guildBanAdd']) =>
     !guildBanAdd.enabled || guildBanAdd.channelId === '';

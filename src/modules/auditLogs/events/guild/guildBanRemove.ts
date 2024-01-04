@@ -8,7 +8,7 @@ import {
     userMention
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
-import { ILogsModule } from 'adroi.d.ea';
+import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -22,9 +22,10 @@ export default {
         const executor = fetchedLogs.entries.first()?.executor;
 
         const {
-            modules: { logs }
+            modules: {
+                auditLogs: { guildBanRemove }
+            }
         } = await guildService.getOrCreateGuild(ban.guild);
-        const { guildBanRemove } = logs;
 
         if (shouldIgnoreBanRemove(guildBanRemove)) return;
 
@@ -33,7 +34,7 @@ export default {
             .setThumbnail(ban.user.avatarURL())
             .setTitle(`Unban d'un utilisateur`)
             .addFields({
-                name: '❄ Béni :',
+                name: '❄ Béni',
                 value: userMention(ban.user.id),
                 inline: true
             })
@@ -50,11 +51,14 @@ export default {
                     name: executor.username,
                     iconURL: executor.avatarURL()!
                 })
-                .addFields({
-                    name: '❄ bienfaiteur :',
-                    value: userMention(executor.id),
-                    inline: true
-                });
+                .addFields([
+                    { name: '\u200B', value: '\u200B', inline: true },
+                    {
+                        name: '❄ bienfaiteur',
+                        value: userMention(executor.id),
+                        inline: true
+                    }
+                ]);
 
         if (ban.reason)
             embed.addFields({
@@ -67,5 +71,5 @@ export default {
     }
 };
 
-const shouldIgnoreBanRemove = (guildBanAdd: ILogsModule['guildBanAdd']) =>
+const shouldIgnoreBanRemove = (guildBanAdd: IAuditLogsModule['guildBanAdd']) =>
     !guildBanAdd.enabled || guildBanAdd.channelId === '';

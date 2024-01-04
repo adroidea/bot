@@ -26,26 +26,32 @@ export const Modules: { [key: string]: IModule } = {
         description: 'Module de base',
         emoji: '📦'
     },
-    party: {
-        name: 'party',
-        label: 'Party',
-        description: 'Module de la party',
-        emoji: '🎉'
+    auditLogs: {
+        name: 'auditLogs',
+        label: 'Audit Logs',
+        description: 'Module de logs',
+        emoji: '📜'
     },
+    // party: {
+    //     name: 'party',
+    //     label: 'Party',
+    //     description: 'Module de la party',
+    //     emoji: '🎉'
+    // },
     qotd: {
         name: 'qotd',
         label: 'Question du Jour',
         description: 'Module de la question du jour',
         emoji: '❓'
     },
-    scheduledEvents: {
-        name: 'scheduled_events',
-        label: 'Evenements',
-        description: 'Module de gestion des événements',
-        emoji: '📅'
-    },
+    // scheduledEvents: {
+    //     name: 'scheduledEvents',
+    //     label: 'Evenements',
+    //     description: 'Module de gestion des événements',
+    //     emoji: '📅'
+    // },
     tempVoice: {
-        name: 'temp_voice',
+        name: 'tempVoice',
         label: 'tempVoice',
         description: 'Module de tempVoice',
         emoji: '🎤'

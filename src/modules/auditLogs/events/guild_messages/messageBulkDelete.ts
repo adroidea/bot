@@ -11,7 +11,7 @@ import {
     quote,
     userMention
 } from 'discord.js';
-import { ILogsModule } from 'adroi.d.ea';
+import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -24,10 +24,10 @@ export default {
         if (!channel.guild) return;
 
         const {
-            modules: { logs }
+            modules: {
+                auditLogs: { messageBulkDelete }
+            }
         } = await guildService.getOrCreateGuild(channel.guild);
-        const { messageBulkDelete } = logs;
-        if (!messageBulkDelete.enabled) return;
 
         if (shouldIgnoreBulkDelete(messageBulkDelete, channel.id)) return;
 
@@ -62,7 +62,7 @@ export default {
 };
 
 const shouldIgnoreBulkDelete = (
-    messageBulkDelete: ILogsModule['messageBulkDelete'],
+    messageBulkDelete: IAuditLogsModule['messageBulkDelete'],
     channelId: string
 ) =>
     !messageBulkDelete.enabled ||

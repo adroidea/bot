@@ -1,6 +1,6 @@
 import { Client, EmbedBuilder, Events, Message, TextChannel } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
-import { ILogsModule } from 'adroi.d.ea';
+import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -9,9 +9,10 @@ export default {
         if (!message.guild) return;
 
         const {
-            modules: { logs }
+            modules: {
+                auditLogs: { messageDelete }
+            }
         } = await guildService.getOrCreateGuild(message.guild);
-        const { messageDelete } = logs;
 
         if (shouldIgnoreDelete(messageDelete, message)) return;
 
@@ -42,7 +43,7 @@ export default {
     }
 };
 
-const shouldIgnoreDelete = (messageDelete: ILogsModule['messageDelete'], message: Message) =>
+const shouldIgnoreDelete = (messageDelete: IAuditLogsModule['messageDelete'], message: Message) =>
     !messageDelete.enabled ||
     (messageDelete.ignoreBots && message.author.bot) ||
     messageDelete.ignoredChannels.includes(message.channelId) ||

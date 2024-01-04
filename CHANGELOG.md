@@ -6,13 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ### ✨ Added
 
-❄️ Logs: guildBan Add/Remove; GuildRole Create/Update/Delete; Message Bulk Delete - [[#67](https://github.com/adroidea/bot/issues/67)]
+❄️ AuditLogs: guildBan Add/Remove; GuildRole Create/Update/Delete; Message Bulk Delete - [[#67](https://github.com/adroidea/bot/issues/67)]
 
-❄️ Logs: Message Bulk Delete now indicates how many messages were deleted and from whom
+❄️ AuditLogs: Message Bulk Delete now indicates how many messages were deleted and from whom
 
 ### 🧱 Changed
 
-❄️ Logs: message Update/Delete; guildMember Add/Update/Remove - [[#67](https://github.com/adroidea/bot/issues/67)]
+❄️ AuditLogs: message Update/Delete; guildMember Add/Update/Remove - [[#67](https://github.com/adroidea/bot/issues/67)]
 
 ❄️ Twitch: separate Alerts and auto role
 

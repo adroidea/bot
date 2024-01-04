@@ -1,5 +1,5 @@
 import { Client, EmbedBuilder, Events, Role, TextChannel } from 'discord.js';
-import { ILogsModule } from 'adroi.d.ea';
+import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -7,9 +7,10 @@ export default {
     async execute(client: Client, role: Role) {
         console.log(role);
         const {
-            modules: { logs }
+            modules: {
+                auditLogs: { guildRoleDelete }
+            }
         } = await guildService.getOrCreateGuild(role.guild);
-        const { guildRoleDelete } = logs;
 
         if (shouldIgnoreRoleDelete(guildRoleDelete)) return;
 
@@ -30,5 +31,5 @@ export default {
     }
 };
 
-const shouldIgnoreRoleDelete = (guildRoleDelete: ILogsModule['guildRoleDelete']) =>
+const shouldIgnoreRoleDelete = (guildRoleDelete: IAuditLogsModule['guildRoleDelete']) =>
     !guildRoleDelete.enabled || guildRoleDelete.channelId === '';

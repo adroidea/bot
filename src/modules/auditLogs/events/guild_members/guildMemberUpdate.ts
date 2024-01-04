@@ -1,15 +1,16 @@
 import { Client, Events, GuildMember, TextChannel, userMention } from 'discord.js';
 import { EmbedBuilder } from '@discordjs/builders';
-import { ILogsModule } from 'adroi.d.ea';
+import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
 
 export default {
     name: Events.GuildMemberUpdate,
     async execute(client: Client, oldMember: GuildMember, newMember: GuildMember) {
         const {
-            modules: { logs }
+            modules: {
+                auditLogs: { guildMemberUpdate }
+            }
         } = await guildService.getOrCreateGuild(newMember.guild);
-        const { guildMemberUpdate } = logs;
 
         if (shouldIgnoreMemberUpdate(guildMemberUpdate, oldMember, newMember)) return;
 
@@ -46,7 +47,7 @@ export default {
 };
 
 const shouldIgnoreMemberUpdate = (
-    guildMemberUpdate: ILogsModule['guildMemberUpdate'],
+    guildMemberUpdate: IAuditLogsModule['guildMemberUpdate'],
     oldMember: GuildMember,
     newMember: GuildMember
 ) =>

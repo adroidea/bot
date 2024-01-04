@@ -69,7 +69,7 @@ export default {
             ephemeral: true
         });
 
-        const { messageBulkDelete } = guildSettings.modules.logs;
+        const { messageBulkDelete } = guildSettings.modules.auditLogs;
         if (!messageBulkDelete.enabled) return;
         const { channelId } = messageBulkDelete;
 

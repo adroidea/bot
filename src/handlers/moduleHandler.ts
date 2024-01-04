@@ -1,4 +1,5 @@
 import Logger from '../utils/logger';
+import { Modules } from '../utils/consts';
 import fs from 'fs';
 import { handleCommand } from './commandHandler';
 import { handleComponents } from './componentHandler';
@@ -7,14 +8,10 @@ import { handleTask } from './taskHandler';
 import path from 'path';
 
 export default async (client: any) => {
-    const moduleFolders = [
-        path.join(__dirname, '../modules/core'),
-        path.join(__dirname, '../modules/logs'),
-        //path.join(__dirname, '../modules/scheduledEvents'),
-        path.join(__dirname, '../modules/qotd'),
-        path.join(__dirname, '../modules/tempVoice'),
-        path.join(__dirname, '../modules/twitch')
-    ];
+    const moduleFolders = Object.values(Modules).map(module => {
+        const modulePath = path.join(__dirname, `../modules/${module.name}`);
+        return modulePath;
+    });
 
     const counts: Record<string, Record<string, any>> = {};
 
