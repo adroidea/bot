@@ -1,13 +1,26 @@
-import { Client, EmbedBuilder, Events, GuildBan, TextChannel } from 'discord.js';
+import {
+    AuditLogEvent,
+    Client,
+    EmbedBuilder,
+    Events,
+    GuildBan,
+    TextChannel,
+    userMention
+} from 'discord.js';
 import { Colors } from '../../../../utils/consts';
 import { ILogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
-import { timestampToDate } from '../../../../utils/botUtil';
 
 export default {
     name: Events.GuildBanAdd,
     async execute(client: Client, ban: GuildBan) {
-        console.log(ban);
+        const fetchedLogs = await ban.guild.fetchAuditLogs({
+            limit: 1,
+            type: AuditLogEvent.MemberBanAdd
+        });
+
+        const executor = fetchedLogs.entries.first()?.executor;
+
         const {
             modules: { logs }
         } = await guildService.getOrCreateGuild(ban.guild);
@@ -17,28 +30,39 @@ export default {
 
         const logChannel = client.channels.cache.get(guildBanAdd.channelId);
         const embed = new EmbedBuilder()
-            .setAuthor({
-                name: `${ban.user.id}`,
-                iconURL: ban.user.avatarURL()!
-            })
             .setThumbnail(ban.user.avatarURL())
-            .setTitle(`CHEH ${ban.user.username}`)
-            .setDescription(`IL S'EST FAIT BAN CHEH`)
+            .setTitle("Ban d'un utilisateur")
             .addFields({
-                name: '❄ Création :',
-                value: `<t:${timestampToDate(ban.user.createdTimestamp)}:R>`,
-                inline: false
-            })
-            .addFields({
-                name: '❄ Raison :',
-                value: `${ban.reason}`,
-                inline: false
+                name: '❄ Victime',
+                value: userMention(ban.user.id),
+                inline: true
             })
             .setFooter({
-                text: "T'es vraiment pas bg tu sais ?"
+                text: `${ban.user.username} (${ban.user.id})`,
+                iconURL: ban.user.avatarURL()!
             })
             .setTimestamp()
             .setColor(Colors.random);
+
+        if (executor)
+            embed
+                .setAuthor({
+                    name: `${executor.username} (${executor.id})`,
+                    iconURL: executor.avatarURL()!
+                })
+                .addFields({
+                    name: '❄ Bourreau',
+                    value: userMention(executor.id),
+                    inline: true
+                });
+
+        if (ban.reason)
+            embed.addFields({
+                name: '❄ Raison :',
+                value: ban.reason,
+                inline: false
+            });
+
         await (logChannel as TextChannel).send({ embeds: [embed] });
     }
 };
