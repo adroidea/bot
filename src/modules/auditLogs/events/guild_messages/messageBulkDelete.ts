@@ -3,15 +3,16 @@ import {
     Collection,
     EmbedBuilder,
     Events,
+    GuildBasedChannel,
     GuildTextBasedChannel,
     Message,
     PartialMessage,
     Snowflake,
-    TextChannel,
     quote,
     userMention
 } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -29,10 +30,12 @@ export default {
             }
         } = await guildService.getOrCreateGuild(channel.guild);
 
-        if (shouldIgnoreBulkDelete(messageBulkDelete, channel.id)) return;
+        const logChannel = client.guilds.cache
+            .get(channel.guild.id)
+            ?.channels.cache.get(messageBulkDelete.channelId!);
+        if (!logChannel?.isTextBased()) return;
 
-        const logChannel = client.channels.cache.get(messageBulkDelete.channelId!);
-        if (!logChannel || !logChannel?.isTextBased()) return;
+        if (shouldIgnoreBulkDelete(messageBulkDelete, channel.id, logChannel)) return;
 
         const participantsList = Array.from(
             messages
@@ -57,14 +60,16 @@ export default {
             .setColor([45, 249, 250])
             .setTimestamp();
 
-        await (logChannel as TextChannel).send({ embeds: [embed] });
+        await logChannel.send({ embeds: [embed] });
     }
 };
 
 const shouldIgnoreBulkDelete = (
     messageBulkDelete: IAuditLogsModule['messageBulkDelete'],
-    channelId: string
+    channelId: string,
+    logChannel: GuildBasedChannel | undefined
 ) =>
     !messageBulkDelete.enabled ||
-    messageBulkDelete.ignoredChannels.includes(channelId) ||
-    messageBulkDelete.channelId === '';
+    messageBulkDelete.channelId === '' ||
+    canSendMessage(logChannel) ||
+    messageBulkDelete.ignoredChannels.includes(channelId);

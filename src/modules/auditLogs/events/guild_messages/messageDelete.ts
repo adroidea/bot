@@ -1,6 +1,7 @@
-import { Client, EmbedBuilder, Events, Message, TextChannel } from 'discord.js';
+import { Client, EmbedBuilder, Events, GuildBasedChannel, Message } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -14,9 +15,12 @@ export default {
             }
         } = await guildService.getOrCreateGuild(message.guild);
 
-        if (shouldIgnoreDelete(messageDelete, message)) return;
+        const logChannel = client.guilds.cache
+            .get(message.guild.id)
+            ?.channels.cache.get(messageDelete.channelId);
+        if (!logChannel?.isTextBased()) return;
 
-        const logChannel = client.channels.cache.get(messageDelete.channelId);
+        if (shouldIgnoreDelete(messageDelete, message, logChannel)) return;
 
         if (message.content && logChannel) {
             const embed = new EmbedBuilder()
@@ -38,14 +42,19 @@ export default {
                 .setColor(Colors.red)
                 .setTimestamp();
 
-            await (logChannel as TextChannel).send({ embeds: [embed] });
+            await logChannel.send({ embeds: [embed] });
         }
     }
 };
 
-const shouldIgnoreDelete = (messageDelete: IAuditLogsModule['messageDelete'], message: Message) =>
+const shouldIgnoreDelete = (
+    messageDelete: IAuditLogsModule['messageDelete'],
+    message: Message,
+    logChannel: GuildBasedChannel | undefined
+) =>
     !messageDelete.enabled ||
+    messageDelete.channelId === '' ||
     (messageDelete.ignoreBots && message.author.bot) ||
+    canSendMessage(logChannel) ||
     messageDelete.ignoredChannels.includes(message.channelId) ||
-    messageDelete.ignoredUsers.includes(message.author.id) ||
-    messageDelete.channelId === '';
+    messageDelete.ignoredUsers.includes(message.author.id);

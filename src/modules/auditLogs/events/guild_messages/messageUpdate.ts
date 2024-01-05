@@ -1,12 +1,13 @@
-import { Client, EmbedBuilder, Events, Message, TextChannel } from 'discord.js';
+import { Client, EmbedBuilder, Events, GuildBasedChannel, Message } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
 
 export default {
     name: Events.MessageUpdate,
     async execute(client: Client, oldMessage: Message, newMessage: Message) {
-        const oldText = oldMessage.content || '';
-        const newText = newMessage.content || '';
+        const oldText = oldMessage.content;
+        const newText = newMessage.content;
 
         if (oldText === newText || !oldMessage.guild) return;
 
@@ -16,10 +17,12 @@ export default {
             }
         } = await guildService.getOrCreateGuild(oldMessage.guild);
 
-        if (shouldIgnoreUpdate(messageUpdate, oldMessage)) return;
+        const logChannel = client.guilds.cache
+            .get(oldMessage.guild.id)
+            ?.channels.cache.get(messageUpdate.channelId!);
+        if (!logChannel?.isTextBased()) return;
 
-        const logChannel = client.channels.cache.get(messageUpdate.channelId!);
-        if (!logChannel) return;
+        if (shouldIgnoreUpdate(messageUpdate, oldMessage, logChannel)) return;
 
         const embed = new EmbedBuilder()
             .setAuthor({
@@ -44,13 +47,18 @@ export default {
             .setFooter({ text: `Message modifié.` })
             .setColor([45, 249, 250])
             .setTimestamp();
-        await (logChannel as TextChannel).send({ embeds: [embed] });
+        await logChannel.send({ embeds: [embed] });
     }
 };
 
-const shouldIgnoreUpdate = (messageUpdate: IAuditLogsModule['messageUpdate'], oldMessage: Message) =>
+const shouldIgnoreUpdate = (
+    messageUpdate: IAuditLogsModule['messageUpdate'],
+    oldMessage: Message,
+    logChannel: GuildBasedChannel | undefined
+) =>
     !messageUpdate.enabled ||
+    messageUpdate.channelId === '' ||
     (messageUpdate.ignoreBots && oldMessage.author.bot) ||
+    canSendMessage(logChannel) ||
     messageUpdate.ignoredChannels.includes(oldMessage.channelId) ||
-    messageUpdate.ignoredUsers.includes(oldMessage.author.id) ||
-    messageUpdate.channelId === '';
+    messageUpdate.ignoredUsers.includes(oldMessage.author.id);

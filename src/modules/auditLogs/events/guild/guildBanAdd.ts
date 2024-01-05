@@ -4,11 +4,12 @@ import {
     EmbedBuilder,
     Events,
     GuildBan,
-    TextChannel,
+    GuildBasedChannel,
     userMention
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -27,9 +28,13 @@ export default {
             }
         } = await guildService.getOrCreateGuild(ban.guild);
 
-        if (shouldIgnoreBanAdd(guildBanAdd)) return;
+        const logChannel = client.guilds.cache
+            .get(ban.guild.id)
+            ?.channels.cache.get(guildBanAdd.channelId);
+        if (!logChannel?.isTextBased()) return;
 
-        const logChannel = client.channels.cache.get(guildBanAdd.channelId);
+        if (shouldIgnoreBanAdd(guildBanAdd, logChannel)) return;
+
         const embed = new EmbedBuilder()
             .setThumbnail(ban.user.avatarURL())
             .setTitle("Ban d'un utilisateur")
@@ -67,9 +72,11 @@ export default {
                 inline: false
             });
 
-        await (logChannel as TextChannel).send({ embeds: [embed] });
+        await logChannel.send({ embeds: [embed] });
     }
 };
 
-const shouldIgnoreBanAdd = (guildBanAdd: IAuditLogsModule['guildBanAdd']) =>
-    !guildBanAdd.enabled || guildBanAdd.channelId === '';
+const shouldIgnoreBanAdd = (
+    guildBanAdd: IAuditLogsModule['guildBanAdd'],
+    logChannel: GuildBasedChannel | undefined
+) => !guildBanAdd.enabled || guildBanAdd.channelId === '' || canSendMessage(logChannel);

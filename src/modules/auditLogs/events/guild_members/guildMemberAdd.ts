@@ -1,8 +1,8 @@
-import { Client, EmbedBuilder, Events, GuildMember, TextChannel } from 'discord.js';
+import { Client, EmbedBuilder, Events, GuildBasedChannel, GuildMember } from 'discord.js';
+import { canSendMessage, timestampToDate } from '../../../../utils/botUtil';
 import { Colors } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
-import { timestampToDate } from '../../../../utils/botUtil';
 
 export default {
     name: Events.GuildMemberAdd,
@@ -13,12 +13,16 @@ export default {
             }
         } = await guildService.getOrCreateGuild(member.guild);
 
-        if (shouldIgnoreMemberAdd(guildMemberAdd, member)) return;
+        const logChannel = client.guilds.cache
+            .get(member.guild.id)
+            ?.channels.cache.get(guildMemberAdd.channelId);
+        if (!logChannel?.isTextBased()) return;
 
-        const logChannel = client.channels.cache.get(guildMemberAdd.channelId);
+        if (shouldIgnoreMemberAdd(guildMemberAdd, member, logChannel)) return;
+
         const embed = new EmbedBuilder()
             .setAuthor({
-                name: `${member.user.id}`,
+                name: member.user.id,
                 iconURL: member.user.avatarURL()!
             })
             .setThumbnail(member.user.avatarURL())
@@ -38,14 +42,16 @@ export default {
             })
             .setTimestamp()
             .setColor(Colors.random);
-        await (logChannel as TextChannel).send({ embeds: [embed] });
+        await logChannel.send({ embeds: [embed] });
     }
 };
 
 const shouldIgnoreMemberAdd = (
     guildMemberAdd: IAuditLogsModule['guildMemberAdd'],
-    member: GuildMember
+    member: GuildMember,
+    logChannel: GuildBasedChannel | undefined
 ) =>
     !guildMemberAdd.enabled ||
+    guildMemberAdd.channelId === '' ||
     (guildMemberAdd.ignoreBots && member.user.bot) ||
-    guildMemberAdd.channelId === '';
+    canSendMessage(logChannel);

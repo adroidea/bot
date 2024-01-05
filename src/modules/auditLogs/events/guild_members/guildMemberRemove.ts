@@ -1,8 +1,8 @@
-import { Client, EmbedBuilder, Events, GuildMember, TextChannel } from 'discord.js';
+import { Client, EmbedBuilder, Events, GuildBasedChannel, GuildMember } from 'discord.js';
+import { canSendMessage, timestampToDate } from '../../../../utils/botUtil';
 import { Colors } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
-import { timestampToDate } from '../../../../utils/botUtil';
 
 export default {
     name: Events.GuildMemberRemove,
@@ -13,9 +13,12 @@ export default {
             }
         } = await guildService.getOrCreateGuild(member.guild);
 
-        if (shouldIgnoreMemberRemove(guildMemberRemove, member)) return;
+        const logChannel = client.guilds.cache
+            .get(member.guild.id)
+            ?.channels.cache.get(guildMemberRemove.channelId);
+        if (!logChannel?.isTextBased()) return;
 
-        const logChannel = client.channels.cache.get(guildMemberRemove.channelId);
+        if (shouldIgnoreMemberRemove(guildMemberRemove, member, logChannel)) return;
 
         const embed = new EmbedBuilder()
             .setAuthor({
@@ -50,14 +53,16 @@ export default {
             })
             .setTimestamp()
             .setColor(Colors.random);
-        await (logChannel as TextChannel).send({ embeds: [embed] });
+        await logChannel.send({ embeds: [embed] });
     }
 };
 
 const shouldIgnoreMemberRemove = (
     guildMemberRemove: IAuditLogsModule['guildMemberRemove'],
-    member: GuildMember
+    member: GuildMember,
+    logChannel: GuildBasedChannel | undefined
 ) =>
     !guildMemberRemove.enabled ||
+    guildMemberRemove.channelId === '' ||
     (guildMemberRemove.ignoreBots && member.user.bot) ||
-    guildMemberRemove.channelId === '';
+    canSendMessage(logChannel);

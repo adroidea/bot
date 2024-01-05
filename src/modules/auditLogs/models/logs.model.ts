@@ -13,7 +13,8 @@ export const auditLogsSchema = new mongoose.Schema<IAuditLogsModule>({
     guildMemberUpdate: {
         enabled: { type: Boolean, default: false },
         channelId: { type: String, default: '' },
-        ignoreBots: { type: Boolean, default: false }
+        ignoreBots: { type: Boolean, default: false },
+        ignoredUsers: { type: [String], default: [] }
     },
     guildMemberRemove: {
         enabled: { type: Boolean, default: false },
@@ -57,10 +58,15 @@ export const auditLogsSchema = new mongoose.Schema<IAuditLogsModule>({
     },
     guildRoleUpdate: {
         enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' }
+        channelId: { type: String, default: '' },
+        ignoredRoles: { type: [String], default: [] }
     },
     guildUpdate: {
         enabled: { type: Boolean, default: false },
         channelId: { type: String, default: '' }
+    },
+    botChangeLogs: {
+        enabled: { type: Boolean, default: true },
+        channelId: { type: String, default: 'privateLogsChannel' }
     }
 });

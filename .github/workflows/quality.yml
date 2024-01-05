@@ -1,9 +1,9 @@
 name: SonarCloud analysis
 on:
     push:
-        branches: ['main', 'develop']
+        branches: ["main", "develop"]
     pull_request:
-        branches: ['main']
+        branches: ["main"]
     workflow_dispatch:
 
 permissions:
@@ -29,8 +29,8 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
                   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
               with:
-                  args: -Dsonar.projectKey=adan-ea_adroid_ea
-                      -Dsonar.organization=adanea-adroid-ea
+                  args: -Dsonar.projectKey=adroidea_bot
+                      -Dsonar.organization=adroidea
 
             - name: SonarCloud Quality Gate status
               id: sonar_status
@@ -38,7 +38,7 @@ jobs:
                   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
               run: |
                   quality_gate_status=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" -X GET \
-                                       "https://sonarcloud.io/api/qualitygates/project_status?projectKey=adan-ea_adroid_ea")
+                                       "https://sonarcloud.io/api/qualitygates/project_status?projectKey=adroidea_bot")
                   echo "$quality_gate_status"
                   status=$(echo "$quality_gate_status" | cut -c 29-30)
                   echo "result=$status" >> "$GITHUB_OUTPUT"

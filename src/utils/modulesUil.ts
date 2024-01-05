@@ -1,6 +1,6 @@
+import { IGuild, ITVMUserSettings } from 'adroi.d.ea';
 import { CustomErrors } from './errors';
 import { GuildMember } from 'discord.js';
-import { IGuild, ILogsModule, ITVMUserSettings } from 'adroi.d.ea';
 import guildService from '../services/guildService';
 
 /**
@@ -42,22 +42,6 @@ export const isQOtDModuleEnabled = (guildSettings: IGuild, throwError = false): 
     }
 };
 
-/**
- * Checks if the logs module is enabled for the given guild.
- * @param guildSettings - The guild settings object.
- * @param throwError - Optional. Specifies whether to throw an error if the module is disabled. Default is false.
- * @returns A boolean indicating whether the logs module is enabled.
- */
-export const isLogsModuleEnabled = (guildSettings: IGuild, throwError = false): boolean => {
-    if (guildSettings.modules.logs.enabled) {
-        return true;
-    } else {
-        if (throwError) {
-            throw CustomErrors.LogsDisabledError;
-        }
-        return false;
-    }
-    }
 
 /**
  * Checks if the temporary voice module is enabled for a guild.
@@ -71,23 +55,6 @@ export const isTempVoiceModuleEnabled = (guildSettings: IGuild, throwError = fal
     } else {
         if (throwError) {
             throw CustomErrors.TempVoiceDisabledError;
-        }
-        return false;
-    }
-};
-
-/**
- * Checks if the Twitch Live module is enabled for the given guild.
- * @param guildSettings - The guild settings object.
- * @param throwError - Optional. Specifies whether to throw an error if the module is disabled. Default is false.
- * @returns A boolean indicating whether the Twitch Live module is enabled.
- */
-export const isTwitchModuleEnabled = (guildSettings: IGuild, throwError = false): boolean => {
-    if (guildSettings.modules.twitch.enabled) {
-        return true;
-    } else {
-        if (throwError) {
-            throw CustomErrors.TwitchDisabledError;
         }
         return false;
     }

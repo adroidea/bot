@@ -1,4 +1,4 @@
-import { Client, EmbedBuilder, Events, Role, TextChannel } from 'discord.js';
+import { Client, EmbedBuilder, Events, Role } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
 
@@ -15,6 +15,8 @@ export default {
         if (shouldIgnoreRoleCreate(guildRoleCreate)) return;
 
         const logChannel = client.channels.cache.get(guildRoleCreate.channelId);
+        if (!logChannel?.isTextBased()) return;
+
         const embed = new EmbedBuilder()
             .setAuthor({
                 name: `${role.name}`
@@ -27,7 +29,7 @@ export default {
             .setTimestamp();
 
         if (role.color) embed.setColor(role.color);
-        await (logChannel as TextChannel).send({ embeds: [embed] });
+        await logChannel.send({ embeds: [embed] });
     }
 };
 
