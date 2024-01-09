@@ -12,6 +12,16 @@ export const Colors: { [key: string]: ColorResolvable } = {
     random: 'Random'
 };
 
+export enum Emojis {
+    check = '✅',
+    aCheck = '<a:check:1194269260600574122>',
+    cross = '❌',
+    aCross = '<a:cross:1194269188567605308>',
+    snowflake = '❄️',
+    aSnowflake = '<a:flocon:1177616024959455242>',
+    pikaHi = '<a:pikaHi:960872476718551070>'
+}
+
 export interface IModule {
     name: string;
     label: string;
@@ -64,16 +74,16 @@ export const Modules: { [key: string]: IModule } = {
     }
 };
 
-export const Guilds = {
-    adanLab: '1131215407559213188',
-    adan_ea: '814621177770541076',
-    LeMondeDLaure: '743969889177436211'
-};
+export enum Guilds {
+    adanLab = '1131215407559213188',
+    adan_ea = '814621177770541076',
+    LeMondeDLaure = '743969889177436211'
+}
 
-export const Channels = {
-    logsThread: '1138134483149795390',
-    stealQDJ: '949252153225150524',
-    issues: '1159452960825286728'
-};
+export enum Channels {
+    logsThread = '1138134483149795390',
+    stealQDJ = '949252153225150524',
+    issues = '1159452960825286728'
+}
 
 export const OWNER_ID = '294916386072035328';
