@@ -7,7 +7,7 @@ import {
     GuildBasedChannel,
     userMention
 } from 'discord.js';
-import { Colors } from '../../../../utils/consts';
+import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
@@ -39,7 +39,7 @@ export default {
             .setThumbnail(ban.user.avatarURL())
             .setTitle("Ban d'un utilisateur")
             .addFields({
-                name: '❄ Victime',
+                name: `${Emojis.snowflake} Victime`,
                 value: userMention(ban.user.id),
                 inline: true
             })
@@ -59,7 +59,7 @@ export default {
                 .addFields([
                     { name: '\u200B', value: '\u200B', inline: true },
                     {
-                        name: '❄ Bourreau',
+                        name: `${Emojis.snowflake} Bourreau`,
                         value: userMention(executor.id),
                         inline: true
                     }
@@ -67,7 +67,7 @@ export default {
 
         if (ban.reason)
             embed.addFields({
-                name: '❄ Raison :',
+                name: `${Emojis.snowflake} Raison`,
                 value: ban.reason,
                 inline: false
             });

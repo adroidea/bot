@@ -9,11 +9,10 @@ import {
     userMention
 } from 'discord.js';
 import { Colors, Guilds } from '../../../utils/consts';
+import { IGuild, IQOTDModule } from 'adroi.d.ea';
 import { adminRow, stealRow } from '../components/buttons';
 import { CustomErrors } from '../../../utils/errors';
 import { Embed } from '../../../utils/embedsUtil';
-import { IGuild } from 'adroi.d.ea';
-import { IQOTDModule } from 'adroi.d.ea';
 import { IQuestions } from '../models';
 import { isQOtDModuleEnabled } from '../../../utils/modulesUil';
 import qotddService from '../services/qotdService';
@@ -48,8 +47,7 @@ export default {
         const { qotd }: { qotd: IQOTDModule } = guildData.modules;
         if (!isQOtDModuleEnabled(guildData, true)) return;
 
-        if (qotd.blacklist?.includes(interaction.user.id))
-            throw CustomErrors.BlacklistedUserError;
+        if (qotd.blacklist?.includes(interaction.user.id)) throw CustomErrors.BlacklistedUserError;
 
         const question = interaction.options.getString('question', true);
         const author = interaction.options.getUser('auteur');

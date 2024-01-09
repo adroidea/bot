@@ -1,6 +1,6 @@
 import { Client, EmbedBuilder, Events, GuildBasedChannel, GuildMember } from 'discord.js';
 import { canSendMessage, timestampToDate } from '../../../../utils/botUtil';
-import { Colors } from '../../../../utils/consts';
+import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
 
@@ -26,19 +26,17 @@ export default {
                 iconURL: member.user.avatarURL()!
             })
             .setThumbnail(member.user.avatarURL())
-            .setTitle(
-                `<a:pikaHi:960872476718551070> Bienvenue sur le serveur ${member.user.username} !`
-            )
+            .setTitle(`${Emojis.pikaHi} Bienvenue sur le serveur ${member.user.username} !`)
             .setDescription(
                 `Bonjour à toi ! Nous souhaitons que ton expérience parmi nous soit aussi plaisante que possible, et nous nous y emploierons constamment.`
             )
             .addFields({
-                name: '❄ Création :',
+                name: `${Emojis.snowflake} Création`,
                 value: `<t:${timestampToDate(member.user.createdTimestamp)}:R>`,
                 inline: true
             })
             .setFooter({
-                text: "T'es vraiment bg tu sais ?"
+                text: 'Utilisateur rejoint'
             })
             .setTimestamp()
             .setColor(Colors.random);

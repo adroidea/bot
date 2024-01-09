@@ -1,7 +1,7 @@
-import { Client, EmbedBuilder, Events, GuildBasedChannel, GuildMember } from 'discord.js';
-import { canSendMessage, timestampToDate } from '../../../../utils/botUtil';
-import { Colors } from '../../../../utils/consts';
+import { Client, EmbedBuilder, Events, GuildMember, inlineCode } from 'discord.js';
+import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { detailedShortDate } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -18,51 +18,53 @@ export default {
             ?.channels.cache.get(guildMemberRemove.channelId);
         if (!logChannel?.isTextBased()) return;
 
-        if (shouldIgnoreMemberRemove(guildMemberRemove, member, logChannel)) return;
+        if (shouldIgnoreMemberRemove(guildMemberRemove, member)) return;
 
         const embed = new EmbedBuilder()
             .setAuthor({
                 name: `${member.user.id}`,
                 iconURL: member.user.avatarURL()!
             })
-            .setThumbnail(
-                'https://cdn.discordapp.com/attachments/779901444408606730/918202331743539200/unknown.png'
-            )
-            .setTitle(`${member.user.username} nous a quitté!`)
             .setDescription(`Weaklings Die. Big Deal.`)
             .addFields(
                 {
-                    name: '❄ Création :',
-                    value: `<t:${timestampToDate(member.user.createdTimestamp)}:R>`,
-                    inline: true
+                    name: `${Emojis.snowflake} Membre`,
+                    value: `${member.nickname ? member.nickname : member.displayName} ${inlineCode(
+                        member.user.username
+                    )} (${member.user.id})`
                 },
                 {
-                    name: '❄ Rejoint :',
-                    value: `<t:${timestampToDate(member.joinedTimestamp!)}:R>`,
-                    inline: true
+                    name: `${Emojis.snowflake} Création`,
+                    value: `${detailedShortDate(member.user.createdTimestamp)}`
                 },
                 {
-                    name: '❄ Nombre de membres :',
-                    value: `${member.guild.memberCount}`,
-                    inline: false
+                    name: `${Emojis.snowflake} Rejoint`,
+                    value: `${detailedShortDate(member.joinedTimestamp!)}`
+                },
+                {
+                    name: `${Emojis.snowflake} Départ`,
+                    value: `${detailedShortDate(Date.now())}`
+                },
+                {
+                    name: `${Emojis.snowflake} Nombre de membres`,
+                    value: `${member.guild.memberCount}`
                 }
             )
             .setFooter({
-                text: 'So long partner.',
+                text: 'Utilisateur parti',
                 iconURL: member.user.avatarURL()!
             })
             .setTimestamp()
             .setColor(Colors.random);
+
         await logChannel.send({ embeds: [embed] });
     }
 };
 
 const shouldIgnoreMemberRemove = (
     guildMemberRemove: IAuditLogsModule['guildMemberRemove'],
-    member: GuildMember,
-    logChannel: GuildBasedChannel | undefined
+    member: GuildMember
 ) =>
     !guildMemberRemove.enabled ||
     guildMemberRemove.channelId === '' ||
-    (guildMemberRemove.ignoreBots && member.user.bot) ||
-    canSendMessage(logChannel);
+    (guildMemberRemove.ignoreBots && member.user.bot);

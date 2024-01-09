@@ -1,5 +1,5 @@
 import { Client, EmbedBuilder, Events, GuildBasedChannel, Message } from 'discord.js';
-import { Colors } from '../../../../utils/consts';
+import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
@@ -34,7 +34,7 @@ export default {
                 .addFields([
                     {
                         name: `Message supprimé :`,
-                        value: '❄ ' + message.content,
+                        value: Emojis.snowflake + ' ' + message.content,
                         inline: false
                     }
                 ])
