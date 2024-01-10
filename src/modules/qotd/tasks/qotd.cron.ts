@@ -1,7 +1,7 @@
+import { Embed, addAuthor } from '../../../utils/embedsUtil';
 import { EmbedBuilder, Guild, MessageType, TextBasedChannel, User } from 'discord.js';
 import { IQuestions, QuestionsModel } from '../models';
 import { Colors } from '../../../utils/consts';
-import { Embed } from '../../../utils/embedsUtil';
 import { IQOTDModule } from 'adroi.d.ea';
 import Logger from '../../../utils/logger';
 import { client } from '../../..';
@@ -40,12 +40,7 @@ export default function (): cron.ScheduledTask {
                     });
 
                 const author: User = await client.users.fetch(authorId);
-                if (author) {
-                    questionEmbed.setAuthor({
-                        name: `${author.username}`,
-                        iconURL: author.displayAvatarURL()
-                    });
-                }
+                if (author) addAuthor(questionEmbed, author);
 
                 await deletePinnedMessages(channel);
 

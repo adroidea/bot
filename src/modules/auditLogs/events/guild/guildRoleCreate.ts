@@ -1,5 +1,6 @@
 import { AuditLogEvent, Client, EmbedBuilder, Events, Role } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { addAuthor } from '../../../../utils/embedsUtil';
 import { getPermissionsNames } from '../../../../utils/modulesUil';
 import guildService from '../../../../services/guildService';
 
@@ -30,11 +31,7 @@ export default {
             .setTimestamp();
 
         const executor = fetchedLogs.entries.first()?.executor;
-        if (executor)
-            embed.setAuthor({
-                name: `${executor.username} (${executor.id})`,
-                iconURL: executor.displayAvatarURL()!
-            });
+        addAuthor(embed, executor);
 
         const categorizedPermissions = getPermissionsNames(role.permissions);
         for (const [category, perms] of Object.entries(categorizedPermissions)) {

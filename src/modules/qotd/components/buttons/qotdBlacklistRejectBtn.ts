@@ -6,8 +6,8 @@ import {
     PermissionsBitField,
     userMention
 } from 'discord.js';
+import { Embed, addAuthor } from '../../../../utils/embedsUtil';
 import { CustomErrors } from '../../../../utils/errors';
-import { Embed } from '../../../../utils/embedsUtil';
 import qotddService from '../../services/qotdService';
 
 export const qotdBlacklistRejectButton = new ButtonBuilder()
@@ -30,10 +30,6 @@ export default {
         await qotddService.addToQotdBlacklist(interaction.guildId!, authorId);
 
         const newEmbed = new EmbedBuilder()
-            .setAuthor({
-                name: oldEmbed.author?.name!,
-                iconURL: oldEmbed.author?.iconURL
-            })
             .setTitle(oldEmbed.title)
             .setColor(oldEmbed.color)
             .addFields(
@@ -48,10 +44,11 @@ export default {
                     inline: true
                 }
             )
-
             .setFooter({
                 text: oldEmbed.footer?.text!
             });
+
+        addAuthor(newEmbed, interaction.user);
 
         interaction.message.edit({
             embeds: [newEmbed],

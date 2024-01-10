@@ -6,8 +6,9 @@ import {
     PermissionsBitField,
     userMention
 } from 'discord.js';
+import { Embed, addAuthor } from '../../../../utils/embedsUtil';
 import { CustomErrors } from '../../../../utils/errors';
-import { Embed } from '../../../../utils/embedsUtil';
+import { Emojis } from '../../../../utils/consts';
 
 export const qotdRejectButton = new ButtonBuilder()
     .setCustomId('qotdRejectBtn')
@@ -27,10 +28,6 @@ export default {
         const authorId = oldEmbed.author!.name.split('(')[1].slice(0, -1);
 
         const newEmbed = new EmbedBuilder()
-            .setAuthor({
-                name: oldEmbed.author?.name!,
-                iconURL: oldEmbed.author?.iconURL
-            })
             .setTitle(oldEmbed.title)
             .setColor(oldEmbed.color)
             .addFields(
@@ -41,14 +38,15 @@ export default {
                 },
                 {
                     name: 'Statut',
-                    value: `❌ Rejetée par ${userMention(interaction.user.id)}`,
+                    value: `${Emojis.cross} Rejetée par ${userMention(interaction.user.id)}`,
                     inline: true
                 }
             )
-
             .setFooter({
                 text: oldEmbed.footer?.text!
             });
+
+        addAuthor(newEmbed, interaction.user);
 
         interaction.message.edit({
             embeds: [newEmbed],

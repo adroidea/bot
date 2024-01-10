@@ -1,6 +1,13 @@
-import { Client, Events, GuildBasedChannel, GuildMember, userMention } from 'discord.js';
-import { EmbedBuilder } from '@discordjs/builders';
+import {
+    Client,
+    EmbedBuilder,
+    Events,
+    GuildBasedChannel,
+    GuildMember,
+    userMention
+} from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { addAuthor } from '../../../../utils/embedsUtil';
 import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
 
@@ -24,10 +31,6 @@ export default {
         if (shouldIgnoreMemberUpdate(guildMemberUpdate, oldMember, logChannel)) return;
 
         const embed = new EmbedBuilder()
-            .setAuthor({
-                name: `${newMember.user.username}`,
-                iconURL: newMember.avatarURL()!
-            })
             .setDescription(`${userMention(newMember.id)} a changé de pseudo`)
             .addFields([
                 {
@@ -45,6 +48,7 @@ export default {
             .setColor([186, 45, 250])
             .setTimestamp();
 
+        addAuthor(embed, newMember.user);
         await logChannel.send({ embeds: [embed] });
     }
 };

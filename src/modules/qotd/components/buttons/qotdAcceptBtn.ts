@@ -6,8 +6,8 @@ import {
     PermissionsBitField,
     userMention
 } from 'discord.js';
+import { Embed, addAuthor } from '../../../../utils/embedsUtil';
 import { CustomErrors } from '../../../../utils/errors';
-import { Embed } from '../../../../utils/embedsUtil';
 import { IQuestions } from '../../models';
 import qotddService from '../../services/qotdService';
 
@@ -37,10 +37,6 @@ export default {
         const qotdId = await qotddService.createQOtD(questionBuilder);
 
         const newEmbed = new EmbedBuilder()
-            .setAuthor({
-                name: oldEmbed.author?.name!,
-                iconURL: oldEmbed.author?.iconURL
-            })
             .setTitle(oldEmbed.title)
             .setColor(oldEmbed.color)
             .addFields(
@@ -60,10 +56,11 @@ export default {
                     inline: false
                 }
             )
-
             .setFooter({
                 text: oldEmbed.footer?.text!
             });
+
+            addAuthor(newEmbed, interaction.user);
 
         interaction.message.edit({
             embeds: [newEmbed],

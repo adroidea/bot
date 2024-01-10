@@ -1,6 +1,7 @@
 import { Client, EmbedBuilder, Events, GuildMember } from 'discord.js';
 import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { addAuthor } from '../../../../utils/embedsUtil';
 import guildService from '../../../../services/guildService';
 import { timestampToDate } from '../../../../utils/botUtil';
 
@@ -21,10 +22,6 @@ export default {
         if (shouldIgnoreMemberAdd(guildMemberAdd, member)) return;
 
         const embed = new EmbedBuilder()
-            .setAuthor({
-                name: member.user.id,
-                iconURL: member.user.avatarURL()!
-            })
             .setThumbnail(member.user.avatarURL())
             .setTitle(`${Emojis.pikaHi} Bienvenue sur le serveur ${member.user.username} !`)
             .setDescription(
@@ -40,6 +37,8 @@ export default {
             })
             .setTimestamp()
             .setColor(Colors.random);
+
+        addAuthor(embed, member.user);
         await logChannel.send({ embeds: [embed] });
     }
 };

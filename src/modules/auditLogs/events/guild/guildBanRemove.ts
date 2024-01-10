@@ -9,6 +9,7 @@ import {
 } from 'discord.js';
 import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { addAuthor } from '../../../../utils/embedsUtil';
 import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
 
@@ -19,8 +20,6 @@ export default {
             limit: 1,
             type: AuditLogEvent.MemberBanRemove
         });
-
-        const executor = fetchedLogs.entries.first()?.executor;
 
         const {
             modules: {
@@ -50,21 +49,18 @@ export default {
             .setTimestamp()
             .setColor(Colors.random);
 
-        if (executor)
-            embed
-                .setAuthor({
-                    name: `${executor.username} (${executor.id})`,
-                    iconURL: executor.avatarURL()!
-                })
-                .addFields([
-                    { name: '\u200B', value: '\u200B', inline: true },
-                    {
-                        name: `${Emojis.snowflake} Bienfaiteur`,
-                        value: userMention(executor.id),
-                        inline: true
-                    }
-                ]);
-
+        const executor = fetchedLogs.entries.first()?.executor;
+        if (executor) {
+            addAuthor(embed, executor);
+            embed.addFields([
+                { name: '\u200B', value: '\u200B', inline: true },
+                {
+                    name: `${Emojis.snowflake} Bienfaiteur`,
+                    value: userMention(executor.id),
+                    inline: true
+                }
+            ]);
+        }
         if (ban.reason)
             embed.addFields({
                 name: `${Emojis.snowflake} Raison`,

@@ -9,6 +9,7 @@ import {
 } from 'discord.js';
 import { Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { addAuthor } from '../../../../utils/embedsUtil';
 import { comparePermissionsNames } from '../../../../utils/modulesUil';
 import guildService from '../../../../services/guildService';
 
@@ -93,12 +94,7 @@ function createEmbed(newRole: Role, fetchedLogs: GuildAuditLogs) {
         .setTimestamp();
 
     const executor = fetchedLogs.entries.first()?.executor;
-    if (executor) {
-        embed.setAuthor({
-            name: `${executor.username} (${executor.id})`,
-            iconURL: executor.displayAvatarURL()!
-        });
-    }
+    addAuthor(embed, executor);
 
     return embed;
 }

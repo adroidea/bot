@@ -9,10 +9,10 @@ import {
     userMention
 } from 'discord.js';
 import { Colors, Guilds } from '../../../utils/consts';
+import { Embed, addAuthor } from '../../../utils/embedsUtil';
 import { IGuild, IQOTDModule } from 'adroi.d.ea';
 import { adminRow, stealRow } from '../components/buttons';
 import { CustomErrors } from '../../../utils/errors';
-import { Embed } from '../../../utils/embedsUtil';
 import { IQuestions } from '../models';
 import { isQOtDModuleEnabled } from '../../../utils/modulesUil';
 import qotddService from '../services/qotdService';
@@ -72,10 +72,7 @@ export default {
             .setFooter({ text: 'Requête de QdJ' })
             .setTimestamp();
 
-        questionEmbed.setAuthor({
-            name: `${user.username} (${user.id})`,
-            iconURL: user.displayAvatarURL()
-        });
+        addAuthor(questionEmbed, user);
 
         if (
             qotd.whitelist?.includes(interaction.user.id) ||
@@ -101,18 +98,15 @@ export default {
                 });
             }
         } else {
-            questionEmbed
-                .addFields([
-                    {
-                        name: 'Statut',
-                        value: '⏳ En attente',
-                        inline: true
-                    }
-                ])
-                .setAuthor({
-                    name: `${user.username} (${user.id})`,
-                    iconURL: user.displayAvatarURL()
-                });
+            questionEmbed.addFields([
+                {
+                    name: 'Statut',
+                    value: '⏳ En attente',
+                    inline: true
+                }
+            ]);
+
+            addAuthor(questionEmbed, user);
 
             const requestChannel: Channel | undefined = client.channels.cache.get(
                 qotd.proposedChannelId

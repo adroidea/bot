@@ -1,6 +1,7 @@
 import { Client, EmbedBuilder, Events, GuildMember, inlineCode } from 'discord.js';
 import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { addAuthor } from '../../../../utils/embedsUtil';
 import { detailedShortDate } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
 
@@ -21,10 +22,6 @@ export default {
         if (shouldIgnoreMemberRemove(guildMemberRemove, member)) return;
 
         const embed = new EmbedBuilder()
-            .setAuthor({
-                name: `${member.user.id}`,
-                iconURL: member.user.avatarURL()!
-            })
             .setDescription(`Weaklings Die. Big Deal.`)
             .addFields(
                 {
@@ -56,6 +53,7 @@ export default {
             .setTimestamp()
             .setColor(Colors.random);
 
+        addAuthor(embed, member.user);
         await logChannel.send({ embeds: [embed] });
     }
 };

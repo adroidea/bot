@@ -1,6 +1,7 @@
 import { Client, EmbedBuilder, Events, GuildBasedChannel, Message } from 'discord.js';
 import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { addAuthor } from '../../../../utils/embedsUtil';
 import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
 
@@ -24,10 +25,6 @@ export default {
 
         if (message.content && logChannel) {
             const embed = new EmbedBuilder()
-                .setAuthor({
-                    name: `${message.author.username} (${message.author.id})`,
-                    iconURL: message.author.avatarURL()!
-                })
                 .setDescription(
                     `Message supprimé de ${message.author.username} dans <#${message.channelId}>, [voir le salon](${message.url})`
                 )
@@ -41,6 +38,8 @@ export default {
                 .setFooter({ text: `Message supprimé.` })
                 .setColor(Colors.red)
                 .setTimestamp();
+
+            addAuthor(embed, message.author);
 
             await logChannel.send({ embeds: [embed] });
         }

@@ -1,15 +1,7 @@
-import {
-    AuditLogEvent,
-    Client,
-    EmbedBuilder,
-    Events,
-    GuildBan,
-    GuildBasedChannel,
-    userMention
-} from 'discord.js';
+import { AuditLogEvent, Client, EmbedBuilder, Events, GuildBan, userMention } from 'discord.js';
 import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
-import { canSendMessage } from '../../../../utils/botUtil';
+import { addAuthor } from '../../../../utils/embedsUtil';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -19,8 +11,6 @@ export default {
             limit: 1,
             type: AuditLogEvent.MemberBanAdd
         });
-
-        const executor = fetchedLogs.entries.first()?.executor;
 
         const {
             modules: {
@@ -33,7 +23,7 @@ export default {
             ?.channels.cache.get(guildBanAdd.channelId);
         if (!logChannel?.isTextBased()) return;
 
-        if (shouldIgnoreBanAdd(guildBanAdd, logChannel)) return;
+        if (shouldIgnoreBanAdd(guildBanAdd)) return;
 
         const embed = new EmbedBuilder()
             .setThumbnail(ban.user.avatarURL())
@@ -50,20 +40,18 @@ export default {
             .setTimestamp()
             .setColor(Colors.random);
 
-        if (executor)
-            embed
-                .setAuthor({
-                    name: `${executor.username} (${executor.id})`,
-                    iconURL: executor.avatarURL()!
-                })
-                .addFields([
-                    { name: '\u200B', value: '\u200B', inline: true },
-                    {
-                        name: `${Emojis.snowflake} Bourreau`,
-                        value: userMention(executor.id),
-                        inline: true
-                    }
-                ]);
+        const executor = fetchedLogs.entries.first()?.executor;
+        if (executor) {
+            addAuthor(embed, executor);
+            embed.addFields([
+                { name: '\u200B', value: '\u200B', inline: true },
+                {
+                    name: `${Emojis.snowflake} Bourreau`,
+                    value: userMention(executor.id),
+                    inline: true
+                }
+            ]);
+        }
 
         if (ban.reason)
             embed.addFields({
@@ -76,7 +64,5 @@ export default {
     }
 };
 
-const shouldIgnoreBanAdd = (
-    guildBanAdd: IAuditLogsModule['guildBanAdd'],
-    logChannel: GuildBasedChannel | undefined
-) => !guildBanAdd.enabled || guildBanAdd.channelId === '' || canSendMessage(logChannel);
+const shouldIgnoreBanAdd = (guildBanAdd: IAuditLogsModule['guildBanAdd']) =>
+    !guildBanAdd.enabled || guildBanAdd.channelId === '';

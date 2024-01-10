@@ -1,6 +1,7 @@
 import {
     APIEmbedField,
     EmbedBuilder,
+    User,
     channelMention,
     quote,
     roleMention,
@@ -92,5 +93,13 @@ export const formatFields = (
                 inline: field.inline
             };
         }
+    });
+};
+
+export const addAuthor = (embed: EmbedBuilder, author: User | null | undefined) => {
+    if (!author) return;
+    embed.setAuthor({
+        name: `${author.username} (${author.id})`,
+        iconURL: author.displayAvatarURL()
     });
 };

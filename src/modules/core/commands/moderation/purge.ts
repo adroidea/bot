@@ -8,8 +8,8 @@ import {
     PermissionsBitField,
     TextChannel
 } from 'discord.js';
+import { Embed, addAuthor } from '../../../../utils/embedsUtil';
 import { CustomErrors } from '../../../../utils/errors';
-import { Embed } from '../../../../utils/embedsUtil';
 import { IGuild } from 'adroi.d.ea';
 import { hasBotPermission } from '../../../../utils/botUtil';
 
@@ -78,12 +78,10 @@ export default {
             if (!logChannel?.isTextBased()) return;
 
             const embed = new EmbedBuilder()
-                .setAuthor({
-                    name: `${interaction.user.username}`,
-                    iconURL: interaction.user.avatarURL()!
-                })
                 .setTitle(`Suppression de masse (Bulk Delete) effectuée`)
                 .setColor([45, 249, 250]);
+
+            addAuthor(embed, interaction.user);
 
             await logChannel.send({ embeds: [embed] });
         }

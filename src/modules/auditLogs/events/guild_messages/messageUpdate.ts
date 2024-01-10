@@ -1,5 +1,6 @@
 import { Client, EmbedBuilder, Events, GuildBasedChannel, Message } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { addAuthor } from '../../../../utils/embedsUtil';
 import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guildService';
 
@@ -25,10 +26,6 @@ export default {
         if (shouldIgnoreUpdate(messageUpdate, oldMessage, logChannel)) return;
 
         const embed = new EmbedBuilder()
-            .setAuthor({
-                name: `${newMessage.author.username} (${newMessage.author.id})`,
-                iconURL: newMessage.author.avatarURL()!
-            })
             .setDescription(
                 `Message edité dans <#${oldMessage.channelId}>, [voir le message](${oldMessage.url})`
             )
@@ -47,6 +44,9 @@ export default {
             .setFooter({ text: `Message modifié.` })
             .setColor([45, 249, 250])
             .setTimestamp();
+
+        addAuthor(embed, oldMessage.author);
+
         await logChannel.send({ embeds: [embed] });
     }
 };
