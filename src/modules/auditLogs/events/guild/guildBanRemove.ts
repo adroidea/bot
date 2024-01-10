@@ -53,7 +53,7 @@ export default {
         if (executor)
             embed
                 .setAuthor({
-                    name: executor.username,
+                    name: `${executor.username} (${executor.id})`,
                     iconURL: executor.avatarURL()!
                 })
                 .addFields([

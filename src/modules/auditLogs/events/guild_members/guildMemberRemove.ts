@@ -35,19 +35,18 @@ export default {
                 },
                 {
                     name: `${Emojis.snowflake} Création`,
-                    value: `${detailedShortDate(member.user.createdTimestamp)}`
+                    value: `${detailedShortDate(member.user.createdTimestamp)}`,
+                    inline: true
                 },
                 {
                     name: `${Emojis.snowflake} Rejoint`,
-                    value: `${detailedShortDate(member.joinedTimestamp!)}`
+                    value: `${detailedShortDate(member.joinedTimestamp!)}`,
+                    inline: true
                 },
                 {
                     name: `${Emojis.snowflake} Départ`,
-                    value: `${detailedShortDate(Date.now())}`
-                },
-                {
-                    name: `${Emojis.snowflake} Nombre de membres`,
-                    value: `${member.guild.memberCount}`
+                    value: `${detailedShortDate(Date.now())}`,
+                    inline: true
                 }
             )
             .setFooter({

@@ -1,8 +1,8 @@
-import { Client, EmbedBuilder, Events, GuildBasedChannel, GuildMember } from 'discord.js';
-import { canSendMessage, timestampToDate } from '../../../../utils/botUtil';
+import { Client, EmbedBuilder, Events, GuildMember } from 'discord.js';
 import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import guildService from '../../../../services/guildService';
+import { timestampToDate } from '../../../../utils/botUtil';
 
 export default {
     name: Events.GuildMemberAdd,
@@ -18,7 +18,7 @@ export default {
             ?.channels.cache.get(guildMemberAdd.channelId);
         if (!logChannel?.isTextBased()) return;
 
-        if (shouldIgnoreMemberAdd(guildMemberAdd, member, logChannel)) return;
+        if (shouldIgnoreMemberAdd(guildMemberAdd, member)) return;
 
         const embed = new EmbedBuilder()
             .setAuthor({
@@ -46,10 +46,8 @@ export default {
 
 const shouldIgnoreMemberAdd = (
     guildMemberAdd: IAuditLogsModule['guildMemberAdd'],
-    member: GuildMember,
-    logChannel: GuildBasedChannel | undefined
+    member: GuildMember
 ) =>
     !guildMemberAdd.enabled ||
     guildMemberAdd.channelId === '' ||
-    (guildMemberAdd.ignoreBots && member.user.bot) ||
-    canSendMessage(logChannel);
+    (guildMemberAdd.ignoreBots && member.user.bot);

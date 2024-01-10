@@ -1,11 +1,16 @@
-import { Client, EmbedBuilder, Events, Role } from 'discord.js';
+import { AuditLogEvent, Client, EmbedBuilder, Events, Role } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { getPermissionsNames } from '../../../../utils/modulesUil';
 import guildService from '../../../../services/guildService';
 
 export default {
     name: Events.GuildRoleDelete,
     async execute(client: Client, role: Role) {
-        console.log(role);
+        const fetchedLogs = await role.guild.fetchAuditLogs({
+            limit: 1,
+            type: AuditLogEvent.RoleDelete
+        });
+
         const {
             modules: {
                 auditLogs: { guildRoleDelete }
@@ -18,15 +23,27 @@ export default {
         if (!logChannel?.isTextBased()) return;
 
         const embed = new EmbedBuilder()
-            .setAuthor({
-                name: `${role.name}`
-            })
-            .setTitle(`Rôle supprimé`)
-            .setDescription(`${role.icon}${role.name}`)
+            .setTitle(`Rôle __${role.name}__ supprimé`)
             .setFooter({
-                text: "Ca tombe bien, j'aimais pas tant ce rôle !"
+                text: 'Rôle supprimé'
             })
             .setTimestamp();
+
+        const executor = fetchedLogs.entries.first()?.executor;
+        if (executor)
+            embed.setAuthor({
+                name: `${executor.username} (${executor.id})`,
+                iconURL: executor.displayAvatarURL()!
+            });
+
+        const categorizedPermissions = getPermissionsNames(role.permissions);
+        for (const [category, perms] of Object.entries(categorizedPermissions)) {
+            embed.addFields({
+                name: category,
+                value: perms.join('\n'),
+                inline: true
+            });
+        }
 
         if (role.color) embed.setColor(role.color);
         await logChannel.send({ embeds: [embed] });
