@@ -1,4 +1,4 @@
-import { Guild, GuildBasedChannel, PermissionsBitField, userMention } from 'discord.js';
+import { Guild, GuildBasedChannel, PermissionsBitField } from 'discord.js';
 
 export const hasBotPermission = (guild: Guild, permissionsFlag: bigint[]) => {
     return guild.members.me!.permissions.has(permissionsFlag);
@@ -34,7 +34,7 @@ export const shortDate = (timestamp: number): string => {
 export const longDate = (timestamp: number): string => {
     return `<t:${timestampToDate(timestamp)}:D>`;
 };
-userMention;
+
 /**
  * Returns the date in the long date with short time format.
  * @param timestamp - The timestamp to convert.

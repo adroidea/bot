@@ -1,4 +1,12 @@
-import { APIEmbedField, AuditLogEvent, Client, EmbedBuilder, Events, Role } from 'discord.js';
+import {
+    APIEmbedField,
+    AuditLogEvent,
+    Client,
+    EmbedBuilder,
+    Events,
+    GuildAuditLogs,
+    Role
+} from 'discord.js';
 import { Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { comparePermissionsNames } from '../../../../utils/modulesUil';
@@ -30,133 +38,43 @@ export default {
             newRole.permissions
         );
 
-        const embed = new EmbedBuilder()
-            .setTitle(`Rôle __${newRole.name}__ mis à jour`)
-            .setColor(newRole.color)
-            .setFooter({ text: 'Rôle modifié' })
-            .setTimestamp();
+        const embed = createEmbed(newRole, fetchedLogs);
 
-        const executor = fetchedLogs.entries.first()?.executor;
-        if (executor)
-            embed.setAuthor({
-                name: `${executor.username} (${executor.id})`,
-                iconURL: executor.displayAvatarURL()!
-            });
-
-        if (oldRole.name !== newRole.name)
-            embed.addFields(
-                {
-                    name: 'Ancien nom',
-                    value: `${oldRole.name}`,
-                    inline: true
-                },
-                {
-                    name: 'Nouveau nom',
-                    value: `${newRole.name}`,
-                    inline: true
-                },
-                {
-                    name: '\u200b',
-                    value: '\u200b',
-                    inline: true
-                }
-            );
-
-        if (oldRole.color !== newRole.color)
-            embed.addFields(
-                {
-                    name: 'Ancienne couleur',
-                    value: `${oldRole.hexColor}`,
-                    inline: true
-                },
-                {
-                    name: 'Nouvelle couleur',
-                    value: `${newRole.hexColor}`,
-                    inline: true
-                },
-                {
-                    name: '\u200b',
-                    value: '\u200b',
-                    inline: true
-                }
-            );
+        addFieldIfChanged('Ancien nom', 'Nouveau nom', oldRole.name, newRole.name, embed);
+        addFieldIfChanged(
+            'Ancienne couleur',
+            'Nouvelle couleur',
+            oldRole.hexColor,
+            newRole.hexColor,
+            embed
+        );
 
         const fields: APIEmbedField[] = [];
 
-        if (oldRole.mentionable !== newRole.mentionable) {
-            const value =
-                oldRole.mentionable === true && newRole.mentionable === false
-                    ? Emojis.aCross
-                    : Emojis.aCheck;
+        const booleanValues: Record<string, { name: string; emoji: string }> = {
+            mentionable: { name: 'Mentionnable', emoji: Emojis.mention },
+            hoist: { name: 'Afficher séparément', emoji: Emojis.roles },
+            managed: { name: 'Géré par Discord', emoji: Emojis.link }
+        };
 
-            fields.push({
-                name: `${Emojis.mention} Mentionnable`,
-                value: value,
-                inline: true
-            });
-        }
+        Object.entries(booleanValues).forEach(([fieldName, value]) => {
+            const key = fieldName as keyof Role;
+            addBooleanIfChanged(oldRole[key] as boolean, newRole[key] as boolean, value, fields);
+        });
 
-        if (oldRole.hoist !== newRole.hoist) {
-            const value =
-                oldRole.hoist === true && newRole.hoist === false ? Emojis.aCross : Emojis.aCheck;
+        const fieldsWithEmpty = addEmptyFields(fields);
+        embed.addFields(fieldsWithEmpty);
 
-            fields.push({
-                name: ` ${Emojis.roles} Afficher séparément`,
-                value: value,
-                inline: true
-            });
-        }
-
-        if (oldRole.managed !== newRole.managed) {
-            const value =
-                oldRole.managed === true && newRole.managed === false
-                    ? Emojis.aCross
-                    : Emojis.aCheck;
-
-            fields.push({
-                name: `${Emojis.link} Géré par discord`,
-                value: value,
-                inline: true
-            });
-        }
-
-        const fieldsWithEmpty: APIEmbedField[] = [];
-        for (let i = 0; i < fields.length; i++) {
-            fieldsWithEmpty.push(fields[i]);
-
-            if (i < fields.length - 1 && (i + 1) % 3 === 0) {
-                fieldsWithEmpty.push({ name: '\u200B', value: '\u200B', inline: true });
-            }
-        }
-
-        if (fieldsWithEmpty.length % 3 !== 0) {
-            const additionalEmptyFields = 3 - (fieldsWithEmpty.length % 3);
-
-            for (let i = 0; i < additionalEmptyFields; i++) {
-                fieldsWithEmpty.push({ name: '\u200B', value: '\u200B', inline: true });
-            }
-        }
-
-        if (fieldsWithEmpty.length > 0) embed.addFields(fieldsWithEmpty);
-
-        if (newRole.permissions.bitfield !== oldRole.permissions.bitfield)
-            for (const [category, perms] of Object.entries(categorizedPermissions)) {
-                if (perms.length > 0)
-                    embed.addFields({
-                        name: category,
-                        value: perms.join('\n'),
-                        inline: true
-                    });
-            }
+        addPermissionFieldsIfChanged(newRole, oldRole, categorizedPermissions, embed);
 
         await logChannel.send({ embeds: [embed] });
     }
 };
 
-const shouldIgnoreRoleUpdate = (guildRoleCreate: IAuditLogsModule['guildRoleCreate']) =>
+const shouldIgnoreRoleUpdate = (guildRoleCreate: IAuditLogsModule['guildRoleCreate']): boolean =>
     !guildRoleCreate.enabled || guildRoleCreate.channelId === '';
 
-const hasOnlyPositionChanged = (oldRole: Role, newRole: Role) =>
+const hasOnlyPositionChanged = (oldRole: Role, newRole: Role): boolean =>
     oldRole.position !== newRole.position &&
     oldRole.name === newRole.name &&
     oldRole.color === newRole.color &&
@@ -166,3 +84,106 @@ const hasOnlyPositionChanged = (oldRole: Role, newRole: Role) =>
     oldRole.mentionable === newRole.mentionable &&
     oldRole.icon === newRole.icon &&
     oldRole.unicodeEmoji === newRole.unicodeEmoji;
+
+function createEmbed(newRole: Role, fetchedLogs: GuildAuditLogs) {
+    const embed = new EmbedBuilder()
+        .setTitle(`Rôle __${newRole.name}__ mis à jour`)
+        .setColor(newRole.color)
+        .setFooter({ text: 'Rôle modifié' })
+        .setTimestamp();
+
+    const executor = fetchedLogs.entries.first()?.executor;
+    if (executor) {
+        embed.setAuthor({
+            name: `${executor.username} (${executor.id})`,
+            iconURL: executor.displayAvatarURL()!
+        });
+    }
+
+    return embed;
+}
+
+function addFieldIfChanged(
+    oldName: string,
+    newName: string,
+    oldValue: string,
+    newValue: string,
+    embed: EmbedBuilder
+) {
+    if (oldValue !== newValue) {
+        embed.addFields(
+            {
+                name: oldName,
+                value: `${oldValue}`,
+                inline: true
+            },
+            {
+                name: newName,
+                value: `${newValue}`,
+                inline: true
+            },
+            {
+                name: '\u200b',
+                value: '\u200b',
+                inline: true
+            }
+        );
+    }
+}
+
+function addBooleanIfChanged(
+    oldValue: boolean,
+    newValue: boolean,
+    content: { name: string; emoji: string },
+    fields: APIEmbedField[]
+) {
+    if (oldValue !== newValue) {
+        const value = oldValue ? Emojis.aCross : Emojis.aCheck;
+
+        fields.push({
+            name: `${content.emoji} ${content.name}`,
+            value,
+            inline: true
+        });
+    }
+}
+
+function addEmptyFields(fields: APIEmbedField[]) {
+    const fieldsWithEmpty: APIEmbedField[] = [];
+    for (let i = 0; i < fields.length; i++) {
+        fieldsWithEmpty.push(fields[i]);
+
+        if (i < fields.length - 1 && (i + 1) % 3 === 0) {
+            fieldsWithEmpty.push({ name: '\u200B', value: '\u200B', inline: true });
+        }
+    }
+
+    if (fieldsWithEmpty.length % 3 !== 0) {
+        const additionalEmptyFields = 3 - (fieldsWithEmpty.length % 3);
+
+        for (let i = 0; i < additionalEmptyFields; i++) {
+            fieldsWithEmpty.push({ name: '\u200B', value: '\u200B', inline: true });
+        }
+    }
+
+    return fieldsWithEmpty;
+}
+
+function addPermissionFieldsIfChanged(
+    newRole: Role,
+    oldRole: Role,
+    categorizedPermissions: Record<string, string[]>,
+    embed: EmbedBuilder
+) {
+    if (newRole.permissions.bitfield !== oldRole.permissions.bitfield) {
+        for (const [category, perms] of Object.entries(categorizedPermissions)) {
+            if (perms.length > 0) {
+                embed.addFields({
+                    name: category,
+                    value: perms.join('\n'),
+                    inline: true
+                });
+            }
+        }
+    }
+}

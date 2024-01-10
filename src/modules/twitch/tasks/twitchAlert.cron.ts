@@ -22,7 +22,7 @@ export default function (): cron.ScheduledTask {
     return cron.schedule('* * * * *', async () => {
         try {
             for (const guild of guildsCache) {
-                handleGuild(guild);
+                await handleGuild(guild);
             }
         } catch (err: any) {
             logger.error('Error :', err, filePath);
