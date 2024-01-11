@@ -26,7 +26,7 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
 ## Modules 
 
 ### 📅 Events management
-
+> 🚧 WIP, it will come... soon enough lmao
 - Create and delete events (administrator)
 - Join created events (you can unRSVP)
 - Waiting list available (max participants)
@@ -46,11 +46,11 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
 
  - Guild
    - Ban Add / Remove
-   - Role Create / Update (WIP) / Delete
+   - Role Create / Update / Delete
 
 ### 🎉 Party Mode
 
->🚧 WIP, it will come back... soon enough
+> 🚧 WIP, it will come... soon enough
 
 ### ❓ QotD (Question of the Day)
 
@@ -69,25 +69,38 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
 ![create](/assets/tempVoice/create.gif)
 
 The voice owner can : 
-- Lock the channel to everyone
-![lock](/assets/tempVoice/lock.gif)
+
+- Set a user limit to the channel
+![limit](/assets/tempVoice/limit.gif)
 
 - Transfer ownership
 ![transfer-ownership](/assets/tempVoice/transfer-ownership.gif)
 
-- Ban someone in particular (will kick them out)
-![voice-ban](/assets/tempVoice/voice-ban.gif)
+- Lock the channel to everyone
+![lock](/assets/tempVoice/lock.gif)
 
-- Set a user limit to the channel
-![limit](/assets/tempVoice/limit.gif)
+- Change the region of your channel
+> Automatic just lets discord choose, but sometimes Discord decides to do nothing. Use at your own risks.
+
+- Delete that nasty channel when you had enough (no matter how many people there are)
+![delete](/assets/tempVoice/delete.gif)
+
+- Whitelist people to let them join whenever they want
+![whitelist](/assets/tempVoice/whitelist.gif)
+
+- Temporarly whitelist someone, same as the one before. But only works for the current voice channel
+
+- Blacklist people to be safe from them (will kick them out)
+![blacklist](/assets/tempVoice/blacklist.gif)
+
+- Temporarly blacklist someone, same as the one before. But only works for the current voice channel
 
 ### 📺 Twitch
 
 - Alerts for a Twitch Streamer when going live or changing category 
 ![alert](/assets/twitch/alert.png)
 
-- Add a custom role when a friend goes live and removes it once they stop.
-
+- Auto Add a custom role when a friend goes live and removes it once they stop
 
 ## Misc
 
@@ -98,10 +111,9 @@ The voice owner can :
 
 env: 
 ```
-DISCORD_APP_ID
 DISCORD_TOKEN
 MONGO_URI
-NODE_ENV # will push the commands to your server if set to production
+NODE_ENV # will push the commands to your server if set to PRODUCTION
 REDIS_HOST
 TWITCH_CLIENT_ID
 TWITCH_CLIENT_SECRET

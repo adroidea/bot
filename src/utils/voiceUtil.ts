@@ -138,7 +138,7 @@ export const switchVoiceOwner = async (
         const isPrivate = isVoicePrivate(voiceChannel.id);
         const permOverwrite = setPerms(tempVoice.userSettings, target.id, target.guild, isPrivate);
 
-        const name = tempVoice.nameModel[isPrivate ? 'unlocked' : 'locked'].replace(
+        const name = tempVoice.nameModel[isPrivate ? 'locked' : 'unlocked'].replace(
             '{USERNAME}',
             target.user.username
         );

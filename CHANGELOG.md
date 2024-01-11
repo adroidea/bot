@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## 🏗️ [Unreleased - 4.0.0]
+## 🏗️ [Unreleased]
+
+### ✨ Added
+
+### 🧱 Changed
+
+### 🚮 Removed
+
+### 🐛 Fixed
+
+## 🚀 [4.0.0] - 2024-01-11
 
 ### ✨ Added
 
@@ -54,7 +64,8 @@ All notable changes to this project will be documented in this file.
 
 ❄️ A lot of stuff i don't remember. And i'm too lazy to check every commit :')
 
-[Unreleased - 4.0.0]: https://github.com/adroidea/bot
+[Unreleased]: https://github.com/adroidea/bot
+[4.0.0]: https://github.com/adroidea/bot/releases/tag/v4.0.0
 [3.7.0]: https://github.com/adroidea/bot/releases/tag/v3.7.0
 [3.6.0]: https://github.com/adroidea/bot/releases/tag/v3.6.0
 [0.2.0]: https://github.com/adroidea/bot/releases/tag/v0.2.0

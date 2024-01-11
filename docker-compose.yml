@@ -4,7 +4,6 @@ services:
         image: adanea/adroid_ea:latest
         container_name: adroid_ea
         environment:
-            - DISCORD_APP_ID=xxx
             - DISCORD_TOKEN=xxx
             - MONGO_URI=xxx
             - NODE_ENV=PRODUCTION

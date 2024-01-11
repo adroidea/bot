@@ -27,11 +27,11 @@ export default {
             throw CustomErrors.NotVoiceOwnerError;
 
         await interaction.deferReply({ ephemeral: true });
-        let isPublic: boolean = isVoicePrivate(voiceChannel.id);
 
         switchVoicePrivacy(member, guildSettings.modules.tempVoice.nameModel);
+        let isPrivate: boolean = isVoicePrivate(voiceChannel.id);
         await interaction.editReply({
-            content: `Le salon est maintenant ${isPublic ? 'privé' : 'public'}.`
+            content: `Le salon est maintenant ${isPrivate ? 'privé' : 'public'}.`
         });
     }
 };
