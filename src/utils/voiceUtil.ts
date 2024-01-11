@@ -15,7 +15,7 @@ import {
 import { CustomError, CustomErrors } from './errors';
 import { Colors } from './consts';
 import { Embed } from './embedsUtil';
-import { ITemporaryVoice } from '../models';
+import { ITempVoiceModule } from 'adroi.d.ea';
 import Logger from './logger';
 import { client } from '..';
 import { handleCooldown } from '../modules/core/events/client/interactionCreate';
@@ -31,18 +31,18 @@ const filePath = path.join(__dirname, __filename);
  * @returns A Promise that resolves when the new channel is created.
  * @throws {CustomError} If an error occurs while creating the channel.
  */
-export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITemporaryVoice) => {
+export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITempVoiceModule) => {
     try {
         handleCooldown(newState.member!.user.id, 'voiceCreate', 60 * 1000);
         const member = newState.member as GuildMember;
         const username = member.user.username;
         const { userSettings, nameModel } = tempVoice;
-        const isPublic = userSettings[member.id]?.isPublic ?? true;
-        const permOverwrite = setPerms(userSettings, member.id, newState.guild, isPublic);
+        const isPrivate = userSettings[member.id]?.isPrivate ?? false;
+        const permOverwrite = setPerms(userSettings, member.id, newState.guild, isPrivate);
 
         await newState.guild.channels
             .create({
-                name: nameModel[isPublic ? 'unlocked' : 'locked'].replace('{USERNAME}', username),
+                name: nameModel[isPrivate ? 'locked' : 'unlocked'].replace('{USERNAME}', username),
                 type: ChannelType.GuildVoice,
                 topic: member.user.id,
                 permissionOverwrites: permOverwrite
@@ -56,7 +56,7 @@ export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITem
 
                 client.tempVoice.set(channel.id, {
                     ownerId: member.user.id,
-                    isPublic
+                    isPrivate
                 });
 
                 channel.send(buildVoiceEmbed(member.user.id));
@@ -81,30 +81,30 @@ export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITem
  */
 export const switchVoicePrivacy = async (
     member: GuildMember,
-    nameModel: ITemporaryVoice['nameModel']
+    nameModel: ITempVoiceModule['nameModel']
 ) => {
     const voiceChannel = member.voice.channel;
     if (!voiceChannel) return;
 
     try {
-        const isPublic = isVoicePrivate(voiceChannel.id);
+        const isPrivate = isVoicePrivate(voiceChannel.id);
         const permissions = {
-            ViewChannel: isPublic ? false : null,
-            Connect: isPublic ? false : null,
-            Speak: isPublic ? false : null,
-            ReadMessageHistory: isPublic ? false : null
+            ViewChannel: isPrivate ? null : false,
+            Connect: isPrivate ? null : false,
+            Speak: isPrivate ? null : false,
+            ReadMessageHistory: isPrivate ? null : false
         };
 
         await voiceChannel.permissionOverwrites.edit(member.guild.roles.everyone, permissions);
 
-        const name = nameModel[isPublic ? 'locked' : 'unlocked'].replace(
+        const name = nameModel[isPrivate ? 'unlocked' : 'locked'].replace(
             '{USERNAME}',
             member.user.username
         );
         await voiceChannel.setName(name);
         client.tempVoice.set(voiceChannel.id, {
             ownerId: member.id,
-            isPublic: !isPublic
+            isPrivate: !isPrivate
         });
     } catch (err: any) {
         Logger.error(
@@ -126,7 +126,7 @@ export const switchVoicePrivacy = async (
 export const switchVoiceOwner = async (
     user: GuildMember,
     target: GuildMember,
-    tempVoice: ITemporaryVoice
+    tempVoice: ITempVoiceModule
 ) => {
     try {
         const voiceChannel = target.voice.channel;
@@ -135,10 +135,10 @@ export const switchVoiceOwner = async (
         const ownerId = client.tempVoice.get(voiceChannel.id)?.ownerId;
         if (ownerId !== user.id) return;
 
-        const isPublic = isVoicePrivate(voiceChannel.id);
-        const permOverwrite = setPerms(tempVoice.userSettings, target.id, target.guild, isPublic);
+        const isPrivate = isVoicePrivate(voiceChannel.id);
+        const permOverwrite = setPerms(tempVoice.userSettings, target.id, target.guild, isPrivate);
 
-        const name = tempVoice.nameModel[isPublic ? 'unlocked' : 'locked'].replace(
+        const name = tempVoice.nameModel[isPrivate ? 'unlocked' : 'locked'].replace(
             '{USERNAME}',
             target.user.username
         );
@@ -146,7 +146,7 @@ export const switchVoiceOwner = async (
         await voiceChannel.permissionOverwrites.set(permOverwrite);
         client.tempVoice.set(voiceChannel.id, {
             ownerId: target.id,
-            isPublic
+            isPrivate
         });
     } catch (err: any) {
         Logger.error(
@@ -164,7 +164,7 @@ export const switchVoiceOwner = async (
  * @returns A boolean indicating whether the voice is public or not.
  */
 export const isVoicePrivate = (voiceId: string): boolean => {
-    return client.tempVoice.get(voiceId)?.isPublic;
+    return client.tempVoice.get(voiceId)?.isPrivate;
 };
 
 /**
@@ -272,14 +272,14 @@ const permissions = [
  * @param userSettings - The user settings object.
  * @param userId - The ID of the user.
  * @param guild - The guild object.
- * @param isPublic - Indicates whether the voice channel is public or not. Default is true.
+ * @param isPrivate - Indicates whether the voice channel is public or not. Default is true.
  * @returns An array of permission overwrites for the voice channel.
  */
 const setPerms = (
-    userSettings: ITemporaryVoice['userSettings'],
+    userSettings: ITempVoiceModule['userSettings'],
     userId: string,
     guild: Guild,
-    isPublic = true
+    isPrivate = false
 ) => {
     const trustedUsers = userSettings[userId]?.trustedUsers || [];
     const blockedUsers = userSettings[userId]?.blockedUsers || [];
@@ -311,7 +311,7 @@ const setPerms = (
             });
     });
 
-    if (isPublic) {
+    if (!isPrivate) {
         permissionsOverwrites.push({
             id: guild.roles.everyone,
             allow: permissions

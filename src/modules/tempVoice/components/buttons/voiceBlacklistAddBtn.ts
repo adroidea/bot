@@ -1,5 +1,5 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, GuildMember } from 'discord.js';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import { getorCreateUserSettings } from '../../../../utils/modulesUil';
 import { voiceBlacklistAddRow } from '../selectMenus';
 

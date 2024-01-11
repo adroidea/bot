@@ -8,11 +8,10 @@ import {
     PermissionsBitField,
     TextChannel
 } from 'discord.js';
+import { Embed, addAuthor } from '../../../../utils/embedsUtil';
 import { CustomErrors } from '../../../../utils/errors';
-import { Embed } from '../../../../utils/embedsUtil';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import { hasBotPermission } from '../../../../utils/botUtil';
-import { isNotifSMEnabled } from '../../../../utils/modulesUil';
 
 export default {
     data: {
@@ -70,27 +69,19 @@ export default {
             ephemeral: true
         });
 
-        const { notifications } = guildSettings.modules;
-        if (!isNotifSMEnabled(notifications, 'privateLogs')) return;
-        const { privateLogChannel } = notifications.privateLogs;
+        const { messageBulkDelete } = guildSettings.modules.auditLogs;
+        if (!messageBulkDelete.enabled) return;
+        const { channelId } = messageBulkDelete;
 
-        if (privateLogChannel) {
-            const logChannel = client.channels.cache.get(privateLogChannel);
+        if (channelId) {
+            const logChannel = client.channels.cache.get(channelId);
             if (!logChannel?.isTextBased()) return;
 
             const embed = new EmbedBuilder()
-                .setAuthor({
-                    name: `${interaction.user.username}`,
-                    iconURL: interaction.user.avatarURL()!
-                })
-                .setDescription(
-                    `Suppression de masse (Bulk Delete) de ${amountDeleted} messages effectuée dans <#${channel.id}>`
-                )
-                .setFooter({ text: `Suppression de masse.` })
-                .setColor(
-                    interaction.user.hexAccentColor ? interaction.user.hexAccentColor : '#0FF0FF'
-                )
-                .setTimestamp();
+                .setTitle(`Suppression de masse (Bulk Delete) effectuée`)
+                .setColor([45, 249, 250]);
+
+            addAuthor(embed, interaction.user);
 
             await logChannel.send({ embeds: [embed] });
         }

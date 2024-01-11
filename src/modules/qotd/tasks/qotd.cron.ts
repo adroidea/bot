@@ -1,7 +1,8 @@
+import { Embed, addAuthor } from '../../../utils/embedsUtil';
 import { EmbedBuilder, Guild, MessageType, TextBasedChannel, User } from 'discord.js';
-import { IQOtD, IQuestions, QuestionsModel } from '../models';
+import { IQuestions, QuestionsModel } from '../models';
 import { Colors } from '../../../utils/consts';
-import { Embed } from '../../../utils/embedsUtil';
+import { IQOTDModule } from 'adroi.d.ea';
 import Logger from '../../../utils/logger';
 import { client } from '../../..';
 import cron from 'node-cron';
@@ -14,7 +15,7 @@ export default function (): cron.ScheduledTask {
             const guild: Guild = client.guilds.cache.get(guildData.id);
             if (!guild) continue;
 
-            const { qotd }: { qotd: IQOtD } = guildData.modules;
+            const { qotd }: { qotd: IQOTDModule } = guildData.modules;
             if (!qotd.enabled) continue;
 
             try {
@@ -39,12 +40,7 @@ export default function (): cron.ScheduledTask {
                     });
 
                 const author: User = await client.users.fetch(authorId);
-                if (author) {
-                    questionEmbed.setAuthor({
-                        name: `${author.username}`,
-                        iconURL: author.displayAvatarURL()
-                    });
-                }
+                if (author) addAuthor(questionEmbed, author);
 
                 await deletePinnedMessages(channel);
 
@@ -82,13 +78,13 @@ const deletePinNotification = async (chan: TextBasedChannel, sentMsgId: string):
     }
 };
 
-const handleLowQuestionsCount = async (guild: Guild, qotd: IQOtD): Promise<void> => {
+const handleLowQuestionsCount = async (guild: Guild, qotd: IQOTDModule): Promise<void> => {
     const totalQuestions: number = await QuestionsModel.countDocuments({
         guildId: guild.id
     });
 
     if (totalQuestions <= qotd.questionsThreshold && qotd.questionsThreshold !== 0) {
-        let channel = guild.channels.cache.get(qotd.requestChannelId);
+        let channel = guild.channels.cache.get(qotd.proposedChannelId);
         if (!channel?.isTextBased()) return;
 
         channel.send({

@@ -1,3 +1,3 @@
-import { ITemporaryVoice, temporaryVoiceSchema } from './temporaryVoiceModel';
+import { tempVoiceSchema } from './tempVoiceModel';
 
-export { ITemporaryVoice, temporaryVoiceSchema };
+export { tempVoiceSchema };

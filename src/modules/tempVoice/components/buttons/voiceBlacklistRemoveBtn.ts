@@ -1,5 +1,5 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, GuildMember } from 'discord.js';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import { buildVoiceBlacklistRemoveRow } from '../selectMenus';
 import { getorCreateUserSettings } from '../../../../utils/modulesUil';
 
@@ -15,7 +15,7 @@ export default {
     async execute(interaction: ButtonInteraction, guildSettings: IGuild) {
         getorCreateUserSettings(interaction.member as GuildMember, guildSettings);
         const { blockedUsers } =
-            guildSettings.modules.temporaryVoice.userSettings[interaction.user.id];
+            guildSettings.modules.tempVoice.userSettings[interaction.user.id];
 
         if (blockedUsers.length === 0) {
             return interaction.reply({

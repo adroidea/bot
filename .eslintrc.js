@@ -8,22 +8,10 @@ module.exports = {
     },
     ignorePatterns: ['node_modules/'],
     rules: {
-        '@typescript-eslint/no-unused-vars': 0,
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': 'error',
         'import/prefer-default-export': 0,
         'import/no-cycle': 0,
-        'class-methods-use-this': 0,
-        'max-len': [
-            'error',
-            {
-                code: 150,
-                ignoreComments: true,
-                ignoreTrailingComments: true,
-                ignoreUrls: true,
-                ignoreStrings: true,
-                ignoreTemplateLiterals: true,
-                ignoreRegExpLiterals: true
-            }
-        ],
         'no-restricted-syntax': [
             'error',
             {

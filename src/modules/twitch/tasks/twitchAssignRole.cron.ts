@@ -1,5 +1,5 @@
 import { Guild, GuildMember, Role } from 'discord.js';
-import { IStreamersData } from '../../../models';
+import { ITMStreamersData } from 'adroi.d.ea';
 import { client } from '../../../index';
 import cron from 'node-cron';
 import { guildsCache } from '../../core/tasks/createCache.cron';
@@ -15,11 +15,10 @@ export default function (): cron.ScheduledTask {
             const guildData: Guild = client.guilds.cache.get(guild.id);
             if (!guildData) continue;
 
-            const { twitchLive } = guild.modules;
-            const { enabled, streamers, streamingRoleId } = twitchLive;
+            const { enabled, streamers, streamingRoleId } = guild.modules.twitch.autoRoles;
             if (!enabled) continue;
 
-            if (streamers && streamingRoleId) {
+            if (streamers.length > 0 && streamingRoleId !== '') {
                 toggleStreamersRole(guildData, streamers, streamingRoleId);
             }
         }
@@ -34,7 +33,7 @@ export default function (): cron.ScheduledTask {
  */
 const toggleStreamersRole = async (
     guild: Guild,
-    streamers: IStreamersData[],
+    streamers: ITMStreamersData[],
     streamingRoleId: string
 ) => {
     for (const streamer of streamers) {
@@ -46,8 +45,9 @@ const toggleStreamersRole = async (
 
         const hasRole: boolean = member.roles.cache.some(r => r.id === role.id);
         try {
-            const response: string = await // @ts-ignore
-            (await fetch(`https://decapi.me/twitch/uptime/${streamer.streamer}`)).text();
+            const response: string = await (
+                await fetch(`https://decapi.me/twitch/uptime/${streamer.streamer}`)
+            ).text();
 
             if (response === `${streamer.streamer} is offline`) {
                 if (hasRole) {

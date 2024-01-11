@@ -17,10 +17,11 @@ export const regCMD = async (clientId: string) => {
 
     const categoryFolders = [
         path.join(__dirname, 'modules/core/commands'),
+        //path.join(__dirname, 'modules/logs/commands'),
         path.join(__dirname, 'modules/qotd/commands'),
         //path.join(__dirname, 'modules/scheduledEvents/commands'),
         path.join(__dirname, 'modules/tempVoice/commands')
-        //path.join(__dirname, 'modules/twitchLive/commands'),
+        //path.join(__dirname, 'modules/twitch/commands'),
     ];
 
     const readCommands = async (dir: string) => {

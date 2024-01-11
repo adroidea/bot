@@ -6,7 +6,7 @@ import {
     EmbedBuilder,
     PermissionsBitField
 } from 'discord.js';
-import { Colors } from '../../../../utils/consts';
+import { Colors, Emojis } from '../../../../utils/consts';
 
 export default {
     data: {
@@ -38,7 +38,7 @@ export default {
 
         const embed = new EmbedBuilder()
             .setColor(Colors.random)
-            .setTitle(`<a:flocon:1177616024959455242> Voici toutes les commandes du bot !`)
+            .setTitle(`${Emojis.aSnowflake} Voici toutes les commandes du bot !`)
             .setDescription(`${commandsList}`)
             .addFields({
                 name: 'version',

@@ -5,8 +5,8 @@ This is a discord bot primarly made for my discord server (this is why some valu
 I self-host the bot but my code isn't yet strong enough to give an invitation link. But feel free to contribute !
 
 <p align="center">
-  <a href="https://discord.gg/29URgahg">
-    <img src="https://media.discordapp.net/attachments/763373898779197481/887428474766229574/worldbot.png"  alt="Discord bot icon" width="50%" style="border-radius:5000px"/>
+  <a href="https://discord.gg/BUQ8qPfSJY">
+    <img src="./assets/adroid_ea.png"  alt="Discord bot icon" width="50%" style="border-radius:100%"/>
   </a>
 </p>
 
@@ -15,7 +15,7 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
   <a href="https://github.com/adan-ea/adroid_ea/issues">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues/adan-ea/adroid_ea?style=flat-square">
   </a>
-  <a href="https://discord.gg/29URgahg">
+  <a href="https://discord.gg/BUQ8qPfSJY">
     <img alt="Invite Discord" src="https://img.shields.io/badge/Discord-5865F2?style=flat-square?style=for-the-badge&logo=discord&logoColor=white">
   </a>
 
@@ -36,15 +36,17 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
 
 - Purge channel
 
-### Notifications
+### Audit Logs
 
-> Rework in progress, will change soon
+- Guild Messages
+   - Update / Delete / Bulk Delete
 
-- Private logs
-   - Message update, delete
-   - Nickname update
-- Public logs
-   - Member arrival, departure
+- Guild Member
+   - Join / Nickname update / Leave
+
+ - Guild
+   - Ban Add / Remove
+   - Role Create / Update (WIP) / Delete
 
 ### 🎉 Party Mode
 
@@ -92,7 +94,7 @@ The voice owner can :
 - Some memes stuff like "hello there" and some private jokes
 ![hello_there](/assets/hello_there.png)
 
-# 🏗 Development
+# 🏗️ Development
 
 env: 
 ```

@@ -1,5 +1,5 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, GuildMember } from 'discord.js';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import { buildVoiceWhitelistRemoveRow } from '../selectMenus';
 import { getorCreateUserSettings } from '../../../../utils/modulesUil';
 export const voiceWhitelistRemoveBtn = new ButtonBuilder()

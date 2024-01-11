@@ -17,7 +17,7 @@ import {
 import { CustomError, CustomErrors } from '../../../../utils/errors';
 import { Embed } from '../../../../utils/embedsUtil';
 import { IDiscordClient } from '../../../../client';
-import { IGuild } from '../../../../models';
+import { IGuild } from 'adroi.d.ea';
 import { client } from '../../../../';
 import guildService from '../../../../services/guildService';
 import { hasMemberPermission } from '../../../../utils/memberUtil';

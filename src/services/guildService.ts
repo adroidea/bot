@@ -1,5 +1,6 @@
-import { GuildModel, IGuild } from '../models';
+import { IGuild, createGuildObject } from 'adroi.d.ea';
 import { Guild } from 'discord.js';
+import { GuildModel } from '../models';
 import Logger from '../utils/logger';
 
 /**
@@ -8,58 +9,7 @@ import Logger from '../utils/logger';
  * @returns A Promise that resolves to the created guild.
  */
 const createGuild = async (guild: Guild): Promise<IGuild> => {
-    const guildData = new GuildModel({
-        id: guild.id,
-        modules: {
-            notifications: {
-                enabled: false,
-                publicLogs: {
-                    enabled: false,
-                    publicLogChannel: ''
-                },
-                privateLogs: {
-                    enabled: false,
-                    privateLogChannel: '',
-                    notLoggedChannels: []
-                }
-            },
-            qotd: {
-                enabled: false,
-                channelId: '',
-                pingedRoleId: '',
-                requestChannelId: '',
-                blacklistUsers: [],
-                trustedUsers: []
-            },
-            twitchLive: {
-                enabled: false,
-                defaultProfilePicture: '',
-                liveProfilePicture: '',
-                streamerName: 'adan_ea',
-                infoLiveChannel: '',
-                pingedRole: '',
-                streamingRoleId: '',
-                streamers: [
-                    {
-                        streamer: '',
-                        memberId: ''
-                    }
-                ]
-            },
-            temporaryVoice: {
-                enabled: false,
-                hostChannels: [],
-                nameModel: {
-                    unlocked: '🔊 Vocal {USERNAME}',
-                    locked: '🔒 Vocal {USERNAME}'
-                },
-                userSettings: {}
-            },
-            eventManagement: {
-                enabled: false
-            }
-        }
-    });
+    const guildData = new GuildModel(createGuildObject(guild));
     await guildData.save();
     return guildData;
 };

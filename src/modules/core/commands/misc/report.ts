@@ -8,6 +8,7 @@ import {
     PermissionsBitField
 } from 'discord.js';
 import { Channels, Colors, Guilds } from '../../../../utils/consts';
+import { addAuthor } from '../../../../utils/embedsUtil';
 
 export default {
     data: {
@@ -66,14 +67,12 @@ export default {
         const attachment = interaction.options.getAttachment('fichier', false);
 
         const embed = new EmbedBuilder()
-            .setAuthor({
-                name: `ID : ${interaction.user.username} (${interaction.user.id})`,
-                iconURL: interaction.user.displayAvatarURL()
-            })
             .setTitle(`**${title}**`)
             .setDescription(description ?? '*Aucune description*')
             .setColor(Colors.random)
             .setTimestamp();
+
+        addAuthor(embed, interaction.user);
 
         const message: GuildForumThreadMessageCreateOptions = {
             embeds: [embed]

@@ -1,44 +1,8 @@
-import { IGuild, INotifications } from '../models';
+import { EmbedBuilder, GuildMember, PermissionsBitField } from 'discord.js';
+import { IGuild, ITVMUserSettings } from 'adroi.d.ea';
 import { CustomErrors } from './errors';
-import { GuildMember } from 'discord.js';
-import { ITempVoiceUserSettings } from '../modules/tempVoice/models/temporaryVoiceModel';
+import { Emojis } from './consts';
 import guildService from '../services/guildService';
-
-/**
- * Checks if the event management module is enabled for the given guild.
- * @param guildSettings - The guild settings object.
- * @param throwError - Optional parameter to indicate whether to throw an error if the module is disabled (default: false).
- * @returns Returns true if the event management module is enabled, otherwise false.
- */
-export const isEventManagementModuleEnabled = (
-    guildSettings: IGuild,
-    throwError = false
-): boolean => {
-    if (guildSettings.modules.eventManagement.enabled) {
-        return true;
-    } else {
-        if (throwError) {
-            throw CustomErrors.ScheduledEventDisabledError;
-        }
-        return false;
-    }
-};
-
-/**
- * Checks if a specific sub-module of the notifications module is enabled.
- * @param module - The notifications module object.
- * @param smn - The name of the sub-module to check.
- * @returns A boolean indicating whether the sub-module is enabled or not.
- */
-export const isNotifSMEnabled = (module: INotifications, smn: keyof INotifications) => {
-    const subModule = module[smn];
-
-    if (typeof subModule === 'boolean') {
-        return false;
-    }
-
-    return module.enabled && subModule.enabled;
-};
 
 /**
  * Checks if the QOtD module is enabled in the guild settings.
@@ -65,28 +29,11 @@ export const isQOtDModuleEnabled = (guildSettings: IGuild, throwError = false): 
  * @returns A boolean indicating whether the temporary voice module is enabled.
  */
 export const isTempVoiceModuleEnabled = (guildSettings: IGuild, throwError = false): boolean => {
-    if (guildSettings.modules.temporaryVoice.enabled) {
+    if (guildSettings.modules.tempVoice.enabled) {
         return true;
     } else {
         if (throwError) {
             throw CustomErrors.TempVoiceDisabledError;
-        }
-        return false;
-    }
-};
-
-/**
- * Checks if the Twitch Live module is enabled for the given guild.
- * @param guildSettings - The guild settings object.
- * @param throwError - Optional. Specifies whether to throw an error if the module is disabled. Default is false.
- * @returns A boolean indicating whether the Twitch Live module is enabled.
- */
-export const isTwitchLiveModuleEnabled = (guildSettings: IGuild, throwError = false): boolean => {
-    if (guildSettings.modules.twitchLive.enabled) {
-        return true;
-    } else {
-        if (throwError) {
-            throw CustomErrors.TwitchDisabledError;
         }
         return false;
     }
@@ -102,26 +49,164 @@ export const isTwitchLiveModuleEnabled = (guildSettings: IGuild, throwError = fa
 export const getorCreateUserSettings = async (
     member: GuildMember,
     guildSettings: IGuild
-): Promise<ITempVoiceUserSettings> => {
+): Promise<ITVMUserSettings> => {
     const { id, guild } = member;
-    let userSettings = guildSettings.modules.temporaryVoice.userSettings[id];
+    let userSettings = guildSettings.modules.tempVoice.userSettings[id];
 
     if (!userSettings) {
         userSettings = {
             trustedUsers: [],
             blockedUsers: [],
-            isPublic: true
+            isPrivate: false
         };
 
         const updateObject: Record<string, any> = {};
-        updateObject[`modules.temporaryVoice.userSettings.${id}.trustedUsers`] =
+        updateObject[`modules.tempVoice.userSettings.${id}.trustedUsers`] =
             userSettings.trustedUsers;
-        updateObject[`modules.temporaryVoice.userSettings.${id}.blockedUsers`] =
+        updateObject[`modules.tempVoice.userSettings.${id}.blockedUsers`] =
             userSettings.blockedUsers;
-        updateObject[`modules.temporaryVoice.userSettings.${id}.isPublic`] = userSettings.isPublic;
+        updateObject[`modules.tempVoice.userSettings.${id}.isPrivate`] = userSettings.isPrivate;
 
         await guildService.updateGuild(guild, updateObject);
     }
 
     return userSettings;
 };
+
+const categories = {
+    [`${Emojis.cog} Générales`]: [
+        'ManageChannels',
+        'ManageGuild',
+        'ViewAuditLog',
+        'ViewChannel',
+        'ViewGuildInsights',
+        'ManageRoles',
+        'ManageWebhooks',
+        'ManageEmojisAndStickers',
+        'ManageGuildExpressions'
+    ],
+    [`${Emojis.members} Membres`]: [
+        'CreateInstantInvite',
+        'KickMembers',
+        'BanMembers',
+        'ChangeNickname',
+        'ManageNicknames',
+        'ModerateMembers'
+    ],
+    [`${Emojis.event} Evènements`]: ['ManageEvents'],
+    [`${Emojis.textChannel} Salon textuel`]: [
+        'AddReactions',
+        'SendMessages',
+        'SendTTSMessages',
+        'ManageMessages',
+        'EmbedLinks',
+        'AttachFiles',
+        'ReadMessageHistory',
+        'MentionEveryone',
+        'UseExternalEmojis',
+        'UseApplicationCommands',
+        'ManageThreads',
+        'CreatePublicThreads',
+        'CreatePrivateThreads',
+        'UseExternalStickers',
+        'SendMessagesInThreads',
+        'SendVoiceMessages'
+    ],
+    [`${Emojis.voiceChannel} Salon vocal`]: [
+        'PrioritySpeaker',
+        'Stream',
+        'Connect',
+        'Speak',
+        'MuteMembers',
+        'DeafenMembers',
+        'MoveMembers',
+        'UseVAD',
+        'UseEmbeddedActivities',
+        'UseSoundboard',
+        'UseExternalSounds'
+    ],
+    [`${Emojis.stageChannel} Salon de conférence`]: ['RequestToSpeak'],
+    [`${Emojis.advanced} Avancées`]: ['Administrator']
+};
+
+export const addPermissionsNames = (permissions: PermissionsBitField, embed: EmbedBuilder) => {
+    const permissionNames: string[] = permissions.toArray();
+
+    const categorizedPermissions: Record<string, string[]> = {};
+
+    for (const [category, perms] of Object.entries(categories)) {
+        let deniedCount = 0;
+        const categorizedPerms: string[] = [];
+
+        perms.forEach(perm => {
+            const permWithSpaces = perm.replace(/([a-z])([A-Z])|([A-Z])([A-Z][a-z])/g, '$1$3 $2$4');
+
+            if (permissionNames.includes(perm)) {
+                categorizedPerms.push(`✅ ${permWithSpaces}`);
+            } else {
+                deniedCount++;
+            }
+        });
+
+        if (deniedCount > 0) {
+            categorizedPerms.push(`❌ +${deniedCount} non attribuées`);
+        }
+
+        categorizedPermissions[category] = categorizedPerms;
+    }
+
+    addPermissionFields(categorizedPermissions, embed);
+};
+
+export const addComparedPermissionsNames = (
+    oldPermissions: PermissionsBitField,
+    newPermissions: PermissionsBitField,
+    embed: EmbedBuilder
+) => {
+    const permissionNames1: string[] = oldPermissions.toArray();
+    const permissionNames2: string[] = newPermissions.toArray();
+
+    const categorizedPermissions: Record<string, string[]> = {};
+
+    for (const [category, perms] of Object.entries(categories)) {
+        let deniedCount = 0;
+        const categorizedPerms: string[] = [];
+
+        perms.forEach(perm => {
+            const permWithSpaces = perm.replace(/([a-z])([A-Z])|([A-Z])([A-Z][a-z])/g, '$1$3 $2$4');
+
+            if (permissionNames1.includes(perm) && permissionNames2.includes(perm)) {
+                categorizedPerms.push(`${Emojis.check} ${permWithSpaces}`);
+            } else if (permissionNames1.includes(perm)) {
+                categorizedPerms.push(`${Emojis.aCross} ${permWithSpaces}`);
+            } else if (permissionNames2.includes(perm)) {
+                categorizedPerms.push(`${Emojis.aCheck} ${permWithSpaces}`);
+            } else {
+                deniedCount++;
+            }
+        });
+
+        if (deniedCount > 0) {
+            categorizedPerms.push(`${Emojis.cross} +${deniedCount} non attribuées`);
+        }
+
+        categorizedPermissions[category] = categorizedPerms;
+    }
+
+    addPermissionFields(categorizedPermissions, embed);
+};
+
+function addPermissionFields(
+    categorizedPermissions: Record<string, string[]>,
+    embed: EmbedBuilder
+) {
+    for (const [category, perms] of Object.entries(categorizedPermissions)) {
+        if (perms.length > 0) {
+            embed.addFields({
+                name: category,
+                value: perms.join('\n'),
+                inline: true
+            });
+        }
+    }
+}

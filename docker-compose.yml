@@ -49,10 +49,3 @@ services:
             - 8001:8001
         volumes:
             - /home/adanea/Documents/Docker/volumes/redis:/data
-
-    watchtower:
-        image: containrrr/watchtower
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-        command: --schedule "0 0/2 * * * *"
-        restart: unless-stopped

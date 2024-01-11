@@ -7,8 +7,8 @@ import {
     TextBasedChannel,
     userMention
 } from 'discord.js';
+import { Embed, addAuthor } from '../../../../utils/embedsUtil';
 import { Channels } from '../../../../utils/consts';
-import { Embed } from '../../../../utils/embedsUtil';
 import { adminRow } from '.';
 import { client } from '../../../..';
 
@@ -26,10 +26,6 @@ export default {
         const authorId = oldEmbed.author!.name.split('(')[1].slice(0, -1);
 
         const questionEmbed = new EmbedBuilder()
-            .setAuthor({
-                name: oldEmbed.author?.name!,
-                iconURL: oldEmbed.author?.iconURL
-            })
             .setTitle(oldEmbed.title)
             .setColor(oldEmbed.color)
             .addFields(
@@ -49,10 +45,12 @@ export default {
                     inline: true
                 }
             )
-
             .setFooter({
                 text: oldEmbed.footer?.text!
             });
+
+        addAuthor(questionEmbed, interaction.user);
+
         const ownerRequestChannel: Channel | undefined = client.channels.cache.get(
             Channels.stealQDJ
         );
