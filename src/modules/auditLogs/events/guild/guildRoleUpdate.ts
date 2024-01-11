@@ -10,7 +10,7 @@ import {
 import { Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { addAuthor } from '../../../../utils/embedsUtil';
-import { comparePermissionsNames } from '../../../../utils/modulesUil';
+import { addComparedPermissionsNames } from '../../../../utils/modulesUil';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -33,11 +33,6 @@ export default {
 
         const logChannel = client.channels.cache.get(guildRoleUpdate.channelId);
         if (!logChannel?.isTextBased()) return;
-
-        const categorizedPermissions = comparePermissionsNames(
-            oldRole.permissions,
-            newRole.permissions
-        );
 
         const embed = createEmbed(newRole, fetchedLogs);
 
@@ -66,7 +61,7 @@ export default {
         const fieldsWithEmpty = addEmptyFields(fields);
         embed.addFields(fieldsWithEmpty);
 
-        addPermissionFieldsIfChanged(newRole, oldRole, categorizedPermissions, embed);
+        addComparedPermissionsNames(oldRole.permissions, newRole.permissions, embed);
 
         await logChannel.send({ embeds: [embed] });
     }
@@ -163,23 +158,4 @@ function addEmptyFields(fields: APIEmbedField[]) {
     }
 
     return fieldsWithEmpty;
-}
-
-function addPermissionFieldsIfChanged(
-    newRole: Role,
-    oldRole: Role,
-    categorizedPermissions: Record<string, string[]>,
-    embed: EmbedBuilder
-) {
-    if (newRole.permissions.bitfield !== oldRole.permissions.bitfield) {
-        for (const [category, perms] of Object.entries(categorizedPermissions)) {
-            if (perms.length > 0) {
-                embed.addFields({
-                    name: category,
-                    value: perms.join('\n'),
-                    inline: true
-                });
-            }
-        }
-    }
 }

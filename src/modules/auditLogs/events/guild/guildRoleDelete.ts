@@ -1,7 +1,7 @@
 import { AuditLogEvent, Client, EmbedBuilder, Events, Role } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { addAuthor } from '../../../../utils/embedsUtil';
-import { getPermissionsNames } from '../../../../utils/modulesUil';
+import { addPermissionsNames } from '../../../../utils/modulesUil';
 import guildService from '../../../../services/guildService';
 
 export default {
@@ -33,14 +33,7 @@ export default {
         const executor = fetchedLogs.entries.first()?.executor;
         addAuthor(embed, executor);
 
-        const categorizedPermissions = getPermissionsNames(role.permissions);
-        for (const [category, perms] of Object.entries(categorizedPermissions)) {
-            embed.addFields({
-                name: category,
-                value: perms.join('\n'),
-                inline: true
-            });
-        }
+        addPermissionsNames(role.permissions, embed);
 
         if (role.color) embed.setColor(role.color);
         await logChannel.send({ embeds: [embed] });

@@ -1,4 +1,4 @@
-import { GuildMember, PermissionsBitField } from 'discord.js';
+import { EmbedBuilder, GuildMember, PermissionsBitField } from 'discord.js';
 import { IGuild, ITVMUserSettings } from 'adroi.d.ea';
 import { CustomErrors } from './errors';
 import { Emojis } from './consts';
@@ -129,10 +129,9 @@ const categories = {
     [`${Emojis.advanced} Avancées`]: ['Administrator']
 };
 
-export const getPermissionsNames = (permissions: PermissionsBitField) => {
+export const addPermissionsNames = (permissions: PermissionsBitField, embed: EmbedBuilder) => {
     const permissionNames: string[] = permissions.toArray();
 
-    // Create an object with the permissions for each category
     const categorizedPermissions: Record<string, string[]> = {};
 
     for (const [category, perms] of Object.entries(categories)) {
@@ -156,12 +155,13 @@ export const getPermissionsNames = (permissions: PermissionsBitField) => {
         categorizedPermissions[category] = categorizedPerms;
     }
 
-    return categorizedPermissions;
+    addPermissionFields(categorizedPermissions, embed);
 };
 
-export const comparePermissionsNames = (
+export const addComparedPermissionsNames = (
     oldPermissions: PermissionsBitField,
-    newPermissions: PermissionsBitField
+    newPermissions: PermissionsBitField,
+    embed: EmbedBuilder
 ) => {
     const permissionNames1: string[] = oldPermissions.toArray();
     const permissionNames2: string[] = newPermissions.toArray();
@@ -193,5 +193,20 @@ export const comparePermissionsNames = (
         categorizedPermissions[category] = categorizedPerms;
     }
 
-    return categorizedPermissions;
+    addPermissionFields(categorizedPermissions, embed);
 };
+
+function addPermissionFields(
+    categorizedPermissions: Record<string, string[]>,
+    embed: EmbedBuilder
+) {
+    for (const [category, perms] of Object.entries(categorizedPermissions)) {
+        if (perms.length > 0) {
+            embed.addFields({
+                name: category,
+                value: perms.join('\n'),
+                inline: true
+            });
+        }
+    }
+}
