@@ -1,5 +1,3 @@
-const clientId = process.env.TWITCH_CLIENT_ID!;
-
 export let accessToken = {
     access_token: '',
     expiration_date: new Date(),
@@ -23,7 +21,7 @@ export interface Stream {
 
 const createToken = async () => {
     const params = new URLSearchParams();
-    params.append('client_id', clientId);
+    params.append('client_id', process.env.TWITCH_CLIENT_ID!);
     params.append('client_secret', process.env.TWITCH_CLIENT_SECRET!);
     params.append('grant_type', 'client_credentials');
 
@@ -42,11 +40,12 @@ const createToken = async () => {
 
         const data = await response.json();
 
-        return (accessToken = {
+        accessToken = {
             access_token: data.access_token,
             expiration_date: new Date(Date.now() + data.expires_in * 1000),
             token_type: 'bearer'
-        });
+        };
+        return accessToken;
     } catch (error: any) {
         console.error('Request error:', error.message);
     }
@@ -79,7 +78,7 @@ export const fetchTwitchStream = async (userLogin: string): Promise<Stream[]> =>
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
-                'Client-Id': clientId
+                'Client-Id': process.env.TWITCH_CLIENT_ID!
             }
         });
 
