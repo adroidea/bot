@@ -15,7 +15,7 @@ jobs:
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
       - name: Install TypeScript
-        run: npm install --no-save typescript && npx tsc
+        run: npm install --no-save typescript adroi.d.ea && npx tsc
 
       - name: Release
         uses: softprops/action-gh-release@v1
