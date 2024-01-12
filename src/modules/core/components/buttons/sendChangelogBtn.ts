@@ -28,12 +28,12 @@ export default {
         const failedGuilds: string[] = [];
 
         const sendMessages = guildsCache.map(async (guild: IGuild) => {
-            const { privateLogsChannel } = guild.modules.auditLogs;
+            const { botChangeLogs } = guild.modules.auditLogs;
             let isFailed = false;
-            if (!privateLogsChannel || privateLogsChannel === '') isFailed = true;
+            if (!botChangeLogs.enabled || botChangeLogs.channelId === '') isFailed = true;
 
             const channel = (await client.channels.fetch(
-                privateLogsChannel
+                botChangeLogs.channelId
             )) as GuildTextBasedChannel;
 
             if (!channel) isFailed = true;
