@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Fixed
 
-## 🚀 [4.0.0] - 2024-01-11
+## 🚀 [4.0.0] - 2024-01-12
 
 ### ✨ Added
 
