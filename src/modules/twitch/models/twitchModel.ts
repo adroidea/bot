@@ -2,69 +2,33 @@ import { ITMAlerts, ITMAutoRoles, ITMStreamersData, ITwitchModule } from 'adroi.
 import mongoose from 'mongoose';
 
 const tmStreamersDataSchema = new mongoose.Schema<ITMStreamersData>({
-    streamer: {
-        type: String,
-        default: ''
-    },
-    memberId: {
-        type: String,
-        default: ''
-    }
+    streamer: String,
+    memberId: String
 });
 
 const tmAlertsSchema = new mongoose.Schema<ITMAlerts>({
-    enabled: {
-        type: Boolean,
-        default: false
-    },
-    defaultProfilePicture: {
-        type: String,
-        default: ''
-    },
-    liveProfilePicture: {
-        type: String,
-        default: ''
-    },
-    streamerName: {
-        type: String,
-        default: ''
-    },
-    infoLiveChannel: {
-        type: String,
-        default: ''
-    },
-    pingedRole: {
-        type: String,
-        default: ''
+    enabled: Boolean,
+    defaultProfilePicture: String,
+    liveProfilePicture: String,
+    streamerName: String,
+    infoLiveChannel: String,
+    pingedRole: String,
+    notifyChange: Boolean,
+    ignoredCategories: [String],
+    message: {
+        streamStart: [String],
+        gameChange: [String]
     }
 });
 
 const tmAutoRolesSchema = new mongoose.Schema<ITMAutoRoles>({
-    enabled: {
-        type: Boolean,
-        default: false
-    },
-    streamingRoleId: {
-        type: String,
-        default: ''
-    },
-    streamers: {
-        type: [tmStreamersDataSchema],
-        default: []
-    }
+    enabled: Boolean,
+    streamingRoleId: String,
+    streamers: [tmStreamersDataSchema]
 });
 
 export const twitchSchema = new mongoose.Schema<ITwitchModule>({
-    enabled: {
-        type: Boolean,
-        default: false
-    },
-    alerts: {
-        type: tmAlertsSchema,
-        default: {}
-    },
-    autoRoles: {
-        type: tmAutoRolesSchema,
-        default: {}
-    }
+    enabled: Boolean,
+    alerts: tmAlertsSchema,
+    autoRoles: tmAutoRolesSchema
 });

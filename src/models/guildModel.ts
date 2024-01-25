@@ -10,14 +10,11 @@ export interface IEventManagement {
 }
 
 const eventManagementSchema = new mongoose.Schema<IEventManagement>({
-    enabled: { type: Boolean, default: false, required: true }
+    enabled: Boolean
 });
 
 const guildSchema = new mongoose.Schema<IGuild>({
-    id: {
-        type: String,
-        required: true
-    },
+    id: String,
     modules: {
         eventManagement: eventManagementSchema,
         auditLogs: auditLogsSchema,
