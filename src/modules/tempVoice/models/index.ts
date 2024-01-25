@@ -1,3 +1,3 @@
-import { tempVoiceSchema } from './tempVoiceModel';
+import { tempVoiceSchema } from './tempVoice.model';
 
 export { tempVoiceSchema };
