@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 ### 🚮 Removed
 
 ### 🐛 Fixed
+❄️ Twitch: Auto role not auto roling properly
 
 ## 🚀 [4.0.0] - 2024-01-12
 
