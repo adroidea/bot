@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 ## 🏗️ [Unreleased]
 
 ### ✨ Added
+❄️ Twitch: Now can disable Category Change notification [[#75](https://github.com/adroidea/bot/issues/75)]
+❄️ Twitch: Now can ignore some categories for the Category Change notification [[#75](https://github.com/adroidea/bot/issues/75)]
 
 ### 🧱 Changed
 

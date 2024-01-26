@@ -1,6 +1,11 @@
-import { EmbedBuilder, Guild, TextChannel, roleMention } from 'discord.js';
-import { IGuild, ITwitchModule } from 'adroi.d.ea';
-import { Stream, fetchTwitchStream, randomizeArray } from '../../../utils/twitchUtil';
+import { EmbedBuilder, Guild, TextChannel } from 'discord.js';
+import { IGuild, ITMAlerts } from 'adroi.d.ea';
+import {
+    Stream,
+    buildLiveStartTitle,
+    fetchTwitchStream,
+    randomizeArray
+} from '../../../utils/twitchUtil';
 import { Colors } from '../../../utils/consts';
 import { client } from '../../../index';
 import cron from 'node-cron';
@@ -10,6 +15,15 @@ import path from 'path';
 
 const filePath = path.join(__dirname, __filename);
 
+/**
+ * Description placeholder
+ * @date 1/12/2024 - 4:10:27 PM
+ *
+ * @interface LiveStatus
+ * @property {boolean} isLive - Status of the streamer
+ * @property {string} currentGame - The current game of the streamer
+ * @property {number | null} cooldown - The cooldown before being able to notify again (in minutes)
+ */
 interface LiveStatus {
     isLive: boolean;
     currentGame: string;
@@ -39,9 +53,8 @@ const handleGuild = async (guild: IGuild) => {
     const guildData: Guild = client.guilds.cache.get(guild.id);
     if (!guildData) return;
 
-    const { twitch: twitchModule } = guild.modules;
-    const { enabled, alerts } = twitchModule;
-    if (!enabled) return;
+    const { enabled, alerts } = guild.modules.twitch;
+    if (!enabled || !alerts.enabled) return;
 
     const liveStatus: LiveStatus = streamersList.get(guild.id) ?? {
         isLive: false,
@@ -51,9 +64,9 @@ const handleGuild = async (guild: IGuild) => {
     const data = await fetchTwitchStream(alerts.streamerName);
     const streamData = data[0];
     if (streamData?.type === 'live') {
-        await handleLiveStream(streamData, liveStatus, twitchModule, guildData);
+        await handleLiveStream(streamData, liveStatus, alerts, guildData);
     } else {
-        await handleOfflineStream(liveStatus, twitchModule, guildData);
+        await handleOfflineStream(liveStatus, alerts, guildData);
     }
     streamersList.set(guild.id, liveStatus);
 };
@@ -62,23 +75,27 @@ const handleGuild = async (guild: IGuild) => {
  * Handles the live stream event.
  * @param streamData - The stream data.
  * @param liveStatus - The live status.
- * @param twitchModule - The Twitch Live object.
+ * @param alerts - The Twitch alerts object.
  * @param guildData - The guild data.
  */
 const handleLiveStream = async (
     streamData: Stream,
     liveStatus: LiveStatus,
-    twitchModule: ITwitchModule,
+    alerts: ITMAlerts,
     guildData: Guild
 ) => {
     if (!liveStatus.isLive && !liveStatus.cooldown) {
-        await sendLiveEmbed(streamData, twitchModule, guildData);
+        await sendLiveEmbed(streamData, alerts, guildData);
         liveStatus.isLive = true;
         liveStatus.currentGame = streamData.game_name;
         liveStatus.cooldown = 30;
     }
-    if (streamData.game_name !== liveStatus.currentGame) {
-        await sendGameChangeEmbed(streamData, twitchModule, guildData.id);
+    if (
+        streamData.game_name !== liveStatus.currentGame &&
+        alerts.notifyChange &&
+        !alerts.ignoredCategories.includes(streamData.game_name)
+    ) {
+        await sendGameChangeEmbed(streamData, alerts, guildData.id);
         liveStatus.currentGame = streamData.game_name;
     }
     liveStatus.cooldown = liveStatus.cooldown ? --liveStatus.cooldown : liveStatus.cooldown;
@@ -89,17 +106,13 @@ const handleLiveStream = async (
  * If the stream is currently live, it updates the guild's icon to the default profile picture,
  * and resets the live status properties.
  * @param liveStatus - The current live status.
- * @param twitchModule - The Twitch live data.
+ * @param alerts - The Twitch alerts data.
  * @param guildData - The guild data.
  */
-const handleOfflineStream = async (
-    liveStatus: LiveStatus,
-    twitchModule: ITwitchModule,
-    guildData: Guild
-) => {
+const handleOfflineStream = async (liveStatus: LiveStatus, alerts: ITMAlerts, guildData: Guild) => {
     if (liveStatus.isLive) {
-        if (twitchModule.alerts.defaultProfilePicture) {
-            await guildData.setIcon(twitchModule.alerts.defaultProfilePicture);
+        if (alerts.defaultProfilePicture) {
+            await guildData.setIcon(alerts.defaultProfilePicture);
         }
         liveStatus.isLive = false;
         liveStatus.currentGame = '';
@@ -113,14 +126,9 @@ const handleOfflineStream = async (
  * @param twitchModule - The Twitch live configuration.
  * @param guild - The guild where the live embed message will be sent.
  */
-export const sendLiveEmbed = async (
-    streamData: Stream,
-    twitchModule: ITwitchModule,
-    guild: Guild
-) => {
+export const sendLiveEmbed = async (streamData: Stream, alerts: ITMAlerts, guild: Guild) => {
     const { user_name, game_id, title } = streamData;
-    const { alerts } = twitchModule;
-    const { infoLiveChannel, pingedRole } = alerts;
+    const { infoLiveChannel, liveProfilePicture } = alerts;
 
     const channel: TextChannel | undefined = client.channels.cache.get(
         infoLiveChannel
@@ -152,15 +160,14 @@ export const sendLiveEmbed = async (
         .setThumbnail(`https://static-cdn.jtvnw.net/ttv-boxart/${game_id}-144x192.jpg`)
         .setColor(Colors.twitch);
 
+    const content = buildLiveStartTitle(streamData, alerts);
     await channel.send({
-        content: `${pingedRole ? roleMention(pingedRole) + ', ' : ''}${
-            streamData.user_name
-        } ${randomizeArray(liveStart)} **__${streamData.game_name}__**.`,
+        content,
         embeds: [embed]
     });
 
-    if (twitchModule.alerts.liveProfilePicture) {
-        await guild.setIcon(twitchModule.alerts.liveProfilePicture);
+    if (liveProfilePicture) {
+        await guild.setIcon(liveProfilePicture);
     }
 };
 
@@ -170,13 +177,9 @@ export const sendLiveEmbed = async (
  * @param twitchModule The Twitch live object.
  * @param guildId The ID of the guild.
  */
-const sendGameChangeEmbed = async (
-    streamData: Stream,
-    twitchModule: ITwitchModule,
-    guildId: string
-) => {
+const sendGameChangeEmbed = async (streamData: Stream, alerts: ITMAlerts, guildId: string) => {
     const currentGame = streamersList.get(guildId)?.currentGame;
-    const channelMessage = client.channels.cache.get(twitchModule.alerts.infoLiveChannel);
+    const channelMessage = client.channels.cache.get(alerts.infoLiveChannel);
     const gameChangeEmbed = new EmbedBuilder()
         .setDescription(
             `${randomizeArray(gameChangePartOne)} **${currentGame}**. ${randomizeArray(
@@ -188,27 +191,6 @@ const sendGameChangeEmbed = async (
 
     await channelMessage.send({ embeds: [gameChangeEmbed] });
 };
-
-const liveStart = [
-    'vient tout juste de lancer un stream ! Viens pour voir du',
-    'stream actuellement, il manque plus que toi. Rejoins nous pour du',
-    'a enfin lancé son stream ! Go prendre tes snacks et regarder du',
-    "est enfin en live ! J'espère que t'as de quoi manger pour regarder du",
-    'vient de lancer son stream, alors ramène ton petit boule qui chamboule pour du',
-    'est en live ! Rejoins le pour du',
-    'va te montrer ses skills (ou pas) en stream ! Viens vite pour ne pas le rater sur',
-    'est pas là! Mais il est où ? Bah sur',
-    "vient d'arriver ksksks, et si toi aussi tu arrivais ? On va tous s'amuser sur",
-    'a une absence incroyable de skill à te présenter sur',
-    "a ou n'a pas un burger chèvre miel, à toi de le découvrir en venant, tu pourras profiter pour regarder du non skill sur",
-    "Viens. C'est pas une demande, c'est un ordre",
-    'est en direct pour vous offrir des moments de folie. Lâchez tout ce que vous faites pour',
-    'est sur le point de vous en mettre plein les yeux sur',
-    "est en direct. C'est le moment de laisser votre journée de côté et de vous plonger dans l'aventure",
-    "est là pour vous si vous êtes à la recherche d'une dose de divertissement sur",
-    "est en live ! C'est l'heure de laisser la réalité derrière toi et de plonger dans le monde de",
-    'est là. Bouge ton cul merci. On est sur'
-];
 
 const gameChangePartOne = [
     'Bon, on a eu marre de faire du',
