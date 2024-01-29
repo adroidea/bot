@@ -2,71 +2,71 @@ import { IAuditLogsModule } from 'adroi.d.ea';
 import mongoose from 'mongoose';
 
 export const auditLogsSchema = new mongoose.Schema<IAuditLogsModule>({
-    enabled: { type: Boolean, default: false },
-    publicLogsChannel: { type: String, default: '' },
-    privateLogsChannel: { type: String, default: '' },
+    enabled: Boolean,
+    publicLogsChannel: String,
+    privateLogsChannel: String,
     guildMemberAdd: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' },
-        ignoreBots: { type: Boolean, default: false }
+        enabled: Boolean,
+        channelId: String,
+        ignoreBots: Boolean
     },
     guildMemberUpdate: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' },
-        ignoreBots: { type: Boolean, default: false },
-        ignoredUsers: { type: [String], default: [] }
+        enabled: Boolean,
+        channelId: String,
+        ignoreBots: Boolean,
+        ignoredUsers: [String]
     },
     guildMemberRemove: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' },
-        ignoreBots: { type: Boolean, default: false }
+        enabled: Boolean,
+        channelId: String,
+        ignoreBots: Boolean
     },
     messageBulkDelete: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' },
-        ignoredChannels: { type: [String], default: [] }
+        enabled: Boolean,
+        channelId: String,
+        ignoredChannels: [String]
     },
     messageDelete: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' },
-        ignoreBots: { type: Boolean, default: false },
-        ignoredChannels: { type: [String], default: [] },
-        ignoredUsers: { type: [String], default: [] }
+        enabled: Boolean,
+        channelId: String,
+        ignoreBots: Boolean,
+        ignoredChannels: [String],
+        ignoredUsers: [String]
     },
     messageUpdate: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' },
-        ignoreBots: { type: Boolean, default: false },
-        ignoredChannels: { type: [String], default: [] },
-        ignoredUsers: { type: [String], default: [] }
+        enabled: Boolean,
+        channelId: String,
+        ignoreBots: Boolean,
+        ignoredChannels: [String],
+        ignoredUsers: [String]
     },
     guildBanAdd: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' }
+        enabled: Boolean,
+        channelId: String
     },
     guildBanRemove: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' }
+        enabled: Boolean,
+        channelId: String
     },
     guildRoleCreate: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' }
+        enabled: Boolean,
+        channelId: String
     },
     guildRoleDelete: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' }
+        enabled: Boolean,
+        channelId: String
     },
     guildRoleUpdate: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' },
-        ignoredRoles: { type: [String], default: [] }
+        enabled: Boolean,
+        channelId: String,
+        ignoredRoles: [String]
     },
     guildUpdate: {
-        enabled: { type: Boolean, default: false },
-        channelId: { type: String, default: '' }
+        enabled: Boolean,
+        channelId: String
     },
     botChangeLogs: {
-        enabled: { type: Boolean, default: true },
-        channelId: { type: String, default: 'privateLogsChannel' }
+        enabled: Boolean,
+        channelId: String
     }
 });

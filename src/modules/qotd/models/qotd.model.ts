@@ -9,13 +9,13 @@ export interface IQuestions {
 }
 
 export const qotdSchema = new mongoose.Schema<IQOTDModule>({
-    enabled: { type: Boolean, default: false, required: true },
-    channelId: { type: String, default: '' },
-    proposedChannelId: { type: String, default: '' },
-    pingedRoleId: { type: String, default: '' },
-    blacklist: { type: [String], default: [] },
-    whitelist: { type: [String], default: [] },
-    questionsThreshold: { type: Number, default: 7 }
+    enabled: Boolean,
+    channelId: String,
+    proposedChannelId: String,
+    pingedRoleId: String,
+    blacklist: [String],
+    whitelist: [String],
+    questionsThreshold: Number
 });
 
 export const questionsSchema = new mongoose.Schema<IQuestions>({

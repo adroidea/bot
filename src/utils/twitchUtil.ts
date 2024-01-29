@@ -1,3 +1,6 @@
+import { ITMAlerts } from 'adroi.d.ea';
+import { roleMention } from 'discord.js';
+
 export let accessToken = {
     access_token: '',
     expiration_date: new Date(),
@@ -64,6 +67,7 @@ export const getAccessToken = async () => {
  * @returns The randomly selected element from the array.
  */
 export const randomizeArray = (array: string[]): string => {
+    if (!array.length) return '';
     const randomNumber = Math.floor(Math.random() * array.length);
     return array[randomNumber];
 };
@@ -83,13 +87,31 @@ export const fetchTwitchStream = async (userLogin: string): Promise<Stream[]> =>
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`status: ${response.status} ${response.statusText}`);
         }
 
         const { data } = await response.json();
 
         return data;
-    } catch (error) {
-        throw new Error('Fetch error:');
+    } catch (error: any) {
+        throw new Error(`Fetch error for __${userLogin}__. ${error.message}`);
     }
+};
+
+export const buildLiveStartTitle = (streamData: Stream, alerts: ITMAlerts): string => {
+    let template: string = randomizeArray(alerts.message.streamStart);
+
+    if (!template) {
+        template = alerts.pingedRole ? '{role}, ' : '';
+        template +=
+            "**{streamer.name}** est en live ! C'est l'heure de laisser la réalité derrière toi et de plonger dans le monde de **__{game.name}__** !";
+    }
+
+    template = template
+        .replace('{role}', alerts.pingedRole ? roleMention(alerts.pingedRole) : '')
+        .replace('{streamer.id}', streamData.user_id)
+        .replace('{streamer.name}', streamData.user_name)
+        .replace('{game.id}', streamData.game_id)
+        .replace('{game.name}', streamData.game_name);
+    return template;
 };

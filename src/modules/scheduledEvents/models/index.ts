@@ -1,3 +1,3 @@
-import { EventModel, IEvent } from './eventModel';
+import { EventModel, IEvent } from './event.model';
 
 export { EventModel, IEvent };

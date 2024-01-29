@@ -1,3 +1,3 @@
-import { twitchSchema } from './twitchModel';
+import { twitchSchema } from './twitch.model';
 
 export { twitchSchema };

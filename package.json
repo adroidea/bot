@@ -28,8 +28,8 @@
         "watch": "tsc -w",
         "start": "tsc && node dist/index.js",
         "build": "tsc",
-        "reg-cmds": "node dist/deploy-commands.js",
-        "delete-cmds": "node dist/delete-commands.js",
+        "use:adroi.d.ea": "npm uninstall ..\\adroi.d.ea\\ && npm install adroi.d.ea",
+        "use:adroi.d.ea:dist": "npm uninstall adroi.d.ea && npm install ..\\adroi.d.ea\\",
         "pre-commit": "lint-staged",
         "publish": "node .github/publish.js",
         "test": "jest --passWithNoTests"
@@ -41,7 +41,7 @@
         ]
     },
     "dependencies": {
-        "adroi.d.ea": "^1.0.8",
+        "adroi.d.ea": "^1.0.9",
         "ansis": "^1.5.5",
         "bullmq": "^3.12.0",
         "discord.js": "^14.14.1",
