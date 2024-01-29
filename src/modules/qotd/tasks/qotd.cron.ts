@@ -6,11 +6,12 @@ import { IQOTDModule } from 'adroi.d.ea';
 import Logger from '../../../utils/logger';
 import { client } from '../../..';
 import cron from 'node-cron';
-import { guildsCache } from '../../core/tasks/createCache.cron';
+import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import qotddService from '../services/qotd.service';
 
 export default function (): cron.ScheduledTask {
     return cron.schedule('0 7 * * *', async () => {
+        const guildsCache = getGuildsCache();
         for (const guildData of guildsCache) {
             const guild: Guild = client.guilds.cache.get(guildData.id);
             if (!guild) continue;
@@ -95,5 +96,4 @@ const handleLowQuestionsCount = async (guild: Guild, qotd: IQOTDModule): Promise
             ]
         });
     }
-    return;
 };

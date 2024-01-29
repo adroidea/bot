@@ -9,7 +9,7 @@ import {
 import { Colors } from '../../../utils/consts';
 import { client } from '../../../index';
 import cron from 'node-cron';
-import { guildsCache } from '../../core/tasks/createCache.cron';
+import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import logger from '../../../utils/logger';
 import path from 'path';
 
@@ -35,6 +35,7 @@ const streamersList = new Map<string, LiveStatus>();
 export default function (): cron.ScheduledTask {
     return cron.schedule('* * * * *', async () => {
         try {
+            const guildsCache = getGuildsCache();
             for (const guild of guildsCache) {
                 await handleGuild(guild);
             }

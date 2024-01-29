@@ -1,11 +1,18 @@
 import {
     ActionRowBuilder,
+    ButtonBuilder,
     ButtonInteraction,
+    ButtonStyle,
     GuildMember,
     StringSelectMenuBuilder
 } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
 import { isMemberVoiceOwner } from '../../../../utils/voiceUtil';
+
+export const voiceOwnerTransferBtn = new ButtonBuilder()
+    .setCustomId('voiceOwnerTransferBtn')
+    .setEmoji('👑')
+    .setStyle(ButtonStyle.Secondary);
 
 export default {
     data: {

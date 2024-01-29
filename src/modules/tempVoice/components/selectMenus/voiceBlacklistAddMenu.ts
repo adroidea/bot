@@ -28,25 +28,28 @@ export default {
     },
     async execute(interaction: UserSelectMenuInteraction, guildSettings: IGuild) {
         await interaction.deferUpdate();
+
+        const { user } = interaction;
         const { trustedUsers, blockedUsers } =
-            guildSettings.modules.tempVoice.userSettings[interaction.user.id];
+            guildSettings.modules.tempVoice.userSettings[user.id];
         const newBLUsers = interaction.users
-            .filter(user => user.id !== interaction.user.id && user.id !== client.user!.id)
-            .map(user => user.id);
+            .filter(u => u.id !== user.id && u.id !== client.user!.id)
+            .map(u => u.id);
 
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
 
-        for (const userId of newBLUsers) {
+        const promises = newBLUsers.map(async userId => {
             if (voiceChannel) {
-                const isBlacklisted = voiceChannel.permissionOverwrites.cache
-                    .get(userId)
-                    ?.deny.has([
+                const overwrite = voiceChannel.permissionOverwrites.cache.get(userId);
+
+                if (
+                    overwrite &&
+                    !overwrite.deny.has([
                         PermissionsBitField.Flags.Connect,
                         PermissionsBitField.Flags.ViewChannel
-                    ]);
-
-                if (!isBlacklisted) {
+                    ])
+                ) {
                     await voiceChannel.permissionOverwrites.edit(userId, {
                         ViewChannel: false,
                         Connect: false,
@@ -63,16 +66,19 @@ export default {
 
             if (!blockedUsers.includes(userId)) {
                 blockedUsers.push(userId);
-                if (trustedUsers.includes(userId)) {
-                    trustedUsers.splice(trustedUsers.indexOf(userId), 1);
+
+                const trustedIndex = trustedUsers.indexOf(userId);
+                if (trustedIndex !== -1) {
+                    trustedUsers.splice(trustedIndex, 1);
                 }
             }
-        }
+        });
+
+        await Promise.all(promises);
 
         guildService.updateGuild(interaction.guild!, {
-            [`modules.tempVoice.userSettings.${interaction.user.id}.trustedUsers`]:
-                trustedUsers,
-            [`modules.tempVoice.userSettings.${interaction.user.id}.blockedUsers`]: newBLUsers
+            [`modules.tempVoice.userSettings.${user.id}.trustedUsers`]: trustedUsers,
+            [`modules.tempVoice.userSettings.${user.id}.blockedUsers`]: newBLUsers
         });
 
         const newEmbed = new EmbedBuilder()
