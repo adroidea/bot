@@ -9,7 +9,7 @@ import {
 import { Embed, addAuthor } from '../../../../utils/embedsUtil';
 import { CustomErrors } from '../../../../utils/errors';
 import { IQuestions } from '../../models';
-import qotddService from '../../services/qotdService';
+import qotddService from '../../services/qotd.service';
 
 export const qotdAcceptButton = new ButtonBuilder()
     .setCustomId('qotdAcceptBtn')

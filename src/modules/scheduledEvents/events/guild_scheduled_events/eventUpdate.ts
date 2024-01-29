@@ -9,7 +9,7 @@ import {
 } from 'discord.js';
 import { IGuild } from 'adroi.d.ea';
 import ScheduledEventService from '../../services/scheduledEventService';
-import guildService from '../../../../services/guildService';
+import guildService from '../../../../services/guild.service';
 import { timestampToDate } from '../../../../utils/botUtil';
 
 export default {

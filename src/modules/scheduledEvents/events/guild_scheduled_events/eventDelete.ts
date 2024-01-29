@@ -1,7 +1,7 @@
 import { Client, Events, GuildScheduledEvent } from 'discord.js';
 import { IGuild } from 'adroi.d.ea';
 import { eventCanceled } from './eventUpdate';
-import guildService from '../../../../services/guildService';
+import guildService from '../../../../services/guild.service';
 
 export default {
     name: Events.GuildScheduledEventDelete,

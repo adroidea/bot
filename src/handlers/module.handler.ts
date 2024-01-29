@@ -1,10 +1,10 @@
 import Logger from '../utils/logger';
 import { Modules } from '../utils/consts';
 import fs from 'fs';
-import { handleCommand } from './commandHandler';
-import { handleComponents } from './componentHandler';
-import { handleEvent } from './eventHandler';
-import { handleTask } from './taskHandler';
+import { handleCommand } from './command.handler';
+import { handleComponents } from './component.handler';
+import { handleEvent } from './event.handler';
+import { handleTask } from './task.handler';
 import path from 'path';
 
 export default async (client: any) => {

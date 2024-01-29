@@ -1,7 +1,7 @@
-name: SonarCloud analysis
+name: SonarCloud Code Analysis
 on:
     push:
-        branches: ["main", "develop"]
+        branches: ["main"]
     pull_request:
         branches: ["main"]
     workflow_dispatch:

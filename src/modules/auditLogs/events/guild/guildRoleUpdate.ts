@@ -11,7 +11,7 @@ import { Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { addAuthor } from '../../../../utils/embedsUtil';
 import { addComparedPermissionsNames } from '../../../../utils/modulesUil';
-import guildService from '../../../../services/guildService';
+import guildService from '../../../../services/guild.service';
 
 export default {
     name: Events.GuildRoleUpdate,

@@ -6,7 +6,7 @@ import {
 } from '../../../../utils/voiceUtil';
 import { IGuild } from 'adroi.d.ea';
 import { client } from '../../../..';
-import guildService from '../../../../services/guildService';
+import guildService from '../../../../services/guild.service';
 
 /**
  * Checks if a voice channel is temporary.

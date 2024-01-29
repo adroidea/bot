@@ -2,7 +2,7 @@ import { EmbedBuilder, GuildMember, PermissionsBitField } from 'discord.js';
 import { IGuild, ITVMUserSettings } from 'adroi.d.ea';
 import { CustomErrors } from './errors';
 import { Emojis } from './consts';
-import guildService from '../services/guildService';
+import guildService from '../services/guild.service';
 
 /**
  * Checks if the QOtD module is enabled in the guild settings.

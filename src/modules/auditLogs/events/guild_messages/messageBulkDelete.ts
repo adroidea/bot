@@ -13,7 +13,7 @@ import {
 } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { canSendMessage } from '../../../../utils/botUtil';
-import guildService from '../../../../services/guildService';
+import guildService from '../../../../services/guild.service';
 
 export default {
     name: Events.MessageBulkDelete,

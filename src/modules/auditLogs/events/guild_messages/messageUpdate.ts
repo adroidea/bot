@@ -2,7 +2,7 @@ import { Client, EmbedBuilder, Events, GuildBasedChannel, Message } from 'discor
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { addAuthor } from '../../../../utils/embedsUtil';
 import { canSendMessage } from '../../../../utils/botUtil';
-import guildService from '../../../../services/guildService';
+import guildService from '../../../../services/guild.service';
 
 export default {
     name: Events.MessageUpdate,

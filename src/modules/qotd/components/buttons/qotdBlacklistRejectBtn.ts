@@ -8,7 +8,7 @@ import {
 } from 'discord.js';
 import { Embed, addAuthor } from '../../../../utils/embedsUtil';
 import { CustomErrors } from '../../../../utils/errors';
-import qotddService from '../../services/qotdService';
+import qotddService from '../../services/qotd.service';
 
 export const qotdBlacklistRejectButton = new ButtonBuilder()
     .setCustomId('qotdBlacklistRejectBtn')

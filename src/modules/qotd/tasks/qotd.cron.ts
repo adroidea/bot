@@ -7,7 +7,7 @@ import Logger from '../../../utils/logger';
 import { client } from '../../..';
 import cron from 'node-cron';
 import { guildsCache } from '../../core/tasks/createCache.cron';
-import qotddService from '../services/qotdService';
+import qotddService from '../services/qotd.service';
 
 export default function (): cron.ScheduledTask {
     return cron.schedule('0 7 * * *', async () => {

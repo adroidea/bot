@@ -10,7 +10,7 @@ import { Colors } from '../../../../utils/consts';
 import { IGuild } from 'adroi.d.ea';
 import { client } from '../../../..';
 import { formatCustomList } from '../../../../utils/embedsUtil';
-import guildService from '../../../../services/guildService';
+import guildService from '../../../../services/guild.service';
 
 const selectMenu = new UserSelectMenuBuilder()
     .setCustomId('voiceBlacklistAddMenu')

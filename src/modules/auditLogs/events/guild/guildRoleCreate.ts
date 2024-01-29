@@ -2,7 +2,7 @@ import { AuditLogEvent, Client, EmbedBuilder, Events, Role } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { addAuthor } from '../../../../utils/embedsUtil';
 import { addPermissionsNames } from '../../../../utils/modulesUil';
-import guildService from '../../../../services/guildService';
+import guildService from '../../../../services/guild.service';
 
 export default {
     name: Events.GuildRoleCreate,

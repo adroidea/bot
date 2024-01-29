@@ -15,7 +15,7 @@ import { adminRow, stealRow } from '../components/buttons';
 import { CustomErrors } from '../../../utils/errors';
 import { IQuestions } from '../models';
 import { isQOtDModuleEnabled } from '../../../utils/modulesUil';
-import qotddService from '../services/qotdService';
+import qotddService from '../services/qotd.service';
 
 export default {
     data: {

@@ -19,7 +19,7 @@ export const client: any = new DiscordClient({
     partials: [Partials.Channel]
 });
 
-const filePath = path.join(__dirname, 'handlers/moduleHandler.js');
+const filePath = path.join(__dirname, 'handlers/module.handler.js');
 import(filePath).then(handler => handler.default(client));
 
 mongoose.set('strictQuery', false);
