@@ -41,7 +41,7 @@ const client = (content: string) => {
     sendInternalLogWebhook(logType.CLIENT, content);
 };
 
-export const logType: { [key: string]: string } = {
+export const logType: Record<string, string> = {
     ERROR: 'error',
     WARN: 'warning',
     CLIENT: 'client'

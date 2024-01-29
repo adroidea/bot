@@ -1,6 +1,6 @@
 import { ColorResolvable } from 'discord.js';
 
-export const Colors: { [key: string]: ColorResolvable } = {
+export const Colors: Record<string, ColorResolvable> = {
     client: [0, 255, 255],
     error: [255, 0, 0],
     info: [0, 0, 255],
@@ -41,7 +41,7 @@ export interface IModule {
     emoji: string;
 }
 
-export const Modules: { [key: string]: IModule } = {
+export const Modules: Record<string, IModule> = {
     core: {
         name: 'core',
         label: 'Base',
