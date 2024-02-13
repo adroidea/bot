@@ -52,7 +52,7 @@ export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITem
                     ownerId: member.user.id,
                     isPrivate
                 });
-                channel.send(buildVoiceEmbed(member.user.id));
+                channel.send(buildVoiceEmbed());
                 return channel;
             });
 
@@ -195,7 +195,7 @@ export const deleteEmptyChannel = async (voiceC: BaseGuildVoiceChannel) => {
  * @param memberId - The ID of the member for whom the embed is being built.
  * @returns The voice embed object containing the welcome message, embed, and components.
  */
-export const buildVoiceEmbed = (memberId: string) => {
+export const buildVoiceEmbed = () => {
     const embed = new EmbedBuilder()
         .setTitle(`**Tableau de bord**`)
         .setDescription(
