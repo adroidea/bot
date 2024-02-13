@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 
 ❄️ Twitch: Now can ignore some categories for the Category Change notification - [[#75](https://github.com/adroidea/bot/issues/75)]
 
+❄️ QotD: Add banned key words - [[#78](https://github.com/adroidea/bot/issues/78)]
+
 ### 🧱 Changed
 
 ### 🚮 Removed

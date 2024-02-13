@@ -15,7 +15,8 @@ export const qotdSchema = new mongoose.Schema<IQOTDModule>({
     pingedRoleId: String,
     blacklist: [String],
     whitelist: [String],
-    questionsThreshold: Number
+    questionsThreshold: Number,
+    bannedWords: [String]
 });
 
 export const questionsSchema = new mongoose.Schema<IQuestions>({
