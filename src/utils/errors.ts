@@ -57,7 +57,8 @@ export const CustomErrors = {
     //                QOtD related err                //
     ////////////////////////////////////////////////////
     QOtDeDisabledError: new CustomError('Les QdJ ne sont pas activées sur ce serveur.'),
-    BlacklistedUserError: new CustomError('Les requêtes personnalisées sont désactivés pour toi.'),
+    BlacklistedUserError: new CustomError('Tu es blacklisté, tu ne peux pas proposer de question.'),
+    BannedWordError: new CustomError('Ta question contient un mot interdit.'),
 
     ////////////////////////////////////////////////////
     //               Twitch related err               //

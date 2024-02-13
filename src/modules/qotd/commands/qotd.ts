@@ -50,6 +50,10 @@ export default {
         if (qotd.blacklist?.includes(interaction.user.id)) throw CustomErrors.BlacklistedUserError;
 
         const question = interaction.options.getString('question', true);
+
+        if (qotd.bannedWords?.some(word => new RegExp(word, 'i').test(question)))
+            throw CustomErrors.BannedWordError;
+
         const author = interaction.options.getUser('auteur');
         const user = (interaction.member as GuildMember).user;
 
