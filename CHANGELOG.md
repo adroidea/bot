@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### ✨ Added
 ❄️ Twitch: Now can disable Category Change notification [[#75](https://github.com/adroidea/bot/issues/75)]
+
 ❄️ Twitch: Now can ignore some categories for the Category Change notification [[#75](https://github.com/adroidea/bot/issues/75)]
 
 ### 🧱 Changed
@@ -14,6 +15,8 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Fixed
 ❄️ Twitch: Auto role not auto roling properly
+
+❄️ Twitch: Text with markdown sensible characters will now be escaped
 
 ## 🚀 [4.0.0] - 2024-01-12
 

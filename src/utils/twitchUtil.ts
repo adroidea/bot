@@ -1,17 +1,17 @@
+import { escapeMarkdown, roleMention } from 'discord.js';
 import { ITMAlerts } from 'adroi.d.ea';
-import { roleMention } from 'discord.js';
 
 interface AccessToken {
     access_token: string;
     expiration_date: Date;
     token_type: string;
-  }
-  
-  let accessToken: AccessToken = {
+}
+
+let accessToken: AccessToken = {
     access_token: '',
     expiration_date: new Date(),
     token_type: 'bearer'
-  };
+};
 
 export interface Stream {
     id: string;
@@ -116,7 +116,7 @@ export const buildLiveStartTitle = (streamData: Stream, alerts: ITMAlerts): stri
     template = template
         .replace('{role}', alerts.pingedRole ? roleMention(alerts.pingedRole) : '')
         .replace('{streamer.id}', streamData.user_id)
-        .replace('{streamer.name}', streamData.user_name)
+        .replace('{streamer.name}', escapeMarkdown(streamData.user_name))
         .replace('{game.id}', streamData.game_id)
         .replace('{game.name}', streamData.game_name);
     return template;
