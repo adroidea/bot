@@ -10,53 +10,55 @@ import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import qotddService from '../services/qotd.service';
 
 export default function (): cron.ScheduledTask {
-    return cron.schedule('0 7 * * *', async () => {
-        const guildsCache = getGuildsCache();
+    return cron.schedule('0 7 * * *', () => {
+        (async () => {
+            const guildsCache = getGuildsCache();
         for (const guildData of guildsCache) {
-            const guild: Guild = client.guilds.cache.get(guildData.id);
-            if (!guild) continue;
+                const guild: Guild = client.guilds.cache.get(guildData.id);
+                if (!guild) continue;
 
-            const { qotd }: { qotd: IQOTDModule } = guildData.modules;
-            if (!qotd.enabled) continue;
+                const { qotd }: { qotd: IQOTDModule } = guildData.modules;
+                if (!qotd.enabled) continue;
 
-            try {
-                const randomQuestion: IQuestions[] = await QuestionsModel.aggregate([
-                    { $match: { guildId: guild.id } },
-                    { $sample: { size: 1 } }
-                ]);
+                try {
+                    const randomQuestion: IQuestions[] = await QuestionsModel.aggregate([
+                        { $match: { guildId: guild.id } },
+                        { $sample: { size: 1 } }
+                    ]);
 
-                if (randomQuestion?.length <= 0) continue;
+                    if (randomQuestion?.length <= 0) continue;
 
-                handleLowQuestionsCount(guild, qotd);
-                const { question, authorId } = randomQuestion[0];
+                    handleLowQuestionsCount(guild, qotd);
+                    const { question, authorId } = randomQuestion[0];
 
-                const channel = guild.channels.cache.get(qotd.channelId);
-                if (!channel?.isTextBased()) continue;
+                    const channel = guild.channels.cache.get(qotd.channelId);
+                    if (!channel?.isTextBased()) continue;
 
-                const questionEmbed = new EmbedBuilder()
-                    .setTitle(question)
-                    .setColor(Colors.random)
-                    .setFooter({
-                        text: 'Question du jour • /qdj pour ajouter une question'
+                    const questionEmbed = new EmbedBuilder()
+                        .setTitle(question)
+                        .setColor(Colors.random)
+                        .setFooter({
+                            text: 'Question du jour • /qdj pour ajouter une question'
+                        });
+
+                    const author: User = await client.users.fetch(authorId);
+                    if (author) addAuthor(questionEmbed, author);
+
+                    await deletePinnedMessages(channel);
+
+                    const sentMessage = await channel.send({
+                        content: qotd.pingedRoleId ? `<@&${qotd.pingedRoleId}>` : '',
+                        embeds: [questionEmbed]
                     });
+                    await sentMessage.pin();
 
-                const author: User = await client.users.fetch(authorId);
-                if (author) addAuthor(questionEmbed, author);
-
-                await deletePinnedMessages(channel);
-
-                const sentMessage = await channel.send({
-                    content: qotd.pingedRoleId ? `<@&${qotd.pingedRoleId}>` : '',
-                    embeds: [questionEmbed]
-                });
-                await sentMessage.pin();
-
-                await deletePinNotification(channel, sentMessage.id);
-                await qotddService.deleteQOtDById(randomQuestion[0]._id!);
-            } catch (error: any) {
-                Logger.error('Error sending question:', error);
+                    await deletePinNotification(channel, sentMessage.id);
+                    await qotddService.deleteQOtDById(randomQuestion[0]._id!);
+                } catch (error: any) {
+                    Logger.error('Error sending question:', error);
+                }
             }
-        }
+        })();
     });
 }
 
