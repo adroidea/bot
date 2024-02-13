@@ -58,7 +58,7 @@ describe('buildLiveStartTitle', () => {
     it('should build a valid live start title', () => {
         const result = buildLiveStartTitle(streamData, alerts);
 
-        const expected = '<@&987654321>, test_user_name started streaming test_game_name!';
+        const expected = '<@&987654321>, test\\_user\\_name started streaming test_game_name!';
 
         expect(result).toEqual(expected);
     });
@@ -67,7 +67,7 @@ describe('buildLiveStartTitle', () => {
         alerts.pingedRole = '';
         const result = buildLiveStartTitle(streamData, alerts);
 
-        const expected = ', test_user_name started streaming test_game_name!';
+        const expected = ', test\\_user\\_name started streaming test_game_name!';
 
         expect(result).toEqual(expected);
     });
@@ -77,7 +77,7 @@ describe('buildLiveStartTitle', () => {
         const result = buildLiveStartTitle(streamData, alerts);
 
         const expected =
-            "<@&987654321>, **test_user_name** est en live ! C'est l'heure de laisser la réalité derrière toi et de plonger dans le monde de **__test_game_name__** !";
+            "<@&987654321>, **test\\_user\\_name** est en live ! C'est l'heure de laisser la réalité derrière toi et de plonger dans le monde de **__test_game_name__** !";
 
         expect(result).toEqual(expected);
     });

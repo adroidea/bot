@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Fixed
 
-❄️ Twitch: Names screwing up the markdown are now escaped (e.g: `adan_ea` becomes `adan\_ea`) - [[#81](https://github.com/adroidea/bot/issues/81)]
+❄️ Twitch: Text with markdown sensible characters will now be escaped (e.g: `adan_ea` becomes `adan\_ea`) - [[#81](https://github.com/adroidea/bot/issues/81)]
 
 ❄️ Twitch: Auto role not auto roling properly
 
