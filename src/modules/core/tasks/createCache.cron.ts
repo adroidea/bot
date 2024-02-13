@@ -5,7 +5,9 @@ import cron from 'node-cron';
 export let guildsCache: IGuild[] = [];
 
 export default function (): cron.ScheduledTask {
-    return cron.schedule('* * * * *', async () => {
-        return (guildsCache = await GuildModel.find().exec());
+    return cron.schedule('* * * * *', () => {
+        (async () => {
+            guildsCache = await GuildModel.find().exec();
+        })();
     });
 }

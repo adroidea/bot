@@ -33,14 +33,16 @@ interface LiveStatus {
 const streamersList = new Map<string, LiveStatus>();
 
 export default function (): cron.ScheduledTask {
-    return cron.schedule('* * * * *', async () => {
-        try {
-            for (const guild of guildsCache) {
-                await handleGuild(guild);
+    return cron.schedule('* * * * *', () => {
+        (async () => {
+            try {
+                for (const guild of guildsCache) {
+                    await handleGuild(guild);
+                }
+            } catch (error: any) {
+                logger.error('Error handling guilds:', error, filePath);
             }
-        } catch (err: any) {
-            logger.error('Error :', err, filePath);
-        }
+        })();
     });
 }
 
