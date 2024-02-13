@@ -6,9 +6,10 @@ import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import logger from '../../../utils/logger';
 
 export default function (): cron.ScheduledTask {
-    return cron.schedule('* 5 * * *', () => {
+    return cron.schedule('*/5 * * * *', () => {
         const guildsCache = getGuildsCache();
         for (const guild of guildsCache) {
+            if(!guild.modules.twitch.enabled) continue;
             const guildData: Guild = client.guilds.cache.get(guild.id);
             if (!guildData) continue;
 
