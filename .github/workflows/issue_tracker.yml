@@ -9,6 +9,10 @@ env:
   done: ✅Done
   wip: 🚧In Progress
   nth: 📓Backlog
+  gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+  organization: adroidea
+  project_id: 2
+  resource_node_id: ${{ github.event.issue.node_id }}
 
 jobs:
   issue_opened_or_reopened:
@@ -20,20 +24,20 @@ jobs:
         uses: leonsteinhaeuser/project-beta-automations@v2.1.0
         if: ${{ ! contains(github.event.issue.labels.*.name, 'NTH') && ! contains(github.event.issue.labels.*.name, 'invalid')}}
         with:
-          gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          user: adan-ea
-          project_id: 2
-          resource_node_id: ${{ github.event.issue.node_id }}
+          gh_token: ${{ env.gh_token }}
+          organization: ${{ env.organization }}
+          project_id: ${{env.project_id}}
+          resource_node_id: ${{ env.resource_node_id }}
           status_value: ${{ env.todo }}
 
       - name: Move issue to ${{ env.nth }}
         uses: leonsteinhaeuser/project-beta-automations@v2.1.0
         if: ${{ contains(github.event.issue.labels.*.name, 'NTH') }}
         with:
-          gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          user: adan-ea
-          project_id: 2
-          resource_node_id: ${{ github.event.issue.node_id }}
+          gh_token: ${{ env.gh_token }}
+          organization: ${{ env.organization }}
+          project_id: ${{env.project_id}}
+          resource_node_id: ${{ env.resource_node_id }}
           status_value: ${{ env.nth }}
 
   issue_closed:
@@ -44,8 +48,8 @@ jobs:
       - name: Moved issue to ${{ env.done }}
         uses: leonsteinhaeuser/project-beta-automations@v2.1.0
         with:
-          gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          user: adan-ea
-          project_id: 2
-          resource_node_id: ${{ github.event.issue.node_id }}
+          gh_token: ${{ env.gh_token }}
+          organization: ${{ env.organization }}
+          project_id: ${{env.project_id}}
+          resource_node_id: ${{ env.resource_node_id }}
           status_value: ${{ env.done }}
