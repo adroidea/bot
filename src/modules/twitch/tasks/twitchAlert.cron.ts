@@ -1,4 +1,4 @@
-import { EmbedBuilder, Guild, TextChannel } from 'discord.js';
+import { EmbedBuilder, Guild, TextChannel, escapeMarkdown } from 'discord.js';
 import { IGuild, ITMAlerts } from 'adroi.d.ea';
 import {
     Stream,
@@ -148,7 +148,7 @@ export const sendLiveEmbed = async (streamData: Stream, alerts: ITMAlerts, guild
     const embed = new EmbedBuilder()
         .setAuthor({
             iconURL: twitchAvatarURL,
-            name: `${user_name} est en live sur Twitch !`
+            name: `${escapeMarkdown(user_name)} est en live sur Twitch !`
         })
         .setTitle(`${title}`)
         .setURL(`https://twitch.tv/${user_name}`)
