@@ -5,18 +5,22 @@ All notable changes to this project will be documented in this file.
 ## 🏗️ [Unreleased]
 
 ### ✨ Added
-❄️ Twitch: Now can disable Category Change notification [[#75](https://github.com/adroidea/bot/issues/75)]
 
-❄️ Twitch: Now can ignore some categories for the Category Change notification [[#75](https://github.com/adroidea/bot/issues/75)]
+❄️ Twitch: Now can disable Category Change notification - [[#75](https://github.com/adroidea/bot/issues/75)]
+
+❄️ Twitch: Now can ignore some categories for the Category Change notification - [[#75](https://github.com/adroidea/bot/issues/75)]
 
 ### 🧱 Changed
 
 ### 🚮 Removed
 
 ### 🐛 Fixed
+
+❄️ Twitch: Text with markdown sensible characters will now be escaped (e.g: `adan_ea` becomes `adan\_ea`) - [[#81](https://github.com/adroidea/bot/issues/81)]
+
 ❄️ Twitch: Auto role not auto roling properly
 
-❄️ Twitch: Text with markdown sensible characters will now be escaped
+❄️ TempVoice: When instantly leaving a vc, the channel would stay there with no purpose - [[#76](https://github.com/adroidea/bot/issues/76)] ty @kevin-fer for helping me notice that <3
 
 ## 🚀 [4.0.0] - 2024-01-12
 
