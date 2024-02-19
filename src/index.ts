@@ -1,8 +1,10 @@
 import DiscordClient from './client';
 import IORedis from 'ioredis';
+import L from './locales/i18n-node';
 import Logger from './utils/logger';
 import { Partials } from 'discord.js';
 import dotenv from 'dotenv';
+import { loadAllLocales } from './locales/i18n-util.sync';
 import mongoose from 'mongoose';
 import path from 'node:path';
 
@@ -14,6 +16,9 @@ if (process.env.NODE_ENV === 'PRODUCTION') {
 
 dotenv.config({ path: envPath });
 
+loadAllLocales();
+
+console.log(L.en.errors.botPermissions());
 export const client: any = new DiscordClient({
     intents: 3276799,
     partials: [Partials.Channel]
@@ -22,7 +27,7 @@ export const client: any = new DiscordClient({
 const filePath = path.join(__dirname, 'handlers/module.handler.js');
 import(filePath).then(handler => handler.default(client));
 
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', true);
 mongoose
     .connect(process.env.MONGO_URI!, {
         autoIndex: false,

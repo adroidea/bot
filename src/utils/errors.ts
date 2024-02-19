@@ -1,3 +1,5 @@
+import L from '../locales/i18n-node';
+
 export class CustomError extends Error {}
 
 export const CustomErrors = {
@@ -5,9 +7,7 @@ export const CustomErrors = {
         "Tu m'a posé une colle là. Signale ce message à <@294916386072035328> (@adan_ea) et ce que t'as fais pour l'avoir. C'est pas normal que tu vois ceci. Mais je t'aime quand même hein <3"
     ),
     CooldownError: (cooldownTime: number) =>
-        new CustomError(
-            `Comme dirait Orel San, ça va trop vite. Cette fonction est en cooldown. tu pourras l'utiliser <t:${cooldownTime}:R>.`
-        ),
+        new CustomError(L.en.errors.cooldown({ cd: cooldownTime })),
     UserNoPermissionsError: new CustomError("Eh non, t'as pas les droits, cheh !"),
     SelfNoPermissionsError: new CustomError("Peux pas faire ça, j'ai pas les droits."),
     ToDoError: new CustomError("Ca fonctionne, mais t'as pas setup d'erreur pour ce cas encore."),
