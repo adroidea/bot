@@ -5,6 +5,7 @@ import {
     PermissionsBitField,
     codeBlock
 } from 'discord.js';
+import { TranslationFunctions } from '../../../../locales/i18n-types';
 
 export default {
     data: {
@@ -18,7 +19,8 @@ export default {
     usage: 'pingea',
     examples: ['pingea'],
 
-    async execute(client: Client, interaction: CommandInteraction) {
+    async execute(client: Client, interaction: CommandInteraction, LL: TranslationFunctions) {
+        console.log('trad:', LL.commands.pingea.botLatency());
         const sentMessage = await interaction.reply({
             content: 'Pong !',
             fetchReply: true,
@@ -32,12 +34,12 @@ export default {
             .setURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
             .addFields([
                 {
-                    name: 'Latence bot',
+                    name: LL.commands.pingea.botLatency().toString(),
                     value: codeBlock('sci', `${botLantency.toString()}ms`),
                     inline: true
                 },
                 {
-                    name: 'Latence api',
+                    name: LL.commands.pingea.apiLatency().toString(),
                     value: codeBlock('sci', `${client.ws.ping.toString()}ms`),
                     inline: true
                 }

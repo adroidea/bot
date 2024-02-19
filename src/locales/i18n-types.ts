@@ -51,6 +51,22 @@ type RootTranslation = {
 		 */
 		moduleDisabled: RequiredParams<'module'>
 	}
+	commands: {
+		pingea: {
+			/**
+			 * R​e​t​u​r​n​s​ ​t​h​e​ ​b​o​t​'​s​ ​p​i​n​g
+			 */
+			description: string
+			/**
+			 * B​o​t​ ​l​a​t​e​n​c​y
+			 */
+			botLatency: string
+			/**
+			 * A​P​I​ ​l​a​t​e​n​c​y
+			 */
+			apiLatency: string
+		}
+	}
 }
 
 export type TranslationFunctions = {
@@ -87,6 +103,22 @@ export type TranslationFunctions = {
 		 * The {module} module is disabled on this server.
 		 */
 		moduleDisabled: (arg: { module: string }) => LocalizedString
+	}
+	commands: {
+		pingea: {
+			/**
+			 * Returns the bot's ping
+			 */
+			description: () => LocalizedString
+			/**
+			 * Bot latency
+			 */
+			botLatency: () => LocalizedString
+			/**
+			 * API latency
+			 */
+			apiLatency: () => LocalizedString
+		}
 	}
 }
 

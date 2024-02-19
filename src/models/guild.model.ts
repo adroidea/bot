@@ -15,6 +15,7 @@ const eventManagementSchema = new mongoose.Schema<IEventManagement>({
 
 const guildSchema = new mongoose.Schema<IGuild>({
     id: String,
+    locale: String,
     modules: {
         eventManagement: eventManagementSchema,
         auditLogs: auditLogsSchema,
