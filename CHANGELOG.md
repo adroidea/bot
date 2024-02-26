@@ -6,6 +6,16 @@ All notable changes to this project will be documented in this file.
 
 ### ✨ Added
 
+### 🧱 Changed
+
+### 🚮 Removed
+
+### 🐛 Fixed
+
+## 🚀 [v4.1.0] - 2024-02-26
+
+### ✨ Added
+
 ❄️ Twitch: Now can disable Category Change notification - [[#75](https://github.com/adroidea/bot/issues/75)]
 
 ❄️ Twitch: Now can ignore some categories for the Category Change notification - [[#75](https://github.com/adroidea/bot/issues/75)]
@@ -24,9 +34,9 @@ All notable changes to this project will be documented in this file.
 
 ❄️ TempVoice: When instantly leaving a vc, the channel would stay there with no purpose - [[#76](https://github.com/adroidea/bot/issues/76)] ty @kevin-fer for helping me notice that <3
 
-❄️ TempVoice: Channels not being created
+❄️ TempVoice: Channels not being created - [[#86](https://github.com/adroidea/bot/issues/86)]
 
-❄️ Core: Fixed pictures links
+❄️ Core: Fixed pictures links - [[#88](https://github.com/adroidea/bot/issues/88)]
 
 ## 🚀 [4.0.0] - 2024-01-12
 
@@ -81,6 +91,7 @@ All notable changes to this project will be documented in this file.
 ❄️ A lot of stuff i don't remember. And i'm too lazy to check every commit :')
 
 [Unreleased]: https://github.com/adroidea/bot
+[4.1.0]: https://github.com/adroidea/bot/releases/tag/v4.1.0
 [4.0.0]: https://github.com/adroidea/bot/releases/tag/v4.0.0
 [3.7.0]: https://github.com/adroidea/bot/releases/tag/v3.7.0
 [3.6.0]: https://github.com/adroidea/bot/releases/tag/v3.6.0
