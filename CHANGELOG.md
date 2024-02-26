@@ -26,6 +26,8 @@ All notable changes to this project will be documented in this file.
 
 ❄️ TempVoice: Channels not being created
 
+❄️ Core: Fixed pictures links
+
 ## 🚀 [4.0.0] - 2024-01-12
 
 ### ✨ Added
