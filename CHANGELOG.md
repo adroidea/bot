@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 
 ❄️ QotD: Add banned key words - [[#78](https://github.com/adroidea/bot/issues/78)]
 
+❄️ Core: The bot can now speak in English, y también en español, almost as well as son Français parfait!
+
 ### 🧱 Changed
 
 ### 🚮 Removed
