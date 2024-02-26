@@ -6,13 +6,13 @@ import cron from 'node-cron';
 
 const dpp = {
     default:
-        'https://cdn.discordapp.com/attachments/1050382523261276210/1050382808645894164/icone-discord.png',
+        'https://cdn.discordapp.com/attachments/1131248804910338068/1211288421717385256/icone-discord.png?ex=65eda740&is=65db3240&hm=cffe7e217c166ac4ce3c74802ad7016331739bd29258730e403e9aeb5fbdbc7b&',
     petitdej:
-        'https://cdn.discordapp.com/attachments/1050382523261276210/1149031651867897918/ptitdej.png',
-    dej: 'https://cdn.discordapp.com/attachments/1050382523261276210/1149030238546821120/dej.png',
-    gouter: 'https://cdn.discordapp.com/attachments/1050382523261276210/1149031573522497586/gouter.png',
-    diner: 'https://cdn.discordapp.com/attachments/1050382523261276210/1149030250467049512/diner.png',
-    dodo: 'https://cdn.discordapp.com/attachments/1050382523261276210/1149030268544491609/dodo.png'
+        'https://cdn.discordapp.com/attachments/1131248804910338068/1211288422098935838/ptitdej.png?ex=65eda740&is=65db3240&hm=66c1bf846b1592a95076cb205ec11769914a6d6a85c2d4af335383f942afdfa6&',
+    dej: 'https://cdn.discordapp.com/attachments/1131248804910338068/1211288422598312017/dej.png?ex=65eda740&is=65db3240&hm=458f72d1d1af55bfdfdf391ef1137df96ff48cec96a0c9cc29f92036f9efd277&',
+    gouter: 'https://cdn.discordapp.com/attachments/1131248804910338068/1211288421302280192/gouter.png?ex=65eda740&is=65db3240&hm=de4df2f89e202e6bd6aec2b363588c182aa428557f54ee25b7a4bee5f399a609&',
+    diner: 'https://cdn.discordapp.com/attachments/1131248804910338068/1211288423093108846/diner.png?ex=65eda740&is=65db3240&hm=a8984417d794f88437aba3554229583cd45484a5ca31ecbcebb0a9bdd6e750f9&',
+    dodo: 'https://cdn.discordapp.com/attachments/1131248804910338068/1211288420949688340/dodo.png?ex=65eda740&is=65db3240&hm=69a13e94856a7e55d9e10e1d992bff8d99a4019a544c552459c31f01918b655c&'
 };
 
 export default function (): cron.ScheduledTask {
