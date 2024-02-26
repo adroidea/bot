@@ -30,7 +30,15 @@ export const formatCustomList = (
     customListLength?: number
 ): string => {
     if (list.length === 0) {
-        return `> Aucun ${type === 'user' ? 'utilisateur' : type === 'role' ? 'rôle' : 'salon'}`;
+        let typeName;
+        if (type === 'user') {
+            typeName = 'utilisateur';
+        } else if (type === 'role') {
+            typeName = 'rôle';
+        } else {
+            typeName = 'salon';
+        }
+        return `> Aucun ${typeName}`;
     }
 
     const mention = (id: string) => {

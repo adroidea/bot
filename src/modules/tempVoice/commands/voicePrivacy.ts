@@ -10,7 +10,7 @@ export default {
         description: 'Gère ton salon vocal temporaire'
     },
     category: 'voice',
-    cooldown: 10,
+    cooldown: 30,
     permissions: [PermissionsBitField.Flags.SendMessages],
     usage: 'voice',
     examples: 'voice',
@@ -26,6 +26,6 @@ export default {
             throw CustomErrors.NotVoiceOwnerError;
         }
 
-        interaction.reply({ ...buildVoiceEmbed(interaction.user.id), ephemeral: true });
+        interaction.reply({ ...buildVoiceEmbed(), ephemeral: true });
     }
 };

@@ -1,4 +1,4 @@
-import { EmbedBuilder, Guild, TextChannel } from 'discord.js';
+import { EmbedBuilder, Guild, TextChannel, escapeMarkdown } from 'discord.js';
 import { IGuild, ITMAlerts } from 'adroi.d.ea';
 import {
     Stream,
@@ -9,7 +9,7 @@ import {
 import { Colors } from '../../../utils/consts';
 import { client } from '../../../index';
 import cron from 'node-cron';
-import { guildsCache } from '../../core/tasks/createCache.cron';
+import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import logger from '../../../utils/logger';
 import path from 'path';
 
@@ -36,6 +36,7 @@ export default function (): cron.ScheduledTask {
     return cron.schedule('* * * * *', () => {
         (async () => {
             try {
+                const guildsCache = getGuildsCache();
                 for (const guild of guildsCache) {
                     await handleGuild(guild);
                 }
@@ -147,7 +148,7 @@ export const sendLiveEmbed = async (streamData: Stream, alerts: ITMAlerts, guild
     const embed = new EmbedBuilder()
         .setAuthor({
             iconURL: twitchAvatarURL,
-            name: `${user_name} est en live sur Twitch !`
+            name: `${escapeMarkdown(user_name)} est en live sur Twitch !`
         })
         .setTitle(`${title}`)
         .setURL(`https://twitch.tv/${user_name}`)

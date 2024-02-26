@@ -2,12 +2,14 @@ import { Guild, GuildMember, Role } from 'discord.js';
 import { ITMStreamersData } from 'adroi.d.ea';
 import { client } from '../../../index';
 import cron from 'node-cron';
-import { guildsCache } from '../../core/tasks/createCache.cron';
+import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import logger from '../../../utils/logger';
 
 export default function (): cron.ScheduledTask {
-    return cron.schedule('* 5 * * *', () => {
+    return cron.schedule('*/5 * * * *', () => {
+        const guildsCache = getGuildsCache();
         for (const guild of guildsCache) {
+            if(!guild.modules.twitch.enabled) continue;
             const guildData: Guild = client.guilds.cache.get(guild.id);
             if (!guildData) continue;
 

@@ -9,8 +9,7 @@ import {
     OverwriteResolvable,
     PermissionsBitField,
     VoiceBasedChannel,
-    VoiceState,
-    userMention
+    VoiceState
 } from 'discord.js';
 import { CustomError, CustomErrors } from './errors';
 import { Colors } from './consts';
@@ -40,27 +39,27 @@ export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITem
         const isPrivate = userSettings[member.id]?.isPrivate ?? false;
         const permOverwrite = setPerms(userSettings, member.id, newState.guild, isPrivate);
 
-        await newState.guild.channels
+        const vc = await newState.guild.channels
             .create({
                 name: nameModel[isPrivate ? 'locked' : 'unlocked'].replace('{USERNAME}', username),
                 type: ChannelType.GuildVoice,
-                topic: member.user.id,
-                permissionOverwrites: permOverwrite
+                permissionOverwrites: permOverwrite,
+                parent: newState.channel!.parentId
             })
             .then(channel => {
-                channel.setParent(newState.channel!.parentId, {
-                    lockPermissions: false
-                });
-
-                member.voice.setChannel(channel.id);
-
                 client.tempVoice.set(channel.id, {
                     ownerId: member.user.id,
                     isPrivate
                 });
-
-                channel.send(buildVoiceEmbed(member.user.id));
+                channel.send(buildVoiceEmbed());
+                return channel;
             });
+
+        await member.voice.setChannel(vc.id).catch(err => {
+            if (err.message === 'Target user is not connected to voice.') {
+                vc.delete();
+            }
+        });
     } catch (err: any) {
         if (err instanceof CustomError) {
             const embed = Embed.error(err.message);
@@ -68,7 +67,6 @@ export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITem
             newState.member?.send({ embeds: [embed] });
         } else {
             Logger.error(`An error occurred while creating a voice channel`, err, filePath);
-            throw CustomErrors.CreateNewTempChannelError;
         }
     }
 };
@@ -196,7 +194,7 @@ export const deleteEmptyChannel = async (voiceC: BaseGuildVoiceChannel) => {
  * @param memberId - The ID of the member for whom the embed is being built.
  * @returns The voice embed object containing the welcome message, embed, and components.
  */
-export const buildVoiceEmbed = (memberId: string) => {
+export const buildVoiceEmbed = () => {
     const embed = new EmbedBuilder()
         .setTitle(`**Tableau de bord**`)
         .setDescription(
@@ -217,7 +215,6 @@ export const buildVoiceEmbed = (memberId: string) => {
         .setFooter({ text: "bonus: Tu peux déco quelqu'un avec un clic droit sur leur nom" });
 
     return {
-        content: `Hey ${userMention(memberId)} !`,
         embeds: [embed],
         components: tempVoiceComponents
     };

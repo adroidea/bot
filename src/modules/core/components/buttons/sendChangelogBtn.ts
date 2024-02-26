@@ -8,7 +8,7 @@ import {
 } from 'discord.js';
 import { IGuild } from 'adroi.d.ea';
 import { client } from '../../../..';
-import { guildsCache } from '../../tasks/createCache.cron';
+import { getGuildsCache } from '../../tasks/createCache.cron';
 
 const sendChangelogBtn = new ButtonBuilder()
     .setCustomId('sendChangelogBtn')
@@ -26,7 +26,7 @@ export default {
     async execute(interaction: ButtonInteraction) {
         await interaction.deferReply({ ephemeral: true });
         const failedGuilds: string[] = [];
-
+        const guildsCache = getGuildsCache();
         const sendMessages = guildsCache.map(async (guild: IGuild) => {
             const { botChangeLogs } = guild.modules.auditLogs;
             let isFailed = false;
