@@ -24,6 +24,8 @@ All notable changes to this project will be documented in this file.
 
 ❄️ TempVoice: When instantly leaving a vc, the channel would stay there with no purpose - [[#76](https://github.com/adroidea/bot/issues/76)] ty @kevin-fer for helping me notice that <3
 
+❄️ TempVoice: Channels not being created
+
 ## 🚀 [4.0.0] - 2024-01-12
 
 ### ✨ Added
