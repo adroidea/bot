@@ -43,7 +43,6 @@ export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITem
             .create({
                 name: nameModel[isPrivate ? 'locked' : 'unlocked'].replace('{USERNAME}', username),
                 type: ChannelType.GuildVoice,
-                topic: member.user.id,
                 permissionOverwrites: permOverwrite,
                 parent: newState.channel!.parentId
             })
