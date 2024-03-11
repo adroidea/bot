@@ -7,6 +7,7 @@ import {
     PermissionsBitField
 } from 'discord.js';
 import { Colors, Emojis } from '../../../../utils/consts';
+import {version} from './../../../../../package.json';
 
 export default {
     data: {
@@ -42,7 +43,7 @@ export default {
             .setDescription(`${commandsList}`)
             .addFields({
                 name: 'version',
-                value: `v${process.env.npm_package_version}`
+                value: `v${version}`
             })
             .setFooter({
                 text: `< > = optionnel | [ ] = requis | (A ne pas inclure dans les commandes)`
