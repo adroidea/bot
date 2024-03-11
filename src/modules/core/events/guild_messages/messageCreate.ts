@@ -38,6 +38,12 @@ export default {
                     'https://tenor.com/view/hello-there-general-kenobi-star-wars-grevious-gif-17774326'
                 );
 
+            case /honteux/gim.test(message.content):
+                return sendReply(
+                    'https://tenor.com/view/cest-honteux-honteux-mistermv-potatoz-gif-14793622',
+                    50
+                );
+
             case /jpp/gim.test(message.content):
                 return sendReply(
                     'https://cdn.discordapp.com/attachments/771934231647223848/938389858802606160/jpp_jean-pierre.png',
@@ -46,6 +52,12 @@ export default {
 
             case /quoi(\s|\.|\?|!|;|:|,|\/)*$/gim.test(message.content):
                 return sendReply('feur <3', 15);
+
+            case /sexyy/gim.test(message.content):
+                return sendReply(
+                    'https://media.discordapp.net/attachments/823344574687608832/824326272640614421/Alexis_tombe_FINAL.gif',
+                    40
+                );
 
             case frenchDadRegex.test(message.content):
                 return handleDadReply(frenchDadRegex, 'Salut ${name}, je suis ton père !', 15);
