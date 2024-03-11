@@ -102,7 +102,7 @@ All notable changes to this project will be documented in this file.
 ❄️ A lot of stuff i don't remember. And i'm too lazy to check every commit :')
 
 [Unreleased]: https://github.com/adroidea/bot
-[4.1.0]: https://github.com/adroidea/bot/releases/tag/v4.1.1
+[4.1.1]: https://github.com/adroidea/bot/releases/tag/v4.1.1
 [4.1.0]: https://github.com/adroidea/bot/releases/tag/v4.1.0
 [4.0.0]: https://github.com/adroidea/bot/releases/tag/v4.0.0
 [3.7.0]: https://github.com/adroidea/bot/releases/tag/v3.7.0
