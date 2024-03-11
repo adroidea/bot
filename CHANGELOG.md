@@ -12,7 +12,18 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Fixed
 
-## 🚀 [v4.1.0] - 2024-02-26
+## 🏗️ [4.1.1]
+
+### ✨ Added
+❄️ MessageCreate: Add two triggers
+
+### 🧱 Changed
+❄️ Core: Fixed pictures links (again and final) - [[#88](https://github.com/adroidea/bot/issues/88)]
+
+### 🚮 Removed
+### 🐛 Fixed
+
+## 🚀 [4.1.0] - 2024-02-26
 
 ### ✨ Added
 
@@ -93,6 +104,7 @@ All notable changes to this project will be documented in this file.
 ❄️ A lot of stuff i don't remember. And i'm too lazy to check every commit :')
 
 [Unreleased]: https://github.com/adroidea/bot
+[4.1.1]: https://github.com/adroidea/bot/releases/tag/v4.1.1
 [4.1.0]: https://github.com/adroidea/bot/releases/tag/v4.1.0
 [4.0.0]: https://github.com/adroidea/bot/releases/tag/v4.0.0
 [3.7.0]: https://github.com/adroidea/bot/releases/tag/v3.7.0
