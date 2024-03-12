@@ -1,8 +1,11 @@
-import { AuditLogEvent, Client, EmbedBuilder, Events, Role } from 'discord.js';
+import { AuditLogEvent, Client, EmbedBuilder, Events, GuildBasedChannel, Role } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { Locales } from '../../../../locales/i18n-types';
 import { addAuthor } from '../../../../utils/embedsUtil';
 import { addPermissionsNames } from '../../../../utils/modulesUil';
+import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guild.service';
+import { loadLL } from '../../../core/events/client/interactionCreate';
 
 export default {
     name: Events.GuildRoleDelete,
@@ -13,32 +16,38 @@ export default {
         });
 
         const {
+            locale: localeLL,
             modules: {
                 auditLogs: { guildRoleDelete }
             }
         } = await guildService.getOrCreateGuild(role.guild);
 
-        if (shouldIgnoreRoleDelete(guildRoleDelete)) return;
-
-        const logChannel = client.channels.cache.get(guildRoleDelete.channelId);
+        const logChannel = client.guilds.cache
+            .get(role.guild.id)
+            ?.channels.cache.get(guildRoleDelete.channelId);
         if (!logChannel?.isTextBased()) return;
+        if (shouldIgnoreRoleDelete(guildRoleDelete, logChannel)) return;
 
+        const LL = await loadLL((localeLL as Locales) ?? 'en');
+        const locale = LL.modules.auditLogs.events.guildRoleDelete;
         const embed = new EmbedBuilder()
-            .setTitle(`Rôle __${role.name}__ supprimé`)
+            .setTitle(locale.embed.title({ roleName: role.name }))
             .setFooter({
-                text: 'Rôle supprimé'
+                text: locale.embed.footer.text()
             })
             .setTimestamp();
 
         const executor = fetchedLogs.entries.first()?.executor;
         addAuthor(embed, executor);
 
-        addPermissionsNames(role.permissions, embed);
+        addPermissionsNames(role.permissions, embed, LL);
 
         if (role.color) embed.setColor(role.color);
         await logChannel.send({ embeds: [embed] });
     }
 };
 
-const shouldIgnoreRoleDelete = (guildRoleDelete: IAuditLogsModule['guildRoleDelete']) =>
-    !guildRoleDelete.enabled || guildRoleDelete.channelId === '';
+const shouldIgnoreRoleDelete = (
+    guildRoleDelete: IAuditLogsModule['guildRoleDelete'],
+    logChannel: GuildBasedChannel | undefined
+) => !guildRoleDelete.enabled || guildRoleDelete.channelId === '' || !canSendMessage(logChannel);

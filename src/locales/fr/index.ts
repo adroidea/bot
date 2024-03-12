@@ -1,3 +1,4 @@
+import { Emojis } from '../../utils/consts';
 import type { Translation } from '../i18n-types';
 
 const fr: Translation = {
@@ -13,11 +14,153 @@ const fr: Translation = {
         guildNotFound: 'Bizarre, bizarre, je ne connais pas ce serveur.',
         moduleDisabled: 'Le module {module} est désactivé sur ce serveur.'
     },
-    commands: {
-        pingea: {
-            description: 'Renvoie le ping du bot',
-            botLatency: 'Latence du bot',
-            apiLatency: "Latence de l'API"
+    modules: {
+        auditLogs: {
+            commands: {},
+            events: {
+                guildBanAdd: {
+                    embed: {
+                        title: 'Membre banni',
+                        fields: {
+                            target: `${Emojis.snowflake} Victime`,
+                            executor: `${Emojis.snowflake} Exécuteur`,
+                            reason: `${Emojis.snowflake} Raison`
+                        }
+                    }
+                },
+                guildBanRemove: {
+                    embed: {
+                        title: 'Utilisateur débanni',
+                        fields: {
+                            target: `${Emojis.snowflake} Béni`,
+                            executor: `${Emojis.snowflake} Exécuteur`,
+                            reason: `${Emojis.snowflake} Raison`
+                        }
+                    }
+                },
+                guildRoleCreate: {
+                    embed: {
+                        title: 'Rôle __{roleName}__ créé',
+                        footer: {
+                            text: 'Rôle créé'
+                        },
+                        unassigned: `${Emojis.cross} +{deniedCount} non attribuées`
+                    }
+                },
+                guildRoleDelete: {
+                    embed: {
+                        title: 'Rôle __{roleName}__ supprimé',
+                        unassigned: `${Emojis.cross} +{deniedCount} non attribuées`,
+                        footer: {
+                            text: 'Rôle supprimé'
+                        }
+                    }
+                },
+                guildRoleUpdate: {
+                    embed: {
+                        title: 'Rôle __{roleName}__ mis à jour',
+                        footer: {
+                            text: 'Rôle modifié'
+                        },
+                        fields: {
+                            roleChanged: {
+                                old: 'Ancien nom',
+                                new: 'Nouveau nom'
+                            },
+                            colorChanged: {
+                                old: 'Ancienne couleur',
+                                new: 'Nouvelle couleur'
+                            },
+                            mentionable: 'Mentionnable',
+                            hoist: 'Afficher séparément',
+                            managed: 'Géré par Discord'
+                        },
+                        unassigned: `${Emojis.cross} +{deniedCount} non attribuées`
+                    }
+                },
+                guildMemberAdd: {
+                    embed: {
+                        title: `${Emojis.pikaHi} Bienvenue sur le serveur {username} !`,
+                        description:
+                            'Bonjour et bienvenue sur le serveur ! Nous espérons que vous passerez un bon moment ici ! Et nous ferons de notre mieux pour que cela soit le cas !',
+                        fields: {
+                            created: `${Emojis.snowflake} Création`
+                        },
+                        footer: { text: 'Utilisateur rejoint' }
+                    }
+                },
+                guildMemberRemove: {
+                    embed: {
+                        description: 'Weaklings Die. Big Deal.',
+                        fields: {
+                            member: `${Emojis.snowflake} Membre`,
+                            creation: `${Emojis.snowflake} Création`,
+                            joined: `${Emojis.snowflake} Rejoint`,
+                            left: `${Emojis.snowflake} Parti`
+                        },
+                        footer: {
+                            text: 'Membre parti'
+                        }
+                    }
+                },
+                guildMemberUpdate: {
+                    embed: {
+                        description: '<@{username}> a un nouveau look !',
+                        footer: {
+                            text: 'Membre modifié'
+                        },
+                        fields: {
+                            nickname: {
+                                old: 'Ancien surnom',
+                                new: 'Nouveau surnom'
+                            },
+                            roles: {
+                                old: 'Anciens rôles',
+                                new: 'Nouveaux rôles'
+                            }
+                        }
+                    }
+                },
+
+                messageBulkDelete: {
+                    messages: '> <@{id}> : {count} messages',
+                    embed: {
+                        description:
+                            '{amount} messages supprimés dans <#{channelId}>\n{usersDeleted}',
+                        footer: { text: 'Suppression de masse' }
+                    }
+                },
+                messageDelete: {
+                    embed: {
+                        description:
+                            'Message de <@{userId}> supprimé dans <#{channelId}>, [afficher le salon]({url})',
+                        fields: {
+                            message: 'Message supprimé'
+                        },
+                        footer: { text: 'Message supprimé' }
+                    }
+                },
+                messageUpdate: {
+                    embed: {
+                        description:
+                            'Message de <@{userId}> édité dans <#{channelId}>, [afficher le message]({url})',
+                        fields: {
+                            oldMessage: 'Ancien message',
+                            newMessage: 'Nouveau message'
+                        },
+                        footer: { text: 'Message édité' }
+                    }
+                }
+            },
+            categories: {
+                general: `${Emojis.cog} Générales`,
+                membership: `${Emojis.members} Membres`,
+                events: `${Emojis.event} Evènements`,
+                textChannel: `${Emojis.textChannel} Salon Textuel`,
+                voiceChannel: `${Emojis.voiceChannel} Salon Vocal`,
+                stageChannel: `${Emojis.stageChannel} Salon de Conférence`,
+                advanced: `${Emojis.advanced} Avancées`
+            }
         }
     }
 };

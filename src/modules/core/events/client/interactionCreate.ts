@@ -16,17 +16,18 @@ import {
 } from 'discord.js';
 import { CustomError, CustomErrors } from '../../../../utils/errors';
 import { Locales, TranslationFunctions } from '../../../../locales/i18n-types';
+import { i18nObject, isLocale } from '../../../../locales/i18n-util';
 import { Embed } from '../../../../utils/embedsUtil';
 import { IDiscordClient } from '../../../../client';
 import { IGuild } from 'adroi.d.ea';
 import { client } from '../../../../';
 import guildService from '../../../../services/guild.service';
 import { hasMemberPermission } from '../../../../utils/memberUtil';
-import { i18nObject } from '../../../../locales/i18n-util';
 import { loadLocaleAsync } from '../../../../locales/i18n-util.async';
 import { timestampToDate } from '../../../../utils/botUtil';
 
-async function loadLL(locale: Locales): Promise<TranslationFunctions> {
+export async function loadLL(locale: Locales = 'en'): Promise<TranslationFunctions> {
+    if (!isLocale(locale)) locale = 'en';
     await loadLocaleAsync(locale);
     return i18nObject(locale);
 }

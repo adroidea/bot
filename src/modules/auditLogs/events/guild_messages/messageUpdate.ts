@@ -1,8 +1,10 @@
 import { Client, EmbedBuilder, Events, GuildBasedChannel, Message } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { Locales } from '../../../../locales/i18n-types';
 import { addAuthor } from '../../../../utils/embedsUtil';
 import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guild.service';
+import { loadLL } from '../../../core/events/client/interactionCreate';
 
 export default {
     name: Events.MessageUpdate,
@@ -13,6 +15,7 @@ export default {
         if (oldText === newText || !oldMessage.guild) return;
 
         const {
+            locale: localeLL,
             modules: {
                 auditLogs: { messageUpdate }
             }
@@ -25,23 +28,30 @@ export default {
 
         if (shouldIgnoreUpdate(messageUpdate, oldMessage, logChannel)) return;
 
+        const LL = await loadLL((localeLL as Locales) ?? 'en');
+        const locale = LL.modules.auditLogs.events.messageUpdate;
+
         const embed = new EmbedBuilder()
             .setDescription(
-                `Message edité dans <#${oldMessage.channelId}>, [voir le message](${oldMessage.url})`
+                locale.embed.description({
+                    userId: oldMessage.author.id,
+                    channelId: oldMessage.channelId,
+                    url: oldMessage.url
+                })
             )
             .addFields([
                 {
-                    name: `Ancien message :`,
+                    name: locale.embed.fields.oldMessage(),
                     value: oldText,
                     inline: false
                 },
                 {
-                    name: `Nouveau message :`,
+                    name: locale.embed.fields.newMessage(),
                     value: newText,
                     inline: false
                 }
             ])
-            .setFooter({ text: `Message modifié.` })
+            .setFooter({ text: locale.embed.footer.text() })
             .setColor([45, 249, 250])
             .setTimestamp();
 
@@ -59,6 +69,6 @@ const shouldIgnoreUpdate = (
     !messageUpdate.enabled ||
     messageUpdate.channelId === '' ||
     (messageUpdate.ignoreBots && oldMessage.author.bot) ||
-    canSendMessage(logChannel) ||
+    !canSendMessage(logChannel) ||
     messageUpdate.ignoredChannels.includes(oldMessage.channelId) ||
     messageUpdate.ignoredUsers.includes(oldMessage.author.id);

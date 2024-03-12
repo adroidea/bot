@@ -7,13 +7,13 @@ import {
     GuildTextBasedChannel,
     Message,
     PartialMessage,
-    Snowflake,
-    quote,
-    userMention
+    Snowflake
 } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { Locales } from '../../../../locales/i18n-types';
 import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guild.service';
+import { loadLL } from '../../../core/events/client/interactionCreate';
 
 export default {
     name: Events.MessageBulkDelete,
@@ -25,6 +25,7 @@ export default {
         if (!channel.guild) return;
 
         const {
+            locale: localeLL,
             modules: {
                 auditLogs: { messageBulkDelete }
             }
@@ -32,10 +33,13 @@ export default {
 
         const logChannel = client.guilds.cache
             .get(channel.guild.id)
-            ?.channels.cache.get(messageBulkDelete.channelId!);
+            ?.channels.cache.get(messageBulkDelete.channelId);
         if (!logChannel?.isTextBased()) return;
 
         if (shouldIgnoreBulkDelete(messageBulkDelete, channel.id, logChannel)) return;
+
+        const LL = await loadLL((localeLL as Locales) ?? 'en');
+        const locale = LL.modules.auditLogs.events.messageBulkDelete;
 
         const participantsList = Array.from(
             messages
@@ -49,14 +53,18 @@ export default {
                 }, new Map<string, number>())
                 .entries()
         )
-            .map(([id, count]) => quote(userMention(id)) + `: ${count} messages`)
+            .map(([id, count]) => locale.messages({ id, count }))
             .join('\n');
 
         const embed = new EmbedBuilder()
             .setDescription(
-                `${messages.size} messages supprimés dans <#${channel.id}>\n${participantsList}`
+                locale.embed.description({
+                    amount: messages.size,
+                    channelId: channel.id,
+                    usersDeleted: participantsList
+                })
             )
-            .setFooter({ text: `Suppression de masse.` })
+            .setFooter({ text: locale.embed.footer.text() })
             .setColor([45, 249, 250])
             .setTimestamp();
 
@@ -71,5 +79,5 @@ const shouldIgnoreBulkDelete = (
 ) =>
     !messageBulkDelete.enabled ||
     messageBulkDelete.channelId === '' ||
-    canSendMessage(logChannel) ||
+    !canSendMessage(logChannel) ||
     messageBulkDelete.ignoredChannels.includes(channelId);

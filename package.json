@@ -26,7 +26,7 @@
         "format": "prettier --write \"**/*.ts\"",
         "clean": "npm run lint:fix && npm run format",
         "watch": "tsc -w",
-        "start": "tsc && node dist/index.js",
+        "start": "tsc && node dist/src/index.js",
         "build": "tsc",
         "use:adroi.d.ea": "npm uninstall ..\\adroi.d.ea\\ && npm install adroi.d.ea",
         "use:adroi.d.ea:dist": "npm uninstall adroi.d.ea && npm install ..\\adroi.d.ea\\",

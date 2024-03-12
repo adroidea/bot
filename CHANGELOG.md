@@ -1,10 +1,11 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project will be documented in this file (as long as I think about it).
 
 ## 🏗️ [Unreleased]
 
 ### ✨ Added
+❄️ Core: The bot can now speak in English, y también en español, almost as well as son Français parfait!
 
 ### 🧱 Changed
 
@@ -21,6 +22,7 @@ All notable changes to this project will be documented in this file.
 ❄️ Core: Fixed pictures links (again and final) - [[#88](https://github.com/adroidea/bot/issues/88)]
 
 ### 🚮 Removed
+
 ### 🐛 Fixed
 
 ## 🚀 [4.1.0] - 2024-02-26
@@ -32,8 +34,6 @@ All notable changes to this project will be documented in this file.
 ❄️ Twitch: Now can ignore some categories for the Category Change notification - [[#75](https://github.com/adroidea/bot/issues/75)]
 
 ❄️ QotD: Add banned key words - [[#78](https://github.com/adroidea/bot/issues/78)]
-
-❄️ Core: The bot can now speak in English, y también en español, almost as well as son Français parfait!
 
 ### 🧱 Changed
 

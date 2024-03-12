@@ -1,14 +1,17 @@
-import { Client, EmbedBuilder, Events, GuildMember } from 'discord.js';
-import { Colors, Emojis } from '../../../../utils/consts';
+import { Client, EmbedBuilder, Events, GuildBasedChannel, GuildMember } from 'discord.js';
+import { canSendMessage, timestampToDate } from '../../../../utils/botUtil';
+import { Colors } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { Locales } from '../../../../locales/i18n-types';
 import { addAuthor } from '../../../../utils/embedsUtil';
 import guildService from '../../../../services/guild.service';
-import { timestampToDate } from '../../../../utils/botUtil';
+import { loadLL } from '../../../core/events/client/interactionCreate';
 
 export default {
     name: Events.GuildMemberAdd,
     async execute(client: Client, member: GuildMember) {
         const {
+            locale: localeLL,
             modules: {
                 auditLogs: { guildMemberAdd }
             }
@@ -19,21 +22,21 @@ export default {
             ?.channels.cache.get(guildMemberAdd.channelId);
         if (!logChannel?.isTextBased()) return;
 
-        if (shouldIgnoreMemberAdd(guildMemberAdd, member)) return;
+        if (shouldIgnoreMemberAdd(guildMemberAdd, member, logChannel)) return;
 
+        const LL = await loadLL((localeLL as Locales) ?? 'en');
+        const locale = LL.modules.auditLogs.events.guildMemberAdd;
         const embed = new EmbedBuilder()
             .setThumbnail(member.user.avatarURL())
-            .setTitle(`${Emojis.pikaHi} Bienvenue sur le serveur ${member.user.username} !`)
-            .setDescription(
-                `Bonjour à toi ! Nous souhaitons que ton expérience parmi nous soit aussi plaisante que possible, et nous nous y emploierons constamment.`
-            )
+            .setTitle(locale.embed.title({ username: member.user.username }))
+            .setDescription(locale.embed.description())
             .addFields({
-                name: `${Emojis.snowflake} Création`,
+                name: locale.embed.fields.created(),
                 value: `<t:${timestampToDate(member.user.createdTimestamp)}:R>`,
                 inline: true
             })
             .setFooter({
-                text: 'Utilisateur rejoint'
+                text: locale.embed.footer.text()
             })
             .setTimestamp()
             .setColor(Colors.random);
@@ -45,8 +48,10 @@ export default {
 
 const shouldIgnoreMemberAdd = (
     guildMemberAdd: IAuditLogsModule['guildMemberAdd'],
-    member: GuildMember
+    member: GuildMember,
+    logChannel: GuildBasedChannel | undefined
 ) =>
     !guildMemberAdd.enabled ||
     guildMemberAdd.channelId === '' ||
-    (guildMemberAdd.ignoreBots && member.user.bot);
+    (guildMemberAdd.ignoreBots && member.user.bot) ||
+    !canSendMessage(logChannel);

@@ -1,9 +1,11 @@
 import { Client, EmbedBuilder, Events, GuildBasedChannel, Message } from 'discord.js';
 import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { Locales } from '../../../../locales/i18n-types';
 import { addAuthor } from '../../../../utils/embedsUtil';
 import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guild.service';
+import { loadLL } from '../../../core/events/client/interactionCreate';
 
 export default {
     name: Events.MessageDelete,
@@ -11,6 +13,7 @@ export default {
         if (!message.guild) return;
 
         const {
+            locale: localeLL,
             modules: {
                 auditLogs: { messageDelete }
             }
@@ -23,19 +26,26 @@ export default {
 
         if (shouldIgnoreDelete(messageDelete, message, logChannel)) return;
 
+        const LL = await loadLL((localeLL as Locales) ?? 'en');
+        const locale = LL.modules.auditLogs.events.messageDelete;
+
         if (message.content && logChannel) {
             const embed = new EmbedBuilder()
                 .setDescription(
-                    `Message supprimé de ${message.author.username} dans <#${message.channelId}>, [voir le salon](${message.url})`
+                    locale.embed.description({
+                        userId: message.author.id,
+                        channelId: message.channelId,
+                        url: message.url
+                    })
                 )
                 .addFields([
                     {
-                        name: `Message supprimé :`,
+                        name: locale.embed.fields.message(),
                         value: Emojis.snowflake + ' ' + message.content,
                         inline: false
                     }
                 ])
-                .setFooter({ text: `Message supprimé.` })
+                .setFooter({ text: locale.embed.footer.text() })
                 .setColor(Colors.red)
                 .setTimestamp();
 
@@ -54,6 +64,6 @@ const shouldIgnoreDelete = (
     !messageDelete.enabled ||
     messageDelete.channelId === '' ||
     (messageDelete.ignoreBots && message.author.bot) ||
-    canSendMessage(logChannel) ||
+    !canSendMessage(logChannel) ||
     messageDelete.ignoredChannels.includes(message.channelId) ||
     messageDelete.ignoredUsers.includes(message.author.id);

@@ -2,6 +2,7 @@ import { EmbedBuilder, GuildMember, PermissionsBitField } from 'discord.js';
 import { IGuild, ITVMUserSettings } from 'adroi.d.ea';
 import { CustomErrors } from './errors';
 import { Emojis } from './consts';
+import { TranslationFunctions } from '../locales/i18n-types';
 import guildService from '../services/guild.service';
 
 /**
@@ -73,68 +74,74 @@ export const getorCreateUserSettings = async (
     return userSettings;
 };
 
-const categories = {
-    [`${Emojis.cog} Générales`]: [
-        'ManageChannels',
-        'ManageGuild',
-        'ViewAuditLog',
-        'ViewChannel',
-        'ViewGuildInsights',
-        'ManageRoles',
-        'ManageWebhooks',
-        'ManageEmojisAndStickers',
-        'ManageGuildExpressions'
-    ],
-    [`${Emojis.members} Membres`]: [
-        'CreateInstantInvite',
-        'KickMembers',
-        'BanMembers',
-        'ChangeNickname',
-        'ManageNicknames',
-        'ModerateMembers'
-    ],
-    [`${Emojis.event} Evènements`]: ['ManageEvents'],
-    [`${Emojis.textChannel} Salon textuel`]: [
-        'AddReactions',
-        'SendMessages',
-        'SendTTSMessages',
-        'ManageMessages',
-        'EmbedLinks',
-        'AttachFiles',
-        'ReadMessageHistory',
-        'MentionEveryone',
-        'UseExternalEmojis',
-        'UseApplicationCommands',
-        'ManageThreads',
-        'CreatePublicThreads',
-        'CreatePrivateThreads',
-        'UseExternalStickers',
-        'SendMessagesInThreads',
-        'SendVoiceMessages'
-    ],
-    [`${Emojis.voiceChannel} Salon vocal`]: [
-        'PrioritySpeaker',
-        'Stream',
-        'Connect',
-        'Speak',
-        'MuteMembers',
-        'DeafenMembers',
-        'MoveMembers',
-        'UseVAD',
-        'UseEmbeddedActivities',
-        'UseSoundboard',
-        'UseExternalSounds'
-    ],
-    [`${Emojis.stageChannel} Salon de conférence`]: ['RequestToSpeak'],
-    [`${Emojis.advanced} Avancées`]: ['Administrator']
+const categories = (LL: TranslationFunctions) => {
+    const locale = LL.modules.auditLogs.categories;
+    return {
+        [locale.general()]: [
+            'ManageChannels',
+            'ManageGuild',
+            'ViewAuditLog',
+            'ViewChannel',
+            'ViewGuildInsights',
+            'ManageRoles',
+            'ManageWebhooks',
+            'ManageEmojisAndStickers',
+            'ManageGuildExpressions'
+        ],
+        [locale.membership()]: [
+            'CreateInstantInvite',
+            'KickMembers',
+            'BanMembers',
+            'ChangeNickname',
+            'ManageNicknames',
+            'ModerateMembers'
+        ],
+        [locale.events()]: ['ManageEvents'],
+        [locale.textChannel()]: [
+            'AddReactions',
+            'SendMessages',
+            'SendTTSMessages',
+            'ManageMessages',
+            'EmbedLinks',
+            'AttachFiles',
+            'ReadMessageHistory',
+            'MentionEveryone',
+            'UseExternalEmojis',
+            'UseApplicationCommands',
+            'ManageThreads',
+            'CreatePublicThreads',
+            'CreatePrivateThreads',
+            'UseExternalStickers',
+            'SendMessagesInThreads',
+            'SendVoiceMessages'
+        ],
+        [locale.voiceChannel()]: [
+            'PrioritySpeaker',
+            'Stream',
+            'Connect',
+            'Speak',
+            'MuteMembers',
+            'DeafenMembers',
+            'MoveMembers',
+            'UseVAD',
+            'UseEmbeddedActivities',
+            'UseSoundboard',
+            'UseExternalSounds'
+        ],
+        [locale.stageChannel()]: ['RequestToSpeak'],
+        [locale.advanced()]: ['Administrator']
+    };
 };
-
-export const addPermissionsNames = (permissions: PermissionsBitField, embed: EmbedBuilder) => {
+export const addPermissionsNames = (
+    permissions: PermissionsBitField,
+    embed: EmbedBuilder,
+    LL: TranslationFunctions
+) => {
     const permissionNames: string[] = permissions.toArray();
 
     const categorizedPermissions: Record<string, string[]> = {};
 
-    for (const [category, perms] of Object.entries(categories)) {
+    for (const [category, perms] of Object.entries(categories(LL))) {
         let deniedCount = 0;
         const categorizedPerms: string[] = [];
 
@@ -149,7 +156,9 @@ export const addPermissionsNames = (permissions: PermissionsBitField, embed: Emb
         });
 
         if (deniedCount > 0) {
-            categorizedPerms.push(`❌ +${deniedCount} non attribuées`);
+            categorizedPerms.push(
+                LL.modules.auditLogs.events.guildRoleCreate.embed.unassigned({ deniedCount })
+            );
         }
 
         categorizedPermissions[category] = categorizedPerms;
@@ -161,14 +170,15 @@ export const addPermissionsNames = (permissions: PermissionsBitField, embed: Emb
 export const addComparedPermissionsNames = (
     oldPermissions: PermissionsBitField,
     newPermissions: PermissionsBitField,
-    embed: EmbedBuilder
+    embed: EmbedBuilder,
+    LL: TranslationFunctions
 ) => {
     const permissionNames1: string[] = oldPermissions.toArray();
     const permissionNames2: string[] = newPermissions.toArray();
 
     const categorizedPermissions: Record<string, string[]> = {};
 
-    for (const [category, perms] of Object.entries(categories)) {
+    for (const [category, perms] of Object.entries(categories(LL))) {
         let deniedCount = 0;
         const categorizedPerms: string[] = [];
 
@@ -187,7 +197,9 @@ export const addComparedPermissionsNames = (
         });
 
         if (deniedCount > 0) {
-            categorizedPerms.push(`${Emojis.cross} +${deniedCount} non attribuées`);
+            categorizedPerms.push(
+                LL.modules.auditLogs.events.guildRoleUpdate.embed.unassigned({ deniedCount })
+            );
         }
 
         categorizedPermissions[category] = categorizedPerms;

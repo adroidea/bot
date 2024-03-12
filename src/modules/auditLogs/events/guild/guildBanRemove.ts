@@ -7,11 +7,13 @@ import {
     GuildBasedChannel,
     userMention
 } from 'discord.js';
-import { Colors, Emojis } from '../../../../utils/consts';
+import { Colors } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { Locales } from '../../../../locales/i18n-types';
 import { addAuthor } from '../../../../utils/embedsUtil';
 import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guild.service';
+import { loadLL } from '../../../core/events/client/interactionCreate';
 
 export default {
     name: Events.GuildBanRemove,
@@ -22,6 +24,7 @@ export default {
         });
 
         const {
+            locale: localeLL,
             modules: {
                 auditLogs: { guildBanRemove }
             }
@@ -34,11 +37,14 @@ export default {
 
         if (shouldIgnoreBanRemove(guildBanRemove, logChannel)) return;
 
+        const LL = await loadLL((localeLL as Locales) ?? 'en');
+        const locale = LL.modules.auditLogs.events.guildBanRemove;
+
         const embed = new EmbedBuilder()
             .setThumbnail(ban.user.avatarURL())
-            .setTitle(`Unban d'un utilisateur`)
+            .setTitle(locale.embed.title())
             .addFields({
-                name: `${Emojis.snowflake} Béni`,
+                name: locale.embed.fields.target(),
                 value: userMention(ban.user.id),
                 inline: true
             })
@@ -55,7 +61,7 @@ export default {
             embed.addFields([
                 { name: '\u200B', value: '\u200B', inline: true },
                 {
-                    name: `${Emojis.snowflake} Bienfaiteur`,
+                    name: locale.embed.fields.executor(),
                     value: userMention(executor.id),
                     inline: true
                 }
@@ -63,7 +69,7 @@ export default {
         }
         if (ban.reason)
             embed.addFields({
-                name: `${Emojis.snowflake} Raison`,
+                name: locale.embed.fields.reason(),
                 value: ban.reason,
                 inline: false
             });
@@ -73,6 +79,6 @@ export default {
 };
 
 const shouldIgnoreBanRemove = (
-    guildBanAdd: IAuditLogsModule['guildBanAdd'],
+    guildBanRemove: IAuditLogsModule['guildBanRemove'],
     logChannel: GuildBasedChannel | undefined
-) => !guildBanAdd.enabled || guildBanAdd.channelId === '' || canSendMessage(logChannel);
+) => !guildBanRemove.enabled || guildBanRemove.channelId === '' || !canSendMessage(logChannel);

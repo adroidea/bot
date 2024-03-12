@@ -1,8 +1,19 @@
-import { AuditLogEvent, Client, EmbedBuilder, Events, GuildBan, userMention } from 'discord.js';
-import { Colors, Emojis } from '../../../../utils/consts';
+import {
+    AuditLogEvent,
+    Client,
+    EmbedBuilder,
+    Events,
+    GuildBan,
+    GuildBasedChannel,
+    userMention
+} from 'discord.js';
+import { Colors } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { Locales } from '../../../../locales/i18n-types';
 import { addAuthor } from '../../../../utils/embedsUtil';
+import { canSendMessage } from '../../../../utils/botUtil';
 import guildService from '../../../../services/guild.service';
+import { loadLL } from '../../../core/events/client/interactionCreate';
 
 export default {
     name: Events.GuildBanAdd,
@@ -13,23 +24,27 @@ export default {
         });
 
         const {
+            locale: localeLL,
             modules: {
                 auditLogs: { guildBanAdd }
             }
         } = await guildService.getOrCreateGuild(ban.guild);
+
+        const LL = await loadLL((localeLL as Locales) ?? 'en');
+        const locale = LL.modules.auditLogs.events.guildBanAdd;
 
         const logChannel = client.guilds.cache
             .get(ban.guild.id)
             ?.channels.cache.get(guildBanAdd.channelId);
         if (!logChannel?.isTextBased()) return;
 
-        if (shouldIgnoreBanAdd(guildBanAdd)) return;
+        if (shouldIgnoreBanAdd(guildBanAdd, logChannel)) return;
 
         const embed = new EmbedBuilder()
             .setThumbnail(ban.user.avatarURL())
-            .setTitle("Ban d'un utilisateur")
+            .setTitle(locale.embed.title())
             .addFields({
-                name: `${Emojis.snowflake} Victime`,
+                name: locale.embed.fields.target(),
                 value: userMention(ban.user.id),
                 inline: true
             })
@@ -46,7 +61,7 @@ export default {
             embed.addFields([
                 { name: '\u200B', value: '\u200B', inline: true },
                 {
-                    name: `${Emojis.snowflake} Bourreau`,
+                    name: locale.embed.fields.executor(),
                     value: userMention(executor.id),
                     inline: true
                 }
@@ -55,7 +70,7 @@ export default {
 
         if (ban.reason)
             embed.addFields({
-                name: `${Emojis.snowflake} Raison`,
+                name: locale.embed.fields.reason(),
                 value: ban.reason,
                 inline: false
             });
@@ -64,5 +79,7 @@ export default {
     }
 };
 
-const shouldIgnoreBanAdd = (guildBanAdd: IAuditLogsModule['guildBanAdd']) =>
-    !guildBanAdd.enabled || guildBanAdd.channelId === '';
+const shouldIgnoreBanAdd = (
+    guildBanAdd: IAuditLogsModule['guildBanAdd'],
+    logChannel: GuildBasedChannel | undefined
+) => !guildBanAdd.enabled || guildBanAdd.channelId === '' || !canSendMessage(logChannel);
