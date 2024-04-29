@@ -161,6 +161,85 @@ const fr: Translation = {
                 stageChannel: `${Emojis.stageChannel} Salon de Conférence`,
                 advanced: `${Emojis.advanced} Avancées`
             }
+        },
+        core: {
+            commands: {
+                pingea: {
+                    description: 'Renvoie le ping du bot',
+                    botLatency: 'Latence du bot',
+                    apiLatency: "Latence de l'API"
+                },
+                helpea: {
+                    description: '',
+                    embed: {
+                        title: '',
+                        description: '',
+                        footer: ''
+                    }
+                },
+                reportea: {
+                    desciption: '',
+                    embed: {
+                        description: ''
+                    },
+                    reply: 'Ton signalement a bien été envoyé. Tu pourras le retrouver dans {threadId} sur ce serveur : https://discord.gg/29URgah\nMerci pour ton retour !'
+                },
+                roll: {
+                    description: ''
+                },
+                changelog: {
+                    description: ''
+                },
+                purge: {
+                    description: 'Suppression massive de (1-100) messages dans un canal',
+                    amount: 'Nombre de messages à supprimer',
+                    target: 'La victime de cette suppression massive',
+                    amountError: 'Veuillez choisir un nombre entre 1 et 100',
+                    embed: {
+                        titleTarget: '{amount} messages supprimés de {target} !',
+                        titleNoTarget: '{amount} messages supprimés !',
+                        error: "Aucun message n'a pu être supprimé",
+                        footer: 'Remarque : Les messages datant de plus de 14 jours ne peuvent pas être supprimés en masse'
+                    },
+                    logEmbed: {
+                        title: 'Suppression massive effectuée'
+                    }
+                }
+            }
+        },
+        qotd: {
+            commands: {
+                name: '',
+                description: '',
+                embeds: {
+                    request: {
+                        fields: {
+                            name: ''
+                        },
+                        footer: ''
+                    },
+                    success: {
+                        add: '',
+                        request: '',
+                        description: ''
+                    },
+                    question: {
+                        title: '',
+                        value: ''
+                    }
+                },
+                usage: '',
+                options: {
+                    question: {
+                        name: '',
+                        description: ''
+                    },
+                    author: {
+                        name: '',
+                        description: ''
+                    }
+                }
+            }
         }
     }
 };

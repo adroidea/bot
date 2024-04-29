@@ -64,10 +64,8 @@ process.on('uncaughtException', (err: Error, origin: Error) => {
 });
 
 process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
-    Logger.warn(`UNHANDLED_REJECTION :`);
-    if (reason instanceof Error) console.warn(reason.stack);
-    else console.warn(reason);
-    Logger.warn(`Promise :`);
+    Logger.warn(`UNHANDLED_REJECTION :`, reason);
+    if (reason instanceof Error) Logger.warn('', reason.stack);
     console.warn(promise);
 });
 

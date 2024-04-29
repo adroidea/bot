@@ -159,6 +159,85 @@ const es: Translation = {
                 stageChannel: `${Emojis.stageChannel} Canal de Escenario`,
                 advanced: `${Emojis.advanced} Avanzados`
             }
+        },
+        core: {
+            commands: {
+                helpea: {
+                    description: '',
+                    embed: {
+                        title: '',
+                        description: '',
+                        footer: ''
+                    }
+                },
+                pingea: {
+                    description: 'Devuelve el ping del bot',
+                    botLatency: 'Latencia del bot',
+                    apiLatency: 'Latencia de la API'
+                },
+                reportea: {
+                    desciption: '',
+                    embed: {
+                        description: ''
+                    },
+                    reply: 'Tu informe ha sido enviado. Puedes encontrarlo en {threadId} en este servidor: https://discord.gg/29URgah\n¡Gracias por tu opinión!'
+                },
+                roll: {
+                    description: ''
+                },
+                changelog: {
+                    description: ''
+                },
+                purge: {
+                    description: 'Eliminación masiva de (1-100) mensajes en un canal',
+                    amount: 'Número de mensajes a eliminar',
+                    target: 'La víctima de esta eliminación masiva',
+                    amountError: 'Por favor, elija un número entre 1 y 100',
+                    embed: {
+                        titleTarget: '¡{amount} mensajes eliminados de {target}!',
+                        titleNoTarget: '¡{amount} mensajes eliminados!',
+                        error: 'No se pudo eliminar ningún mensaje',
+                        footer: 'Nota: Los mensajes con más de 14 días de antigüedad no pueden eliminarse en masa'
+                    },
+                    logEmbed: {
+                        title: 'Eliminación masiva realizada'
+                    }
+                }
+            }
+        },
+        qotd: {
+            commands: {
+                name: '',
+                description: '',
+                embeds: {
+                    request: {
+                        fields: {
+                            name: ''
+                        },
+                        footer: ''
+                    },
+                    success: {
+                        add: '',
+                        request: '',
+                        description: ''
+                    },
+                    question: {
+                        title: '',
+                        value: ''
+                    }
+                },
+                usage: '',
+                options: {
+                    question: {
+                        name: '',
+                        description: ''
+                    },
+                    author: {
+                        name: '',
+                        description: ''
+                    }
+                }
+            }
         }
     }
 };

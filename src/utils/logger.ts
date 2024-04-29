@@ -27,9 +27,9 @@ const error = (content: string, error: Error, filePath?: string) => {
     );
 };
 
-const warn = (content: string) => {
+const warn = (content: string, desc = '') => {
     write(content, 'black', 'bgYellow', 'WARN', false);
-    sendInternalLogWebhook(logType.WARN, '', content);
+    sendInternalLogWebhook(logType.WARN, desc, content);
 };
 
 const info = (content: string) => {
@@ -83,8 +83,7 @@ const sendWebhook = (embed: EmbedBuilder) => {
         .send({
             threadId: Channels.logsThread,
             username: 'adroid_ea',
-            avatarURL:
-                'https://cdn.discordapp.com/attachments/763373898779197481/887428474766229574/worldbot.png',
+            avatarURL: 'https://cdn.adan-ea.net/adroid_ea.png',
             embeds: [embed]
         })
         .catch(error => console.error(error));

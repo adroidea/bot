@@ -394,6 +394,207 @@ type RootTranslation = {
 				advanced: string
 			}
 		}
+		core: {
+			commands: {
+				helpea: {
+					/**
+					 * S​e​n​d​ ​a​ ​m​e​s​s​a​g​e​ ​w​i​t​h​ ​a​l​l​ ​t​h​e​ ​b​o​t​'​s​ ​c​o​m​m​a​n​d​s
+					 */
+					description: string
+					options: {
+						command: {
+							/**
+							 * c​o​m​m​a​n​d
+							 */
+							name: string
+							/**
+							 * T​h​e​ ​c​o​m​m​a​n​d​ ​t​h​a​t​ ​i​s​ ​c​a​u​s​i​n​g​ ​y​o​u​ ​p​r​o​b​l​e​m​s
+							 */
+							description: string
+						}
+					}
+					embed: {
+						/**
+						 * <​a​:​f​l​o​c​o​n​:​1​1​7​7​6​1​6​0​2​4​9​5​9​4​5​5​2​4​2​>​ ​V​o​i​c​i​ ​t​o​u​t​e​s​ ​l​e​s​ ​c​o​m​m​a​n​d​e​s​ ​d​u​ ​b​o​t​ ​!
+						 */
+						title: string
+						/**
+						 * S​e​n​d​ ​a​ ​m​e​s​s​a​g​e​ ​w​i​t​h​ ​a​l​l​ ​t​h​e​ ​b​o​t​'​s​ ​c​o​m​m​a​n​d​s
+						 */
+						description: string
+						/**
+						 * <​ ​>​ ​=​ ​o​p​t​i​o​n​a​l​ ​|​ ​[​ ​]​ ​=​ ​r​e​q​u​i​r​e​d​ ​|​ ​(​D​o​ ​n​o​t​ ​i​n​c​l​u​d​e​ ​i​n​ ​c​o​m​m​a​n​d​s​)
+						 */
+						footer: string
+					}
+				}
+				pingea: {
+					/**
+					 * R​e​t​u​r​n​s​ ​t​h​e​ ​b​o​t​'​s​ ​p​i​n​g
+					 */
+					description: string
+					/**
+					 * B​o​t​ ​l​a​t​e​n​c​y
+					 */
+					botLatency: string
+					/**
+					 * A​P​I​ ​l​a​t​e​n​c​y
+					 */
+					apiLatency: string
+				}
+				reportea: {
+					/**
+					 * N​o​t​i​f​i​e​s​ ​t​h​e​ ​b​o​t​'​s​ ​o​w​n​e​r​ ​o​f​ ​a​ ​b​u​g​ ​o​r​ ​a​ ​s​u​g​g​e​s​t​i​o​n
+					 */
+					desciption: string
+					embed: {
+						/**
+						 * *​*​N​o​ ​d​e​s​c​r​i​p​t​i​o​n​ ​p​r​o​v​i​d​e​d​*​*
+						 */
+						description: string
+					}
+					/**
+					 * Y​o​u​r​ ​r​e​p​o​r​t​ ​h​a​s​ ​b​e​e​n​ ​s​e​n​t​.​ ​Y​o​u​ ​c​a​n​ ​f​i​n​d​ ​i​t​ ​i​n​ ​{​t​h​r​e​a​d​I​d​}​ ​o​n​ ​t​h​i​s​ ​s​e​r​v​e​r​:​ ​h​t​t​p​s​:​/​/​d​i​s​c​o​r​d​.​g​g​/​2​9​U​R​g​a​h​g​
+				​T​h​a​n​k​ ​y​o​u​ ​f​o​r​ ​y​o​u​r​ ​f​e​e​d​b​a​c​k​!
+					 * @param {string} threadId
+					 */
+					reply: RequiredParams<'threadId'>
+				}
+				roll: {
+					/**
+					 * R​o​l​l​s​ ​d​i​c​e​s
+					 */
+					description: string
+				}
+				changelog: {
+					/**
+					 * [​o​w​n​e​r​ ​o​n​l​y​]​ ​S​e​n​d​s​ ​a​ ​m​e​s​s​a​g​e​ ​t​o​ ​a​l​l​ ​s​e​r​v​e​r​s
+					 */
+					description: string
+				}
+				purge: {
+					/**
+					 * M​a​s​s​ ​d​e​l​e​t​i​o​n​ ​o​f​ ​(​1​-​1​0​0​)​ ​m​e​s​s​a​g​e​s​ ​i​n​ ​a​ ​c​h​a​n​n​e​l
+					 */
+					description: string
+					/**
+					 * N​u​m​b​e​r​ ​o​f​ ​m​e​s​s​a​g​e​s​ ​t​o​ ​d​e​l​e​t​e
+					 */
+					amount: string
+					/**
+					 * T​h​e​ ​v​i​c​t​i​m​ ​o​f​ ​t​h​i​s​ ​m​a​s​s​ ​d​e​l​e​t​i​o​n
+					 */
+					target: string
+					/**
+					 * P​l​e​a​s​e​ ​c​h​o​o​s​e​ ​a​ ​n​u​m​b​e​r​ ​b​e​t​w​e​e​n​ ​1​ ​a​n​d​ ​1​0​0
+					 */
+					amountError: string
+					embed: {
+						/**
+						 * {​a​m​o​u​n​t​}​ ​m​e​s​s​a​g​e​s​ ​d​e​l​e​t​e​d​ ​f​r​o​m​ ​{​t​a​r​g​e​t​}​!
+						 * @param {number} amount
+						 * @param {string} target
+						 */
+						titleTarget: RequiredParams<'amount' | 'target'>
+						/**
+						 * {​a​m​o​u​n​t​}​ ​m​e​s​s​a​g​e​s​ ​d​e​l​e​t​e​d​!
+						 * @param {number} amount
+						 */
+						titleNoTarget: RequiredParams<'amount'>
+						/**
+						 * N​o​ ​m​e​s​s​a​g​e​ ​c​o​u​l​d​ ​b​e​ ​d​e​l​e​t​e​d
+						 */
+						error: string
+						/**
+						 * N​B​:​ ​M​e​s​s​a​g​e​s​ ​o​l​d​e​r​ ​t​h​a​n​ ​1​4​ ​d​a​y​s​ ​c​a​n​n​o​t​ ​b​e​ ​d​e​l​e​t​e​d​ ​i​n​ ​b​u​l​k
+						 */
+						footer: string
+					}
+					logEmbed: {
+						/**
+						 * B​u​l​k​ ​d​e​l​e​t​i​o​n​ ​d​o​n​e
+						 */
+						title: string
+					}
+				}
+			}
+		}
+		qotd: {
+			commands: {
+				/**
+				 * q​o​t​d
+				 */
+				name: string
+				/**
+				 * S​e​n​d​s​ ​a​ ​r​e​q​u​e​s​t​ ​t​o​ ​a​d​d​ ​t​h​e​ ​q​u​e​s​t​i​o​n​ ​o​f​ ​t​h​e​ ​d​a​y​ ​(​a​u​t​o​ ​a​d​d​e​d​ ​f​o​r​ ​a​d​m​i​n​s​)
+				 */
+				description: string
+				/**
+				 * /​q​o​t​d​ ​[​q​u​e​s​t​i​o​n​]​ ​<​a​u​t​h​o​r​>
+				 */
+				usage: string
+				options: {
+					question: {
+						/**
+						 * q​u​e​s​t​i​o​n
+						 */
+						name: string
+						/**
+						 * T​h​e​ ​q​u​e​s​t​i​o​n​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​p​r​o​p​o​s​e
+						 */
+						description: string
+					}
+					author: {
+						/**
+						 * a​u​t​h​o​r
+						 */
+						name: string
+						/**
+						 * [​A​D​M​I​N​]​ ​T​h​e​ ​a​u​t​h​o​r​ ​o​f​ ​t​h​e​ ​q​u​e​s​t​i​o​n
+						 */
+						description: string
+					}
+				}
+				embeds: {
+					request: {
+						fields: {
+							/**
+							 * A​u​t​h​o​r
+							 */
+							name: string
+						}
+						/**
+						 * Q​o​t​d​ ​R​e​q​u​e​s​t
+						 */
+						footer: string
+					}
+					success: {
+						/**
+						 * Q​u​e​s​t​i​o​n​ ​a​d​d​e​d​!
+						 */
+						add: string
+						/**
+						 * R​e​q​u​e​s​t​ ​s​e​n​t​!
+						 */
+						request: string
+						/**
+						 * D​o​ ​y​o​u​ ​a​l​l​o​w​ ​m​e​ ​t​o​ ​a​l​s​o​ ​s​e​n​d​ ​t​h​i​s​ ​q​u​e​s​t​i​o​n​ ​t​o​ ​t​h​e​ ​b​o​t​ ​o​w​n​e​r​?​ ​(​Y​o​u​ ​c​a​n​ ​s​a​f​e​l​y​ ​i​g​n​o​r​e​ ​t​h​i​s​ ​m​e​s​s​a​g​e​ ​i​f​ ​y​o​u​ ​d​o​n​'​t​)
+						 */
+						description: string
+					}
+					question: {
+						/**
+						 * S​t​a​t​u​s
+						 */
+						title: string
+						/**
+						 * ⏳​ ​P​e​n​d​i​n​g
+						 */
+						value: string
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -754,6 +955,203 @@ export type TranslationFunctions = {
 				 * <:moderator_shield:1194570073579474964> Advanced
 				 */
 				advanced: () => LocalizedString
+			}
+		}
+		core: {
+			commands: {
+				helpea: {
+					/**
+					 * Send a message with all the bot's commands
+					 */
+					description: () => LocalizedString
+					options: {
+						command: {
+							/**
+							 * command
+							 */
+							name: () => LocalizedString
+							/**
+							 * The command that is causing you problems
+							 */
+							description: () => LocalizedString
+						}
+					}
+					embed: {
+						/**
+						 * <a:flocon:1177616024959455242> Voici toutes les commandes du bot !
+						 */
+						title: () => LocalizedString
+						/**
+						 * Send a message with all the bot's commands
+						 */
+						description: () => LocalizedString
+						/**
+						 * < > = optional | [ ] = required | (Do not include in commands)
+						 */
+						footer: () => LocalizedString
+					}
+				}
+				pingea: {
+					/**
+					 * Returns the bot's ping
+					 */
+					description: () => LocalizedString
+					/**
+					 * Bot latency
+					 */
+					botLatency: () => LocalizedString
+					/**
+					 * API latency
+					 */
+					apiLatency: () => LocalizedString
+				}
+				reportea: {
+					/**
+					 * Notifies the bot's owner of a bug or a suggestion
+					 */
+					desciption: () => LocalizedString
+					embed: {
+						/**
+						 * **No description provided**
+						 */
+						description: () => LocalizedString
+					}
+					/**
+					 * Your report has been sent. You can find it in {threadId} on this server: https://discord.gg/29URgahg
+				Thank you for your feedback!
+					 */
+					reply: (arg: { threadId: string }) => LocalizedString
+				}
+				roll: {
+					/**
+					 * Rolls dices
+					 */
+					description: () => LocalizedString
+				}
+				changelog: {
+					/**
+					 * [owner only] Sends a message to all servers
+					 */
+					description: () => LocalizedString
+				}
+				purge: {
+					/**
+					 * Mass deletion of (1-100) messages in a channel
+					 */
+					description: () => LocalizedString
+					/**
+					 * Number of messages to delete
+					 */
+					amount: () => LocalizedString
+					/**
+					 * The victim of this mass deletion
+					 */
+					target: () => LocalizedString
+					/**
+					 * Please choose a number between 1 and 100
+					 */
+					amountError: () => LocalizedString
+					embed: {
+						/**
+						 * {amount} messages deleted from {target}!
+						 */
+						titleTarget: (arg: { amount: number, target: string }) => LocalizedString
+						/**
+						 * {amount} messages deleted!
+						 */
+						titleNoTarget: (arg: { amount: number }) => LocalizedString
+						/**
+						 * No message could be deleted
+						 */
+						error: () => LocalizedString
+						/**
+						 * NB: Messages older than 14 days cannot be deleted in bulk
+						 */
+						footer: () => LocalizedString
+					}
+					logEmbed: {
+						/**
+						 * Bulk deletion done
+						 */
+						title: () => LocalizedString
+					}
+				}
+			}
+		}
+		qotd: {
+			commands: {
+				/**
+				 * qotd
+				 */
+				name: () => LocalizedString
+				/**
+				 * Sends a request to add the question of the day (auto added for admins)
+				 */
+				description: () => LocalizedString
+				/**
+				 * /qotd [question] <author>
+				 */
+				usage: () => LocalizedString
+				options: {
+					question: {
+						/**
+						 * question
+						 */
+						name: () => LocalizedString
+						/**
+						 * The question you want to propose
+						 */
+						description: () => LocalizedString
+					}
+					author: {
+						/**
+						 * author
+						 */
+						name: () => LocalizedString
+						/**
+						 * [ADMIN] The author of the question
+						 */
+						description: () => LocalizedString
+					}
+				}
+				embeds: {
+					request: {
+						fields: {
+							/**
+							 * Author
+							 */
+							name: () => LocalizedString
+						}
+						/**
+						 * Qotd Request
+						 */
+						footer: () => LocalizedString
+					}
+					success: {
+						/**
+						 * Question added!
+						 */
+						add: () => LocalizedString
+						/**
+						 * Request sent!
+						 */
+						request: () => LocalizedString
+						/**
+						 * Do you allow me to also send this question to the bot owner? (You can safely ignore this message if you don't)
+						 */
+						description: () => LocalizedString
+					}
+					question: {
+						/**
+						 * Status
+						 */
+						title: () => LocalizedString
+						/**
+						 * ⏳ Pending
+						 */
+						value: () => LocalizedString
+					}
+				}
 			}
 		}
 	}

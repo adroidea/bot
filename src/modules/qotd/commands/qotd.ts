@@ -14,24 +14,45 @@ import { IGuild, IQOTDModule } from 'adroi.d.ea';
 import { adminRow, stealRow } from '../components/buttons';
 import { CustomErrors } from '../../../utils/errors';
 import { IQuestions } from '../models';
+import L from '../../../locales/i18n-node';
+import { TranslationFunctions } from '../../../locales/i18n-types';
 import { isQOtDModuleEnabled } from '../../../utils/modulesUil';
 import qotddService from '../services/qotd.service';
 
 export default {
     data: {
-        name: 'qdj',
-        description: "Envoie une demande d'ajout de la question du jour (auto accepté pour admins)",
+        name: L.en.modules.qotd.commands.name(),
+        name_localizations: {
+            'en-GB': L.en.modules.qotd.commands.name(),
+            fr: L.fr.modules.qotd.commands.name(),
+            'es-ES': L.es.modules.qotd.commands.name()
+        },
+        description: L.en.modules.qotd.commands.description(),
+        description_localizations: {
+            'en-GB': L.en.modules.qotd.commands.description(),
+            'es-ES': L.es.modules.qotd.commands.description()
+        },
         options: [
             {
-                name: 'question',
-                description: 'question du jour',
+                name: L.en.modules.qotd.commands.options.question.name(),
+                name_localization: {
+                    'en-GB': L.en.modules.qotd.commands.options.question.name(),
+                    fr: L.fr.modules.qotd.commands.options.question.name(),
+                    'es-ES': L.es.modules.qotd.commands.options.question.name()
+                },
+                description: L.en.modules.qotd.commands.options.question.description(),
+                description_localization: {
+                    'en-GB': L.en.modules.qotd.commands.options.question.description(),
+                    fr: L.fr.modules.qotd.commands.options.question.description(),
+                    'es-ES': L.es.modules.qotd.commands.options.question.description()
+                },
                 type: ApplicationCommandOptionType.String,
                 required: true,
                 max_length: 256
             },
             {
-                name: 'auteur',
-                description: '[ADMIN] Auteur de la question',
+                name: L.en.modules.qotd.commands.options.author.name(),
+                description: L.en.modules.qotd.commands.options.author.description(),
                 type: ApplicationCommandOptionType.User,
                 required: false
             }
@@ -43,12 +64,17 @@ export default {
     examples: ['qdj Pâtes ou riz ?', 'qdj pain au chocolat ou croissant ? @Adan_ea#3000'],
     guildOnly: false,
 
-    async execute(client: Client, interaction: ChatInputCommandInteraction, guildData: IGuild) {
+    async execute(
+        client: Client,
+        interaction: ChatInputCommandInteraction,
+        guildData: IGuild,
+        LL: TranslationFunctions
+    ) {
         const { qotd }: { qotd: IQOTDModule } = guildData.modules;
         if (!isQOtDModuleEnabled(guildData, true)) return;
 
         if (qotd.blacklist?.includes(interaction.user.id)) throw CustomErrors.BlacklistedUserError;
-
+        const locale = LL.modules.qotd.commands;
         const question = interaction.options.getString('question', true);
 
         if (qotd.bannedWords?.some(word => new RegExp(word, 'i').test(question)))
@@ -68,12 +94,12 @@ export default {
             .setColor(Colors.random)
             .addFields([
                 {
-                    name: 'Auteur',
+                    name: locale.embeds.request.fields.name(),
                     value: userMention(user.id),
                     inline: true
                 }
             ])
-            .setFooter({ text: 'Requête de QdJ' })
+            .setFooter({ text: locale.embeds.request.footer() })
             .setTimestamp();
 
         addAuthor(questionEmbed, user);
@@ -83,14 +109,12 @@ export default {
             interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageMessages)
         ) {
             qotddService.createQOtD(questionBuilder);
-            const successEmbed = Embed.success('Question ajoutée !');
+            const successEmbed = Embed.success(locale.embeds.success.add());
             if (interaction.guildId !== Guilds.adan_ea) {
                 await interaction.reply({
                     embeds: [
                         questionEmbed,
-                        successEmbed.setDescription(
-                            "Est ce que tu es d'accord pour que ta question soit aussi proposée sur le serveur d'Adan ? (Tu peux ignorer le message si tu ne veux pas)"
-                        )
+                        successEmbed.setDescription(locale.embeds.success.description())
                     ],
                     components: [stealRow],
                     ephemeral: true
@@ -104,8 +128,8 @@ export default {
         } else {
             questionEmbed.addFields([
                 {
-                    name: 'Statut',
-                    value: '⏳ En attente',
+                    name: locale.embeds.question.title(),
+                    value: locale.embeds.question.value(),
                     inline: true
                 }
             ]);
@@ -121,14 +145,12 @@ export default {
                 embeds: [questionEmbed],
                 components: [adminRow]
             });
-            const successEmbed = Embed.success('Requête envoyée !');
+            const successEmbed = Embed.success(locale.embeds.success.request());
             if (interaction.guildId !== Guilds.adan_ea) {
                 await interaction.reply({
                     embeds: [
                         questionEmbed,
-                        successEmbed.setDescription(
-                            "Est ce que tu es d'accord pour que ta question soit aussi proposée sur le serveur d'Adan ? (Tu peux ignorer le message si tu ne veux pas)"
-                        )
+                        successEmbed.setDescription(locale.embeds.success.description())
                     ],
                     components: [stealRow],
                     ephemeral: true

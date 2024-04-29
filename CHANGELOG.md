@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file (as long as 
 ## 🏗️ [Unreleased]
 
 ### ✨ Added
+
 ❄️ Core: The bot can now speak in English, y también en español, almost as well as son Français parfait!
 
 ### 🧱 Changed
@@ -13,12 +14,16 @@ All notable changes to this project will be documented in this file (as long as 
 
 ### 🐛 Fixed
 
+❄️ Core: purge command finally deletes up to 100 messages, as intended
+
 ## 🏗️ [4.1.1]
 
 ### ✨ Added
+
 ❄️ MessageCreate: Add two triggers
 
 ### 🧱 Changed
+
 ❄️ Core: Fixed pictures links (again and final) - [[#88](https://github.com/adroidea/bot/issues/88)]
 
 ### 🚮 Removed

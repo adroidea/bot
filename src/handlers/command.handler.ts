@@ -56,6 +56,11 @@ const checkCommandOptions = (cmd: any, filePath: string): boolean => {
         hasWarning = true;
     }
 
+    //if (!cmd.module) {
+    //    errorList.push('MODULE');
+    //    hasWarning = true;
+    //}
+
     if (!cmd.permissions) {
         errorList.push('PERMISSIONS');
         hasError = true;

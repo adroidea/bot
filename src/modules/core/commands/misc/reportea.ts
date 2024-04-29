@@ -8,11 +8,13 @@ import {
     PermissionsBitField
 } from 'discord.js';
 import { Channels, Colors, Guilds } from '../../../../utils/consts';
+import { IGuild } from 'adroi.d.ea';
+import { TranslationFunctions } from '../../../../locales/i18n-types';
 import { addAuthor } from '../../../../utils/embedsUtil';
 
 export default {
     data: {
-        name: 'report',
+        name: 'reportea',
         description: "Notifie le propriétaire du bot d'un bug ou d'une suggestion",
         options: [
             {
@@ -59,16 +61,21 @@ export default {
     usage: 'report [type] [title] [description]',
     examples: ["report bug qdj s'envoie pas la qdj ne s'envoie pas dans le salon qdj"],
 
-    async execute(client: Client, interaction: ChatInputCommandInteraction) {
+    async execute(
+        client: Client,
+        interaction: ChatInputCommandInteraction,
+        _: IGuild,
+        LL: TranslationFunctions
+    ) {
         await interaction.deferReply({ ephemeral: true });
         const issue = interaction.options.getString('type', true);
         const title = interaction.options.getString('title', true);
         const description = interaction.options.getString('description', false);
         const attachment = interaction.options.getAttachment('fichier', false);
-
+        const locale = LL.modules.core.commands.reportea;
         const embed = new EmbedBuilder()
             .setTitle(`**${title}**`)
-            .setDescription(description ?? '*Aucune description*')
+            .setDescription(description ?? locale.embed.description())
             .setColor(Colors.random)
             .setTimestamp();
 
@@ -91,7 +98,7 @@ export default {
             appliedTags: [bugChannel.availableTags.find(tag => tag.name === issue)!.id]
         });
         await interaction.editReply({
-            content: `Ton message a bien été envoyé. Tu peux le retrouver dans <#${thread.id}> sur ce serveur: https://discord.gg/29URgahg\nMerci pour ta contribution !`
+            content: locale.reply({ threadId: thread.id })
         });
     }
 };

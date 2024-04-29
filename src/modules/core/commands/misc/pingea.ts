@@ -14,6 +14,7 @@ export default {
         description: 'Renvoie le ping du bot'
     },
     category: 'utils',
+    module: 'core',
     cooldown: 10,
     permissions: [PermissionsBitField.Flags.SendMessages],
     guildOnly: false,
@@ -31,7 +32,7 @@ export default {
             fetchReply: true,
             ephemeral: true
         });
-        const locale = LL.commands.pingea;
+        const locale = LL.modules.core.commands.pingea;
         const botLantency = sentMessage.createdTimestamp - interaction.createdTimestamp;
         const embed = new EmbedBuilder()
             .setThumbnail(client.user!.displayAvatarURL())
