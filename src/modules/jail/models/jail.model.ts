@@ -5,6 +5,7 @@ export const jailSchema = new mongoose.Schema<IJailModule>({
     enabled: Boolean,
     jailChannel: String,
     minTime: Number,
-    maxTime: Number
+    maxTime: Number,
+    customMessage: String
 });
 

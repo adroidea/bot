@@ -46,7 +46,11 @@ export const CustomErrors = {
     //               Jail related err                 //
     ////////////////////////////////////////////////////
     JailDisabledError: new CustomError("Le module Jail n'est pas activé sur ce serveur."),
-
+    JailChannelNotSetError: new CustomError("Le salon de prison n'a pas été défini."),
+    JailChannelNotVoiceError: new CustomError("Le salon de prison n'est pas un salon vocal."),
+    JailTargetNotInVoiceError: (target: string) =>
+        new CustomError(`${target} n'est pas dans un salon vocal.`),
+    JailTargetInPrisonError: (target: string) => new CustomError(`${target} est déjà en prison.`),
 
     ////////////////////////////////////////////////////
     //               Events related err               //
