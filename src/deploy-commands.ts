@@ -17,6 +17,7 @@ export const regCMD = async (clientId: string) => {
 
     const categoryFolders = [
         path.join(__dirname, 'modules/core/commands'),
+        path.join(__dirname, 'modules/jail/components/contextMenus'),
         //path.join(__dirname, 'modules/logs/commands'),
         path.join(__dirname, 'modules/qotd/commands'),
         //path.join(__dirname, 'modules/scheduledEvents/commands'),
@@ -53,7 +54,7 @@ export const regCMD = async (clientId: string) => {
     const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 
     try {
-        await rest.put(Routes.applicationGuildCommands(clientId, Guilds.adan_ea), {
+        await rest.put(Routes.applicationGuildCommands(clientId, Guilds.adanLab), {
             body: guildCommands
         });
         Logger.info(`Successfully registered ${guildCommands.length} guild application commands.`);

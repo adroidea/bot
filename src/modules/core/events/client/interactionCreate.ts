@@ -53,6 +53,17 @@ const handleCommandInteraction = async (
     interaction: CommandInteraction
 ) => {
     const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guild!);
+    if (interaction.isUserContextMenuCommand()) {
+        try {
+            const contextMenu = client.contextMenus.get(interaction.commandName);
+            if (contextMenu) {
+                await contextMenu.execute(interaction, guildSettings);
+            }
+        } catch (err) {
+            handleError(interaction, err);
+        }
+        return;
+    }
     const command = client.commands.get(interaction.commandName);
 
     try {

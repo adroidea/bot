@@ -43,6 +43,12 @@ export const CustomErrors = {
     SwitchVoicePrivacyError: new CustomError("Whoops, j'ai pas réussi à switch l'état du salon."),
 
     ////////////////////////////////////////////////////
+    //               Jail related err                 //
+    ////////////////////////////////////////////////////
+    JailDisabledError: new CustomError("Le module Jail n'est pas activé sur ce serveur."),
+
+
+    ////////////////////////////////////////////////////
     //               Events related err               //
     ////////////////////////////////////////////////////
     ScheduledEventDisabledError: new CustomError(

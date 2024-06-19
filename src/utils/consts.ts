@@ -54,6 +54,12 @@ export const Modules: Record<string, IModule> = {
         description: 'Module de logs',
         emoji: '📜'
     },
+    jail: {
+        name: 'jail',
+        label: 'Jail',
+        description: 'Module de la prison',
+        emoji: '🔒'
+    },
     // party: {
     //     name: 'party',
     //     label: 'Party',
