@@ -4,7 +4,7 @@ import { IQuestions, QuestionsModel } from '../models';
 import { Colors } from '../../../utils/consts';
 import { IQOTDModule } from 'adroi.d.ea';
 import Logger from '../../../utils/logger';
-import { client } from '../../..';
+import { client } from '../../../..';
 import cron from 'node-cron';
 import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import qotddService from '../services/qotd.service';

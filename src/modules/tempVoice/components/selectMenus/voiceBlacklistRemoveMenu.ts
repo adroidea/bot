@@ -9,7 +9,7 @@ import {
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
 import { IGuild } from 'adroi.d.ea';
-import { client } from '../../../..';
+import { client } from '../../../../..';
 import { formatCustomList } from '../../../../utils/embedsUtil';
 import guildService from '../../../../services/guild.service';
 

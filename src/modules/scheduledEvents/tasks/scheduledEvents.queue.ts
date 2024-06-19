@@ -1,7 +1,7 @@
 import { IEvent } from '../models';
 import Logger from '../../../utils/logger';
 import { Queue } from 'bullmq';
-import { connection } from '../../..';
+import { connection } from '../../../..';
 
 const connectionOptions = {
     connection,

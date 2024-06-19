@@ -1,7 +1,7 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, Collection, VoiceRegion } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
 import { buildVoiceSetRTCRegionActionRow } from '../selectMenus';
-import { client } from '../../../..';
+import { client } from '../../../../..';
 
 export const voiceSetRTCRegionBtn = new ButtonBuilder()
     .setCustomId('voiceSetRTCRegionBtn')

@@ -10,7 +10,7 @@ import {
 import { Embed, addAuthor } from '../../../../utils/embedsUtil';
 import { Channels } from '../../../../utils/consts';
 import { adminRow } from '.';
-import { client } from '../../../..';
+import { client } from '../../../../..';
 
 export const qotdAcceptStealButton = new ButtonBuilder()
     .setCustomId('qotdAcceptStealBtn')

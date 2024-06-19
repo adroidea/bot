@@ -1,6 +1,6 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
-import { client } from '../../../..';
+import { client } from '../../../../..';
 import { voiceLimitModal } from '../modals/voiceLimitModal';
 
 export const voiceLimitBtn = new ButtonBuilder()

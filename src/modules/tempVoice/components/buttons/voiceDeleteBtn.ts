@@ -1,6 +1,6 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
-import { client } from '../../../..';
+import { client } from '../../../../..';
 import { voiceDeleteActionRow } from './voiceDeleteConfirmBtn';
 
 export const voiceDeleteBtn = new ButtonBuilder()

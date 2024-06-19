@@ -1,5 +1,5 @@
 import { Job, Worker, WorkerOptions } from 'bullmq';
-import { client, connection } from '../../..';
+import { client, connection } from '../../../..';
 import { IEvent } from '../models';
 import ScheduledEventService from '../services/scheduledEventService';
 

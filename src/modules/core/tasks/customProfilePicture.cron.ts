@@ -1,7 +1,7 @@
 import { Guild } from 'discord.js';
 import { Guilds } from '../../../utils/consts';
 import Logger from '../../../utils/logger';
-import { client } from '../../../';
+import { client } from '../../../..';
 import cron from 'node-cron';
 
 const dpp = {
