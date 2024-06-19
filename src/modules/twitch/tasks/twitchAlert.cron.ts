@@ -5,7 +5,7 @@ import {
     buildLiveStartTitle,
     fetchTwitchStream,
     randomizeArray
-} from '../../../utils/twitchUtil';
+} from '../../../utils/twitch.util';
 import { Colors } from '../../../utils/consts';
 import { client } from '../../../../index';
 import cron from 'node-cron';

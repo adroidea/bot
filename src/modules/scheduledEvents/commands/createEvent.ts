@@ -7,7 +7,7 @@ import {
 import { CustomErrors } from '../../../utils/errors';
 import { IEvent } from '../models';
 import { IGuild } from 'adroi.d.ea';
-import ScheduledEventService from '../services/scheduledEventService';
+import ScheduledEventService from '../services/scheduledEvent.service';
 import { addToAppropriateQueue } from '../tasks/scheduledEvents.queue';
 //import { isEventManagementModuleEnabled } from '../../../utils/modulesUil';
 

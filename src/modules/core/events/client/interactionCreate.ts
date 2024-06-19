@@ -15,13 +15,13 @@ import {
     UserSelectMenuInteraction
 } from 'discord.js';
 import { CustomError, CustomErrors } from '../../../../utils/errors';
-import { Embed } from '../../../../utils/embedsUtil';
+import { Embed } from '../../../../utils/embeds.util';
 import { IDiscordClient } from '../../../../client';
 import { IGuild } from 'adroi.d.ea';
 import { client } from '../../../../..';
 import guildService from '../../../../services/guild.service';
-import { hasMemberPermission } from '../../../../utils/memberUtil';
-import { timestampToDate } from '../../../../utils/botUtil';
+import { hasMemberPermission } from '../../../../utils/member.util';
+import { timestampToDate } from '../../../../utils/bot.util';
 
 export default {
     name: Events.InteractionCreate,

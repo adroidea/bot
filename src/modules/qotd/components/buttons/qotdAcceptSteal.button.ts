@@ -7,7 +7,7 @@ import {
     TextBasedChannel,
     userMention
 } from 'discord.js';
-import { Embed, addAuthor } from '../../../../utils/embedsUtil';
+import { Embed, addAuthor } from '../../../../utils/embeds.util';
 import { Channels } from '../../../../utils/consts';
 import { adminRow } from '.';
 import { client } from '../../../../..';

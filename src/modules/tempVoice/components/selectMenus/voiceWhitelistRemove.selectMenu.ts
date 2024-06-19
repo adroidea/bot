@@ -10,7 +10,7 @@ import {
 import { Colors } from '../../../../utils/consts';
 import { IGuild } from 'adroi.d.ea';
 import { client } from '../../../../..';
-import { formatCustomList } from '../../../../utils/embedsUtil';
+import { formatCustomList } from '../../../../utils/embeds.util';
 import guildService from '../../../../services/guild.service';
 
 const buildSelectMenu = (users: string[]) => {
@@ -19,8 +19,8 @@ const buildSelectMenu = (users: string[]) => {
         .filter(user => user !== undefined);
 
     return new StringSelectMenuBuilder()
-        .setCustomId('voiceBlacklistRemoveMenu')
-        .setPlaceholder("Lever l'interdiction de ces utilisateurs")
+        .setCustomId('voiceWhitelistRemoveMenu')
+        .setPlaceholder("Lever l'autorisation de ces utilisateurs")
         .addOptions(
             usersData.map((user: User) => ({
                 label: user.username,
@@ -32,50 +32,46 @@ const buildSelectMenu = (users: string[]) => {
         .setMaxValues(usersData.length);
 };
 
-/**
- * Builds an ActionRow containing a StringSelectMenu for removing users from the voice blacklist.
- * @param users - An array of strings representing the users to be removed.
- * @returns An ActionRowBuilder containing the StringSelectMenu.
- */
-export const buildVoiceBlacklistRemoveRow = (users: string[]) => {
+export const buildVoiceWhitelistRemoveRow = (users: string[]) => {
     return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(buildSelectMenu(users));
 };
-
 export default {
     data: {
-        name: `voiceBlacklistRemoveMenu`
+        name: `voiceWhitelistRemoveMenu`
     },
     async execute(interaction: UserSelectMenuInteraction, guildSettings: IGuild) {
         await interaction.deferUpdate();
-        const { blockedUsers } =
-            guildSettings.modules.tempVoice.userSettings[interaction.user.id];
+        const { trustedUsers } = guildSettings.modules.tempVoice.userSettings[interaction.user.id];
         const selectedUserIds = interaction.values;
-
         const member = interaction.member as GuildMember;
         const voiceChannel = member.voice.channel;
 
         for (const userId of selectedUserIds) {
             if (voiceChannel) {
-                const isBlacklisted = voiceChannel.permissionOverwrites.cache
+                const isWhitelisted = voiceChannel.permissionOverwrites.cache
                     .get(userId)
-                    ?.deny.has([
+                    ?.allow.has([
                         PermissionsBitField.Flags.Connect,
                         PermissionsBitField.Flags.ViewChannel
                     ]);
 
-                if (isBlacklisted) {
-                    await voiceChannel.permissionOverwrites.delete(userId);
+                if (isWhitelisted) {
+                    await voiceChannel.permissionOverwrites.edit(userId, {
+                        ViewChannel: null,
+                        Connect: null,
+                        Speak: null
+                    });
                 }
             }
 
-            if (blockedUsers.includes(userId)) {
-                blockedUsers.splice(blockedUsers.indexOf(userId), 1);
+            if (trustedUsers.includes(userId)) {
+                trustedUsers.splice(trustedUsers.indexOf(userId), 1);
             }
         }
 
         guildService.updateGuild(interaction.guild!, {
-            [`modules.tempVoice.userSettings.${interaction.user.id}.blockedUsers`]:
-                blockedUsers
+            [`modules.tempVoice.userSettings.${interaction.user.id}.trustedUsers`]:
+                trustedUsers
         });
 
         const newEmbed = new EmbedBuilder()

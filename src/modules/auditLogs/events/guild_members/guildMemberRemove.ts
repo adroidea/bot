@@ -1,8 +1,8 @@
 import { Client, EmbedBuilder, Events, GuildMember, inlineCode } from 'discord.js';
 import { Colors, Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
-import { addAuthor } from '../../../../utils/embedsUtil';
-import { detailedShortDate } from '../../../../utils/botUtil';
+import { addAuthor } from '../../../../utils/embeds.util';
+import { detailedShortDate } from '../../../../utils/bot.util';
 import guildService from '../../../../services/guild.service';
 
 export default {

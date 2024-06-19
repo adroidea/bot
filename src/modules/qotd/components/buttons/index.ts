@@ -1,8 +1,8 @@
 import { ActionRowBuilder, ButtonBuilder } from 'discord.js';
-import { qotdAcceptButton } from './qotdAcceptBtn';
-import { qotdAcceptStealButton } from './qotdAcceptStealBtn';
-import { qotdBlacklistRejectButton } from './qotdBlacklistRejectBtn';
-import { qotdRejectButton } from './qotdRejectBtn';
+import { qotdAcceptButton } from './qotdAccept.button';
+import { qotdAcceptStealButton } from './qotdAcceptSteal.button';
+import { qotdBlacklistRejectButton } from './qotdBlacklistReject.button';
+import { qotdRejectButton } from './qotdReject.button';
 
 export { qotdAcceptButton, qotdAcceptStealButton, qotdBlacklistRejectButton, qotdRejectButton };
 

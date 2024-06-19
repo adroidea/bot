@@ -8,10 +8,10 @@ import {
     PermissionsBitField,
     TextChannel
 } from 'discord.js';
-import { Embed, addAuthor } from '../../../../utils/embedsUtil';
+import { Embed, addAuthor } from '../../../../utils/embeds.util';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from 'adroi.d.ea';
-import { hasBotPermission } from '../../../../utils/botUtil';
+import { hasBotPermission } from '../../../../utils/bot.util';
 
 export default {
     data: {

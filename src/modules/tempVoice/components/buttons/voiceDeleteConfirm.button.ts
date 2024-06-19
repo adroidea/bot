@@ -6,7 +6,7 @@ import {
     GuildMember
 } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
-import { isMemberVoiceOwner } from '../../../../utils/voiceUtil';
+import { isMemberVoiceOwner } from '../../../../utils/voice.util';
 
 export const voiceDeleteActionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()

@@ -1,4 +1,4 @@
-import { Embed, addAuthor } from '../../../utils/embedsUtil';
+import { Embed, addAuthor } from '../../../utils/embeds.util';
 import { EmbedBuilder, Guild, MessageType, TextBasedChannel, User } from 'discord.js';
 import { IQuestions, QuestionsModel } from '../models';
 import { Colors } from '../../../utils/consts';

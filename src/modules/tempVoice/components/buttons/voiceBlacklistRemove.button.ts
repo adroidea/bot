@@ -1,7 +1,7 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, GuildMember } from 'discord.js';
 import { IGuild } from 'adroi.d.ea';
 import { buildVoiceBlacklistRemoveRow } from '../selectMenus';
-import { getorCreateUserSettings } from '../../../../utils/modulesUil';
+import { getorCreateUserSettings } from '../../../../utils/modules.uil';
 
 export const voiceBlacklistRemoveBtn = new ButtonBuilder()
     .setCustomId('voiceBlacklistRemoveBtn')

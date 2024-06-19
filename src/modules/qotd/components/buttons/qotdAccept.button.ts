@@ -6,7 +6,7 @@ import {
     PermissionsBitField,
     userMention
 } from 'discord.js';
-import { Embed, addAuthor } from '../../../../utils/embedsUtil';
+import { Embed, addAuthor } from '../../../../utils/embeds.util';
 import { CustomErrors } from '../../../../utils/errors';
 import { IQuestions } from '../../models';
 import qotddService from '../../services/qotd.service';

@@ -9,7 +9,7 @@ import {
 import { Colors } from '../../../../utils/consts';
 import { IGuild } from 'adroi.d.ea';
 import { client } from '../../../../..';
-import { formatCustomList } from '../../../../utils/embedsUtil';
+import { formatCustomList } from '../../../../utils/embeds.util';
 import guildService from '../../../../services/guild.service';
 
 const selectMenu = new UserSelectMenuBuilder()

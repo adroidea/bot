@@ -1,5 +1,5 @@
 import { APIEmbedField, channelMention, roleMention, userMention } from 'discord.js';
-import { formatCustomList, formatFields } from '../../../src/utils/embedsUtil';
+import { formatCustomList, formatFields } from '../../../src/utils/embeds.util';
 
 jest.mock('discord.js', () => ({
     roleMention: jest.fn((id: string) => `<@&${id}>`),

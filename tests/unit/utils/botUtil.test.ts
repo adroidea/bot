@@ -1,4 +1,4 @@
-import { timestampToDate } from '../../../src/utils/botUtil';
+import { timestampToDate } from '../../../src/utils/bot.util';
 
 describe('timestampToDate', () => {
     it('correctly converts a timestamp to a date in seconds', () => {

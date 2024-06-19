@@ -7,8 +7,8 @@ import {
     userMention
 } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
-import { addAuthor } from '../../../../utils/embedsUtil';
-import { canSendMessage } from '../../../../utils/botUtil';
+import { addAuthor } from '../../../../utils/embeds.util';
+import { canSendMessage } from '../../../../utils/bot.util';
 import guildService from '../../../../services/guild.service';
 
 export default {
