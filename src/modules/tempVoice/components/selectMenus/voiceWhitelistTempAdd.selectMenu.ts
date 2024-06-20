@@ -7,7 +7,7 @@ import {
     UserSelectMenuInteraction
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
-import { formatCustomList } from '../../../../utils/embedsUtil';
+import { formatCustomList } from '../../../../utils/embeds.util';
 
 const selectMenu = new UserSelectMenuBuilder()
     .setCustomId('voiceWhitelistTempAddMenu')

@@ -1,7 +1,7 @@
-import { Job, Worker, WorkerOptions } from 'bullmq';
-import { client, connection } from '../../..';
+import { Worker as BullWorker, Job } from 'bullmq';
+import { client, connection } from '../../../..';
 import { IEvent } from '../models';
-import ScheduledEventService from '../services/scheduledEventService';
+import ScheduledEventService from '../services/scheduledEvent.service';
 
 // Fonction pour traiter le Worker 'scheduledEventsReminder'
 const handleScheduledEventsReminderWorker = async (job: Job) => {
@@ -24,12 +24,14 @@ const handleScheduledEventsReminderWorker = async (job: Job) => {
 };
 
 export default function (): void {
-    const connectionOptions: WorkerOptions = { connection };
+    const connectionOptions = {
+        connection
+    };
 
     if (connection.status !== 'ready') {
         throw new Error('Redis connection is undefined.');
     }
-    const workerScheduledEventsReminder = new Worker(
+    const workerScheduledEventsReminder = new BullWorker(
         'scheduledEventsReminder',
         handleScheduledEventsReminderWorker,
         connectionOptions

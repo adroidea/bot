@@ -1,7 +1,7 @@
 import { EmbedBuilder, GuildMember, PermissionsBitField } from 'discord.js';
+import { Emojis, categories } from './consts';
 import { IGuild, ITVMUserSettings } from 'adroi.d.ea';
 import { CustomErrors } from './errors';
-import { Emojis } from './consts';
 import guildService from '../services/guild.service';
 
 /**
@@ -71,62 +71,6 @@ export const getorCreateUserSettings = async (
     }
 
     return userSettings;
-};
-
-const categories = {
-    [`${Emojis.cog} Générales`]: [
-        'ManageChannels',
-        'ManageGuild',
-        'ViewAuditLog',
-        'ViewChannel',
-        'ViewGuildInsights',
-        'ManageRoles',
-        'ManageWebhooks',
-        'ManageEmojisAndStickers',
-        'ManageGuildExpressions'
-    ],
-    [`${Emojis.members} Membres`]: [
-        'CreateInstantInvite',
-        'KickMembers',
-        'BanMembers',
-        'ChangeNickname',
-        'ManageNicknames',
-        'ModerateMembers'
-    ],
-    [`${Emojis.event} Evènements`]: ['ManageEvents'],
-    [`${Emojis.textChannel} Salon textuel`]: [
-        'AddReactions',
-        'SendMessages',
-        'SendTTSMessages',
-        'ManageMessages',
-        'EmbedLinks',
-        'AttachFiles',
-        'ReadMessageHistory',
-        'MentionEveryone',
-        'UseExternalEmojis',
-        'UseApplicationCommands',
-        'ManageThreads',
-        'CreatePublicThreads',
-        'CreatePrivateThreads',
-        'UseExternalStickers',
-        'SendMessagesInThreads',
-        'SendVoiceMessages'
-    ],
-    [`${Emojis.voiceChannel} Salon vocal`]: [
-        'PrioritySpeaker',
-        'Stream',
-        'Connect',
-        'Speak',
-        'MuteMembers',
-        'DeafenMembers',
-        'MoveMembers',
-        'UseVAD',
-        'UseEmbeddedActivities',
-        'UseSoundboard',
-        'UseExternalSounds'
-    ],
-    [`${Emojis.stageChannel} Salon de conférence`]: ['RequestToSpeak'],
-    [`${Emojis.advanced} Avancées`]: ['Administrator']
 };
 
 export const addPermissionsNames = (permissions: PermissionsBitField, embed: EmbedBuilder) => {

@@ -3,9 +3,9 @@ import {
     createNewTempChannel,
     deleteEmptyChannel,
     switchVoiceOwner
-} from '../../../../utils/voiceUtil';
+} from '../../../../utils/voice.util';
 import { IGuild } from 'adroi.d.ea';
-import { client } from '../../../..';
+import { client } from '../../../../..';
 import guildService from '../../../../services/guild.service';
 
 /**

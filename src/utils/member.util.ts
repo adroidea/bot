@@ -1,5 +1,5 @@
 import { GuildMember, PermissionFlagsBits, PermissionsBitField, Role } from 'discord.js';
-import { hasBotPermission } from './botUtil';
+import { hasBotPermission } from './bot.util';
 
 /**
  * Adds a role to a guild member if the bot has the necessary permissions.

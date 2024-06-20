@@ -1,5 +1,5 @@
 import { GuildMember, StringSelectMenuInteraction, userMention } from 'discord.js';
-import { isMemberVoiceOwner, switchVoiceOwner } from '../../../../utils/voiceUtil';
+import { isMemberVoiceOwner, switchVoiceOwner } from '../../../../utils/voice.util';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from 'adroi.d.ea';
 

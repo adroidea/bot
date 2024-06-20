@@ -1,7 +1,7 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, GuildMember } from 'discord.js';
 import { IGuild } from 'adroi.d.ea';
 import { buildVoiceWhitelistRemoveRow } from '../selectMenus';
-import { getorCreateUserSettings } from '../../../../utils/modulesUil';
+import { getorCreateUserSettings } from '../../../../utils/modules.uil';
 export const voiceWhitelistRemoveBtn = new ButtonBuilder()
     .setCustomId('voiceWhitelistRemoveBtn')
     .setEmoji('<:untrust:1177755536679251978>')

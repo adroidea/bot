@@ -1,4 +1,4 @@
-import { Stream, buildLiveStartTitle, randomizeArray } from './../../../src/utils/twitchUtil';
+import { Stream, buildLiveStartTitle, randomizeArray } from './../../../src/utils/twitch.util';
 import { ITMAlerts } from 'adroi.d.ea';
 
 describe('randomizeArray', () => {

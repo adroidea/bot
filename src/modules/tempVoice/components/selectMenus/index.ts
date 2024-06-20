@@ -1,9 +1,9 @@
-import { buildVoiceBlacklistRemoveRow } from './voiceBlacklistRemoveMenu';
-import { buildVoiceSetRTCRegionActionRow } from './voiceSetRTCRegionMenu';
-import { buildVoiceWhitelistRemoveRow } from './voiceWhitelistRemoveMenu';
-import { voiceBlacklistAddRow } from './voiceBlacklistAddMenu';
-import { voiceWhitelistAddRow } from './voiceWhitelistAddMenu';
-import { voiceWhitelistTempAddRow } from './voiceWhitelistTempAddMenu';
+import { buildVoiceBlacklistRemoveRow } from './voiceBlacklistRemove.selectMenu';
+import { buildVoiceSetRTCRegionActionRow } from './voiceSetRTCRegion.selectMenu';
+import { buildVoiceWhitelistRemoveRow } from './voiceWhitelistRemove.selectMenu';
+import { voiceBlacklistAddRow } from './voiceBlacklistAdd.selectMenu';
+import { voiceWhitelistAddRow } from './voiceWhitelistAdd.selectMenu';
+import { voiceWhitelistTempAddRow } from './voiceWhitelistTempAdd.selectMenu';
 
 export {
     buildVoiceBlacklistRemoveRow,

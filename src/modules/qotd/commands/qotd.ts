@@ -9,12 +9,12 @@ import {
     userMention
 } from 'discord.js';
 import { Colors, Guilds } from '../../../utils/consts';
-import { Embed, addAuthor } from '../../../utils/embedsUtil';
+import { Embed, addAuthor } from '../../../utils/embeds.util';
 import { IGuild, IQOTDModule } from 'adroi.d.ea';
 import { adminRow, stealRow } from '../components/buttons';
 import { CustomErrors } from '../../../utils/errors';
 import { IQuestions } from '../models';
-import { isQOtDModuleEnabled } from '../../../utils/modulesUil';
+import { isQOtDModuleEnabled } from '../../../utils/modules.uil';
 import qotddService from '../services/qotd.service';
 
 export default {

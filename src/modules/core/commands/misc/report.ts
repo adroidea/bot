@@ -8,7 +8,7 @@ import {
     PermissionsBitField
 } from 'discord.js';
 import { Channels, Colors, Guilds } from '../../../../utils/consts';
-import { addAuthor } from '../../../../utils/embedsUtil';
+import { addAuthor } from '../../../../utils/embeds.util';
 
 export default {
     data: {

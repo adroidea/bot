@@ -13,10 +13,10 @@ import {
 } from 'discord.js';
 import { CustomError, CustomErrors } from './errors';
 import { Colors } from './consts';
-import { Embed } from './embedsUtil';
+import { Embed } from './embeds.util';
 import { ITempVoiceModule } from 'adroi.d.ea';
 import Logger from './logger';
-import { client } from '..';
+import { client } from '../..';
 import { handleCooldown } from '../modules/core/events/client/interactionCreate';
 import path from 'path';
 import { tempVoiceComponents } from '../modules/tempVoice/components/buttons';

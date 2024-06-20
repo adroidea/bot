@@ -1,22 +1,21 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, GuildMember } from 'discord.js';
 import { IGuild } from 'adroi.d.ea';
-import { getorCreateUserSettings } from '../../../../utils/modulesUil';
-import { voiceBlacklistAddRow } from '../selectMenus';
+import { getorCreateUserSettings } from '../../../../utils/modules.uil';
+import { voiceWhitelistAddRow } from '../selectMenus';
 
-export const voiceBlacklistAddBtn = new ButtonBuilder()
-    .setCustomId('voiceBlacklistAddBtn')
-    .setEmoji('📕')
+export const voiceWhitelistAddBtn = new ButtonBuilder()
+    .setCustomId('voiceWhitelistAddBtn')
+    .setEmoji('📗')
     .setStyle(ButtonStyle.Secondary);
 
 export default {
     data: {
-        name: `voiceBlacklistAddBtn`
+        name: `voiceWhitelistAddBtn`
     },
     async execute(interaction: ButtonInteraction, guildSettings: IGuild) {
         getorCreateUserSettings(interaction.member as GuildMember, guildSettings);
-
         return interaction.reply({
-            components: [voiceBlacklistAddRow],
+            components: [voiceWhitelistAddRow],
             ephemeral: true
         });
     }

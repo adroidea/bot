@@ -7,7 +7,7 @@ import {
     StringSelectMenuBuilder
 } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
-import { isMemberVoiceOwner } from '../../../../utils/voiceUtil';
+import { isMemberVoiceOwner } from '../../../../utils/voice.util';
 
 export const voiceOwnerTransferBtn = new ButtonBuilder()
     .setCustomId('voiceOwnerTransferBtn')

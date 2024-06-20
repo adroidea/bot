@@ -12,7 +12,7 @@ import {
     userMention
 } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
-import { canSendMessage } from '../../../../utils/botUtil';
+import { canSendMessage } from '../../../../utils/bot.util';
 import guildService from '../../../../services/guild.service';
 
 export default {

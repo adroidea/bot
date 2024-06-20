@@ -3,10 +3,10 @@ import {
     isMemberVoiceOwner,
     isVoicePrivate,
     switchVoicePrivacy
-} from '../../../../utils/voiceUtil';
+} from '../../../../utils/voice.util';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from 'adroi.d.ea';
-import { getorCreateUserSettings } from '../../../../utils/modulesUil';
+import { getorCreateUserSettings } from '../../../../utils/modules.uil';
 
 export const voicePrivacyBtn = new ButtonBuilder()
     .setCustomId('voicePrivacyBtn')

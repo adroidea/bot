@@ -8,7 +8,7 @@ import {
     TextInputStyle
 } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
-import { setVoiceLimit } from '../../../../utils/voiceUtil';
+import { setVoiceLimit } from '../../../../utils/voice.util';
 
 export const voiceLimitModal = new ModalBuilder()
     .setCustomId('voiceLimitModal')

@@ -1,3 +1,6 @@
+import { Guild } from 'discord.js';
+import { listBotPermissions } from './bot.util';
+
 export class CustomError extends Error {}
 
 export const CustomErrors = {
@@ -9,7 +12,11 @@ export const CustomErrors = {
             `Comme dirait Orel San, ça va trop vite. Cette fonction est en cooldown. tu pourras l'utiliser <t:${cooldownTime}:R>.`
         ),
     UserNoPermissionsError: new CustomError("Eh non, t'as pas les droits, cheh !"),
-    SelfNoPermissionsError: new CustomError("Peux pas faire ça, j'ai pas les droits."),
+    SelfNoPermissionsError: (guild: Guild, permissions: bigint[]) =>
+        new CustomError(
+            "Peux pas faire ça, j'ai pas les droits. J'ai besoin de :\n" +
+                listBotPermissions(guild, permissions)
+        ),
     ToDoError: new CustomError("Ca fonctionne, mais t'as pas setup d'erreur pour ce cas encore."),
     UnknownCommandError: new CustomError(
         'Mmh, il semblerait que je ne connais pas cette commande.'
@@ -41,6 +48,16 @@ export const CustomErrors = {
     ),
 
     SwitchVoicePrivacyError: new CustomError("Whoops, j'ai pas réussi à switch l'état du salon."),
+
+    ////////////////////////////////////////////////////
+    //               Jail related err                 //
+    ////////////////////////////////////////////////////
+    JailDisabledError: new CustomError("Le module Jail n'est pas activé sur ce serveur."),
+    JailChannelNotSetError: new CustomError("Le salon de prison n'a pas été défini."),
+    JailChannelNotVoiceError: new CustomError("Le salon de prison n'est pas un salon vocal."),
+    JailTargetNotInVoiceError: (target: string) =>
+        new CustomError(`${target} n'est pas dans un salon vocal.`),
+    JailTargetInPrisonError: (target: string) => new CustomError(`${target} est déjà en prison.`),
 
     ////////////////////////////////////////////////////
     //               Events related err               //

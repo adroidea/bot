@@ -1,6 +1,6 @@
-import DiscordClient from './client';
+import DiscordClient from './src/client';
 import IORedis from 'ioredis';
-import Logger from './utils/logger';
+import Logger from './src/utils/logger';
 import { Partials } from 'discord.js';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
@@ -19,7 +19,7 @@ export const client: any = new DiscordClient({
     partials: [Partials.Channel]
 });
 
-const filePath = path.join(__dirname, 'handlers/module.handler.js');
+const filePath = path.join(__dirname, 'src/handlers/module.handler.js');
 import(filePath).then(handler => handler.default(client));
 
 mongoose.set('strictQuery', false);
@@ -39,14 +39,14 @@ mongoose
 
 export const connection = new IORedis({
     host: process.env.REDIS_HOST,
-    port: 6379
+    port: 6379,
+    maxRetriesPerRequest: null
 })
     .on('connect', () => {
         Logger.info('🔴 Redis connected');
     })
     .on('error', (error: any) => {
-        if (error.code === 'ECONNREFUSED') return;
-        else Logger.error(`Redis error:`, error);
+        Logger.error(`Redis error:`, error);
     });
 
 client.login(process.env.TOKEN);
