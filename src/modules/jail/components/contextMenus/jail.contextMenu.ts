@@ -8,6 +8,7 @@ import {
 } from 'discord.js';
 import { IGuild, IJailModule } from 'adroi.d.ea';
 import { CustomErrors } from '../../../../utils/errors';
+import { hasBotPermission } from '../../../../utils/bot.util';
 import jailQueue from '../../tasks/jail.queue';
 
 export const jailContextMenu = new ContextMenuCommandBuilder()
@@ -18,6 +19,13 @@ export const jailContextMenu = new ContextMenuCommandBuilder()
 export default {
     data: jailContextMenu.toJSON(),
     async execute(interaction: UserContextMenuCommandInteraction, guildSettings: IGuild) {
+        const permissions = [
+            PermissionsBitField.Flags.MoveMembers,
+            PermissionsBitField.Flags.MuteMembers,
+            PermissionsBitField.Flags.DeafenMembers
+        ];
+        if (!hasBotPermission(interaction.guild!, permissions))
+            throw CustomErrors.SelfNoPermissionsError(interaction.guild!, permissions);
         const { jail } = guildSettings.modules;
 
         // check if the jail module is enabled and if the jail channel is set
@@ -62,7 +70,6 @@ export default {
             },
             { delay: jailTime * 1000 }
         );
-
     }
 };
 

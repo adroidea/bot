@@ -1,4 +1,5 @@
 import { Guild, GuildBasedChannel, PermissionsBitField } from 'discord.js';
+import { Emojis } from './consts';
 
 export const hasBotPermission = (guild: Guild, permissionsFlag: bigint[]) => {
     return guild.members.me!.permissions.has(permissionsFlag);
@@ -61,4 +62,41 @@ export const canSendMessage = (channel: GuildBasedChannel | undefined) => {
             PermissionsBitField.Flags.SendMessages,
             PermissionsBitField.Flags.SendMessagesInThreads
         ]);
+};
+
+/**
+ * Checks if the bot has each permission in the provided list and returns a formatted string.
+ * @param guild - The guild to check permissions in.
+ * @param permissions - An array of permission flags to check.
+ * @returns A string with each permission and its status (allowed or denied).
+ */
+export const listBotPermissions = (guild: Guild, permissions: bigint[]): string => {
+    let result = '';
+
+    permissions.forEach(perm => {
+        const permName = getPermissionName(perm);
+        const permWithSpaces = permName.replace(/([a-z])([A-Z])|([A-Z])([A-Z][a-z])/g, '$1$3 $2$4');
+
+        if (hasBotPermission(guild, [perm])) {
+            result += `> ${Emojis.check} ${permWithSpaces}\n`;
+        } else {
+            result += `> ${Emojis.cross} ${permWithSpaces}\n`;
+        }
+    });
+
+    return result;
+};
+
+/**
+ * Retrieves the permission name from a permission flag.
+ * @param perm - The permission flag as a bigint.
+ * @returns The human-readable name of the permission.
+ */
+const getPermissionName = (perm: bigint): string => {
+    for (const [key, value] of Object.entries(PermissionsBitField.Flags)) {
+        if (value === perm) {
+            return key;
+        }
+    }
+    return perm.toString();
 };

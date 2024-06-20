@@ -40,8 +40,9 @@ export default {
     examples: ['purge 10', 'purge 100 @adan_ea'],
 
     async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
-        if (!hasBotPermission(interaction.guild!, [PermissionsBitField.Flags.ManageMessages]))
-            throw CustomErrors.SelfNoPermissionsError;
+        const permissions = [PermissionsBitField.Flags.ManageMessages];
+        if (!hasBotPermission(interaction.guild!, permissions))
+            throw CustomErrors.SelfNoPermissionsError(interaction.guild!, permissions);
 
         const amountToDelete = interaction.options.getNumber('montant', true);
         if (amountToDelete > 100 || amountToDelete < 0) {
