@@ -12,16 +12,31 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Fixed
 
+## 🏗️ [4.2.0]
+
+### ✨ Added
+
+❄️ Jail: Add a jail system - [[#95](https://github.com/adroidea/bot/issues/95)]
+
+### 🧱 Changed
+
+❄️ Core: The bot will now show you what permissions are missing when you try to use a command he can't use
+
+### 🚮 Removed
+
+### 🐛 Fixed
+
+❄️ TempVoice: Fixed the userSettings not being created failing the execution of the tempVoice
+
 ## 🏗️ [4.1.1]
 
 ### ✨ Added
+
 ❄️ MessageCreate: Add two triggers
 
 ### 🧱 Changed
-❄️ Core: Fixed pictures links (again and final) - [[#88](https://github.com/adroidea/bot/issues/88)]
 
-### 🚮 Removed
-### 🐛 Fixed
+❄️ Core: Fixed pictures links (again and final) - [[#88](https://github.com/adroidea/bot/issues/88)]
 
 ## 🚀 [4.1.0] - 2024-02-26
 
@@ -32,10 +47,6 @@ All notable changes to this project will be documented in this file.
 ❄️ Twitch: Now can ignore some categories for the Category Change notification - [[#75](https://github.com/adroidea/bot/issues/75)]
 
 ❄️ QotD: Add banned key words - [[#78](https://github.com/adroidea/bot/issues/78)]
-
-### 🧱 Changed
-
-### 🚮 Removed
 
 ### 🐛 Fixed
 
@@ -94,7 +105,6 @@ All notable changes to this project will be documented in this file.
 
 ❄️ The bot's reaction to the JPPFC term (was only available for one server)
 
-
 ## 🚀 [3.6.0] - [0.0.1]
 
 ### ✨ Added
@@ -102,6 +112,7 @@ All notable changes to this project will be documented in this file.
 ❄️ A lot of stuff i don't remember. And i'm too lazy to check every commit :')
 
 [Unreleased]: https://github.com/adroidea/bot
+[4.2.0]: https://github.com/adroidea/bot/releases/tag/v4.2.0
 [4.1.1]: https://github.com/adroidea/bot/releases/tag/v4.1.1
 [4.1.0]: https://github.com/adroidea/bot/releases/tag/v4.1.0
 [4.0.0]: https://github.com/adroidea/bot/releases/tag/v4.0.0
