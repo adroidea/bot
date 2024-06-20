@@ -54,7 +54,7 @@ export const regCMD = async (clientId: string) => {
     const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 
     try {
-        await rest.put(Routes.applicationGuildCommands(clientId, Guilds.adanLab), {
+        await rest.put(Routes.applicationGuildCommands(clientId, Guilds.adan_ea), {
             body: guildCommands
         });
         Logger.info(`Successfully registered ${guildCommands.length} guild application commands.`);
