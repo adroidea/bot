@@ -8,6 +8,7 @@ import {
 } from 'discord.js';
 import { IGuild, IJailModule } from 'adroi.d.ea';
 import { CustomErrors } from '../../../../utils/errors';
+import jailQueue from '../../tasks/jail.queue';
 
 export const jailContextMenu = new ContextMenuCommandBuilder()
     .setName('Prison pour temps aléatoire')
@@ -39,7 +40,7 @@ export default {
             throw CustomErrors.JailTargetInPrisonError(target.user.displayName);
 
         // generate a random time for the jail
-        const timeJailed = Math.floor(
+        const jailTime = Math.floor(
             Math.random() * (jail.maxTime - jail.minTime + 1) + jail.minTime
         );
 
@@ -48,7 +49,20 @@ export default {
         await target.voice.setMute(true);
         await target.voice.setDeaf(true);
 
-        await jailChannel.send(setMessageContent(jail, target, timeJailed));
+        const message = await jailChannel.send(setMessageContent(jail, target, jailTime));
+
+        await jailQueue.add(
+            'jailJob',
+            {
+                targetId: target.id,
+                guildId: interaction.guild!.id,
+                initialChannelId: targetVoiceChannel.id,
+                jailChannelId: jailChannel.id,
+                messageId: message.id
+            },
+            { delay: jailTime * 1000 }
+        );
+
     }
 };
 

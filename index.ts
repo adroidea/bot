@@ -39,14 +39,14 @@ mongoose
 
 export const connection = new IORedis({
     host: process.env.REDIS_HOST,
-    port: 6379
+    port: 6379,
+    maxRetriesPerRequest: null
 })
     .on('connect', () => {
         Logger.info('🔴 Redis connected');
     })
     .on('error', (error: any) => {
-        if (error.code === 'ECONNREFUSED') return;
-        else Logger.error(`Redis error:`, error);
+        Logger.error(`Redis error:`, error);
     });
 
 client.login(process.env.TOKEN);
