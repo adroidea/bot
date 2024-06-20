@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Fixed
 
+❄️ Jail: Handle edge cases
+
 ## 🏗️ [4.2.0]
 
 ### ✨ Added

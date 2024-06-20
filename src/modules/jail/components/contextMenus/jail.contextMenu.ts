@@ -3,6 +3,7 @@ import {
     ContextMenuCommandBuilder,
     GuildBasedChannel,
     GuildMember,
+    Message,
     PermissionsBitField,
     UserContextMenuCommandInteraction
 } from 'discord.js';
@@ -26,6 +27,7 @@ export default {
         ];
         if (!hasBotPermission(interaction.guild!, permissions))
             throw CustomErrors.SelfNoPermissionsError(interaction.guild!, permissions);
+
         const { jail } = guildSettings.modules;
 
         // check if the jail module is enabled and if the jail channel is set
@@ -54,10 +56,12 @@ export default {
 
         // move the target to the jail channel
         await target.voice.setChannel(jailChannel);
-        await target.voice.setMute(true);
-        await target.voice.setDeaf(true);
+        await target.edit({ mute: true, deaf: true });
 
-        const message = await jailChannel.send(setMessageContent(jail, target, jailTime));
+        let message: Message<boolean> | null = null;
+
+        if (jail.customMessage !== '')
+            message = await jailChannel.send(setMessageContent(jail, target, jailTime));
 
         await jailQueue.add(
             'jailJob',
@@ -66,7 +70,7 @@ export default {
                 guildId: interaction.guild!.id,
                 initialChannelId: targetVoiceChannel.id,
                 jailChannelId: jailChannel.id,
-                messageId: message.id
+                messageId: message ? message.id : null
             },
             { delay: jailTime * 1000 }
         );
