@@ -4,7 +4,7 @@ import { IQuestions, QuestionsModel } from '../models';
 import { Colors } from '../../../utils/consts';
 import { IQOTDModule } from 'adroi.d.ea';
 import Logger from '../../../utils/logger';
-import { client } from '../../../..';
+import client from '../../../client';
 import cron from 'node-cron';
 import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import qotddService from '../services/qotd.service';
@@ -13,8 +13,8 @@ export default function (): cron.ScheduledTask {
     return cron.schedule('0 7 * * *', () => {
         (async () => {
             const guildsCache = getGuildsCache();
-        for (const guildData of guildsCache) {
-                const guild: Guild = client.guilds.cache.get(guildData.id);
+            for (const guildData of guildsCache) {
+                const guild: Guild | undefined = client.guilds.cache.get(guildData.id);
                 if (!guild) continue;
 
                 const { qotd }: { qotd: IQOTDModule } = guildData.modules;

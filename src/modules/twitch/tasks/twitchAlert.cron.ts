@@ -7,7 +7,7 @@ import {
     randomizeArray
 } from '../../../utils/twitch.util';
 import { Colors } from '../../../utils/consts';
-import { client } from '../../../../index';
+import  client  from '../../../client';
 import cron from 'node-cron';
 import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import { getTextChannel } from '../../../utils/bot.util';
@@ -51,7 +51,7 @@ export default function (): cron.ScheduledTask {
  * @returns A Promise that resolves when the guild is handled.
  */
 const handleGuild = async (guild: IGuild) => {
-    const guildData: Guild = client.guilds.cache.get(guild.id);
+    const guildData: Guild | undefined = client.guilds.cache.get(guild.id);
     if (!guildData) return;
 
     const { enabled, alerts } = guild.modules.twitch;

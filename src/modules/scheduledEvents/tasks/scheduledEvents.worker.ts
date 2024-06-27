@@ -1,7 +1,8 @@
 import { Worker as BullWorker, Job } from 'bullmq';
-import { client, connection } from '../../../..';
+import { connection } from '../../../..';
 import { IEvent } from '../models';
 import ScheduledEventService from '../services/scheduledEvent.service';
+import client from '../../../client';
 
 // Fonction pour traiter le Worker 'scheduledEventsReminder'
 const handleScheduledEventsReminderWorker = async (job: Job) => {
