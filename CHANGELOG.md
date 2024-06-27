@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 
 ❄️ Jail: Handle edge cases
 
+❄️ AuditLogs: Fixed a bug where the bot wouldn't send the log for a bulk delete 
+
 ## 🏗️ [4.2.0]
 
 ### ✨ Added
