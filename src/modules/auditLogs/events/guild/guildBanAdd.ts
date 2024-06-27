@@ -9,7 +9,12 @@ import {
     userMention
 } from 'discord.js';
 import { Colors, Emojis } from '../../../../utils/consts';
-import { canSendMessage, getTextChannel, hasBotPermission } from '../../../../utils/bot.util';
+import {
+    canSendMessage,
+    getTextChannel,
+    hasBotPermission,
+    warnOwnerNoPermissions
+} from '../../../../utils/bot.util';
 import { CustomErrors } from '../../../../utils/errors';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { addAuthor } from '../../../../utils/embeds.util';
@@ -17,7 +22,20 @@ import guildService from '../../../../services/guild.service';
 
 export default {
     name: Events.GuildBanAdd,
-    async execute(client: Client, ban: GuildBan) {
+    async execute(_: Client, ban: GuildBan) {
+        const permissions: bigint[] = [
+            PermissionsBitField.Flags.ViewAuditLog,
+            PermissionsBitField.Flags.ViewChannel,
+            PermissionsBitField.Flags.SendMessages,
+            PermissionsBitField.Flags.EmbedLinks
+        ];
+        try {
+            if (!hasBotPermission(ban.guild, permissions))
+                throw CustomErrors.SelfNoPermissionsError(ban.guild, permissions);
+        } catch (error) {
+            warnOwnerNoPermissions(ban.guild, permissions);
+        }
+
         const fetchedLogs = await ban.guild.fetchAuditLogs({
             limit: 1,
             type: AuditLogEvent.MemberBanAdd
