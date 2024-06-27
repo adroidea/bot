@@ -16,7 +16,7 @@ import { Colors } from './consts';
 import { Embed } from './embeds.util';
 import { ITempVoiceModule } from 'adroi.d.ea';
 import Logger from './logger';
-import { client } from '../..';
+import client from '../client';
 import { handleCooldown } from '../modules/core/events/client/interactionCreate';
 import { hasBotPermission } from './bot.util';
 import { tempVoiceComponents } from '../modules/tempVoice/components/buttons';
@@ -191,7 +191,7 @@ export const switchVoiceOwner = async (
  * @returns A boolean indicating whether the voice is public or not.
  */
 export const isVoicePrivate = (voiceId: string): boolean => {
-    return client.tempVoice.get(voiceId)?.isPrivate;
+    return client.tempVoice.get(voiceId)?.isPrivate ?? false;
 };
 
 /**
@@ -316,7 +316,7 @@ const setPerms = (
             allow: permissions.concat([PermissionsBitField.Flags.MoveMembers])
         },
         {
-            id: client.user.id,
+            id: client.user!.id,
             allow: permissions.concat([PermissionsBitField.Flags.MoveMembers])
         }
     ];

@@ -1,4 +1,4 @@
-import { Client, ClientOptions, Collection } from 'discord.js';
+import { Client, ClientOptions, Collection, Partials } from 'discord.js';
 
 interface ItempVoiceSettings {
     ownerId: string;
@@ -16,7 +16,7 @@ export interface IDiscordClient {
     tempVoice: Collection<string, ItempVoiceSettings>;
 }
 
-export default class DiscordClient extends Client implements IDiscordClient {
+class DiscordClient extends Client implements IDiscordClient {
     public commands: Collection<string, any>;
     public buttons: Collection<string, any>;
     public modals: Collection<string, any>;
@@ -38,3 +38,8 @@ export default class DiscordClient extends Client implements IDiscordClient {
         this.tempVoice = new Collection();
     }
 }
+
+export default new DiscordClient({
+    intents: 3276799,
+    partials: [Partials.Channel]
+});

@@ -5,7 +5,7 @@ import {
     switchVoiceOwner
 } from '../../../../utils/voice.util';
 import { IGuild } from 'adroi.d.ea';
-import { client } from '../../../../..';
+import client from '../../../../client';
 import guildService from '../../../../services/guild.service';
 
 /**

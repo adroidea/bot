@@ -9,14 +9,14 @@ import {
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
 import { IGuild } from 'adroi.d.ea';
-import { client } from '../../../../..';
+import client from '../../../../client';
 import { formatCustomList } from '../../../../utils/embeds.util';
 import guildService from '../../../../services/guild.service';
 
 const buildSelectMenu = (users: string[]) => {
     const usersData: User[] = users
         .map(user => client.users.cache.get(user))
-        .filter(user => user !== undefined);
+        .filter((user): user is User => user !== undefined);
 
     return new StringSelectMenuBuilder()
         .setCustomId('voiceWhitelistRemoveMenu')

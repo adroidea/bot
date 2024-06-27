@@ -1,7 +1,7 @@
 import { Channels, Colors } from './consts';
 import { EmbedBuilder, WebhookClient, codeBlock } from 'discord.js';
 import ansis, { AnsiColors } from 'ansis';
-import { client as discordClient } from '../..';
+import discordClient from '../client';
 
 const write = (
     content: string,
