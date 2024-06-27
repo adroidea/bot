@@ -47,7 +47,9 @@ export default {
         }
 
         const newEmbed = new EmbedBuilder()
-            .setTitle('La région a bien été changée')
+            .setTitle(
+                `La région du salon vocal a été changée avec succès. Nouvelle région: ${region}`
+            )
             .setColor(Colors.random);
 
         return interaction.editReply({

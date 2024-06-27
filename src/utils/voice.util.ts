@@ -18,10 +18,8 @@ import { ITempVoiceModule } from 'adroi.d.ea';
 import Logger from './logger';
 import { client } from '../..';
 import { handleCooldown } from '../modules/core/events/client/interactionCreate';
-import path from 'path';
+import { hasBotPermission } from './bot.util';
 import { tempVoiceComponents } from '../modules/tempVoice/components/buttons';
-
-const filePath = path.join(__dirname, __filename);
 
 /**
  * Creates a new temporary voice channel.
@@ -32,6 +30,20 @@ const filePath = path.join(__dirname, __filename);
  */
 export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITempVoiceModule) => {
     try {
+        const permissions: bigint[] = [
+            PermissionsBitField.Flags.ViewChannel,
+            PermissionsBitField.Flags.ManageChannels,
+            PermissionsBitField.Flags.SendMessages,
+            PermissionsBitField.Flags.EmbedLinks,
+            PermissionsBitField.Flags.ReadMessageHistory,
+            PermissionsBitField.Flags.Connect,
+            PermissionsBitField.Flags.Speak,
+            PermissionsBitField.Flags.MoveMembers
+        ];
+
+        if (!hasBotPermission(newState.guild, permissions))
+            throw CustomErrors.SelfNoPermissionsError(newState.guild, permissions);
+
         handleCooldown(newState.member!.user.id, 'voiceCreate', 60 * 1000);
         const member = newState.member as GuildMember;
         const username = member.user.username;
@@ -63,11 +75,13 @@ export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITem
     } catch (err: any) {
         if (err instanceof CustomError) {
             const embed = Embed.error(err.message);
-            newState.member?.voice.disconnect();
             newState.member?.send({ embeds: [embed] });
         } else {
-            Logger.error(`An error occurred while creating a voice channel`, err, filePath);
+            Logger.error(`An error occurred while creating a voice channel`, err, __filename);
+            const embed = Embed.error(CustomErrors.CreateNewTempChannelError.message);
+            newState.member?.send({ embeds: [embed] });
         }
+        newState.member?.voice.disconnect();
     }
 };
 
@@ -83,6 +97,19 @@ export const switchVoicePrivacy = async (
 ) => {
     const voiceChannel = member.voice.channel;
     if (!voiceChannel) return;
+
+    const permissions: bigint[] = [
+        PermissionsBitField.Flags.ViewChannel,
+        PermissionsBitField.Flags.ManageChannels,
+        PermissionsBitField.Flags.EmbedLinks,
+        PermissionsBitField.Flags.ManageRoles,
+        PermissionsBitField.Flags.ReadMessageHistory,
+        PermissionsBitField.Flags.Connect,
+        PermissionsBitField.Flags.Speak
+    ];
+
+    if (!hasBotPermission(member.guild, permissions))
+        throw CustomErrors.SelfNoPermissionsError(member.guild, permissions);
 
     try {
         const isPrivate = isVoicePrivate(voiceChannel.id);
@@ -104,11 +131,13 @@ export const switchVoicePrivacy = async (
             ownerId: member.id,
             isPrivate: !isPrivate
         });
+
+        return !isPrivate;
     } catch (err: any) {
         Logger.error(
             `An error occurred while changing the privacy of a voice channel`,
             err,
-            filePath
+            __filename
         );
         throw CustomErrors.SwitchVoicePrivacyError;
     }
@@ -150,7 +179,7 @@ export const switchVoiceOwner = async (
         Logger.error(
             `An error occurred while changing the owner of a voice channel`,
             err,
-            filePath
+            __filename
         );
         throw CustomErrors.SwitchVoiceOwnerError;
     }
@@ -185,7 +214,7 @@ export const deleteEmptyChannel = async (voiceC: BaseGuildVoiceChannel) => {
         client.tempVoice.delete(voiceC.id);
         await voiceC.delete();
     } catch (err: any) {
-        Logger.error(`An error occurred while deleting a voice channel`, err, filePath);
+        Logger.error(`An error occurred while deleting a voice channel`, err, __filename);
     }
 };
 

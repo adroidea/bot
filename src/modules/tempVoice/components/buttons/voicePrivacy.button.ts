@@ -1,10 +1,7 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, GuildMember } from 'discord.js';
-import {
-    isMemberVoiceOwner,
-    isVoicePrivate,
-    switchVoicePrivacy
-} from '../../../../utils/voice.util';
+import { isMemberVoiceOwner, switchVoicePrivacy } from '../../../../utils/voice.util';
 import { CustomErrors } from '../../../../utils/errors';
+import { Embed } from '../../../../utils/embeds.util';
 import { IGuild } from 'adroi.d.ea';
 import { getorCreateUserSettings } from '../../../../utils/modules.uil';
 
@@ -26,12 +23,14 @@ export default {
         if (!voiceChannel || !isMemberVoiceOwner(member.id, voiceChannel.id))
             throw CustomErrors.NotVoiceOwnerError;
 
-        await interaction.deferReply({ ephemeral: true });
-
-        switchVoicePrivacy(member, guildSettings.modules.tempVoice.nameModel);
-        let isPrivate: boolean = isVoicePrivate(voiceChannel.id);
-        await interaction.editReply({
-            content: `Le salon est maintenant ${isPrivate ? 'privé' : 'public'}.`
+        const isPrivate: boolean | undefined = await switchVoicePrivacy(
+            member,
+            guildSettings.modules.tempVoice.nameModel
+        );
+        const embed = Embed.success(`Le salon est maintenant ${isPrivate ? 'privé' : 'public'}.`);
+        await interaction.reply({
+            embeds: [embed],
+            ephemeral: true
         });
     }
 };

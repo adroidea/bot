@@ -9,9 +9,9 @@ import {
     TextChannel
 } from 'discord.js';
 import { Embed, addAuthor } from '../../../../utils/embeds.util';
+import { getTextChannel, hasBotPermission } from '../../../../utils/bot.util';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from 'adroi.d.ea';
-import { hasBotPermission } from '../../../../utils/bot.util';
 
 export default {
     data: {
@@ -39,7 +39,7 @@ export default {
     usage: 'purge [montant] <@cible>',
     examples: ['purge 10', 'purge 100 @adan_ea'],
 
-    async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
+    async execute(_: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
         const permissions = [PermissionsBitField.Flags.ManageMessages];
         if (!hasBotPermission(interaction.guild!, permissions))
             throw CustomErrors.SelfNoPermissionsError(interaction.guild!, permissions);
@@ -75,8 +75,7 @@ export default {
         const { channelId } = messageBulkDelete;
 
         if (channelId) {
-            const logChannel = client.channels.cache.get(channelId);
-            if (!logChannel?.isTextBased()) return;
+            const logChannel = getTextChannel(interaction.guild!, channelId);
 
             const embed = new EmbedBuilder()
                 .setTitle(`Suppression de masse (Bulk Delete) effectuée`)

@@ -18,11 +18,6 @@ export default {
     async execute(client: Client, oldRole: Role, newRole: Role) {
         if (hasOnlyPositionChanged(oldRole, newRole)) return;
 
-        const fetchedLogs = await oldRole.guild.fetchAuditLogs({
-            limit: 1,
-            type: AuditLogEvent.RoleUpdate
-        });
-
         const {
             modules: {
                 auditLogs: { guildRoleUpdate }
@@ -31,6 +26,10 @@ export default {
 
         if (shouldIgnoreRoleUpdate(guildRoleUpdate)) return;
 
+        const fetchedLogs = await oldRole.guild.fetchAuditLogs({
+            limit: 1,
+            type: AuditLogEvent.RoleUpdate
+        });
         const logChannel = client.channels.cache.get(guildRoleUpdate.channelId);
         if (!logChannel?.isTextBased()) return;
 

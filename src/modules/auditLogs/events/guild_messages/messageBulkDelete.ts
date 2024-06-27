@@ -11,14 +11,14 @@ import {
     quote,
     userMention
 } from 'discord.js';
+import { canSendMessage, getTextChannel } from '../../../../utils/bot.util';
 import { IAuditLogsModule } from 'adroi.d.ea';
-import { canSendMessage } from '../../../../utils/bot.util';
 import guildService from '../../../../services/guild.service';
 
 export default {
     name: Events.MessageBulkDelete,
     async execute(
-        client: Client,
+        _: Client,
         messages: Collection<Snowflake, Message | PartialMessage>,
         channel: GuildTextBasedChannel
     ) {
@@ -30,10 +30,7 @@ export default {
             }
         } = await guildService.getOrCreateGuild(channel.guild);
 
-        const logChannel = client.guilds.cache
-            .get(channel.guild.id)
-            ?.channels.cache.get(messageBulkDelete.channelId!);
-        if (!logChannel?.isTextBased()) return;
+        const logChannel = getTextChannel(channel.guild, messageBulkDelete.channelId);
 
         if (shouldIgnoreBulkDelete(messageBulkDelete, channel.id, logChannel)) return;
 
@@ -42,7 +39,7 @@ export default {
                 .reduce((acc, msg) => {
                     const authorId = msg.author ? msg.author.id : 'unknown';
 
-                    const count = acc.get(authorId) || 0;
+                    const count = acc.get(authorId) ?? 0;
                     acc.set(authorId, count + 1);
 
                     return acc;
@@ -71,5 +68,5 @@ const shouldIgnoreBulkDelete = (
 ) =>
     !messageBulkDelete.enabled ||
     messageBulkDelete.channelId === '' ||
-    canSendMessage(logChannel) ||
+    !canSendMessage(logChannel) ||
     messageBulkDelete.ignoredChannels.includes(channelId);

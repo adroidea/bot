@@ -3,7 +3,6 @@ import {
     ContextMenuCommandBuilder,
     GuildBasedChannel,
     GuildMember,
-    Message,
     PermissionsBitField,
     UserContextMenuCommandInteraction
 } from 'discord.js';
@@ -13,21 +12,22 @@ import { hasBotPermission } from '../../../../utils/bot.util';
 import jailQueue from '../../tasks/jail.queue';
 
 export const jailContextMenu = new ContextMenuCommandBuilder()
-    .setName('Prison pour temps aléatoire')
+    .setName('Séjour en Prison')
     .setType(ApplicationCommandType.User)
     .setDefaultMemberPermissions(PermissionsBitField.Flags.MoveMembers);
 
 export default {
     data: jailContextMenu.toJSON(),
     async execute(interaction: UserContextMenuCommandInteraction, guildSettings: IGuild) {
-        const permissions = [
+        const permissions: bigint[] = [
+            PermissionsBitField.Flags.Connect,
             PermissionsBitField.Flags.MoveMembers,
             PermissionsBitField.Flags.MuteMembers,
-            PermissionsBitField.Flags.DeafenMembers
+            PermissionsBitField.Flags.DeafenMembers,
+            PermissionsBitField.Flags.ViewChannel
         ];
         if (!hasBotPermission(interaction.guild!, permissions))
             throw CustomErrors.SelfNoPermissionsError(interaction.guild!, permissions);
-
         const { jail } = guildSettings.modules;
 
         // check if the jail module is enabled and if the jail channel is set
@@ -58,10 +58,7 @@ export default {
         await target.voice.setChannel(jailChannel);
         await target.edit({ mute: true, deaf: true });
 
-        let message: Message<boolean> | null = null;
-
-        if (jail.customMessage !== '')
-            message = await jailChannel.send(setMessageContent(jail, target, jailTime));
+        const message = await jailChannel.send(setMessageContent(jail, target, jailTime));
 
         await jailQueue.add(
             'jailJob',
@@ -74,6 +71,11 @@ export default {
             },
             { delay: jailTime * 1000 }
         );
+
+        interaction.reply({
+            content: `**${target.user.tag}** a été envoyé en prison pour **${jailTime}** secondes.`,
+            ephemeral: true
+        });
     }
 };
 
