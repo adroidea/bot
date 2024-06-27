@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 
 ❄️ Jail: Handle edge cases
 
+❄️ Core: purge command finally deletes up to 100 messages, as intended
+
 ## 🏗️ [4.2.0]
 
 ### ✨ Added

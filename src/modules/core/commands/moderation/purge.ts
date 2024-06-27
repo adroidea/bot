@@ -101,7 +101,7 @@ const handleBulkDelete = async (
     amountToDelete: number,
     target?: GuildMember
 ) => {
-    const messagesToDelete = await channel.messages.fetch();
+    const messagesToDelete = await channel.messages.fetch({ limit: amountToDelete });
     const filteredMessages: Message[] = [];
     if (target) {
         let i = 0;
