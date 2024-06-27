@@ -10,7 +10,7 @@
     },
     "bugs": {
         "url": "https://github.com/adroidea/bot/issues",
-        "email": "adan.ea+adroid@proton.me"
+        "email": "adroid@adan.ea.net"
     },
     "keywords": [
         "discord",
@@ -24,12 +24,13 @@
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
         "format": "prettier --write \"**/*.ts\"",
-        "clean": "npm run lint:fix && npm run format",
+        "clean": "pnpm run lint:fix && pnpm run format",
         "watch": "tsc -w",
         "start": "tsc && node dist/index.js",
         "build": "tsc",
-        "use:adroi.d.ea": "npm uninstall ..\\adroi.d.ea\\ && npm install adroi.d.ea",
-        "use:adroi.d.ea:dist": "npm uninstall adroi.d.ea && npm install ..\\adroi.d.ea\\",
+        "use:adroi.d.ea": "pnpm uninstall adroi.d.ea && pnpm install adroi.d.ea",
+        "use:adroi.d.ea:dist": "pnpm uninstall adroi.d.ea && pnpm install ..\\adroi.d.ea\\",
+        "preinstall": "npx only-allow pnpm",
         "pre-commit": "lint-staged",
         "publish": "node .github/publish.js",
         "test": "jest --passWithNoTests"
@@ -67,5 +68,9 @@
         "prettier": "^2.8.4",
         "ts-jest": "^29.1.1",
         "typescript": "^5.3.3"
+    },
+    "engines": {
+        "node": ">=18.18.0",
+        "pnpm": ">=9.4.0"
     }
 }
