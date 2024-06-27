@@ -1,7 +1,6 @@
-import DiscordClient from './src/client';
 import IORedis from 'ioredis';
 import Logger from './src/utils/logger';
-import { Partials } from 'discord.js';
+import client from './src/client';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import path from 'node:path';
@@ -14,10 +13,7 @@ if (process.env.NODE_ENV === 'PRODUCTION') {
 
 dotenv.config({ path: envPath });
 
-export const client: any = new DiscordClient({
-    intents: 3276799,
-    partials: [Partials.Channel]
-});
+client.login(process.env.DISCORD_TOKEN);
 
 const filePath = path.join(__dirname, 'src/handlers/module.handler.js');
 import(filePath).then(handler => handler.default(client));
@@ -49,18 +45,16 @@ export const connection = new IORedis({
         Logger.error(`Redis error:`, error);
     });
 
-client.login(process.env.TOKEN);
-
 client.rest.on('rateLimited', (info: any) => {
     Logger.warn(`A rate limit has been hit: ${JSON.stringify(info)}`);
 });
 
-process.on('exit', (code: number) => {
-    Logger.client(`Process stopped with the code ${code}`);
-});
-
 process.on('uncaughtException', (err: Error, origin: Error) => {
     Logger.error(`UNCAUGHT_EXCEPTION: ${err}`, origin);
+});
+
+process.on('exit', (code: number) => {
+    Logger.client(`Process stopped with the code ${code}`);
 });
 
 process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
@@ -72,8 +66,20 @@ process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
 });
 
 process.on('warning', warning => {
-    if (warning.message.includes('The Fetch API is an experimental feature')) {
-        return;
-    }
     console.warn(`Un avertissement a été émis`, warning);
+});
+
+process.on('beforeExit', (code: number) => {
+    client.destroy();
+    connection.disconnect();
+    mongoose.disconnect();
+    Logger.client(`Process stopped with the code ${code}`);
+});
+
+process.on('SIGINT', () => {
+    client.destroy();
+    connection.disconnect();
+    mongoose.disconnect();
+    Logger.client('Process interrupted by the user');
+    process.exit(0);
 });

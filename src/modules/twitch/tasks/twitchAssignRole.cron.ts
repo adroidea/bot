@@ -1,6 +1,6 @@
 import { Guild, GuildMember, Role } from 'discord.js';
 import { ITMStreamersData } from 'adroi.d.ea';
-import { client } from '../../../../index';
+import  client  from '../../../client';
 import cron from 'node-cron';
 import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import logger from '../../../utils/logger';
@@ -10,7 +10,7 @@ export default function (): cron.ScheduledTask {
         const guildsCache = getGuildsCache();
         for (const guild of guildsCache) {
             if(!guild.modules.twitch.enabled) continue;
-            const guildData: Guild = client.guilds.cache.get(guild.id);
+            const guildData: Guild | undefined= client.guilds.cache.get(guild.id);
             if (!guildData) continue;
 
             const { enabled, streamers, streamingRoleId } = guild.modules.twitch.autoRoles;

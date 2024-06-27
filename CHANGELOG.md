@@ -12,6 +12,12 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Fixed
 
+❄️ AuditLogs: Fixed a bug where the bot wouldn't send the log for a bulk delete 
+
+❄️ Core: purge command finally deletes up to 100 messages, as intended
+
+❄️ Jail: Handle edge cases
+
 ## 🏗️ [4.2.0]
 
 ### ✨ Added

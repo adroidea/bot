@@ -7,7 +7,7 @@ import {
     GuildTextBasedChannel
 } from 'discord.js';
 import { IGuild } from 'adroi.d.ea';
-import { client } from '../../../../..';
+import client from '../../../../client';
 import { getGuildsCache } from '../../tasks/createCache.cron';
 
 const sendChangelogBtn = new ButtonBuilder()

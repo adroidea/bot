@@ -9,14 +9,14 @@ import {
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
 import { IGuild } from 'adroi.d.ea';
-import { client } from '../../../../..';
+import client from '../../../../client';
 import { formatCustomList } from '../../../../utils/embeds.util';
 import guildService from '../../../../services/guild.service';
 
 const buildSelectMenu = (users: string[]) => {
     const usersData: User[] = users
         .map(user => client.users.cache.get(user))
-        .filter(user => user !== undefined);
+        .filter((user): user is User => user !== undefined);
 
     return new StringSelectMenuBuilder()
         .setCustomId('voiceBlacklistRemoveMenu')
@@ -47,8 +47,7 @@ export default {
     },
     async execute(interaction: UserSelectMenuInteraction, guildSettings: IGuild) {
         await interaction.deferUpdate();
-        const { blockedUsers } =
-            guildSettings.modules.tempVoice.userSettings[interaction.user.id];
+        const { blockedUsers } = guildSettings.modules.tempVoice.userSettings[interaction.user.id];
         const selectedUserIds = interaction.values;
 
         const member = interaction.member as GuildMember;
@@ -74,8 +73,7 @@ export default {
         }
 
         guildService.updateGuild(interaction.guild!, {
-            [`modules.tempVoice.userSettings.${interaction.user.id}.blockedUsers`]:
-                blockedUsers
+            [`modules.tempVoice.userSettings.${interaction.user.id}.blockedUsers`]: blockedUsers
         });
 
         const newEmbed = new EmbedBuilder()

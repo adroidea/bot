@@ -1,11 +1,14 @@
-import { client, connection } from '../../../..';
+import { Guild, GuildMember } from 'discord.js';
 import { Worker as BullWorker } from 'bullmq';
+import client from '../../../client';
+import {  connection } from '../../../..';
+import logger from '../../../utils/logger';
 
 const connectionOptions = {
     connection,
     defaultJobOptions: {
         removeOnComplete: true,
-        removeOnFail: 1000,
+        removeOnFail: 1000
     }
 };
 
@@ -14,25 +17,34 @@ const worker = new BullWorker(
     async job => {
         const { targetId, guildId, initialChannelId, jailChannelId, messageId } = job.data;
 
-        const guild = await client.guilds.fetch(guildId);
-        const target = await guild.members.fetch(targetId);
+        const guild: Guild = await client.guilds.fetch(guildId);
+        const target: GuildMember = await guild.members.fetch(targetId);
 
-        await target.voice.setMute(false);
-        await target.voice.setDeaf(false);
-
-        if (!target.voice.channel) return;
+        const initialChannel = guild.channels.cache.get(initialChannelId);
         const jailChannel = guild.channels.cache.get(jailChannelId);
-        const message = await jailChannel.messages.fetch(messageId);
 
-        await target.voice.setChannel(initialChannelId);
+        // check if the original channel still exists
+        if (!initialChannel) {
+            target.voice.disconnect();
+        } else if (target.voice.channel) {
+            await target.edit({ mute: false, deaf: false });
+            await target.voice.setChannel(initialChannelId);
+        }
 
-        if (message.deletable) {
-            await message.delete();
+        if (!jailChannel) return;
+        if ('messages' in jailChannel && messageId) {
+            try {
+                const message = await jailChannel.messages.fetch(messageId);
+
+                if (message.deletable) await message.delete();
+            } catch (error) {
+                return;
+            }
         }
     },
     connectionOptions
 );
 
 worker.on('failed', (job, err) => {
-    console.error(`Job ${job?.id} failed with error ${err.message}`);
+    logger.error(`Job ${job?.id} failed with error ${err.message}`, err, 'jail.worker.js');
 });

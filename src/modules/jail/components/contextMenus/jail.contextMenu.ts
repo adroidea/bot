@@ -12,17 +12,19 @@ import { hasBotPermission } from '../../../../utils/bot.util';
 import jailQueue from '../../tasks/jail.queue';
 
 export const jailContextMenu = new ContextMenuCommandBuilder()
-    .setName('Prison pour temps aléatoire')
+    .setName('Séjour en Prison')
     .setType(ApplicationCommandType.User)
     .setDefaultMemberPermissions(PermissionsBitField.Flags.MoveMembers);
 
 export default {
     data: jailContextMenu.toJSON(),
     async execute(interaction: UserContextMenuCommandInteraction, guildSettings: IGuild) {
-        const permissions = [
+        const permissions: bigint[] = [
+            PermissionsBitField.Flags.Connect,
             PermissionsBitField.Flags.MoveMembers,
             PermissionsBitField.Flags.MuteMembers,
-            PermissionsBitField.Flags.DeafenMembers
+            PermissionsBitField.Flags.DeafenMembers,
+            PermissionsBitField.Flags.ViewChannel
         ];
         if (!hasBotPermission(interaction.guild!, permissions))
             throw CustomErrors.SelfNoPermissionsError(interaction.guild!, permissions);
@@ -54,8 +56,7 @@ export default {
 
         // move the target to the jail channel
         await target.voice.setChannel(jailChannel);
-        await target.voice.setMute(true);
-        await target.voice.setDeaf(true);
+        await target.edit({ mute: true, deaf: true });
 
         const message = await jailChannel.send(setMessageContent(jail, target, jailTime));
 
@@ -66,10 +67,15 @@ export default {
                 guildId: interaction.guild!.id,
                 initialChannelId: targetVoiceChannel.id,
                 jailChannelId: jailChannel.id,
-                messageId: message.id
+                messageId: message ? message.id : null
             },
             { delay: jailTime * 1000 }
         );
+
+        interaction.reply({
+            content: `**${target.user.tag}** a été envoyé en prison pour **${jailTime}** secondes.`,
+            ephemeral: true
+        });
     }
 };
 

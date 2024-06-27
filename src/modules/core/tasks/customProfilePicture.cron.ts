@@ -1,7 +1,7 @@
 import { Guild } from 'discord.js';
 import { Guilds } from '../../../utils/consts';
 import Logger from '../../../utils/logger';
-import { client } from '../../../..';
+import client from '../../../client';
 import cron from 'node-cron';
 
 const dpp = {
@@ -53,7 +53,8 @@ export default function (): cron.ScheduledTask {
                     newProfilePicture = null;
             }
 
-            const guild: Guild = client.guilds.cache.get(Guilds.adan_ea);
+            const guild: Guild | undefined = client.guilds.cache.get(Guilds.adan_ea);
+            if (!guild) return;
             if (newProfilePicture) guild.setIcon(newProfilePicture);
         } catch (error: any) {
             Logger.error('Error changing profile picture:', error);
