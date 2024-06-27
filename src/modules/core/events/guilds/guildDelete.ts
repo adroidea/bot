@@ -3,7 +3,7 @@ import guildService from '../../../../services/guild.service';
 
 export default {
     name: Events.GuildDelete,
-    async execute(client: Client, guild: Guild) {
+    async execute(_: Client, guild: Guild) {
         guildService.deleteGuild(guild.id);
     }
 };

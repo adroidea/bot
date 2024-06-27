@@ -2,7 +2,7 @@ import { Client, Events, Message } from 'discord.js';
 
 export default {
     name: Events.MessageCreate,
-    execute(client: Client, message: Message) {
+    execute(_: Client, message: Message) {
         if (message.author.bot) return;
         let randomReact = Math.random();
 

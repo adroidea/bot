@@ -18,10 +18,8 @@ import { ITempVoiceModule } from 'adroi.d.ea';
 import Logger from './logger';
 import { client } from '../..';
 import { handleCooldown } from '../modules/core/events/client/interactionCreate';
-import path from 'path';
+import { hasBotPermission } from './bot.util';
 import { tempVoiceComponents } from '../modules/tempVoice/components/buttons';
-
-const filePath = path.join(__dirname, __filename);
 
 /**
  * Creates a new temporary voice channel.
@@ -63,11 +61,13 @@ export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITem
     } catch (err: any) {
         if (err instanceof CustomError) {
             const embed = Embed.error(err.message);
-            newState.member?.voice.disconnect();
             newState.member?.send({ embeds: [embed] });
         } else {
-            Logger.error(`An error occurred while creating a voice channel`, err, filePath);
+            Logger.error(`An error occurred while creating a voice channel`, err, __filename);
+            const embed = Embed.error(CustomErrors.CreateNewTempChannelError.message);
+            newState.member?.send({ embeds: [embed] });
         }
+        newState.member?.voice.disconnect();
     }
 };
 
@@ -108,7 +108,7 @@ export const switchVoicePrivacy = async (
         Logger.error(
             `An error occurred while changing the privacy of a voice channel`,
             err,
-            filePath
+            __filename
         );
         throw CustomErrors.SwitchVoicePrivacyError;
     }
@@ -150,7 +150,7 @@ export const switchVoiceOwner = async (
         Logger.error(
             `An error occurred while changing the owner of a voice channel`,
             err,
-            filePath
+            __filename
         );
         throw CustomErrors.SwitchVoiceOwnerError;
     }
@@ -185,7 +185,7 @@ export const deleteEmptyChannel = async (voiceC: BaseGuildVoiceChannel) => {
         client.tempVoice.delete(voiceC.id);
         await voiceC.delete();
     } catch (err: any) {
-        Logger.error(`An error occurred while deleting a voice channel`, err, filePath);
+        Logger.error(`An error occurred while deleting a voice channel`, err, __filename);
     }
 };
 

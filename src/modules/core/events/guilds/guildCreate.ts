@@ -3,7 +3,7 @@ import guildService from '../../../../services/guild.service';
 
 export default {
     name: Events.GuildCreate,
-    async execute(client: Client, guild: Guild) {
+    async execute(_: Client, guild: Guild) {
         guildService.createGuild(guild);
     }
 };

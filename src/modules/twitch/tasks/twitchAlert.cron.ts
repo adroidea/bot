@@ -11,9 +11,6 @@ import { client } from '../../../../index';
 import cron from 'node-cron';
 import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import logger from '../../../utils/logger';
-import path from 'path';
-
-const filePath = path.join(__dirname, __filename);
 
 /**
  * Description placeholder
@@ -41,7 +38,7 @@ export default function (): cron.ScheduledTask {
                     await handleGuild(guild);
                 }
             } catch (error: any) {
-                logger.error('Error handling guilds:', error, filePath);
+                logger.error('Error handling guilds:', error, __filename);
             }
         })();
     });
