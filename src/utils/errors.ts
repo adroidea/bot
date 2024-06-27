@@ -25,6 +25,10 @@ export const CustomErrors = {
         'Mmh, il semblerait que je ne connais pas cette commande.'
     ),
     GuildNotFoundError: new CustomError("Le serveur n'a pas été trouvé."),
+    ChannelNotFoundError: (channelId: string) =>
+        new CustomError(
+            `je n'ai pas accès à <#${channelId}> (${channelId}) ou ce salon n'existe pas.`
+        ),
 
     ////////////////////////////////////////////////////
     //             Temp voice related err             //

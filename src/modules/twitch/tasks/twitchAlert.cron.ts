@@ -1,4 +1,4 @@
-import { EmbedBuilder, Guild, TextChannel, escapeMarkdown } from 'discord.js';
+import { EmbedBuilder, Guild, escapeMarkdown } from 'discord.js';
 import { IGuild, ITMAlerts } from 'adroi.d.ea';
 import {
     Stream,
@@ -10,10 +10,11 @@ import { Colors } from '../../../utils/consts';
 import { client } from '../../../../index';
 import cron from 'node-cron';
 import { getGuildsCache } from '../../core/tasks/createCache.cron';
+import { getTextChannel } from '../../../utils/bot.util';
 import logger from '../../../utils/logger';
 
 /**
- * Description placeholder
+ * Interface for the live status of a Twitch streamer.
  * @date 1/12/2024 - 4:10:27 PM
  *
  * @interface LiveStatus
@@ -95,7 +96,7 @@ const handleLiveStream = async (
         alerts.notifyChange &&
         !alerts.ignoredCategories.includes(streamData.game_name)
     ) {
-        await sendGameChangeEmbed(streamData, alerts, guildData.id);
+        await sendGameChangeEmbed(streamData, alerts, guildData);
         liveStatus.currentGame = streamData.game_name;
     }
     liveStatus.cooldown = liveStatus.cooldown ? --liveStatus.cooldown : liveStatus.cooldown;
@@ -130,10 +131,7 @@ export const sendLiveEmbed = async (streamData: Stream, alerts: ITMAlerts, guild
     const { user_name, game_id, title } = streamData;
     const { infoLiveChannel, liveProfilePicture } = alerts;
 
-    const channel: TextChannel | undefined = client.channels.cache.get(
-        infoLiveChannel
-    ) as TextChannel;
-    if (!channel) return;
+    const channel = getTextChannel(guild, infoLiveChannel);
 
     const twitchAvatarURL: string = await (
         await fetch(`https://decapi.me/twitch/avatar/${user_name}`)
@@ -177,9 +175,9 @@ export const sendLiveEmbed = async (streamData: Stream, alerts: ITMAlerts, guild
  * @param twitchModule The Twitch live object.
  * @param guildId The ID of the guild.
  */
-const sendGameChangeEmbed = async (streamData: Stream, alerts: ITMAlerts, guildId: string) => {
-    const currentGame = streamersList.get(guildId)?.currentGame;
-    const channelMessage = client.channels.cache.get(alerts.infoLiveChannel);
+const sendGameChangeEmbed = async (streamData: Stream, alerts: ITMAlerts, guild: Guild) => {
+    const currentGame = streamersList.get(guild.id)?.currentGame;
+    const channelMessage = getTextChannel(guild, alerts.infoLiveChannel);
     const gameChangeEmbed = new EmbedBuilder()
         .setDescription(
             `${randomizeArray(gameChangePartOne)} **${currentGame}**. ${randomizeArray(

@@ -1,4 +1,12 @@
-import { ChannelType, Guild, GuildBasedChannel, PermissionsBitField } from 'discord.js';
+import {
+    BaseGuildVoiceChannel,
+    ChannelType,
+    Guild,
+    GuildBasedChannel,
+    GuildTextBasedChannel,
+    PermissionsBitField
+} from 'discord.js';
+import { CustomErrors } from './errors';
 import { Emojis } from './consts';
 import { client } from '../..';
 
@@ -121,4 +129,22 @@ const getPermissionName = (perm: bigint): string => {
         }
     }
     return perm.toString();
+};
+
+const getGuildChannel = (guild: Guild, channelId: string): GuildBasedChannel => {
+    const channel = guild.channels.cache.get(channelId);
+    if (!channel) throw CustomErrors.ChannelNotFoundError(channelId);
+    return channel;
+};
+
+export const getVoiceChannel = (guild: Guild, channelId: string): BaseGuildVoiceChannel => {
+    const channel = getGuildChannel(guild, channelId);
+    if (!channel.isVoiceBased()) throw CustomErrors.NotVoiceChannelError;
+    return channel as BaseGuildVoiceChannel;
+};
+
+export const getTextChannel = (guild: Guild, channelId: string): GuildTextBasedChannel => {
+    const channel = getGuildChannel(guild, channelId);
+    if (!channel.isTextBased()) throw CustomErrors.ChannelNotFoundError(channelId);
+    return channel;
 };
