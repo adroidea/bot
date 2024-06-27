@@ -30,6 +30,20 @@ import { tempVoiceComponents } from '../modules/tempVoice/components/buttons';
  */
 export const createNewTempChannel = async (newState: VoiceState, tempVoice: ITempVoiceModule) => {
     try {
+        const permissions: bigint[] = [
+            PermissionsBitField.Flags.ViewChannel,
+            PermissionsBitField.Flags.ManageChannels,
+            PermissionsBitField.Flags.SendMessages,
+            PermissionsBitField.Flags.EmbedLinks,
+            PermissionsBitField.Flags.ReadMessageHistory,
+            PermissionsBitField.Flags.Connect,
+            PermissionsBitField.Flags.Speak,
+            PermissionsBitField.Flags.MoveMembers
+        ];
+
+        if (!hasBotPermission(newState.guild, permissions))
+            throw CustomErrors.SelfNoPermissionsError(newState.guild, permissions);
+
         handleCooldown(newState.member!.user.id, 'voiceCreate', 60 * 1000);
         const member = newState.member as GuildMember;
         const username = member.user.username;
@@ -84,6 +98,19 @@ export const switchVoicePrivacy = async (
     const voiceChannel = member.voice.channel;
     if (!voiceChannel) return;
 
+    const permissions: bigint[] = [
+        PermissionsBitField.Flags.ViewChannel,
+        PermissionsBitField.Flags.ManageChannels,
+        PermissionsBitField.Flags.EmbedLinks,
+        PermissionsBitField.Flags.ManageRoles,
+        PermissionsBitField.Flags.ReadMessageHistory,
+        PermissionsBitField.Flags.Connect,
+        PermissionsBitField.Flags.Speak
+    ];
+
+    if (!hasBotPermission(member.guild, permissions))
+        throw CustomErrors.SelfNoPermissionsError(member.guild, permissions);
+
     try {
         const isPrivate = isVoicePrivate(voiceChannel.id);
         const permissions = {
@@ -104,6 +131,8 @@ export const switchVoicePrivacy = async (
             ownerId: member.id,
             isPrivate: !isPrivate
         });
+
+        return !isPrivate;
     } catch (err: any) {
         Logger.error(
             `An error occurred while changing the privacy of a voice channel`,

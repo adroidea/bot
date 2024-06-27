@@ -17,6 +17,9 @@ export const CustomErrors = {
             "Peux pas faire ça, j'ai pas les droits. J'ai besoin de :\n" +
                 listBotPermissions(guild, permissions)
         ),
+    SelfCannotSendMessagesError: new CustomError(
+        'Je ne peux pas envoyer de messages sur ce serveur.'
+    ),
     ToDoError: new CustomError("Ca fonctionne, mais t'as pas setup d'erreur pour ce cas encore."),
     UnknownCommandError: new CustomError(
         'Mmh, il semblerait que je ne connais pas cette commande.'
