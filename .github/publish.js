@@ -6,7 +6,7 @@ const exec = util.promisify(require('child_process').exec);
 const spawn = require('child_process').spawnSync;
 
 async function version(versionType) {
-    const { stdout, stderr } = await exec(`npm version ${versionType} --no-git-tag-version`);
+    const { stdout, stderr } = await exec(`pnpm version ${versionType} --no-git-tag-version`);
     if (stderr) throw stderr;
     return stdout;
 }
@@ -26,7 +26,7 @@ const run = async () => {
     if (!gitMessage) throw new Error('You need to provide a git commit message!');
 
     const npmVersion = await version(versionType);
-    await spawn('git', ['add', 'package.json', 'package-lock.json'], { stdio: 'inherit' });
+    await spawn('git', ['add', 'package.json'], { stdio: 'inherit' });
     await spawn('git', ['commit', '-m', gitMessage.trim()], { stdio: 'inherit' });
     await spawn('git', ['tag', npmVersion.trim()], { stdio: 'inherit' });
     await spawn('git', ['status'], { stdio: 'inherit' });
@@ -37,7 +37,7 @@ const run = async () => {
   } catch (err) {
     console.log('Something went wrong:');
     console.error(err);
-    console.error('\nPlease use this format: \nnpm run publish [patch|minor|major] "Commit message"');
+    console.error('\nPlease use this format: \npnpm run publish [patch|minor|major] "Commit message"');
   }
 };
 
