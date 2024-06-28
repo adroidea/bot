@@ -25,14 +25,19 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
 
 ## Modules 
 
-### 📅 Events management
-> 🚧 WIP, it will come... soon enough lmao
-- Create and delete events (administrator)
-- Join created events (you can unRSVP)
-- Waiting list available (max participants)
-> Sooo much TODO (event scheduling otw, with alerts 1 week, 1 day and 1 hour prior to the event)
+### 📦 Core
 
-### 🔨 Moderation 
+#### Misc 
+
+- Some memes stuff like "hello there" and some private jokes
+![hello_there](/assets/hello_there.png)
+- Ping command
+- Help command 
+- Report command (sends a message to my discord with a feature request or a bug report)
+- Roll command (roll some dices)
+- Purge channel
+
+#### 🔨 Moderation
 
 - Purge channel
 
@@ -47,6 +52,20 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
  - Guild
    - Ban Add / Remove
    - Role Create / Update / Delete
+
+### 📅 Event manager
+
+> 🧪 BETA
+
+- Create and delete events (administrator)
+- Join or leave created events
+- Waiting list available (max participants)
+- Sends a reminder to the participants:
+  - 1 week before
+  - 1 day before
+  - 1 hour and a half before
+  - 5 minutes before
+  - When the event starts
 
 ### ⛓️ Jail 
 
@@ -108,11 +127,6 @@ The voice owner can :
 ![alert](/assets/twitch/alert.png)
 
 - Auto Add a custom role when a friend goes live and removes it once they stop
-
-## Misc
-
-- Some memes stuff like "hello there" and some private jokes
-![hello_there](/assets/hello_there.png)
 
 # 🏗️ Development
 

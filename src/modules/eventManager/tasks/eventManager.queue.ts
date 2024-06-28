@@ -11,24 +11,15 @@ const connectionOptions = {
     }
 };
 
-if (connection.status !== 'ready') {
-    throw new Error('Redis connection is undefined.');
-}
-
-const scheduledEventsQueues = {
-    reminderQueue: new Queue('scheduledEventsReminder', connectionOptions)
-};
-
-export default function (): void {
-    console.log('Scheduled events queues initialized.');
-}
+const reminderQueue = new Queue('eventManagerQueue', connectionOptions);
 
 export const addToAppropriateQueue = async (eventId: string, event: IEvent) => {
     const delay = Number(event.date) - Number(new Date());
 
-    // Définition des délais en millisecondes
+    // Time intervals in milliseconds
     const timeIntervals: { name: string; delay: number }[] = [
-        { name: 'oneHourHalf', delay: 5400000 },
+        { name: 'fiveMinutes', delay: 300000 },
+        { name: 'oneAndHalfHours', delay: 5400000 },
         { name: 'oneDay', delay: 86400000 },
         { name: 'oneWeek', delay: 604800000 }
     ];
@@ -36,15 +27,9 @@ export const addToAppropriateQueue = async (eventId: string, event: IEvent) => {
     try {
         timeIntervals.forEach(interval => {
             if (delay > interval.delay) {
-                scheduledEventsQueues.reminderQueue.add(
-                    eventId,
-                    { event },
-                    { delay: delay - interval.delay }
-                );
+                reminderQueue.add(eventId, { event }, { delay: delay - interval.delay });
             }
         });
-
-        Logger.info(`Event with ID ${eventId} added to the appropriate queue successfully.`);
     } catch (error: any) {
         Logger.error(`Error adding event with ID ${eventId} to the queue: ${error.message}`, error);
     }

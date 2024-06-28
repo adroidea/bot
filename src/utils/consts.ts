@@ -54,6 +54,12 @@ export const Modules: Record<string, IModule> = {
         description: 'Module de logs',
         emoji: '📜'
     },
+    eventManager: {
+        name: 'eventManager',
+        label: 'Evenements',
+        description: 'Module de gestion des événements',
+        emoji: '📅'
+    },
     jail: {
         name: 'jail',
         label: 'Jail',
@@ -72,12 +78,6 @@ export const Modules: Record<string, IModule> = {
         description: 'Module de la question du jour',
         emoji: '❓'
     },
-    // scheduledEvents: {
-    //     name: 'scheduledEvents',
-    //     label: 'Evenements',
-    //     description: 'Module de gestion des événements',
-    //     emoji: '📅'
-    // },
     tempVoice: {
         name: 'tempVoice',
         label: 'tempVoice',
