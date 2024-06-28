@@ -69,8 +69,8 @@ export const CustomErrors = {
     ////////////////////////////////////////////////////
     //               Events related err               //
     ////////////////////////////////////////////////////
-    ScheduledEventDisabledError: new CustomError(
-        "Le module ScheduledEvent n'est pas activé sur ce serveur."
+    EventManagerDisabledError: new CustomError(
+        "Le module EventManager n'est pas activé sur ce serveur."
     ),
     EventNotFoundError: new CustomError(
         "L'évenement en question n'existe pas ou je n'y ai pas accès."

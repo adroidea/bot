@@ -13,10 +13,11 @@ if (process.env.NODE_ENV === 'PRODUCTION') {
 
 dotenv.config({ path: envPath });
 
-client.login(process.env.DISCORD_TOKEN);
-
-const filePath = path.join(__dirname, 'src/handlers/module.handler.js');
-import(filePath).then(handler => handler.default(client));
+export const connection = new IORedis({
+    host: process.env.REDIS_HOST,
+    port: 6379,
+    maxRetriesPerRequest: null
+});
 
 mongoose.set('strictQuery', false);
 mongoose
@@ -33,11 +34,12 @@ mongoose
         Logger.error("Couldn't connect to database", err);
     });
 
-export const connection = new IORedis({
-    host: process.env.REDIS_HOST,
-    port: 6379,
-    maxRetriesPerRequest: null
-})
+client.login(process.env.DISCORD_TOKEN);
+
+const filePath = path.join(__dirname, 'src/handlers/module.handler.js');
+import(filePath).then(handler => handler.default(client));
+
+connection
     .on('connect', () => {
         Logger.info('🔴 Redis connected');
     })

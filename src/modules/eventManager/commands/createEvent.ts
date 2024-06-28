@@ -5,11 +5,11 @@ import {
     PermissionsBitField
 } from 'discord.js';
 import { CustomErrors } from '../../../utils/errors';
+import EventManagerService from '../services/eventManager.service';
 import { IEvent } from '../models';
 import { IGuild } from 'adroi.d.ea';
-import ScheduledEventService from '../services/scheduledEvent.service';
-import { addToAppropriateQueue } from '../tasks/scheduledEvents.queue';
-//import { isEventManagementModuleEnabled } from '../../../utils/modulesUil';
+import { addToAppropriateQueue } from '../tasks/eventManager.queue';
+import { isEventManagerModuleEnabled } from '../../../utils/modules.uil';
 
 export default {
     data: {
@@ -39,11 +39,11 @@ export default {
     category: 'scheduledEvent',
     permissions: [PermissionsBitField.Flags.ManageEvents],
     guildOnly: false,
-    usage: '',
+    usage: 'event <url-id> [description] [max-participants]',
     examples: [''],
 
-    async execute(client: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
-        //        if (!isEventManagementModuleEnabled(guildSettings, true)) return;
+    async execute(_: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
+        if (!isEventManagerModuleEnabled(guildSettings, true)) return;
 
         const eventInput = interaction.options.getString('url-id', true);
         let description =
@@ -62,7 +62,7 @@ export default {
             eventId = eventInput.split(urlRegex2)[2];
         }
 
-        const tryEvent = await ScheduledEventService.getEventById(eventId);
+        const tryEvent = await EventManagerService.getEventById(eventId);
         if (tryEvent) throw CustomErrors.EventAlreadyExistsError;
 
         const discordEvent = await interaction.guild!.scheduledEvents.fetch(eventId);
@@ -87,7 +87,7 @@ export default {
             event.participantsId.push(sub[0]);
         }
 
-        description = ScheduledEventService.updateMessage(event) + '\n\n' + inviteURL;
+        description = EventManagerService.updateMessage(event) + '\n\n' + inviteURL;
 
         const message = await interaction.channel!.send({
             content: `${description}`
@@ -100,6 +100,6 @@ export default {
 
         event.messageId = message.id;
         addToAppropriateQueue(eventId, event);
-        await ScheduledEventService.createEvent(event);
+        await EventManagerService.createEvent(event);
     }
 };

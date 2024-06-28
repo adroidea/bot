@@ -7,8 +7,8 @@ import {
     GuildScheduledEventStatus,
     MessageCreateOptions
 } from 'discord.js';
+import EventManagerService from '../../services/eventManager.service';
 import { IGuild } from 'adroi.d.ea';
-import ScheduledEventService from '../../services/scheduledEvent.service';
 import guildService from '../../../../services/guild.service';
 import { timestampToDate } from '../../../../utils/bot.util';
 
@@ -17,11 +17,11 @@ export default {
     async execute(client: Client, oldEvent: GuildScheduledEvent, newEvent: GuildScheduledEvent) {
         const guildSettings: IGuild = await guildService.getOrCreateGuild(oldEvent.guild!);
 
-        const event = await ScheduledEventService.getEventById(oldEvent.id);
+        const event = await EventManagerService.getEventById(oldEvent.id);
         if (!event) return;
 
-        //const eventManagement = guildSettings.modules.eventManagement;
-        //if (!eventManagement.enabled) return;
+        const eventManager = guildSettings.modules.eventManager;
+        if (!eventManager.enabled) return;
 
         let message: MessageCreateOptions;
 
@@ -35,6 +35,9 @@ export default {
                 newEvent.status === GuildScheduledEventStatus.Canceled:
                 message = eventCanceled(newEvent);
                 break;
+
+            case oldEvent.status === GuildScheduledEventStatus.Completed:
+                return;
 
             default:
                 message = eventDataUpdate(oldEvent, newEvent);
@@ -56,7 +59,7 @@ const eventDataUpdate = (
     const updateEmbed = new EmbedBuilder()
         .setTitle('Évènement mis à jour')
         .setDescription(
-            `L'évènement **__${oldEvent.name}__** a été mis à jour. Voici les changements :`
+            `L'évènement **__${oldEvent.name}__** du serveur **${oldEvent.guild?.name}** a été mis à jour. Voici les changements :`
         )
         .setColor([45, 249, 250])
         .setTimestamp();
@@ -154,7 +157,7 @@ export const eventCanceled = (event: GuildScheduledEvent): MessageCreateOptions 
             }
         ])
         .setTimestamp();
-    ScheduledEventService.deleteEvent(event.id);
+    EventManagerService.deleteEvent(event.id);
     return {
         content: `Salut ! Mauvaise nouvelle, l'événement "${event.name}" prévu le <t:${timestamp}:F> a été annulé.`,
         embeds: [cancelEmbed]

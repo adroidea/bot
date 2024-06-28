@@ -1,11 +1,8 @@
 import { REST, Routes } from 'discord.js';
 import { Guilds } from './utils/consts';
 import Logger from './utils/logger';
-import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'node:path';
-
-dotenv.config();
 
 /**
  * Registers application commands and guild application commands.
@@ -17,10 +14,10 @@ export const regCMD = async (clientId: string) => {
 
     const categoryFolders = [
         path.join(__dirname, 'modules/core/commands'),
+        //path.join(__dirname, 'modules/auditLogs/commands'),
+        path.join(__dirname, 'modules/eventManager/commands'),
         path.join(__dirname, 'modules/jail/components/contextMenus'),
-        //path.join(__dirname, 'modules/logs/commands'),
         path.join(__dirname, 'modules/qotd/commands'),
-        //path.join(__dirname, 'modules/scheduledEvents/commands'),
         path.join(__dirname, 'modules/tempVoice/commands')
         //path.join(__dirname, 'modules/twitch/commands'),
     ];

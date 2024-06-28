@@ -95,7 +95,7 @@ const updateMessage = (eventData: IEvent): string => {
     return description + '\n\n' + participants;
 };
 
-const ScheduledEventService = {
+const EventManagerService = {
     addParticipantToEvent,
     createEvent,
     deleteEvent,
@@ -104,4 +104,4 @@ const ScheduledEventService = {
     updateMessage
 };
 
-export default ScheduledEventService;
+export default EventManagerService;
