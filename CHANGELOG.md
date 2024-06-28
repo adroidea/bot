@@ -12,6 +12,18 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Fixed
 
+## 🏗️ [4.2.1]
+
+### ✨ Added
+
+❄️ Core: The bot will now alert you in most cases if it's missing permissions to do something - [[#96](https://github.com/adroidea/bot/issues/96)]
+
+### 🧱 Changed
+
+### 🚮 Removed
+
+### 🐛 Fixed
+
 ❄️ AuditLogs: Fixed a bug where the bot wouldn't send the log for a bulk delete 
 
 ❄️ Core: purge command finally deletes up to 100 messages, as intended
@@ -118,6 +130,7 @@ All notable changes to this project will be documented in this file.
 ❄️ A lot of stuff i don't remember. And i'm too lazy to check every commit :')
 
 [Unreleased]: https://github.com/adroidea/bot
+[4.2.1]: https://github.com/adroidea/bot/releases/tag/v4.2.1
 [4.2.0]: https://github.com/adroidea/bot/releases/tag/v4.2.0
 [4.1.1]: https://github.com/adroidea/bot/releases/tag/v4.1.1
 [4.1.0]: https://github.com/adroidea/bot/releases/tag/v4.1.0
