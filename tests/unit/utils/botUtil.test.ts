@@ -1,7 +1,7 @@
 import { timestampToDate } from '../../../src/utils/bot.util';
 
 describe('timestampToDate', () => {
-    it('correctly converts a timestamp to a date in seconds', () => {
+    it('should correctly converts a timestamp to a date in seconds', () => {
         const timestamp = 1630473600000;
         const expectedResult = 1630473600;
 
@@ -10,7 +10,7 @@ describe('timestampToDate', () => {
         expect(result).toBe(expectedResult);
     });
 
-    it('correctly handles negative timestamps', () => {
+    it('should correctly handles negative timestamps', () => {
         const timestamp = -1630473600000;
         const expectedResult = -1630473600;
 
@@ -19,7 +19,7 @@ describe('timestampToDate', () => {
         expect(result).toBe(expectedResult);
     });
 
-    it('correctly handles a null timestamp', () => {
+    it('should correctly handles a null timestamp', () => {
         const timestamp = 0;
         const expectedResult = 0;
 

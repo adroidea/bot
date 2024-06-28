@@ -6,6 +6,6 @@
       "experimentalDecorators": true,	
       "typeRoots": ["../node_modules/@types"]	
     },	
-    "include": ["**/*.test.ts"]	
+    "include": ["**/*.ts"]	
   }	
   

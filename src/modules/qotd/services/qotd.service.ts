@@ -11,8 +11,14 @@ const addToQotdBlacklist = async (guildId: string, userId: string): Promise<void
             throw CustomErrors.GuildNotFoundError;
         }
 
-        if (guild.modules.qotd.blacklist && !guild.modules.qotd.blacklist.includes(userId)) {
-            guild.modules.qotd.blacklist.push(userId);
+        const { qotd } = guild.modules;
+
+        if (qotd.blacklist && !qotd.blacklist.includes(userId)) {
+            qotd.blacklist.push(userId);
+        }
+
+        if (qotd.whitelist?.includes(userId)) {
+            qotd.whitelist = qotd.whitelist.filter(id => id !== userId);
         }
 
         await guild.save();
@@ -25,7 +31,7 @@ const addToQotdBlacklist = async (guildId: string, userId: string): Promise<void
     }
 };
 
-const whiteListUser = async (guildId: string, userId: string): Promise<void> => {
+const addToQotdWhiteList = async (guildId: string, userId: string): Promise<void> => {
     try {
         const guild = await GuildModel.findOne({ id: guildId });
 
@@ -33,8 +39,14 @@ const whiteListUser = async (guildId: string, userId: string): Promise<void> => 
             throw CustomErrors.GuildNotFoundError;
         }
 
-        if (guild.modules.qotd.whitelist && !guild.modules.qotd.whitelist.includes(userId)) {
-            guild.modules.qotd.whitelist.push(userId);
+        const { qotd } = guild.modules;
+
+        if (qotd.whitelist && !qotd.whitelist.includes(userId)) {
+            qotd.whitelist.push(userId);
+        }
+
+        if (qotd.blacklist?.includes(userId)) {
+            qotd.blacklist = qotd.blacklist.filter(id => id !== userId);
         }
 
         await guild.save();
@@ -69,7 +81,7 @@ const qotddService = {
     addToQotdBlacklist,
     createQOtD,
     deleteQOtDById,
-    whiteListUser
+    whiteListUser: addToQotdWhiteList
 };
 
 export default qotddService;
