@@ -4,20 +4,40 @@ import {
     EmbedBuilder,
     Events,
     GuildBan,
-    GuildBasedChannel,
+    GuildTextBasedChannel,
+    PermissionsBitField,
     userMention
 } from 'discord.js';
 import { Colors } from '../../../../utils/consts';
+import {
+    canSendMessage,
+    getTextChannel,
+    hasBotPermission,
+    warnOwnerNoPermissions
+} from '../../../../utils/bot.util';
+import { CustomErrors } from '../../../../utils/errors';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { Locales } from '../../../../locales/i18n-types';
-import { addAuthor } from '../../../../utils/embedsUtil';
-import { canSendMessage } from '../../../../utils/botUtil';
+import { addAuthor } from '../../../../utils/embeds.util';
 import guildService from '../../../../services/guild.service';
 import { loadLL } from '../../../core/events/client/interactionCreate';
 
 export default {
     name: Events.GuildBanAdd,
-    async execute(client: Client, ban: GuildBan) {
+    async execute(_: Client, ban: GuildBan) {
+        const permissions: bigint[] = [
+            PermissionsBitField.Flags.ViewAuditLog,
+            PermissionsBitField.Flags.ViewChannel,
+            PermissionsBitField.Flags.SendMessages,
+            PermissionsBitField.Flags.EmbedLinks
+        ];
+        try {
+            if (!hasBotPermission(ban.guild, permissions))
+                throw CustomErrors.SelfNoPermissionsError(ban.guild, permissions);
+        } catch (error) {
+            warnOwnerNoPermissions(ban.guild, permissions);
+        }
+
         const fetchedLogs = await ban.guild.fetchAuditLogs({
             limit: 1,
             type: AuditLogEvent.MemberBanAdd
@@ -33,10 +53,7 @@ export default {
         const LL = await loadLL((localeLL as Locales) ?? 'en');
         const locale = LL.modules.auditLogs.events.guildBanAdd;
 
-        const logChannel = client.guilds.cache
-            .get(ban.guild.id)
-            ?.channels.cache.get(guildBanAdd.channelId);
-        if (!logChannel?.isTextBased()) return;
+        const logChannel = getTextChannel(ban.guild, guildBanAdd.channelId);
 
         if (shouldIgnoreBanAdd(guildBanAdd, logChannel)) return;
 
@@ -81,5 +98,5 @@ export default {
 
 const shouldIgnoreBanAdd = (
     guildBanAdd: IAuditLogsModule['guildBanAdd'],
-    logChannel: GuildBasedChannel | undefined
+    logChannel: GuildTextBasedChannel
 ) => !guildBanAdd.enabled || guildBanAdd.channelId === '' || !canSendMessage(logChannel);

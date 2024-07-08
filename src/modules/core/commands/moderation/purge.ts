@@ -8,11 +8,11 @@ import {
     PermissionsBitField,
     TextChannel
 } from 'discord.js';
-import { Embed, addAuthor } from '../../../../utils/embedsUtil';
+import { Embed, addAuthor } from '../../../../utils/embeds.util';
+import { getTextChannel, hasBotPermission } from '../../../../utils/bot.util';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from 'adroi.d.ea';
 import { TranslationFunctions } from '../../../../locales/i18n-types';
-import { hasBotPermission } from '../../../../utils/botUtil';
 
 export default {
     data: {
@@ -41,13 +41,14 @@ export default {
     examples: ['purge 10', 'purge 100 @adan_ea'],
 
     async execute(
-        client: Client,
+        _: Client,
         interaction: ChatInputCommandInteraction,
         guildSettings: IGuild,
         LL: TranslationFunctions
     ) {
-        if (!hasBotPermission(interaction.guild!, [PermissionsBitField.Flags.ManageMessages]))
-            throw CustomErrors.SelfNoPermissionsError;
+        const permissions = [PermissionsBitField.Flags.ManageMessages];
+        if (!hasBotPermission(interaction.guild!, permissions))
+            throw CustomErrors.SelfNoPermissionsError(interaction.guild!, permissions);
 
         const locale = LL.modules.core.commands.purge;
         const amountToDelete = interaction.options.getNumber('montant', true);
@@ -83,8 +84,7 @@ export default {
         const { channelId } = messageBulkDelete;
 
         if (channelId) {
-            const logChannel = client.channels.cache.get(channelId);
-            if (!logChannel?.isTextBased()) return;
+            const logChannel = getTextChannel(interaction.guild!, channelId);
 
             const embed = new EmbedBuilder()
                 .setTitle(locale.logEmbed.title())
@@ -109,7 +109,7 @@ const handleBulkDelete = async (
     amountToDelete: number,
     target?: GuildMember
 ) => {
-    const messagesToDelete = await channel.messages.fetch({limit: amountToDelete});
+    const messagesToDelete = await channel.messages.fetch({ limit: amountToDelete });
     const filteredMessages: Message[] = [];
     if (target) {
         let i = 0;

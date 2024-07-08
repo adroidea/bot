@@ -7,7 +7,7 @@ import {
 } from 'discord.js';
 import { CustomErrors } from '../../../../utils/errors';
 import { OWNER_ID } from '../../../../utils/consts';
-import { sendChangeLogRow } from '../../components/buttons/sendChangelogBtn';
+import { sendChangeLogRow } from '../../components/buttons/sendChangelog.button';
 
 export default {
     data: {

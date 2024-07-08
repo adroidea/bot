@@ -32,11 +32,11 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
 - Waiting list available (max participants)
 > Sooo much TODO (event scheduling otw, with alerts 1 week, 1 day and 1 hour prior to the event)
 
-### Moderation 
+### 🔨 Moderation 
 
 - Purge channel
 
-### Audit Logs
+### 📜 Audit Logs
 
 - Guild Messages
    - Update / Delete / Bulk Delete
@@ -47,6 +47,13 @@ I self-host the bot but my code isn't yet strong enough to give an invitation li
  - Guild
    - Ban Add / Remove
    - Role Create / Update / Delete
+
+### ⛓️ Jail 
+
+- Jail someone for a random amount of time
+
+When you get mad at someone for not following the rules, you can jail them for a random amount of time.
+It will mute/deafen then move to a specific channel and bring the person back unmuted/undeafend after the time is up.
 
 ### 🎉 Party Mode
 
@@ -121,15 +128,15 @@ WEBHOOK_LOG_URL
 ```
 
 ```
-npm i
-npm start
+pnpm i
+pnpm start
 ```
 
 # 💻 Production
 
 ```
-npm install --omit=dev
-npm start
+pnpm install --prod
+pnpm start
 ```
 
 # 🐋 Docker

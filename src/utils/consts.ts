@@ -54,6 +54,12 @@ export const Modules: Record<string, IModule> = {
         description: 'Module de logs',
         emoji: '📜'
     },
+    jail: {
+        name: 'jail',
+        label: 'Jail',
+        description: 'Module de la prison',
+        emoji: '⛓️'
+    },
     // party: {
     //     name: 'party',
     //     label: 'Party',
@@ -99,3 +105,59 @@ export enum Channels {
 }
 
 export const OWNER_ID = '294916386072035328';
+
+export const categories = {
+    [`${Emojis.cog} Générales`]: [
+        'ManageChannels',
+        'ManageGuild',
+        'ViewAuditLog',
+        'ViewChannel',
+        'ViewGuildInsights',
+        'ManageRoles',
+        'ManageWebhooks',
+        'ManageEmojisAndStickers',
+        'ManageGuildExpressions'
+    ],
+    [`${Emojis.members} Membres`]: [
+        'CreateInstantInvite',
+        'KickMembers',
+        'BanMembers',
+        'ChangeNickname',
+        'ManageNicknames',
+        'ModerateMembers'
+    ],
+    [`${Emojis.event} Evènements`]: ['ManageEvents'],
+    [`${Emojis.textChannel} Salon textuel`]: [
+        'AddReactions',
+        'SendMessages',
+        'SendTTSMessages',
+        'ManageMessages',
+        'EmbedLinks',
+        'AttachFiles',
+        'ReadMessageHistory',
+        'MentionEveryone',
+        'UseExternalEmojis',
+        'UseApplicationCommands',
+        'ManageThreads',
+        'CreatePublicThreads',
+        'CreatePrivateThreads',
+        'UseExternalStickers',
+        'SendMessagesInThreads',
+        'SendVoiceMessages'
+    ],
+    [`${Emojis.voiceChannel} Salon vocal`]: [
+        'PrioritySpeaker',
+        'Stream',
+        'Connect',
+        'Speak',
+        'MuteMembers',
+        'DeafenMembers',
+        'MoveMembers',
+        'UseVAD',
+        'UseEmbeddedActivities',
+        'UseSoundboard',
+        'UseExternalSounds'
+    ],
+    [`${Emojis.stageChannel} Salon de conférence`]: ['RequestToSpeak'],
+    [`${Emojis.advanced} Avancées`]: ['Administrator']
+};

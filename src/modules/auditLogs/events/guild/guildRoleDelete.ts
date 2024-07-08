@@ -1,9 +1,9 @@
 import { AuditLogEvent, Client, EmbedBuilder, Events, GuildBasedChannel, Role } from 'discord.js';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { Locales } from '../../../../locales/i18n-types';
-import { addAuthor } from '../../../../utils/embedsUtil';
-import { addPermissionsNames } from '../../../../utils/modulesUil';
-import { canSendMessage } from '../../../../utils/botUtil';
+import { addAuthor } from '../../../../utils/embeds.util';
+import { addPermissionsNames } from '../../../../utils/modules.uil';
+import { canSendMessage } from '../../../../utils/bot.util';
 import guildService from '../../../../services/guild.service';
 import { loadLL } from '../../../core/events/client/interactionCreate';
 

@@ -17,14 +17,13 @@ import {
 import { CustomError, CustomErrors } from '../../../../utils/errors';
 import { Locales, TranslationFunctions } from '../../../../locales/i18n-types';
 import { i18nObject, isLocale } from '../../../../locales/i18n-util';
-import { Embed } from '../../../../utils/embedsUtil';
-import { IDiscordClient } from '../../../../client';
+import client, { IDiscordClient } from '../../../../client';
+import { Embed } from '../../../../utils/embeds.util';
 import { IGuild } from 'adroi.d.ea';
-import { client } from '../../../../';
 import guildService from '../../../../services/guild.service';
-import { hasMemberPermission } from '../../../../utils/memberUtil';
+import { hasMemberPermission } from '../../../../utils/member.util';
 import { loadLocaleAsync } from '../../../../locales/i18n-util.async';
-import { timestampToDate } from '../../../../utils/botUtil';
+import { timestampToDate } from '../../../../utils/bot.util';
 
 export async function loadLL(locale: Locales = 'en'): Promise<TranslationFunctions> {
     if (!isLocale(locale)) locale = 'en';
@@ -62,6 +61,17 @@ const handleCommandInteraction = async (
     interaction: CommandInteraction
 ) => {
     const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guild!);
+    if (interaction.isUserContextMenuCommand()) {
+        try {
+            const contextMenu = client.contextMenus.get(interaction.commandName);
+            if (contextMenu) {
+                await contextMenu.execute(interaction, guildSettings);
+            }
+        } catch (err) {
+            handleError(interaction, err);
+        }
+        return;
+    }
     const command = client.commands.get(interaction.commandName);
 
     const LL = await loadLL((guildSettings.locale as Locales) ?? 'en');

@@ -5,13 +5,17 @@ RUN addgroup -S adroidea && adduser -S adan -G adroidea
 RUN apk add --no-cache tzdata
 ENV TZ=Europe/Paris
 
-RUN mkdir -p /usr/src/adroid
-WORKDIR /usr/src/adroid
+# Install pnpm
+RUN npm install -g pnpm --ignore-scripts
 
-COPY package.json /usr/src/adroid
-RUN npm install --omit=dev --ignore-scripts
+RUN mkdir -p /usr/adroid/src
+WORKDIR /usr/adroid/src
 
-COPY dist /usr/src/adroid
+COPY package.json /usr/adroid/src
+COPY pnpm-lock.yaml /usr/adroid/src
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts
+
+COPY dist /usr/adroid/src
 
 USER adan
 CMD ["node", "index.js"]

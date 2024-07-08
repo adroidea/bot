@@ -1,9 +1,9 @@
 import { Client, EmbedBuilder, Events, GuildBasedChannel, GuildMember } from 'discord.js';
-import { canSendMessage, timestampToDate } from '../../../../utils/botUtil';
+import { canSendMessage, timestampToDate } from '../../../../utils/bot.util';
 import { Colors } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { Locales } from '../../../../locales/i18n-types';
-import { addAuthor } from '../../../../utils/embedsUtil';
+import { addAuthor } from '../../../../utils/embeds.util';
 import guildService from '../../../../services/guild.service';
 import { loadLL } from '../../../core/events/client/interactionCreate';
 

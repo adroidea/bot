@@ -175,6 +175,12 @@ const fr: Translation = {
                         title: '',
                         description: '',
                         footer: ''
+                    },
+                    options: {
+                        command: {
+                            name: '',
+                            description: ''
+                        }
                     }
                 },
                 reportea: {

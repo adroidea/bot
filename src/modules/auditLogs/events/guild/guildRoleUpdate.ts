@@ -11,9 +11,9 @@ import {
 import { Locales, TranslationFunctions } from '../../../../locales/i18n-types';
 import { Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
-import { addAuthor } from '../../../../utils/embedsUtil';
-import { addComparedPermissionsNames } from '../../../../utils/modulesUil';
-import { canSendMessage } from '../../../../utils/botUtil';
+import { addAuthor } from '../../../../utils/embeds.util';
+import { addComparedPermissionsNames } from '../../../../utils/modules.uil';
+import { canSendMessage } from '../../../../utils/bot.util';
 import guildService from '../../../../services/guild.service';
 import { loadLL } from '../../../core/events/client/interactionCreate';
 

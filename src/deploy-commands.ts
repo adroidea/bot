@@ -17,6 +17,7 @@ export const regCMD = async (clientId: string) => {
 
     const categoryFolders = [
         path.join(__dirname, 'modules/core/commands'),
+        path.join(__dirname, 'modules/jail/components/contextMenus'),
         //path.join(__dirname, 'modules/logs/commands'),
         path.join(__dirname, 'modules/qotd/commands'),
         //path.join(__dirname, 'modules/scheduledEvents/commands'),

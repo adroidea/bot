@@ -1,14 +1,14 @@
 import { ActionRowBuilder, ButtonBuilder } from 'discord.js';
-import { voiceBlacklistAddBtn } from './voiceBlacklistAddBtn';
-import { voiceBlacklistRemoveBtn } from './voiceBlacklistRemoveBtn';
-import { voiceDeleteBtn } from './voiceDeleteBtn';
-import { voiceLimitBtn } from './voiceLimitBtn';
-import { voiceOwnerTransferBtn } from './voiceOwnerTransferBtn';
-import { voicePrivacyBtn } from './voicePrivacyBtn';
-import { voiceSetRTCRegionBtn } from './voiceSetRTCRegionBtn';
-import { voiceWhitelistAddBtn } from './voiceWhitelistAddBtn';
-import { voiceWhitelistRemoveBtn } from './voiceWhitelistRemoveBtn';
-import { voiceWhitelistTempAddBtn } from './voiceWhitelistTempAddBtn';
+import { voiceBlacklistAddBtn } from './voiceBlacklistAdd.button';
+import { voiceBlacklistRemoveBtn } from './voiceBlacklistRemove.button';
+import { voiceDeleteBtn } from './voiceDelete.button';
+import { voiceLimitBtn } from './voiceLimit.button';
+import { voiceOwnerTransferBtn } from './voiceOwnerTransfer.button';
+import { voicePrivacyBtn } from './voicePrivacy.button';
+import { voiceSetRTCRegionBtn } from './voiceSetRTCRegion.button';
+import { voiceWhitelistAddBtn } from './voiceWhitelistAdd.button';
+import { voiceWhitelistRemoveBtn } from './voiceWhitelistRemove.button';
+import { voiceWhitelistTempAddBtn } from './voiceWhitelistTempAdd.button';
 
 export const firstRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
     voiceLimitBtn,

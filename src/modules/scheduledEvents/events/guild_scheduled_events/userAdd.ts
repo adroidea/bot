@@ -1,6 +1,6 @@
 import { Client, Events, GuildScheduledEvent, TextBasedChannel, User } from 'discord.js';
 import { IGuild } from 'adroi.d.ea';
-import ScheduledEventService from '../../services/scheduledEventService';
+import ScheduledEventService from '../../services/scheduledEvent.service';
 import guildService from '../../../../services/guild.service';
 
 export default {

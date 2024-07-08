@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file (as long as 
 
 ### ✨ Added
 
-❄️ Core: The bot can now speak in English, y también en español, almost as well as son Français parfait!
+❄️ Core: The bot can now speak in English almost as well as son Français parfait!
 
 ### 🧱 Changed
 
@@ -14,7 +14,39 @@ All notable changes to this project will be documented in this file (as long as 
 
 ### 🐛 Fixed
 
+## 🏗️ [4.2.1]
+
+### ✨ Added
+
+❄️ Core: The bot will now alert you in most cases if it's missing permissions to do something - [[#96](https://github.com/adroidea/bot/issues/96)]
+
+### 🧱 Changed
+
+### 🚮 Removed
+
+### 🐛 Fixed
+
+❄️ AuditLogs: Fixed a bug where the bot wouldn't send the log for a bulk delete 
+
 ❄️ Core: purge command finally deletes up to 100 messages, as intended
+
+❄️ Jail: Handle edge cases
+
+## 🏗️ [4.2.0]
+
+### ✨ Added
+
+❄️ Jail: Add a jail system - [[#95](https://github.com/adroidea/bot/issues/95)]
+
+### 🧱 Changed
+
+❄️ Core: The bot will now show you what permissions are missing when you try to use a command he can't use
+
+### 🚮 Removed
+
+### 🐛 Fixed
+
+❄️ TempVoice: Fixed the userSettings not being created failing the execution of the tempVoice
 
 ## 🏗️ [4.1.1]
 
@@ -26,10 +58,6 @@ All notable changes to this project will be documented in this file (as long as 
 
 ❄️ Core: Fixed pictures links (again and final) - [[#88](https://github.com/adroidea/bot/issues/88)]
 
-### 🚮 Removed
-
-### 🐛 Fixed
-
 ## 🚀 [4.1.0] - 2024-02-26
 
 ### ✨ Added
@@ -39,10 +67,6 @@ All notable changes to this project will be documented in this file (as long as 
 ❄️ Twitch: Now can ignore some categories for the Category Change notification - [[#75](https://github.com/adroidea/bot/issues/75)]
 
 ❄️ QotD: Add banned key words - [[#78](https://github.com/adroidea/bot/issues/78)]
-
-### 🧱 Changed
-
-### 🚮 Removed
 
 ### 🐛 Fixed
 
@@ -101,7 +125,6 @@ All notable changes to this project will be documented in this file (as long as 
 
 ❄️ The bot's reaction to the JPPFC term (was only available for one server)
 
-
 ## 🚀 [3.6.0] - [0.0.1]
 
 ### ✨ Added
@@ -109,6 +132,8 @@ All notable changes to this project will be documented in this file (as long as 
 ❄️ A lot of stuff i don't remember. And i'm too lazy to check every commit :')
 
 [Unreleased]: https://github.com/adroidea/bot
+[4.2.1]: https://github.com/adroidea/bot/releases/tag/v4.2.1
+[4.2.0]: https://github.com/adroidea/bot/releases/tag/v4.2.0
 [4.1.1]: https://github.com/adroidea/bot/releases/tag/v4.1.1
 [4.1.0]: https://github.com/adroidea/bot/releases/tag/v4.1.0
 [4.0.0]: https://github.com/adroidea/bot/releases/tag/v4.0.0

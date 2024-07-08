@@ -9,14 +9,14 @@ import {
     userMention
 } from 'discord.js';
 import { Colors, Guilds } from '../../../utils/consts';
-import { Embed, addAuthor } from '../../../utils/embedsUtil';
+import { Embed, addAuthor } from '../../../utils/embeds.util';
 import { IGuild, IQOTDModule } from 'adroi.d.ea';
 import { adminRow, stealRow } from '../components/buttons';
 import { CustomErrors } from '../../../utils/errors';
 import { IQuestions } from '../models';
 import L from '../../../locales/i18n-node';
 import { TranslationFunctions } from '../../../locales/i18n-types';
-import { isQOtDModuleEnabled } from '../../../utils/modulesUil';
+import { isQOtDModuleEnabled } from '../../../utils/modules.uil';
 import qotddService from '../services/qotd.service';
 
 export default {
@@ -24,27 +24,23 @@ export default {
         name: L.en.modules.qotd.commands.name(),
         name_localizations: {
             'en-GB': L.en.modules.qotd.commands.name(),
-            fr: L.fr.modules.qotd.commands.name(),
-            'es-ES': L.es.modules.qotd.commands.name()
+            fr: L.fr.modules.qotd.commands.name()
         },
         description: L.en.modules.qotd.commands.description(),
         description_localizations: {
-            'en-GB': L.en.modules.qotd.commands.description(),
-            'es-ES': L.es.modules.qotd.commands.description()
+            'en-GB': L.en.modules.qotd.commands.description()
         },
         options: [
             {
                 name: L.en.modules.qotd.commands.options.question.name(),
                 name_localization: {
                     'en-GB': L.en.modules.qotd.commands.options.question.name(),
-                    fr: L.fr.modules.qotd.commands.options.question.name(),
-                    'es-ES': L.es.modules.qotd.commands.options.question.name()
+                    fr: L.fr.modules.qotd.commands.options.question.name()
                 },
                 description: L.en.modules.qotd.commands.options.question.description(),
                 description_localization: {
                     'en-GB': L.en.modules.qotd.commands.options.question.description(),
-                    fr: L.fr.modules.qotd.commands.options.question.description(),
-                    'es-ES': L.es.modules.qotd.commands.options.question.description()
+                    fr: L.fr.modules.qotd.commands.options.question.description()
                 },
                 type: ApplicationCommandOptionType.String,
                 required: true,

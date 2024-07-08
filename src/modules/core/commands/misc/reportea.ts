@@ -10,7 +10,7 @@ import {
 import { Channels, Colors, Guilds } from '../../../../utils/consts';
 import { IGuild } from 'adroi.d.ea';
 import { TranslationFunctions } from '../../../../locales/i18n-types';
-import { addAuthor } from '../../../../utils/embedsUtil';
+import { addAuthor } from '../../../../utils/embeds.util';
 
 export default {
     data: {
