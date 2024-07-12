@@ -15,11 +15,13 @@ import {
     UserSelectMenuInteraction
 } from 'discord.js';
 import { CustomError, CustomErrors } from '../../../../utils/errors';
+import { Locales, TranslationFunctions } from '../../../../i18n/i18n-types';
 import client, { IDiscordClient } from '../../../../client';
 import { Embed } from '../../../../utils/embeds.util';
 import { IGuild } from 'adroi.d.ea';
 import guildService from '../../../../services/guild.service';
 import { hasMemberPermission } from '../../../../utils/member.util';
+import { loadLL } from '../../../../i18n/formatters';
 import { timestampToDate } from '../../../../utils/bot.util';
 
 export default {
@@ -52,11 +54,13 @@ const handleCommandInteraction = async (
     interaction: CommandInteraction
 ) => {
     const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guild!);
+    const LL = await loadLL(guildSettings.locale);
+
     if (interaction.isUserContextMenuCommand()) {
         try {
             const contextMenu = client.contextMenus.get(interaction.commandName);
             if (contextMenu) {
-                await contextMenu.execute(interaction, guildSettings);
+                await contextMenu.execute(interaction, guildSettings, LL);
             }
         } catch (err) {
             handleError(interaction, err);
@@ -77,7 +81,7 @@ const handleCommandInteraction = async (
         handleCooldown(interaction.user.id, command.data.name, cooldownAmount);
 
         if (interaction.isChatInputCommand()) {
-            await command.execute(client, interaction, guildSettings);
+            await command.execute(client, interaction, guildSettings, LL);
         }
     } catch (err) {
         handleError(interaction, err);
@@ -142,6 +146,7 @@ export const handleCooldown = (userId: string, commandName: string, cooldownAmou
  */
 const handleComponentInteraction = async (client: IDiscordClient, interaction: BaseInteraction) => {
     const guildSettings: IGuild = await guildService.getOrCreateGuild(interaction.guild!);
+    const LL = await loadLL((guildSettings.locale as Locales) ?? 'en');
 
     if (interaction.isButton()) {
         try {
@@ -149,7 +154,7 @@ const handleComponentInteraction = async (client: IDiscordClient, interaction: B
             if (button) {
                 const cooldownAmount = calculateCooldownAmount(button);
                 handleCooldown(interaction.user.id, button.data.name, cooldownAmount);
-                await executeButtonInteraction(button, interaction, guildSettings);
+                await executeButtonInteraction(button, interaction, guildSettings, LL);
             }
         } catch (err) {
             handleError(interaction, err);
@@ -160,7 +165,7 @@ const handleComponentInteraction = async (client: IDiscordClient, interaction: B
             if (selectMenu) {
                 const cooldownAmount = calculateCooldownAmount(selectMenu);
                 handleCooldown(interaction.user.id, selectMenu.data.name, cooldownAmount);
-                await executeSelectMenuInteraction(selectMenu, interaction, guildSettings);
+                await executeSelectMenuInteraction(selectMenu, interaction, guildSettings, LL);
             }
         } catch (err) {
             handleError(interaction, err);
@@ -169,7 +174,7 @@ const handleComponentInteraction = async (client: IDiscordClient, interaction: B
         try {
             const modal = client.modals.get(interaction.customId);
             if (modal) {
-                await executeModalSubmitInteraction(modal, interaction, guildSettings);
+                await executeModalSubmitInteraction(modal, interaction, guildSettings, LL);
             }
         } catch (err) {
             handleError(interaction, err);
@@ -182,14 +187,16 @@ const handleComponentInteraction = async (client: IDiscordClient, interaction: B
  * @param button - The button to execute.
  * @param interaction - The button interaction.
  * @param guildSettings - The guild settings.
+ * @param LL - The translation functions.
  */
 const executeButtonInteraction = async (
     button: any,
     interaction: ButtonInteraction,
-    guildSettings: IGuild
+    guildSettings: IGuild,
+    LL: TranslationFunctions
 ) => {
     try {
-        await button.execute(interaction, guildSettings);
+        await button.execute(interaction, guildSettings, LL);
     } catch (err) {
         handleError(interaction, err);
     }
@@ -200,14 +207,15 @@ const executeButtonInteraction = async (
  * @param selectMenu - The select menu to execute.
  * @param interaction - The select menu interaction.
  * @param guildSettings - The guild settings.
- */
+ * @param LL - The translation functions. */
 const executeSelectMenuInteraction = async (
     selectMenu: any,
     interaction: AnySelectMenuInteraction,
-    guildSettings: IGuild
+    guildSettings: IGuild,
+    LL: TranslationFunctions
 ) => {
     try {
-        await selectMenu.execute(interaction, guildSettings);
+        await selectMenu.execute(interaction, guildSettings, LL);
     } catch (err) {
         handleError(interaction, err);
     }
@@ -219,14 +227,15 @@ const executeSelectMenuInteraction = async (
  * @param interaction - The modal submit interaction.
  * @param guildSettings - The guild settings.
  * @returns A promise that resolves when the execution is complete.
- */
+ * @param LL - The translation functions. */
 const executeModalSubmitInteraction = async (
     modal: any,
     interaction: ModalSubmitInteraction,
-    guildSettings: IGuild
+    guildSettings: IGuild,
+    LL: TranslationFunctions
 ) => {
     try {
-        await modal.execute(interaction, guildSettings);
+        await modal.execute(interaction, guildSettings, LL);
     } catch (err) {
         handleError(interaction, err);
     }
