@@ -14,6 +14,9 @@ const fr: Translation = {
         guildNotFound: 'Bizarre, bizarre, je ne connais pas ce serveur.',
         moduleDisabled: 'Le module {module} est désactivé sur ce serveur.'
     },
+    common: {
+        noDescription: 'Aucune description'
+    },
     modules: {
         auditLogs: {
             commands: {},
@@ -171,28 +174,32 @@ const fr: Translation = {
                     apiLatency: "Latence de l'API"
                 },
                 helpea: {
-                    description: '',
-                    embed: {
-                        title: '',
-                        description: '',
-                        footer: ''
+                    data: {
+                        name: 'helpea',
+                        description: 'Envoie un message avec toutes les commandes du bot'
                     },
                     options: {
                         command: {
-                            name: '',
-                            description: ''
+                            name: 'commande',
+                            description: 'La commande qui te pose problème'
                         }
+                    },
+                    embed: {
+                        title: `${Emojis.aSnowflake} Voici toutes les commandes du bot !`,
+                        description: 'Envoie un message avec toutes les commandes du bot',
+                        footer: '[ ] = obligatoire | < > = facultatif | (Ne pas inclure dans les commandes)'
                     }
                 },
                 reportea: {
-                    desciption: '',
-                    embed: {
-                        description: ''
+                    data: {
+                        name: 'reportea',
+                        desciption: "Informe le propriétaire du bot d'un bug ou d'une suggestion."
                     },
                     reply: 'Ton signalement a bien été envoyé. Tu pourras le retrouver dans {threadId} sur ce serveur : https://discord.gg/29URgah\nMerci pour ton retour !'
                 },
                 roll: {
-                    description: ''
+                    description: 'Lance des dés',
+                    invalidDice: 'Dé invalide',
                 },
                 changelog: {
                     description: ''

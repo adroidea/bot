@@ -5,6 +5,8 @@ import {
     PermissionsBitField,
     codeBlock
 } from 'discord.js';
+import { IGuild } from 'adroi.d.ea';
+import { TranslationFunctions } from '../../../../i18n/i18n-types';
 import ansis from 'ansis';
 
 interface Dice {
@@ -40,7 +42,13 @@ export default {
     guildOnly: false,
     usage: '[Dés]d[Faces]<opérateur><modificateur>',
     examples: ['2d6+2', '1d300', '1d300/2', 'd6*2'],
-    async execute(client: Client, interaction: ChatInputCommandInteraction) {
+    async execute(
+        _: Client,
+        interaction: ChatInputCommandInteraction,
+        __: IGuild,
+        LL: TranslationFunctions
+    ) {
+        const locale = LL.modules.core.commands.roll;
         const diceString = interaction.options.getString('dé', true);
         const diceArr = diceString.split(' ');
         const resultArr: string[] = [];
@@ -56,7 +64,7 @@ export default {
                 total += configuration.globalResult;
             }
 
-            const resultStr = formatResult(configuration).replace(/.*nan.*/i, 'Dé invalide');
+            const resultStr = formatResult(configuration).replace(/.*nan.*/i, locale.invalidDice());
             resultArr.push(resultStr);
         });
 

@@ -50,6 +50,12 @@ type RootTranslation = {
 		 */
 		moduleDisabled: RequiredParams<'module'>
 	}
+	common: {
+		/**
+		 * N​o​ ​d​e​s​c​r​i​p​t​i​o​n
+		 */
+		noDescription: string
+	}
 	modules: {
 		auditLogs: {
 			commands: {
@@ -396,10 +402,16 @@ type RootTranslation = {
 		core: {
 			commands: {
 				helpea: {
-					/**
-					 * S​e​n​d​ ​a​ ​m​e​s​s​a​g​e​ ​w​i​t​h​ ​a​l​l​ ​t​h​e​ ​b​o​t​'​s​ ​c​o​m​m​a​n​d​s
-					 */
-					description: string
+					data: {
+						/**
+						 * h​e​l​p​e​a
+						 */
+						name: string
+						/**
+						 * S​e​n​d​ ​a​ ​m​e​s​s​a​g​e​ ​w​i​t​h​ ​a​l​l​ ​t​h​e​ ​b​o​t​'​s​ ​c​o​m​m​a​n​d​s
+						 */
+						description: string
+					}
 					options: {
 						command: {
 							/**
@@ -414,7 +426,7 @@ type RootTranslation = {
 					}
 					embed: {
 						/**
-						 * <​a​:​f​l​o​c​o​n​:​1​1​7​7​6​1​6​0​2​4​9​5​9​4​5​5​2​4​2​>​ ​V​o​i​c​i​ ​t​o​u​t​e​s​ ​l​e​s​ ​c​o​m​m​a​n​d​e​s​ ​d​u​ ​b​o​t​ ​!
+						 * <​a​:​f​l​o​c​o​n​:​1​1​7​7​6​1​6​0​2​4​9​5​9​4​5​5​2​4​2​>​ ​H​e​r​e​ ​a​r​e​ ​a​l​l​ ​t​h​e​ ​b​o​t​'​s​ ​c​o​m​m​a​n​d​s​!
 						 */
 						title: string
 						/**
@@ -422,7 +434,7 @@ type RootTranslation = {
 						 */
 						description: string
 						/**
-						 * <​ ​>​ ​=​ ​o​p​t​i​o​n​a​l​ ​|​ ​[​ ​]​ ​=​ ​r​e​q​u​i​r​e​d​ ​|​ ​(​D​o​ ​n​o​t​ ​i​n​c​l​u​d​e​ ​i​n​ ​c​o​m​m​a​n​d​s​)
+						 * [​ ​]​ ​=​ ​r​e​q​u​i​r​e​d​ ​|​ ​<​ ​>​ ​=​ ​o​p​t​i​o​n​a​l​ ​|​ ​(​D​o​ ​n​o​t​ ​i​n​c​l​u​d​e​ ​i​n​ ​c​o​m​m​a​n​d​s​)
 						 */
 						footer: string
 					}
@@ -446,15 +458,15 @@ type RootTranslation = {
 					apiLatency: string
 				}
 				reportea: {
-					/**
-					 * N​o​t​i​f​i​e​s​ ​t​h​e​ ​b​o​t​'​s​ ​o​w​n​e​r​ ​o​f​ ​a​ ​b​u​g​ ​o​r​ ​a​ ​s​u​g​g​e​s​t​i​o​n
-					 */
-					desciption: string
-					embed: {
+					data: {
 						/**
-						 * *​*​N​o​ ​d​e​s​c​r​i​p​t​i​o​n​ ​p​r​o​v​i​d​e​d​*​*
+						 * r​e​p​o​r​t​e​a
 						 */
-						description: string
+						name: string
+						/**
+						 * N​o​t​i​f​i​e​s​ ​t​h​e​ ​b​o​t​'​s​ ​o​w​n​e​r​ ​o​f​ ​a​ ​b​u​g​ ​o​r​ ​a​ ​s​u​g​g​e​s​t​i​o​n
+						 */
+						desciption: string
 					}
 					/**
 					 * Y​o​u​r​ ​r​e​p​o​r​t​ ​h​a​s​ ​b​e​e​n​ ​s​e​n​t​.​ ​Y​o​u​ ​c​a​n​ ​f​i​n​d​ ​i​t​ ​i​n​ ​{​t​h​r​e​a​d​I​d​}​ ​o​n​ ​t​h​i​s​ ​s​e​r​v​e​r​:​ ​h​t​t​p​s​:​/​/​d​i​s​c​o​r​d​.​g​g​/​2​9​U​R​g​a​h​g​
@@ -468,6 +480,10 @@ type RootTranslation = {
 					 * R​o​l​l​s​ ​d​i​c​e​s
 					 */
 					description: string
+					/**
+					 * I​n​v​a​l​i​d​ ​d​i​c​e
+					 */
+					invalidDice: string
 				}
 				changelog: {
 					/**
@@ -635,6 +651,12 @@ export type TranslationFunctions = {
 		 * The {module} module is disabled on this server.
 		 */
 		moduleDisabled: (arg: { module: string }) => LocalizedString
+	}
+	common: {
+		/**
+		 * No description
+		 */
+		noDescription: () => LocalizedString
 	}
 	modules: {
 		auditLogs: {
@@ -963,10 +985,16 @@ export type TranslationFunctions = {
 		core: {
 			commands: {
 				helpea: {
-					/**
-					 * Send a message with all the bot's commands
-					 */
-					description: () => LocalizedString
+					data: {
+						/**
+						 * helpea
+						 */
+						name: () => LocalizedString
+						/**
+						 * Send a message with all the bot's commands
+						 */
+						description: () => LocalizedString
+					}
 					options: {
 						command: {
 							/**
@@ -981,7 +1009,7 @@ export type TranslationFunctions = {
 					}
 					embed: {
 						/**
-						 * <a:flocon:1177616024959455242> Voici toutes les commandes du bot !
+						 * <a:flocon:1177616024959455242> Here are all the bot's commands!
 						 */
 						title: () => LocalizedString
 						/**
@@ -989,7 +1017,7 @@ export type TranslationFunctions = {
 						 */
 						description: () => LocalizedString
 						/**
-						 * < > = optional | [ ] = required | (Do not include in commands)
+						 * [ ] = required | < > = optional | (Do not include in commands)
 						 */
 						footer: () => LocalizedString
 					}
@@ -1013,15 +1041,15 @@ export type TranslationFunctions = {
 					apiLatency: () => LocalizedString
 				}
 				reportea: {
-					/**
-					 * Notifies the bot's owner of a bug or a suggestion
-					 */
-					desciption: () => LocalizedString
-					embed: {
+					data: {
 						/**
-						 * **No description provided**
+						 * reportea
 						 */
-						description: () => LocalizedString
+						name: () => LocalizedString
+						/**
+						 * Notifies the bot's owner of a bug or a suggestion
+						 */
+						desciption: () => LocalizedString
 					}
 					/**
 					 * Your report has been sent. You can find it in {threadId} on this server: https://discord.gg/29URgahg
@@ -1034,6 +1062,10 @@ export type TranslationFunctions = {
 					 * Rolls dices
 					 */
 					description: () => LocalizedString
+					/**
+					 * Invalid dice
+					 */
+					invalidDice: () => LocalizedString
 				}
 				changelog: {
 					/**

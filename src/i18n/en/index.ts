@@ -13,6 +13,9 @@ const en = {
         guildNotFound: "Strange, strange, I don't know this server.",
         moduleDisabled: 'The {module:string} module is disabled on this server.'
     },
+    common: {
+        noDescription: 'No description'
+    },
     modules: {
         auditLogs: {
             commands: {},
@@ -163,7 +166,10 @@ const en = {
         core: {
             commands: {
                 helpea: {
-                    description: "Send a message with all the bot's commands",
+                    data: {
+                        name: 'helpea',
+                        description: "Send a message with all the bot's commands"
+                    },
                     options: {
                         command: {
                             name: 'command',
@@ -171,9 +177,9 @@ const en = {
                         }
                     },
                     embed: {
-                        title: `${Emojis.aSnowflake} Voici toutes les commandes du bot !`,
+                        title: `${Emojis.aSnowflake} Here are all the bot's commands!`,
                         description: `Send a message with all the bot's commands`,
-                        footer: `< > = optional | [ ] = required | (Do not include in commands)`
+                        footer: `[ ] = required | < > = optional | (Do not include in commands)`
                     }
                 },
                 pingea: {
@@ -183,14 +189,15 @@ const en = {
                     apiLatency: 'API latency'
                 },
                 reportea: {
-                    desciption: "Notifies the bot's owner of a bug or a suggestion",
-                    embed: {
-                        description: '**No description provided**'
+                    data: {
+                        name: 'reportea',
+                        desciption: "Notifies the bot's owner of a bug or a suggestion"
                     },
                     reply: 'Your report has been sent. You can find it in {threadId: string} on this server: https://discord.gg/29URgahg\nThank you for your feedback!'
                 },
                 roll: {
-                    description: 'Rolls dices'
+                    description: 'Rolls dices',
+                    invalidDice: 'Invalid dice',
                 },
                 changelog: {
                     description: '[owner only] Sends a message to all servers'

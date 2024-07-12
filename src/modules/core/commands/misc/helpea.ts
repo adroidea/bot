@@ -6,8 +6,10 @@ import {
     EmbedBuilder,
     PermissionsBitField
 } from 'discord.js';
-import { Colors, Emojis } from '../../../../utils/consts';
-import {version} from './../../../../../package.json';
+import { Colors } from '../../../../utils/consts';
+import { IGuild } from 'adroi.d.ea';
+import { TranslationFunctions } from '../../../../i18n/i18n-types';
+import { version } from './../../../../../package.json';
 
 export default {
     data: {
@@ -28,25 +30,35 @@ export default {
     guildOnly: false,
     examples: ['helpea', 'helpea pingea'],
 
-    async execute(client: Client, interaction: CommandInteraction) {
+    async execute(
+        _: Client,
+        interaction: CommandInteraction,
+        __: IGuild,
+        LL: TranslationFunctions
+    ) {
+        const locale = LL.modules.core.commands.helpea;
         let commandsList: string | undefined;
         const client1 = interaction.client;
         const cmd = await client1.application?.commands.fetch();
 
         commandsList = cmd
-            ?.map((cmd: ApplicationCommand) => `**/${cmd.name}** - ${cmd.description}`)
+            ?.filter((cmd: ApplicationCommand) => cmd.type !== 2)
+            .map(
+                (cmd: ApplicationCommand) =>
+                    `**/${cmd.name}** - ${cmd.description ?? LL.common.noDescription()}`
+            )
             .join('\n');
 
         const embed = new EmbedBuilder()
             .setColor(Colors.random)
-            .setTitle(`${Emojis.aSnowflake} Voici toutes les commandes du bot !`)
+            .setTitle(locale.embed.title())
             .setDescription(`${commandsList}`)
             .addFields({
                 name: 'version',
                 value: `v${version}`
             })
             .setFooter({
-                text: `< > = optionnel | [ ] = requis | (A ne pas inclure dans les commandes)`
+                text: locale.embed.footer()
             })
             .setThumbnail(client1.user.avatarURL({ forceStatic: false }));
 
