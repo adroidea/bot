@@ -219,6 +219,9 @@ const en = {
                 }
             }
         },
+        jail : {
+            reply: "**{target:string}** has been sent to prison for **{jailTime:number}** seconds."
+        },
         qotd: {
             commands: {
                 name: 'qotd',

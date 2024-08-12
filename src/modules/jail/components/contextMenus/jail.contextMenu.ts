@@ -8,6 +8,7 @@ import {
 } from 'discord.js';
 import { IGuild, IJailModule } from 'adroi.d.ea';
 import { CustomErrors } from '../../../../utils/errors';
+import { TranslationFunctions } from '../../../../i18n/i18n-types';
 import { hasBotPermission } from '../../../../utils/bot.util';
 import jailQueue from '../../tasks/jail.queue';
 
@@ -18,7 +19,11 @@ export const jailContextMenu = new ContextMenuCommandBuilder()
 
 export default {
     data: jailContextMenu.toJSON(),
-    async execute(interaction: UserContextMenuCommandInteraction, guildSettings: IGuild) {
+    async execute(
+        interaction: UserContextMenuCommandInteraction,
+        guildSettings: IGuild,
+        LL: TranslationFunctions
+    ) {
         const permissions: bigint[] = [
             PermissionsBitField.Flags.Connect,
             PermissionsBitField.Flags.MoveMembers,
@@ -28,6 +33,7 @@ export default {
         ];
         if (!hasBotPermission(interaction.guild!, permissions))
             throw CustomErrors.SelfNoPermissionsError(interaction.guild!, permissions);
+        const locale = LL.modules.jail;
         const { jail } = guildSettings.modules;
 
         // check if the jail module is enabled and if the jail channel is set
@@ -73,7 +79,7 @@ export default {
         );
 
         interaction.reply({
-            content: `**${target.user.tag}** a été envoyé en prison pour **${jailTime}** secondes.`,
+            content: locale.reply({ target: target.user.tag, jailTime }),
             ephemeral: true
         });
     }

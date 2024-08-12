@@ -221,6 +221,9 @@ const fr: Translation = {
                 }
             }
         },
+        jail : {
+            reply: "**{target}** a été envoyé en prison pour **{jailTime}** secondes."
+        },
         qotd: {
             commands: {
                 name: '',

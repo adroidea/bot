@@ -538,6 +538,14 @@ type RootTranslation = {
 				}
 			}
 		}
+		jail: {
+			/**
+			 * *​*​{​t​a​r​g​e​t​}​*​*​ ​h​a​s​ ​b​e​e​n​ ​s​e​n​t​ ​t​o​ ​p​r​i​s​o​n​ ​f​o​r​ ​*​*​{​j​a​i​l​T​i​m​e​}​*​*​ ​s​e​c​o​n​d​s​.
+			 * @param {number} jailTime
+			 * @param {string} target
+			 */
+			reply: RequiredParams<'jailTime' | 'target'>
+		}
 		qotd: {
 			commands: {
 				/**
@@ -1116,6 +1124,12 @@ export type TranslationFunctions = {
 					}
 				}
 			}
+		}
+		jail: {
+			/**
+			 * **{target}** has been sent to prison for **{jailTime}** seconds.
+			 */
+			reply: (arg: { jailTime: number, target: string }) => LocalizedString
 		}
 		qotd: {
 			commands: {
