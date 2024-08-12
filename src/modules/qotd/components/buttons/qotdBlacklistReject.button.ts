@@ -3,11 +3,12 @@ import {
     ButtonInteraction,
     ButtonStyle,
     EmbedBuilder,
-    PermissionsBitField,
-    userMention
+    PermissionsBitField
 } from 'discord.js';
 import { Embed, addAuthor } from '../../../../utils/embeds.util';
 import { CustomErrors } from '../../../../utils/errors';
+import { IGuild } from 'adroi.d.ea';
+import { TranslationFunctions } from '../../../../i18n/i18n-types';
 import qotddService from '../../services/qotd.service';
 
 export const qotdBlacklistRejectButton = new ButtonBuilder()
@@ -20,10 +21,11 @@ export default {
     data: {
         name: 'qotdBlacklistRejectBtn'
     },
-    async execute(interaction: ButtonInteraction) {
+    async execute(interaction: ButtonInteraction, _: IGuild, LL: TranslationFunctions) {
         if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageMessages))
             throw CustomErrors.UserNoPermissionsError;
 
+        const locale = LL.modules.qotd;
         const oldEmbed = interaction.message.embeds[0];
         const authorId = oldEmbed.author!.name.split('(')[1].slice(0, -1);
 
@@ -34,13 +36,13 @@ export default {
             .setColor(oldEmbed.color)
             .addFields(
                 {
-                    name: 'Auteur',
-                    value: '[BLACKLISTÉ] ' + userMention(authorId),
+                    name: locale.embeds.fields.author(),
+                    value: locale.embeds.fields.authorBlacklist({ authorId }),
                     inline: true
                 },
                 {
-                    name: 'Statut',
-                    value: `🔨 Rejetée et blacklisté par ${userMention(interaction.user.id)}`,
+                    name: locale.embeds.fields.status(),
+                    value: locale.status.blacklisted({ modId: interaction.user.id }),
                     inline: true
                 }
             )
@@ -55,7 +57,7 @@ export default {
             components: []
         });
 
-        const embed = Embed.success("La QdJ a été rejetée et l'utilisateur blacklisté.");
+        const embed = Embed.success(locale.embeds.success.blacklisted());
         return interaction.reply({
             embeds: [embed],
             ephemeral: true

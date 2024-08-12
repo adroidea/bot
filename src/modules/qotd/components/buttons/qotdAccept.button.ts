@@ -8,7 +8,9 @@ import {
 } from 'discord.js';
 import { Embed, addAuthor } from '../../../../utils/embeds.util';
 import { CustomErrors } from '../../../../utils/errors';
+import { IGuild } from 'adroi.d.ea';
 import { IQuestions } from '../../models';
+import { TranslationFunctions } from '../../../../i18n/i18n-types';
 import qotddService from '../../services/qotd.service';
 
 export const qotdAcceptButton = new ButtonBuilder()
@@ -21,7 +23,7 @@ export default {
     data: {
         name: 'qotdAcceptBtn'
     },
-    async execute(interaction: ButtonInteraction) {
+    async execute(interaction: ButtonInteraction, _: IGuild, LL: TranslationFunctions) {
         if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageMessages))
             throw CustomErrors.UserNoPermissionsError;
 
@@ -35,19 +37,20 @@ export default {
         };
 
         const qotdId = await qotddService.createQOtD(questionBuilder);
+        const locale = LL.modules.qotd;
 
         const newEmbed = new EmbedBuilder()
             .setTitle(oldEmbed.title)
             .setColor(oldEmbed.color)
             .addFields(
                 {
-                    name: 'Auteur',
+                    name: locale.embeds.fields.author(),
                     value: userMention(authorId),
                     inline: true
                 },
                 {
-                    name: 'Statut',
-                    value: `✅ Acceptée par ${userMention(interaction.user.id)}`,
+                    name: locale.embeds.fields.status(),
+                    value: locale.status.accepted({ userId: interaction.user.id }),
                     inline: true
                 },
                 {
@@ -60,14 +63,14 @@ export default {
                 text: oldEmbed.footer?.text!
             });
 
-            addAuthor(newEmbed, interaction.user);
+        addAuthor(newEmbed, interaction.user);
 
         interaction.message.edit({
             embeds: [newEmbed],
             components: []
         });
 
-        const embed = Embed.success('La QdJ a été validée et ajoutée à la base !');
+        const embed = Embed.success(locale.embeds.success.accepted());
         return interaction.reply({
             embeds: [embed],
             ephemeral: true

@@ -24,7 +24,7 @@ type RootTranslation = {
 		 */
 		userPermissions: string
 		/**
-		 * T​h​i​s​ ​f​u​n​c​t​i​o​n​ ​i​s​ ​o​n​ ​c​o​o​l​d​o​w​n​.​ ​Y​o​u​ ​c​a​n​ ​u​s​e​ ​i​t​ ​a​g​a​i​n​ ​<​t​:​$​{​c​d​}​:​R​>​.
+		 * T​h​i​s​ ​f​u​n​c​t​i​o​n​ ​i​s​ ​o​n​ ​c​o​o​l​d​o​w​n​.​ ​Y​o​u​ ​c​a​n​ ​u​s​e​ ​i​t​ ​a​g​a​i​n​ ​<​t​:​{​c​d​}​:​R​>​.
 		 * @param {number} cd
 		 */
 		cooldown: RequiredParams<'cd'>
@@ -547,79 +547,117 @@ type RootTranslation = {
 			reply: RequiredParams<'jailTime' | 'target'>
 		}
 		qotd: {
-			commands: {
-				/**
-				 * q​o​t​d
-				 */
-				name: string
-				/**
-				 * S​e​n​d​s​ ​a​ ​r​e​q​u​e​s​t​ ​t​o​ ​a​d​d​ ​t​h​e​ ​q​u​e​s​t​i​o​n​ ​o​f​ ​t​h​e​ ​d​a​y​ ​(​a​u​t​o​ ​a​d​d​e​d​ ​f​o​r​ ​a​d​m​i​n​s​)
-				 */
-				description: string
-				/**
-				 * /​q​o​t​d​ ​[​q​u​e​s​t​i​o​n​]​ ​<​a​u​t​h​o​r​>
-				 */
-				usage: string
-				options: {
-					question: {
-						/**
-						 * q​u​e​s​t​i​o​n
-						 */
-						name: string
-						/**
-						 * T​h​e​ ​q​u​e​s​t​i​o​n​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​p​r​o​p​o​s​e
-						 */
-						description: string
-					}
-					author: {
-						/**
-						 * a​u​t​h​o​r
-						 */
-						name: string
-						/**
-						 * [​A​D​M​I​N​]​ ​T​h​e​ ​a​u​t​h​o​r​ ​o​f​ ​t​h​e​ ​q​u​e​s​t​i​o​n
-						 */
-						description: string
-					}
+			/**
+			 * q​o​t​d
+			 */
+			name: string
+			/**
+			 * S​e​n​d​s​ ​a​ ​r​e​q​u​e​s​t​ ​t​o​ ​a​d​d​ ​t​h​e​ ​q​u​e​s​t​i​o​n​ ​o​f​ ​t​h​e​ ​d​a​y​ ​(​a​u​t​o​ ​a​d​d​e​d​ ​f​o​r​ ​a​d​m​i​n​s​)
+			 */
+			description: string
+			/**
+			 * /​q​o​t​d​ ​[​q​u​e​s​t​i​o​n​]​ ​<​a​u​t​h​o​r​>
+			 */
+			usage: string
+			options: {
+				question: {
+					/**
+					 * q​u​e​s​t​i​o​n
+					 */
+					name: string
+					/**
+					 * T​h​e​ ​q​u​e​s​t​i​o​n​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​p​r​o​p​o​s​e
+					 */
+					description: string
 				}
-				embeds: {
-					request: {
-						fields: {
-							/**
-							 * A​u​t​h​o​r
-							 */
-							name: string
-						}
-						/**
-						 * Q​o​t​d​ ​R​e​q​u​e​s​t
-						 */
-						footer: string
-					}
-					success: {
-						/**
-						 * Q​u​e​s​t​i​o​n​ ​a​d​d​e​d​!
-						 */
-						add: string
-						/**
-						 * R​e​q​u​e​s​t​ ​s​e​n​t​!
-						 */
-						request: string
-						/**
-						 * D​o​ ​y​o​u​ ​a​l​l​o​w​ ​m​e​ ​t​o​ ​a​l​s​o​ ​s​e​n​d​ ​t​h​i​s​ ​q​u​e​s​t​i​o​n​ ​t​o​ ​t​h​e​ ​b​o​t​ ​o​w​n​e​r​?​ ​(​Y​o​u​ ​c​a​n​ ​s​a​f​e​l​y​ ​i​g​n​o​r​e​ ​t​h​i​s​ ​m​e​s​s​a​g​e​ ​i​f​ ​y​o​u​ ​d​o​n​'​t​)
-						 */
-						description: string
-					}
-					question: {
-						/**
-						 * S​t​a​t​u​s
-						 */
-						title: string
-						/**
-						 * ⏳​ ​P​e​n​d​i​n​g
-						 */
-						value: string
-					}
+				author: {
+					/**
+					 * a​u​t​h​o​r
+					 */
+					name: string
+					/**
+					 * [​A​D​M​I​N​]​ ​T​h​e​ ​a​u​t​h​o​r​ ​o​f​ ​t​h​e​ ​q​u​e​s​t​i​o​n
+					 */
+					description: string
 				}
+			}
+			embeds: {
+				fields: {
+					/**
+					 * A​u​t​h​o​r
+					 */
+					author: string
+					/**
+					 * [​B​L​A​C​K​L​I​S​T​E​D​]​ ​<​@​{​a​u​t​h​o​r​I​d​}​>
+					 * @param {string} authorId
+					 */
+					authorBlacklist: RequiredParams<'authorId'>
+					/**
+					 * G​u​i​l​d
+					 */
+					server: string
+					/**
+					 * S​t​a​t​u​s
+					 */
+					status: string
+				}
+				request: {
+					/**
+					 * Q​o​T​D​ ​R​e​q​u​e​s​t
+					 */
+					footer: string
+				}
+				success: {
+					/**
+					 * T​h​e​ ​q​u​e​s​t​i​o​n​ ​h​a​s​ ​b​e​e​n​ ​a​d​d​e​d​ ​t​o​ ​t​h​e​ ​d​a​t​a​b​a​s​e​!
+					 */
+					accepted: string
+					/**
+					 * Q​u​e​s​t​i​o​n​ ​a​d​d​e​d​!
+					 */
+					add: string
+					/**
+					 * T​h​e​ ​q​u​e​s​t​i​o​n​ ​w​a​s​ ​r​e​j​e​c​t​e​d​ ​a​n​d​ ​t​h​e​ ​u​s​e​r​ ​b​l​a​c​k​l​i​s​t​e​d​.
+					 */
+					blacklisted: string
+					/**
+					 * D​o​ ​y​o​u​ ​a​l​l​o​w​ ​m​e​ ​t​o​ ​a​l​s​o​ ​s​e​n​d​ ​t​h​i​s​ ​q​u​e​s​t​i​o​n​ ​t​o​ ​t​h​e​ ​b​o​t​ ​o​w​n​e​r​?​ ​(​Y​o​u​ ​c​a​n​ ​s​a​f​e​l​y​ ​i​g​n​o​r​e​ ​t​h​i​s​ ​m​e​s​s​a​g​e​ ​i​f​ ​y​o​u​ ​d​o​n​'​t​)
+					 */
+					description: string
+					/**
+					 * T​h​e​ ​q​u​e​s​t​i​o​n​ ​w​a​s​ ​r​e​j​e​c​t​e​d
+					 */
+					rejected: string
+					/**
+					 * R​e​q​u​e​s​t​ ​s​e​n​t​!
+					 */
+					request: string
+					/**
+					 * T​h​e​ ​q​u​e​s​t​i​o​n​ ​h​a​s​ ​b​e​e​n​ ​s​e​n​t​,​ ​t​h​a​n​k​ ​y​o​u​ ​f​o​r​ ​h​e​l​p​i​n​g​ ​m​e​ ​w​i​t​h​ ​m​y​ ​l​a​c​k​ ​o​f​ ​c​r​e​a​t​i​v​i​t​y​!
+					 */
+					stealed: string
+				}
+			}
+			status: {
+				/**
+				 * ✅​ ​A​c​c​e​p​t​e​d​ ​b​y​ ​<​@​{​u​s​e​r​I​d​}​>
+				 * @param {string} userId
+				 */
+				accepted: RequiredParams<'userId'>
+				/**
+				 * �​�​ ​R​e​j​e​c​t​e​d​ ​a​n​d​ ​b​l​a​c​k​l​i​s​t​e​d​ ​b​y​ ​<​@​{​m​o​d​I​d​}​>
+				 * @param {string} modId
+				 */
+				blacklisted: RequiredParams<'modId'>
+				/**
+				 * ⏳​ ​P​e​n​d​i​n​g
+				 */
+				pending: string
+				/**
+				 * ❌​ ​R​e​j​e​c​t​e​d​ ​b​y​ ​<​@​{​m​o​d​I​d​}​>
+				 * @param {string} modId
+				 */
+				rejected: RequiredParams<'modId'>
 			}
 		}
 	}
@@ -636,7 +674,7 @@ export type TranslationFunctions = {
 		 */
 		userPermissions: () => LocalizedString
 		/**
-		 * This function is on cooldown. You can use it again <t:${cd}:R>.
+		 * This function is on cooldown. You can use it again <t:{cd}:R>.
 		 */
 		cooldown: (arg: { cd: number }) => LocalizedString
 		/**
@@ -1132,79 +1170,113 @@ export type TranslationFunctions = {
 			reply: (arg: { jailTime: number, target: string }) => LocalizedString
 		}
 		qotd: {
-			commands: {
-				/**
-				 * qotd
-				 */
-				name: () => LocalizedString
-				/**
-				 * Sends a request to add the question of the day (auto added for admins)
-				 */
-				description: () => LocalizedString
-				/**
-				 * /qotd [question] <author>
-				 */
-				usage: () => LocalizedString
-				options: {
-					question: {
-						/**
-						 * question
-						 */
-						name: () => LocalizedString
-						/**
-						 * The question you want to propose
-						 */
-						description: () => LocalizedString
-					}
-					author: {
-						/**
-						 * author
-						 */
-						name: () => LocalizedString
-						/**
-						 * [ADMIN] The author of the question
-						 */
-						description: () => LocalizedString
-					}
+			/**
+			 * qotd
+			 */
+			name: () => LocalizedString
+			/**
+			 * Sends a request to add the question of the day (auto added for admins)
+			 */
+			description: () => LocalizedString
+			/**
+			 * /qotd [question] <author>
+			 */
+			usage: () => LocalizedString
+			options: {
+				question: {
+					/**
+					 * question
+					 */
+					name: () => LocalizedString
+					/**
+					 * The question you want to propose
+					 */
+					description: () => LocalizedString
 				}
-				embeds: {
-					request: {
-						fields: {
-							/**
-							 * Author
-							 */
-							name: () => LocalizedString
-						}
-						/**
-						 * Qotd Request
-						 */
-						footer: () => LocalizedString
-					}
-					success: {
-						/**
-						 * Question added!
-						 */
-						add: () => LocalizedString
-						/**
-						 * Request sent!
-						 */
-						request: () => LocalizedString
-						/**
-						 * Do you allow me to also send this question to the bot owner? (You can safely ignore this message if you don't)
-						 */
-						description: () => LocalizedString
-					}
-					question: {
-						/**
-						 * Status
-						 */
-						title: () => LocalizedString
-						/**
-						 * ⏳ Pending
-						 */
-						value: () => LocalizedString
-					}
+				author: {
+					/**
+					 * author
+					 */
+					name: () => LocalizedString
+					/**
+					 * [ADMIN] The author of the question
+					 */
+					description: () => LocalizedString
 				}
+			}
+			embeds: {
+				fields: {
+					/**
+					 * Author
+					 */
+					author: () => LocalizedString
+					/**
+					 * [BLACKLISTED] <@{authorId}>
+					 */
+					authorBlacklist: (arg: { authorId: string }) => LocalizedString
+					/**
+					 * Guild
+					 */
+					server: () => LocalizedString
+					/**
+					 * Status
+					 */
+					status: () => LocalizedString
+				}
+				request: {
+					/**
+					 * QoTD Request
+					 */
+					footer: () => LocalizedString
+				}
+				success: {
+					/**
+					 * The question has been added to the database!
+					 */
+					accepted: () => LocalizedString
+					/**
+					 * Question added!
+					 */
+					add: () => LocalizedString
+					/**
+					 * The question was rejected and the user blacklisted.
+					 */
+					blacklisted: () => LocalizedString
+					/**
+					 * Do you allow me to also send this question to the bot owner? (You can safely ignore this message if you don't)
+					 */
+					description: () => LocalizedString
+					/**
+					 * The question was rejected
+					 */
+					rejected: () => LocalizedString
+					/**
+					 * Request sent!
+					 */
+					request: () => LocalizedString
+					/**
+					 * The question has been sent, thank you for helping me with my lack of creativity!
+					 */
+					stealed: () => LocalizedString
+				}
+			}
+			status: {
+				/**
+				 * ✅ Accepted by <@{userId}>
+				 */
+				accepted: (arg: { userId: string }) => LocalizedString
+				/**
+				 * 🔨 Rejected and blacklisted by <@{modId}>
+				 */
+				blacklisted: (arg: { modId: string }) => LocalizedString
+				/**
+				 * ⏳ Pending
+				 */
+				pending: () => LocalizedString
+				/**
+				 * ❌ Rejected by <@{modId}>
+				 */
+				rejected: (arg: { modId: string }) => LocalizedString
 			}
 		}
 	}

@@ -199,7 +199,7 @@ const fr: Translation = {
                 },
                 roll: {
                     description: 'Lance des dés',
-                    invalidDice: 'Dé invalide',
+                    invalidDice: 'Dé invalide'
                 },
                 changelog: {
                     description: ''
@@ -221,41 +221,51 @@ const fr: Translation = {
                 }
             }
         },
-        jail : {
-            reply: "**{target}** a été envoyé en prison pour **{jailTime}** secondes."
+        jail: {
+            reply: '**{target}** a été envoyé en prison pour **{jailTime}** secondes.'
         },
         qotd: {
-            commands: {
-                name: '',
-                description: '',
-                embeds: {
-                    request: {
-                        fields: {
-                            name: ''
-                        },
-                        footer: ''
-                    },
-                    success: {
-                        add: '',
-                        request: '',
-                        description: ''
-                    },
-                    question: {
-                        title: '',
-                        value: ''
-                    }
+            name: 'qdj',
+            description: '',
+            usage: '',
+            options: {
+                question: {
+                    name: '',
+                    description: ''
                 },
-                usage: '',
-                options: {
-                    question: {
-                        name: '',
-                        description: ''
-                    },
-                    author: {
-                        name: '',
-                        description: ''
-                    }
+                author: {
+                    name: '',
+                    description: ''
                 }
+            },
+
+            embeds: {
+                fields: {
+                    author: 'Auteur',
+                    authorBlacklist: '[BLACKLISTÉ] <@{authorId}>',
+                    server: 'Serveur',
+                    status: 'Statut'
+                },
+                request: {
+                    footer: 'Requête de QdJ'
+                },
+                success: {
+                    add: 'Question ajoutée !',
+                    accepted: 'La question a été ajoutée à la base !',
+                    blacklisted: "La question a été rejetée et l'utilisateur blacklisté.",
+                    rejected: 'La question a été rejetée.',
+                    request: 'Requête envoyée !',
+                    stealed:
+                        "La question a été envoyée, merci à toi de m'aider dans mon manque de créativité !",
+                    description:
+                        "Est ce que tu es d'accord pour que ta question soit aussi proposée sur le serveur d'Adan ? (Tu peux ignorer le message si tu ne veux pas)"
+                }
+            },
+            status: {
+                accepted: '✅ Acceptée par <@{userId}>',
+                pending: '⏳ En attente',
+                blacklisted: '🔨 Rejetée et blacklisté par <@{modId}>',
+                rejected: `${Emojis.cross} Rejetée par <@{modId}>`
             }
         }
     }

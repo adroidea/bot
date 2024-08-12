@@ -6,7 +6,7 @@ const en = {
         unknown:
             "You've got me puzzled there. Report this message to <@294916386072035328> (@adan_ea) and explain what you did to get it. It's not normal that you see this. But I still love you, you know <3",
         userPermissions: "Oh no, you don't have the permissions, too bad!",
-        cooldown: 'This function is on cooldown. You can use it again <t:${cd:number}:R>.',
+        cooldown: 'This function is on cooldown. You can use it again <t:{cd:number}:R>.',
         botPermissions: "I don't have the permissions to do that, sorry!",
         toDo: "The error is raised, but you haven't written it yet, smart ass.",
         unknownCommand: "Hmm, it seems like I don't know this command.",
@@ -197,7 +197,7 @@ const en = {
                 },
                 roll: {
                     description: 'Rolls dices',
-                    invalidDice: 'Invalid dice',
+                    invalidDice: 'Invalid dice'
                 },
                 changelog: {
                     description: '[owner only] Sends a message to all servers'
@@ -219,43 +219,50 @@ const en = {
                 }
             }
         },
-        jail : {
-            reply: "**{target:string}** has been sent to prison for **{jailTime:number}** seconds."
+        jail: {
+            reply: '**{target:string}** has been sent to prison for **{jailTime:number}** seconds.'
         },
         qotd: {
-            commands: {
-                name: 'qotd',
-                description:
-                    'Sends a request to add the question of the day (auto added for admins)',
-                usage: '/qotd [question] <author>',
-                options: {
-                    question: {
-                        name: 'question',
-                        description: 'The question you want to propose'
-                    },
-                    author: {
-                        name: 'author',
-                        description: '[ADMIN] The author of the question'
-                    }
+            name: 'qotd',
+            description: 'Sends a request to add the question of the day (auto added for admins)',
+            usage: '/qotd [question] <author>',
+            options: {
+                question: {
+                    name: 'question',
+                    description: 'The question you want to propose'
                 },
-                embeds: {
-                    request: {
-                        fields: {
-                            name: 'Author'
-                        },
-                        footer: 'Qotd Request'
-                    },
-                    success: {
-                        add: 'Question added!',
-                        request: 'Request sent!',
-                        description:
-                            "Do you allow me to also send this question to the bot owner? (You can safely ignore this message if you don't)"
-                    },
-                    question: {
-                        title: 'Status',
-                        value: '⏳ Pending'
-                    }
+                author: {
+                    name: 'author',
+                    description: '[ADMIN] The author of the question'
                 }
+            },
+            embeds: {
+                fields: {
+                    author: 'Author',
+                    authorBlacklist: '[BLACKLISTED] <@{authorId:string}>',
+                    server: 'Guild',
+                    status: 'Status'
+                },
+                request: {
+                    footer: 'QoTD Request'
+                },
+                success: {
+                    accepted: 'The question has been added to the database!',
+                    add: 'Question added!',
+                    blacklisted: 'The question was rejected and the user blacklisted.',
+                    description:
+                        "Do you allow me to also send this question to the bot owner? (You can safely ignore this message if you don't)",
+                    rejected: 'The question was rejected',
+                    request: 'Request sent!',
+                    stealed:
+                        'The question has been sent, thank you for helping me with my lack of creativity!'
+                }
+            },
+            status: {
+                accepted: '✅ Accepted by <@{userId:string}>',
+                blacklisted: '🔨 Rejected and blacklisted by <@{modId:string}>',
+                pending: '⏳ Pending',
+                rejected: `${Emojis.cross} Rejected by <@{modId:string}>`
             }
         }
     }

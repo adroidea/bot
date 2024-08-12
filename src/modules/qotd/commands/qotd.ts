@@ -14,6 +14,7 @@ import { IGuild, IQOTDModule } from 'adroi.d.ea';
 import { adminRow, stealRow } from '../components/buttons';
 import { CustomErrors } from '../../../utils/errors';
 import { IQuestions } from '../models';
+import { TranslationFunctions } from '../../../i18n/i18n-types';
 import { isQOtDModuleEnabled } from '../../../utils/modules.uil';
 import qotddService from '../services/qotd.service';
 
@@ -43,10 +44,15 @@ export default {
     examples: ['qdj Pâtes ou riz ?', 'qdj pain au chocolat ou croissant ? @Adan_ea#3000'],
     guildOnly: false,
 
-    async execute(client: Client, interaction: ChatInputCommandInteraction, guildData: IGuild) {
+    async execute(
+        client: Client,
+        interaction: ChatInputCommandInteraction,
+        guildData: IGuild,
+        LL: TranslationFunctions
+    ) {
+        const locale = LL.modules.qotd;
         const { qotd }: { qotd: IQOTDModule } = guildData.modules;
         if (!isQOtDModuleEnabled(guildData, true)) return;
-
         if (qotd.blacklist?.includes(interaction.user.id)) throw CustomErrors.BlacklistedUserError;
 
         const question = interaction.options.getString('question', true);
@@ -68,12 +74,12 @@ export default {
             .setColor(Colors.random)
             .addFields([
                 {
-                    name: 'Auteur',
+                    name: locale.embeds.fields.author(),
                     value: userMention(user.id),
                     inline: true
                 }
             ])
-            .setFooter({ text: 'Requête de QdJ' })
+            .setFooter({ text: locale.embeds.request.footer() })
             .setTimestamp();
 
         addAuthor(questionEmbed, user);
@@ -83,14 +89,12 @@ export default {
             interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageMessages)
         ) {
             qotddService.createQOtD(questionBuilder);
-            const successEmbed = Embed.success('Question ajoutée !');
+            const successEmbed = Embed.success(locale.embeds.success.add());
             if (interaction.guildId !== Guilds.adan_ea) {
                 await interaction.reply({
                     embeds: [
                         questionEmbed,
-                        successEmbed.setDescription(
-                            "Est ce que tu es d'accord pour que ta question soit aussi proposée sur le serveur d'Adan ? (Tu peux ignorer le message si tu ne veux pas)"
-                        )
+                        successEmbed.setDescription(locale.embeds.success.description())
                     ],
                     components: [stealRow],
                     ephemeral: true
@@ -104,8 +108,8 @@ export default {
         } else {
             questionEmbed.addFields([
                 {
-                    name: 'Statut',
-                    value: '⏳ En attente',
+                    name: locale.embeds.fields.status(),
+                    value: locale.status.pending(),
                     inline: true
                 }
             ]);
@@ -121,14 +125,12 @@ export default {
                 embeds: [questionEmbed],
                 components: [adminRow]
             });
-            const successEmbed = Embed.success('Requête envoyée !');
+            const successEmbed = Embed.success(locale.embeds.success.request());
             if (interaction.guildId !== Guilds.adan_ea) {
                 await interaction.reply({
                     embeds: [
                         questionEmbed,
-                        successEmbed.setDescription(
-                            "Est ce que tu es d'accord pour que ta question soit aussi proposée sur le serveur d'Adan ? (Tu peux ignorer le message si tu ne veux pas)"
-                        )
+                        successEmbed.setDescription(locale.embeds.success.description())
                     ],
                     components: [stealRow],
                     ephemeral: true

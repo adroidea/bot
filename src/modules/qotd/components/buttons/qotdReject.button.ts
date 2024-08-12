@@ -8,7 +8,8 @@ import {
 } from 'discord.js';
 import { Embed, addAuthor } from '../../../../utils/embeds.util';
 import { CustomErrors } from '../../../../utils/errors';
-import { Emojis } from '../../../../utils/consts';
+import { IGuild } from 'adroi.d.ea';
+import { TranslationFunctions } from '../../../../i18n/i18n-types';
 
 export const qotdRejectButton = new ButtonBuilder()
     .setCustomId('qotdRejectBtn')
@@ -20,10 +21,11 @@ export default {
     data: {
         name: 'qotdRejectBtn'
     },
-    async execute(interaction: ButtonInteraction) {
+    async execute(interaction: ButtonInteraction, _: IGuild, LL: TranslationFunctions) {
         if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageMessages))
             throw CustomErrors.UserNoPermissionsError;
 
+        const locale = LL.modules.qotd;
         const oldEmbed = interaction.message.embeds[0];
         const authorId = oldEmbed.author!.name.split('(')[1].slice(0, -1);
 
@@ -32,13 +34,13 @@ export default {
             .setColor(oldEmbed.color)
             .addFields(
                 {
-                    name: 'Auteur',
+                    name: locale.embeds.fields.author(),
                     value: userMention(authorId),
                     inline: true
                 },
                 {
-                    name: 'Statut',
-                    value: `${Emojis.cross} Rejetée par ${userMention(interaction.user.id)}`,
+                    name: locale.embeds.fields.status(),
+                    value: locale.status.rejected({ modId: interaction.user.id }),
                     inline: true
                 }
             )
@@ -53,7 +55,7 @@ export default {
             components: []
         });
 
-        const embed = Embed.success('La QdJ a été rejetée.');
+        const embed = Embed.success(locale.embeds.success.rejected());
         return interaction.reply({
             embeds: [embed],
             ephemeral: true
