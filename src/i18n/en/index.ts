@@ -214,7 +214,7 @@ const en = {
                         footer: 'NB: Messages older than 14 days cannot be deleted in bulk'
                     },
                     logEmbed: {
-                        title: 'Bulk deletion done'
+                        title: 'Bulk delete done'
                     }
                 }
             }

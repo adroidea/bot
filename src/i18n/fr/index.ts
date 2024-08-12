@@ -216,7 +216,7 @@ const fr: Translation = {
                         footer: 'Remarque : Les messages datant de plus de 14 jours ne peuvent pas être supprimés en masse'
                     },
                     logEmbed: {
-                        title: 'Suppression massive effectuée'
+                        title: 'Suppression de masse (Bulk Delete) effectuée'
                     }
                 }
             }

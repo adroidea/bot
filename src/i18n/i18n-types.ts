@@ -531,7 +531,7 @@ type RootTranslation = {
 					}
 					logEmbed: {
 						/**
-						 * B​u​l​k​ ​d​e​l​e​t​i​o​n​ ​d​o​n​e
+						 * B​u​l​k​ ​d​e​l​e​t​e​ ​d​o​n​e
 						 */
 						title: string
 					}
@@ -1110,7 +1110,7 @@ export type TranslationFunctions = {
 					}
 					logEmbed: {
 						/**
-						 * Bulk deletion done
+						 * Bulk delete done
 						 */
 						title: () => LocalizedString
 					}

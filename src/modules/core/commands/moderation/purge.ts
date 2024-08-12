@@ -12,6 +12,7 @@ import { Embed, addAuthor } from '../../../../utils/embeds.util';
 import { getTextChannel, hasBotPermission } from '../../../../utils/bot.util';
 import { CustomErrors } from '../../../../utils/errors';
 import { IGuild } from 'adroi.d.ea';
+import { TranslationFunctions } from '../../../../i18n/i18n-types';
 
 export default {
     data: {
@@ -39,31 +40,36 @@ export default {
     usage: 'purge [montant] <@cible>',
     examples: ['purge 10', 'purge 100 @adan_ea'],
 
-    async execute(_: Client, interaction: ChatInputCommandInteraction, guildSettings: IGuild) {
+    async execute(
+        _: Client,
+        interaction: ChatInputCommandInteraction,
+        guildSettings: IGuild,
+        LL: TranslationFunctions
+    ) {
+        const locale = LL.modules.core.commands.purge;
         const permissions = [PermissionsBitField.Flags.ManageMessages];
         if (!hasBotPermission(interaction.guild!, permissions))
             throw CustomErrors.SelfNoPermissionsError(interaction.guild!, permissions);
 
         const amountToDelete = interaction.options.getNumber('montant', true);
         if (amountToDelete > 100 || amountToDelete < 0) {
-            return interaction.reply('Merci de choisir un nombre entre 1 et 100');
+            return interaction.reply(locale.amountError());
         }
 
         const target = interaction.options.getMember('cible') as GuildMember;
+        const targetstr = target.user?.username;
         const channel = interaction.channel as TextChannel;
         if (!channel) return;
 
         const amountDeleted = await handleBulkDelete(channel, amountToDelete, target);
 
         let replyContent = target
-            ? Embed.success(`${amountDeleted} messages supprimés de ${target.user?.username}!`)
-            : Embed.success(`${amountDeleted} messages supprimés !`);
+            ? Embed.success(locale.embed.titleTarget({ amount: amountDeleted, target: targetstr }))
+            : Embed.success(locale.embed.titleNoTarget({ amount: amountDeleted }));
 
-        if (amountDeleted === 0) replyContent = Embed.error("Aucun message n'a pu êter supprimé");
+        if (amountDeleted === 0) replyContent = Embed.error(locale.embed.error());
 
-        replyContent.setFooter({
-            text: `NB: Tout message de plus de 14j sont impossible à supprimer pour moi lors d'un Bulk. Discord est pas cool sur ça`
-        });
+        replyContent.setFooter({ text: locale.embed.footer() });
 
         interaction.reply({
             embeds: [replyContent],
@@ -78,7 +84,7 @@ export default {
             const logChannel = getTextChannel(interaction.guild!, channelId);
 
             const embed = new EmbedBuilder()
-                .setTitle(`Suppression de masse (Bulk Delete) effectuée`)
+                .setTitle(locale.logEmbed.title())
                 .setColor([45, 249, 250]);
 
             addAuthor(embed, interaction.user);
