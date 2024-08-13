@@ -9,36 +9,46 @@ import {
 } from 'discord.js';
 import { Emojis } from '../../../../utils/consts';
 import { IAuditLogsModule } from 'adroi.d.ea';
+import { TranslationFunctions } from '../../../../i18n/i18n-types';
 import { addAuthor } from '../../../../utils/embeds.util';
 import { addComparedPermissionsNames } from '../../../../utils/modules.uil';
-import guildService from '../../../../services/guild.service';
+import { getOneGuildCache } from '../../../core/tasks/createCache.cron';
+import { loadLL } from '../../../../i18n/formatters';
 
 export default {
     name: Events.GuildRoleUpdate,
     async execute(client: Client, oldRole: Role, newRole: Role) {
         if (hasOnlyPositionChanged(oldRole, newRole)) return;
 
-        const {
-            modules: {
-                auditLogs: { guildRoleUpdate }
-            }
-        } = await guildService.getOrCreateGuild(oldRole.guild);
+        const guild = getOneGuildCache(oldRole.guild.id);
+        if (!guild) return;
 
+        const { guildRoleUpdate } = guild.modules.auditLogs;
         if (shouldIgnoreRoleUpdate(guildRoleUpdate)) return;
+
+        const logChannel = client.channels.cache.get(guildRoleUpdate.channelId);
+        if (!logChannel?.isTextBased()) return;
 
         const fetchedLogs = await oldRole.guild.fetchAuditLogs({
             limit: 1,
             type: AuditLogEvent.RoleUpdate
         });
-        const logChannel = client.channels.cache.get(guildRoleUpdate.channelId);
-        if (!logChannel?.isTextBased()) return;
 
-        const embed = createEmbed(newRole, fetchedLogs);
+        const LL = await loadLL(guild.locale);
+        const locale = LL.modules.auditLogs.guildRoleUpdate;
 
-        addFieldIfChanged('Ancien nom', 'Nouveau nom', oldRole.name, newRole.name, embed);
+        const embed = createEmbed(newRole, fetchedLogs, LL);
+
         addFieldIfChanged(
-            'Ancienne couleur',
-            'Nouvelle couleur',
+            locale.embed.fields.roleChanged.old(),
+            locale.embed.fields.roleChanged.new(),
+            oldRole.name,
+            newRole.name,
+            embed
+        );
+        addFieldIfChanged(
+            locale.embed.fields.colorChanged.old(),
+            locale.embed.fields.colorChanged.new(),
             oldRole.hexColor,
             newRole.hexColor,
             embed
@@ -47,9 +57,9 @@ export default {
         const fields: APIEmbedField[] = [];
 
         const booleanValues: Record<string, { name: string; emoji: string }> = {
-            mentionable: { name: 'Mentionnable', emoji: Emojis.mention },
-            hoist: { name: 'Afficher séparément', emoji: Emojis.roles },
-            managed: { name: 'Géré par Discord', emoji: Emojis.link }
+            mentionable: { name: locale.embed.fields.mentionable(), emoji: Emojis.mention },
+            hoist: { name: locale.embed.fields.hoist(), emoji: Emojis.roles },
+            managed: { name: locale.embed.fields.managed(), emoji: Emojis.link }
         };
 
         Object.entries(booleanValues).forEach(([fieldName, value]) => {
@@ -80,11 +90,12 @@ const hasOnlyPositionChanged = (oldRole: Role, newRole: Role): boolean =>
     oldRole.icon === newRole.icon &&
     oldRole.unicodeEmoji === newRole.unicodeEmoji;
 
-function createEmbed(newRole: Role, fetchedLogs: GuildAuditLogs) {
+function createEmbed(newRole: Role, fetchedLogs: GuildAuditLogs, LL: TranslationFunctions) {
+    const locale = LL.modules.auditLogs.guildRoleUpdate.embed;
     const embed = new EmbedBuilder()
-        .setTitle(`Rôle __${newRole.name}__ mis à jour`)
+        .setTitle(locale.title({ roleName: newRole.name }))
         .setColor(newRole.color)
-        .setFooter({ text: 'Rôle modifié' })
+        .setFooter({ text: locale.footer() })
         .setTimestamp();
 
     const executor = fetchedLogs.entries.first()?.executor;

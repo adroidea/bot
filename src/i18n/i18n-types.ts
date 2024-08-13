@@ -58,314 +58,292 @@ type RootTranslation = {
 	}
 	modules: {
 		auditLogs: {
-			commands: {
-			}
-			events: {
-				guildBanAdd: {
-					embed: {
-						/**
-						 * U​s​e​r​ ​b​a​n​n​e​d
-						 */
-						title: string
-						fields: {
-							/**
-							 * ❄​️​ ​V​i​c​t​i​m
-							 */
-							target: string
-							/**
-							 * ❄​️​ ​E​x​e​c​u​t​o​r
-							 */
-							executor: string
-							/**
-							 * ❄​️​ ​R​e​a​s​o​n
-							 */
-							reason: string
-						}
-					}
-				}
-				guildBanRemove: {
-					embed: {
-						/**
-						 * U​s​e​r​ ​u​n​b​a​n​n​e​d
-						 */
-						title: string
-						fields: {
-							/**
-							 * ❄​️​ ​B​l​e​s​s​e​d
-							 */
-							target: string
-							/**
-							 * ❄​️​ ​E​x​e​c​u​t​o​r
-							 */
-							executor: string
-							/**
-							 * ❄​️​ ​R​e​a​s​o​n
-							 */
-							reason: string
-						}
-					}
-				}
-				guildRoleCreate: {
-					embed: {
-						/**
-						 * R​o​l​e​ ​_​_​{​r​o​l​e​N​a​m​e​}​_​_​ ​c​r​e​a​t​e​d
-						 * @param {string} roleName
-						 */
-						title: RequiredParams<'roleName'>
-						footer: {
-							/**
-							 * R​o​l​e​ ​c​r​e​a​t​e​d
-							 */
-							text: string
-						}
-						/**
-						 * ❌​ ​+​{​d​e​n​i​e​d​C​o​u​n​t​}​ ​n​o​t​ ​g​r​a​n​t​e​d
-						 * @param {number} deniedCount
-						 */
-						unassigned: RequiredParams<'deniedCount'>
-					}
-				}
-				guildRoleDelete: {
-					embed: {
-						/**
-						 * R​o​l​e​ ​_​_​{​r​o​l​e​N​a​m​e​}​_​_​ ​d​e​l​e​t​e​d
-						 * @param {string} roleName
-						 */
-						title: RequiredParams<'roleName'>
-						/**
-						 * ❌​ ​+​{​d​e​n​i​e​d​C​o​u​n​t​}​ ​n​o​t​ ​g​r​a​n​t​e​d
-						 * @param {number} deniedCount
-						 */
-						unassigned: RequiredParams<'deniedCount'>
-						footer: {
-							/**
-							 * R​o​l​e​ ​d​e​l​e​t​e​d
-							 */
-							text: string
-						}
-					}
-				}
-				guildRoleUpdate: {
-					embed: {
-						/**
-						 * R​o​l​e​ ​_​_​{​r​o​l​e​N​a​m​e​}​_​_​ ​u​p​d​a​t​e​d
-						 * @param {string} roleName
-						 */
-						title: RequiredParams<'roleName'>
-						footer: {
-							/**
-							 * R​o​l​e​ ​m​o​d​i​f​i​e​d
-							 */
-							text: string
-						}
-						fields: {
-							roleChanged: {
-								/**
-								 * O​l​d​ ​n​a​m​e
-								 */
-								old: string
-								/**
-								 * N​e​w​ ​n​a​m​e
-								 */
-								'new': string
-							}
-							colorChanged: {
-								/**
-								 * O​l​d​ ​c​o​l​o​r
-								 */
-								old: string
-								/**
-								 * N​e​w​ ​c​o​l​o​r
-								 */
-								'new': string
-							}
-							/**
-							 * M​e​n​t​i​o​n​n​a​b​l​e
-							 */
-							mentionable: string
-							/**
-							 * S​h​o​w​ ​s​e​p​a​r​a​t​e​l​y
-							 */
-							hoist: string
-							/**
-							 * M​a​n​a​g​e​d​ ​b​y​ ​D​i​s​c​o​r​d
-							 */
-							managed: string
-						}
-						/**
-						 * ❌​ ​+​{​d​e​n​i​e​d​C​o​u​n​t​}​ ​n​o​t​ ​g​r​a​n​t​e​d
-						 * @param {number} deniedCount
-						 */
-						unassigned: RequiredParams<'deniedCount'>
-					}
-				}
-				guildMemberAdd: {
-					embed: {
-						/**
-						 * <​a​:​p​i​k​a​H​i​:​9​6​0​8​7​2​4​7​6​7​1​8​5​5​1​0​7​0​>​ ​W​e​l​c​o​m​e​ ​t​o​ ​t​h​e​ ​s​e​r​v​e​r​ ​{​u​s​e​r​n​a​m​e​}​!
-						 * @param {string} username
-						 */
-						title: RequiredParams<'username'>
-						/**
-						 * H​e​l​l​o​ ​a​n​d​ ​w​e​l​c​o​m​e​ ​t​o​ ​t​h​e​ ​s​e​r​v​e​r​!​ ​W​e​ ​h​o​p​e​ ​y​o​u​ ​w​i​l​l​ ​h​a​v​e​ ​a​ ​g​r​e​a​t​ ​t​i​m​e​ ​h​e​r​e​!​ ​A​n​d​ ​w​e​ ​w​i​l​l​ ​d​o​ ​o​u​r​ ​b​e​s​t​ ​t​o​ ​m​a​k​e​ ​i​t​ ​s​o​!
-						 */
-						description: string
-						fields: {
-							/**
-							 * ❄​️​ ​A​c​c​o​u​n​t​ ​c​r​e​a​t​e​d
-							 */
-							created: string
-						}
-						footer: {
-							/**
-							 * M​e​m​b​e​r​ ​j​o​i​n​e​d
-							 */
-							text: string
-						}
-					}
-				}
-				guildMemberRemove: {
-					embed: {
-						/**
-						 * W​e​a​k​l​i​n​g​s​ ​D​i​e​.​ ​B​i​g​ ​D​e​a​l​.
-						 */
-						description: string
-						fields: {
-							/**
-							 * ❄​️​ ​M​e​m​b​e​r
-							 */
-							member: string
-							/**
-							 * ❄​️​ ​C​r​e​a​t​i​o​n
-							 */
-							creation: string
-							/**
-							 * ❄​️​ ​J​o​i​n​e​d
-							 */
-							joined: string
-							/**
-							 * ❄​️​ ​L​e​f​t
-							 */
-							left: string
-						}
-						footer: {
-							/**
-							 * M​e​m​b​e​r​ ​l​e​f​t
-							 */
-							text: string
-						}
-					}
-				}
-				guildMemberUpdate: {
-					embed: {
-						/**
-						 * <​@​{​u​s​e​r​n​a​m​e​}​>​ ​h​a​s​ ​a​ ​n​e​w​ ​l​o​o​k​!
-						 * @param {string} username
-						 */
-						description: RequiredParams<'username'>
-						footer: {
-							/**
-							 * M​e​m​b​e​r​ ​m​o​d​i​f​i​e​d
-							 */
-							text: string
-						}
-						fields: {
-							nickname: {
-								/**
-								 * O​l​d​ ​n​i​c​k​n​a​m​e
-								 */
-								old: string
-								/**
-								 * N​e​w​ ​n​i​c​k​n​a​m​e
-								 */
-								'new': string
-							}
-							roles: {
-								/**
-								 * O​l​d​ ​r​o​l​e​s
-								 */
-								old: string
-								/**
-								 * N​e​w​ ​r​o​l​e​s
-								 */
-								'new': string
-							}
-						}
-					}
-				}
-				messageBulkDelete: {
+			guildBanAdd: {
+				embed: {
 					/**
-					 * >​ ​<​@​{​i​d​}​>​:​ ​{​c​o​u​n​t​}​ ​m​e​s​s​a​g​e​s
-					 * @param {number} count
-					 * @param {string} id
+					 * U​s​e​r​ ​b​a​n​n​e​d
 					 */
-					messages: RequiredParams<'count' | 'id'>
-					embed: {
+					title: string
+					fields: {
 						/**
-						 * {​a​m​o​u​n​t​}​ ​m​e​s​s​a​g​e​s​ ​d​e​l​e​t​e​d​ ​i​n​ ​<​#​{​c​h​a​n​n​e​l​I​d​}​>​
-					​{​u​s​e​r​s​D​e​l​e​t​e​d​}
-						 * @param {number} amount
-						 * @param {string} channelId
-						 * @param {string} usersDeleted
+						 * ❄​️​ ​V​i​c​t​i​m
 						 */
-						description: RequiredParams<'amount' | 'channelId' | 'usersDeleted'>
-						footer: {
-							/**
-							 * B​u​l​k​ ​d​e​l​e​t​i​o​n
-							 */
-							text: string
-						}
+						target: string
+						/**
+						 * ❄​️​ ​E​x​e​c​u​t​o​r
+						 */
+						executor: string
+						/**
+						 * ❄​️​ ​R​e​a​s​o​n
+						 */
+						reason: string
 					}
 				}
-				messageDelete: {
-					embed: {
+			}
+			guildBanRemove: {
+				embed: {
+					/**
+					 * U​s​e​r​ ​u​n​b​a​n​n​e​d
+					 */
+					title: string
+					fields: {
 						/**
-						 * M​e​s​s​a​g​e​ ​f​r​o​m​ ​<​@​{​u​s​e​r​I​d​}​>​ ​d​e​l​e​t​e​d​ ​i​n​ ​<​#​{​c​h​a​n​n​e​l​I​d​}​>​,​ ​[​s​h​o​w​ ​c​h​a​n​n​e​l​]​(​{​u​r​l​}​)
-						 * @param {string} channelId
-						 * @param {string} url
-						 * @param {string} userId
+						 * ❄​️​ ​B​l​e​s​s​e​d
 						 */
-						description: RequiredParams<'channelId' | 'url' | 'userId'>
-						fields: {
-							/**
-							 * D​e​l​e​t​e​d​ ​m​e​s​s​a​g​e
-							 */
-							message: string
-						}
-						footer: {
-							/**
-							 * M​e​s​s​a​g​e​ ​d​e​l​e​t​e​d
-							 */
-							text: string
-						}
+						target: string
+						/**
+						 * ❄​️​ ​E​x​e​c​u​t​o​r
+						 */
+						executor: string
+						/**
+						 * ❄​️​ ​R​e​a​s​o​n
+						 */
+						reason: string
 					}
 				}
-				messageUpdate: {
-					embed: {
-						/**
-						 * M​e​s​s​a​g​e​ ​f​r​o​m​ ​<​@​{​u​s​e​r​I​d​}​>​ ​e​d​i​t​e​d​ ​i​n​ ​<​#​{​c​h​a​n​n​e​l​I​d​}​>​,​ ​[​s​h​o​w​ ​m​e​s​s​a​g​e​]​(​{​u​r​l​}​)
-						 * @param {string} channelId
-						 * @param {string} url
-						 * @param {string} userId
-						 */
-						description: RequiredParams<'channelId' | 'url' | 'userId'>
-						fields: {
+			}
+			guildRoleCreate: {
+				embed: {
+					/**
+					 * R​o​l​e​ ​_​_​{​r​o​l​e​N​a​m​e​}​_​_​ ​c​r​e​a​t​e​d
+					 * @param {string} roleName
+					 */
+					title: RequiredParams<'roleName'>
+					/**
+					 * R​o​l​e​ ​c​r​e​a​t​e​d
+					 */
+					footer: string
+					/**
+					 * ❌​ ​+​{​d​e​n​i​e​d​C​o​u​n​t​}​ ​n​o​t​ ​g​r​a​n​t​e​d
+					 * @param {number} deniedCount
+					 */
+					unassigned: RequiredParams<'deniedCount'>
+				}
+			}
+			guildRoleDelete: {
+				embed: {
+					/**
+					 * R​o​l​e​ ​_​_​{​r​o​l​e​N​a​m​e​}​_​_​ ​d​e​l​e​t​e​d
+					 * @param {string} roleName
+					 */
+					title: RequiredParams<'roleName'>
+					/**
+					 * ❌​ ​+​{​d​e​n​i​e​d​C​o​u​n​t​}​ ​n​o​t​ ​g​r​a​n​t​e​d
+					 * @param {number} deniedCount
+					 */
+					unassigned: RequiredParams<'deniedCount'>
+					/**
+					 * R​o​l​e​ ​d​e​l​e​t​e​d
+					 */
+					footer: string
+				}
+			}
+			guildRoleUpdate: {
+				embed: {
+					/**
+					 * R​o​l​e​ ​_​_​{​r​o​l​e​N​a​m​e​}​_​_​ ​u​p​d​a​t​e​d
+					 * @param {string} roleName
+					 */
+					title: RequiredParams<'roleName'>
+					/**
+					 * R​o​l​e​ ​m​o​d​i​f​i​e​d
+					 */
+					footer: string
+					fields: {
+						roleChanged: {
 							/**
-							 * O​l​d​ ​m​e​s​s​a​g​e
+							 * O​l​d​ ​n​a​m​e
 							 */
-							oldMessage: string
+							old: string
 							/**
-							 * N​e​w​ ​m​e​s​s​a​g​e
+							 * N​e​w​ ​n​a​m​e
 							 */
-							newMessage: string
+							'new': string
 						}
-						footer: {
+						colorChanged: {
 							/**
-							 * M​e​s​s​a​g​e​ ​e​d​i​t​e​d
+							 * O​l​d​ ​c​o​l​o​r
 							 */
-							text: string
+							old: string
+							/**
+							 * N​e​w​ ​c​o​l​o​r
+							 */
+							'new': string
+						}
+						/**
+						 * M​e​n​t​i​o​n​n​a​b​l​e
+						 */
+						mentionable: string
+						/**
+						 * S​h​o​w​ ​s​e​p​a​r​a​t​e​l​y
+						 */
+						hoist: string
+						/**
+						 * M​a​n​a​g​e​d​ ​b​y​ ​D​i​s​c​o​r​d
+						 */
+						managed: string
+					}
+					/**
+					 * ❌​ ​+​{​d​e​n​i​e​d​C​o​u​n​t​}​ ​n​o​t​ ​g​r​a​n​t​e​d
+					 * @param {number} deniedCount
+					 */
+					unassigned: RequiredParams<'deniedCount'>
+				}
+			}
+			guildMemberAdd: {
+				embed: {
+					/**
+					 * <​a​:​p​i​k​a​H​i​:​9​6​0​8​7​2​4​7​6​7​1​8​5​5​1​0​7​0​>​ ​W​e​l​c​o​m​e​ ​t​o​ ​t​h​e​ ​s​e​r​v​e​r​ ​{​u​s​e​r​n​a​m​e​}​!
+					 * @param {string} username
+					 */
+					title: RequiredParams<'username'>
+					/**
+					 * H​e​l​l​o​ ​a​n​d​ ​w​e​l​c​o​m​e​ ​t​o​ ​t​h​e​ ​s​e​r​v​e​r​!​ ​W​e​ ​h​o​p​e​ ​y​o​u​ ​w​i​l​l​ ​h​a​v​e​ ​a​ ​g​r​e​a​t​ ​t​i​m​e​ ​h​e​r​e​!​ ​A​n​d​ ​w​e​ ​w​i​l​l​ ​d​o​ ​o​u​r​ ​b​e​s​t​ ​t​o​ ​m​a​k​e​ ​i​t​ ​s​o​!
+					 */
+					description: string
+					fields: {
+						/**
+						 * ❄​️​ ​A​c​c​o​u​n​t​ ​c​r​e​a​t​e​d
+						 */
+						created: string
+					}
+					/**
+					 * M​e​m​b​e​r​ ​j​o​i​n​e​d
+					 */
+					footer: string
+				}
+			}
+			guildMemberRemove: {
+				embed: {
+					/**
+					 * W​e​a​k​l​i​n​g​s​ ​D​i​e​.​ ​B​i​g​ ​D​e​a​l​.
+					 */
+					description: string
+					fields: {
+						/**
+						 * ❄​️​ ​M​e​m​b​e​r
+						 */
+						member: string
+						/**
+						 * ❄​️​ ​C​r​e​a​t​i​o​n
+						 */
+						creation: string
+						/**
+						 * ❄​️​ ​J​o​i​n​e​d
+						 */
+						joined: string
+						/**
+						 * ❄​️​ ​L​e​f​t
+						 */
+						left: string
+					}
+					/**
+					 * M​e​m​b​e​r​ ​l​e​f​t
+					 */
+					footer: string
+				}
+			}
+			guildMemberUpdate: {
+				embed: {
+					/**
+					 * <​@​{​u​s​e​r​n​a​m​e​}​>​ ​h​a​s​ ​a​ ​n​e​w​ ​l​o​o​k​!
+					 * @param {string} username
+					 */
+					description: RequiredParams<'username'>
+					fields: {
+						nickname: {
+							/**
+							 * O​l​d​ ​n​i​c​k​n​a​m​e
+							 */
+							old: string
+							/**
+							 * N​e​w​ ​n​i​c​k​n​a​m​e
+							 */
+							'new': string
+						}
+						roles: {
+							/**
+							 * O​l​d​ ​r​o​l​e​s
+							 */
+							old: string
+							/**
+							 * N​e​w​ ​r​o​l​e​s
+							 */
+							'new': string
 						}
 					}
+					/**
+					 * M​e​m​b​e​r​ ​m​o​d​i​f​i​e​d
+					 */
+					footer: string
+				}
+			}
+			messageBulkDelete: {
+				/**
+				 * >​ ​<​@​{​i​d​}​>​:​ ​{​c​o​u​n​t​}​ ​m​e​s​s​a​g​e​s
+				 * @param {number} count
+				 * @param {string} id
+				 */
+				messages: RequiredParams<'count' | 'id'>
+				embed: {
+					/**
+					 * {​a​m​o​u​n​t​}​ ​m​e​s​s​a​g​e​s​ ​d​e​l​e​t​e​d​ ​i​n​ ​<​#​{​c​h​a​n​n​e​l​I​d​}​>​
+				​{​u​s​e​r​s​D​e​l​e​t​e​d​}
+					 * @param {number} amount
+					 * @param {string} channelId
+					 * @param {string} usersDeleted
+					 */
+					description: RequiredParams<'amount' | 'channelId' | 'usersDeleted'>
+					/**
+					 * B​u​l​k​ ​d​e​l​e​t​i​o​n
+					 */
+					footer: string
+				}
+			}
+			messageDelete: {
+				embed: {
+					/**
+					 * M​e​s​s​a​g​e​ ​f​r​o​m​ ​<​@​{​u​s​e​r​I​d​}​>​ ​d​e​l​e​t​e​d​ ​i​n​ ​<​#​{​c​h​a​n​n​e​l​I​d​}​>​,​ ​[​s​h​o​w​ ​c​h​a​n​n​e​l​]​(​{​u​r​l​}​)
+					 * @param {string} channelId
+					 * @param {string} url
+					 * @param {string} userId
+					 */
+					description: RequiredParams<'channelId' | 'url' | 'userId'>
+					fields: {
+						/**
+						 * D​e​l​e​t​e​d​ ​m​e​s​s​a​g​e
+						 */
+						message: string
+					}
+					/**
+					 * M​e​s​s​a​g​e​ ​d​e​l​e​t​e​d
+					 */
+					footer: string
+				}
+			}
+			messageUpdate: {
+				embed: {
+					/**
+					 * M​e​s​s​a​g​e​ ​f​r​o​m​ ​<​@​{​u​s​e​r​I​d​}​>​ ​e​d​i​t​e​d​ ​i​n​ ​<​#​{​c​h​a​n​n​e​l​I​d​}​>​,​ ​[​s​h​o​w​ ​m​e​s​s​a​g​e​]​(​{​u​r​l​}​)
+					 * @param {string} channelId
+					 * @param {string} url
+					 * @param {string} userId
+					 */
+					description: RequiredParams<'channelId' | 'url' | 'userId'>
+					fields: {
+						/**
+						 * O​l​d​ ​m​e​s​s​a​g​e
+						 */
+						oldMessage: string
+						/**
+						 * N​e​w​ ​m​e​s​s​a​g​e
+						 */
+						newMessage: string
+					}
+					/**
+					 * M​e​s​s​a​g​e​ ​e​d​i​t​e​d
+					 */
+					footer: string
 				}
 			}
 			categories: {
@@ -706,295 +684,273 @@ export type TranslationFunctions = {
 	}
 	modules: {
 		auditLogs: {
-			commands: {
-			}
-			events: {
-				guildBanAdd: {
-					embed: {
-						/**
-						 * User banned
-						 */
-						title: () => LocalizedString
-						fields: {
-							/**
-							 * ❄️ Victim
-							 */
-							target: () => LocalizedString
-							/**
-							 * ❄️ Executor
-							 */
-							executor: () => LocalizedString
-							/**
-							 * ❄️ Reason
-							 */
-							reason: () => LocalizedString
-						}
-					}
-				}
-				guildBanRemove: {
-					embed: {
-						/**
-						 * User unbanned
-						 */
-						title: () => LocalizedString
-						fields: {
-							/**
-							 * ❄️ Blessed
-							 */
-							target: () => LocalizedString
-							/**
-							 * ❄️ Executor
-							 */
-							executor: () => LocalizedString
-							/**
-							 * ❄️ Reason
-							 */
-							reason: () => LocalizedString
-						}
-					}
-				}
-				guildRoleCreate: {
-					embed: {
-						/**
-						 * Role __{roleName}__ created
-						 */
-						title: (arg: { roleName: string }) => LocalizedString
-						footer: {
-							/**
-							 * Role created
-							 */
-							text: () => LocalizedString
-						}
-						/**
-						 * ❌ +{deniedCount} not granted
-						 */
-						unassigned: (arg: { deniedCount: number }) => LocalizedString
-					}
-				}
-				guildRoleDelete: {
-					embed: {
-						/**
-						 * Role __{roleName}__ deleted
-						 */
-						title: (arg: { roleName: string }) => LocalizedString
-						/**
-						 * ❌ +{deniedCount} not granted
-						 */
-						unassigned: (arg: { deniedCount: number }) => LocalizedString
-						footer: {
-							/**
-							 * Role deleted
-							 */
-							text: () => LocalizedString
-						}
-					}
-				}
-				guildRoleUpdate: {
-					embed: {
-						/**
-						 * Role __{roleName}__ updated
-						 */
-						title: (arg: { roleName: string }) => LocalizedString
-						footer: {
-							/**
-							 * Role modified
-							 */
-							text: () => LocalizedString
-						}
-						fields: {
-							roleChanged: {
-								/**
-								 * Old name
-								 */
-								old: () => LocalizedString
-								/**
-								 * New name
-								 */
-								'new': () => LocalizedString
-							}
-							colorChanged: {
-								/**
-								 * Old color
-								 */
-								old: () => LocalizedString
-								/**
-								 * New color
-								 */
-								'new': () => LocalizedString
-							}
-							/**
-							 * Mentionnable
-							 */
-							mentionable: () => LocalizedString
-							/**
-							 * Show separately
-							 */
-							hoist: () => LocalizedString
-							/**
-							 * Managed by Discord
-							 */
-							managed: () => LocalizedString
-						}
-						/**
-						 * ❌ +{deniedCount} not granted
-						 */
-						unassigned: (arg: { deniedCount: number }) => LocalizedString
-					}
-				}
-				guildMemberAdd: {
-					embed: {
-						/**
-						 * <a:pikaHi:960872476718551070> Welcome to the server {username}!
-						 */
-						title: (arg: { username: string }) => LocalizedString
-						/**
-						 * Hello and welcome to the server! We hope you will have a great time here! And we will do our best to make it so!
-						 */
-						description: () => LocalizedString
-						fields: {
-							/**
-							 * ❄️ Account created
-							 */
-							created: () => LocalizedString
-						}
-						footer: {
-							/**
-							 * Member joined
-							 */
-							text: () => LocalizedString
-						}
-					}
-				}
-				guildMemberRemove: {
-					embed: {
-						/**
-						 * Weaklings Die. Big Deal.
-						 */
-						description: () => LocalizedString
-						fields: {
-							/**
-							 * ❄️ Member
-							 */
-							member: () => LocalizedString
-							/**
-							 * ❄️ Creation
-							 */
-							creation: () => LocalizedString
-							/**
-							 * ❄️ Joined
-							 */
-							joined: () => LocalizedString
-							/**
-							 * ❄️ Left
-							 */
-							left: () => LocalizedString
-						}
-						footer: {
-							/**
-							 * Member left
-							 */
-							text: () => LocalizedString
-						}
-					}
-				}
-				guildMemberUpdate: {
-					embed: {
-						/**
-						 * <@{username}> has a new look!
-						 */
-						description: (arg: { username: string }) => LocalizedString
-						footer: {
-							/**
-							 * Member modified
-							 */
-							text: () => LocalizedString
-						}
-						fields: {
-							nickname: {
-								/**
-								 * Old nickname
-								 */
-								old: () => LocalizedString
-								/**
-								 * New nickname
-								 */
-								'new': () => LocalizedString
-							}
-							roles: {
-								/**
-								 * Old roles
-								 */
-								old: () => LocalizedString
-								/**
-								 * New roles
-								 */
-								'new': () => LocalizedString
-							}
-						}
-					}
-				}
-				messageBulkDelete: {
+			guildBanAdd: {
+				embed: {
 					/**
-					 * > <@{id}>: {count} messages
+					 * User banned
 					 */
-					messages: (arg: { count: number, id: string }) => LocalizedString
-					embed: {
+					title: () => LocalizedString
+					fields: {
 						/**
-						 * {amount} messages deleted in <#{channelId}>
-					{usersDeleted}
+						 * ❄️ Victim
 						 */
-						description: (arg: { amount: number, channelId: string, usersDeleted: string }) => LocalizedString
-						footer: {
-							/**
-							 * Bulk deletion
-							 */
-							text: () => LocalizedString
-						}
+						target: () => LocalizedString
+						/**
+						 * ❄️ Executor
+						 */
+						executor: () => LocalizedString
+						/**
+						 * ❄️ Reason
+						 */
+						reason: () => LocalizedString
 					}
 				}
-				messageDelete: {
-					embed: {
+			}
+			guildBanRemove: {
+				embed: {
+					/**
+					 * User unbanned
+					 */
+					title: () => LocalizedString
+					fields: {
 						/**
-						 * Message from <@{userId}> deleted in <#{channelId}>, [show channel]({url})
+						 * ❄️ Blessed
 						 */
-						description: (arg: { channelId: string, url: string, userId: string }) => LocalizedString
-						fields: {
-							/**
-							 * Deleted message
-							 */
-							message: () => LocalizedString
-						}
-						footer: {
-							/**
-							 * Message deleted
-							 */
-							text: () => LocalizedString
-						}
+						target: () => LocalizedString
+						/**
+						 * ❄️ Executor
+						 */
+						executor: () => LocalizedString
+						/**
+						 * ❄️ Reason
+						 */
+						reason: () => LocalizedString
 					}
 				}
-				messageUpdate: {
-					embed: {
-						/**
-						 * Message from <@{userId}> edited in <#{channelId}>, [show message]({url})
-						 */
-						description: (arg: { channelId: string, url: string, userId: string }) => LocalizedString
-						fields: {
+			}
+			guildRoleCreate: {
+				embed: {
+					/**
+					 * Role __{roleName}__ created
+					 */
+					title: (arg: { roleName: string }) => LocalizedString
+					/**
+					 * Role created
+					 */
+					footer: () => LocalizedString
+					/**
+					 * ❌ +{deniedCount} not granted
+					 */
+					unassigned: (arg: { deniedCount: number }) => LocalizedString
+				}
+			}
+			guildRoleDelete: {
+				embed: {
+					/**
+					 * Role __{roleName}__ deleted
+					 */
+					title: (arg: { roleName: string }) => LocalizedString
+					/**
+					 * ❌ +{deniedCount} not granted
+					 */
+					unassigned: (arg: { deniedCount: number }) => LocalizedString
+					/**
+					 * Role deleted
+					 */
+					footer: () => LocalizedString
+				}
+			}
+			guildRoleUpdate: {
+				embed: {
+					/**
+					 * Role __{roleName}__ updated
+					 */
+					title: (arg: { roleName: string }) => LocalizedString
+					/**
+					 * Role modified
+					 */
+					footer: () => LocalizedString
+					fields: {
+						roleChanged: {
 							/**
-							 * Old message
+							 * Old name
 							 */
-							oldMessage: () => LocalizedString
+							old: () => LocalizedString
 							/**
-							 * New message
+							 * New name
 							 */
-							newMessage: () => LocalizedString
+							'new': () => LocalizedString
 						}
-						footer: {
+						colorChanged: {
 							/**
-							 * Message edited
+							 * Old color
 							 */
-							text: () => LocalizedString
+							old: () => LocalizedString
+							/**
+							 * New color
+							 */
+							'new': () => LocalizedString
+						}
+						/**
+						 * Mentionnable
+						 */
+						mentionable: () => LocalizedString
+						/**
+						 * Show separately
+						 */
+						hoist: () => LocalizedString
+						/**
+						 * Managed by Discord
+						 */
+						managed: () => LocalizedString
+					}
+					/**
+					 * ❌ +{deniedCount} not granted
+					 */
+					unassigned: (arg: { deniedCount: number }) => LocalizedString
+				}
+			}
+			guildMemberAdd: {
+				embed: {
+					/**
+					 * <a:pikaHi:960872476718551070> Welcome to the server {username}!
+					 */
+					title: (arg: { username: string }) => LocalizedString
+					/**
+					 * Hello and welcome to the server! We hope you will have a great time here! And we will do our best to make it so!
+					 */
+					description: () => LocalizedString
+					fields: {
+						/**
+						 * ❄️ Account created
+						 */
+						created: () => LocalizedString
+					}
+					/**
+					 * Member joined
+					 */
+					footer: () => LocalizedString
+				}
+			}
+			guildMemberRemove: {
+				embed: {
+					/**
+					 * Weaklings Die. Big Deal.
+					 */
+					description: () => LocalizedString
+					fields: {
+						/**
+						 * ❄️ Member
+						 */
+						member: () => LocalizedString
+						/**
+						 * ❄️ Creation
+						 */
+						creation: () => LocalizedString
+						/**
+						 * ❄️ Joined
+						 */
+						joined: () => LocalizedString
+						/**
+						 * ❄️ Left
+						 */
+						left: () => LocalizedString
+					}
+					/**
+					 * Member left
+					 */
+					footer: () => LocalizedString
+				}
+			}
+			guildMemberUpdate: {
+				embed: {
+					/**
+					 * <@{username}> has a new look!
+					 */
+					description: (arg: { username: string }) => LocalizedString
+					fields: {
+						nickname: {
+							/**
+							 * Old nickname
+							 */
+							old: () => LocalizedString
+							/**
+							 * New nickname
+							 */
+							'new': () => LocalizedString
+						}
+						roles: {
+							/**
+							 * Old roles
+							 */
+							old: () => LocalizedString
+							/**
+							 * New roles
+							 */
+							'new': () => LocalizedString
 						}
 					}
+					/**
+					 * Member modified
+					 */
+					footer: () => LocalizedString
+				}
+			}
+			messageBulkDelete: {
+				/**
+				 * > <@{id}>: {count} messages
+				 */
+				messages: (arg: { count: number, id: string }) => LocalizedString
+				embed: {
+					/**
+					 * {amount} messages deleted in <#{channelId}>
+				{usersDeleted}
+					 */
+					description: (arg: { amount: number, channelId: string, usersDeleted: string }) => LocalizedString
+					/**
+					 * Bulk deletion
+					 */
+					footer: () => LocalizedString
+				}
+			}
+			messageDelete: {
+				embed: {
+					/**
+					 * Message from <@{userId}> deleted in <#{channelId}>, [show channel]({url})
+					 */
+					description: (arg: { channelId: string, url: string, userId: string }) => LocalizedString
+					fields: {
+						/**
+						 * Deleted message
+						 */
+						message: () => LocalizedString
+					}
+					/**
+					 * Message deleted
+					 */
+					footer: () => LocalizedString
+				}
+			}
+			messageUpdate: {
+				embed: {
+					/**
+					 * Message from <@{userId}> edited in <#{channelId}>, [show message]({url})
+					 */
+					description: (arg: { channelId: string, url: string, userId: string }) => LocalizedString
+					fields: {
+						/**
+						 * Old message
+						 */
+						oldMessage: () => LocalizedString
+						/**
+						 * New message
+						 */
+						newMessage: () => LocalizedString
+					}
+					/**
+					 * Message edited
+					 */
+					footer: () => LocalizedString
 				}
 			}
 			categories: {

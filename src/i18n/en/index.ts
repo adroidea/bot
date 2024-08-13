@@ -18,139 +18,126 @@ const en = {
     },
     modules: {
         auditLogs: {
-            commands: {},
-            events: {
-                guildBanAdd: {
-                    embed: {
-                        title: 'User banned',
-                        fields: {
-                            target: `${Emojis.snowflake} Victim`,
-                            executor: `${Emojis.snowflake} Executor`,
-                            reason: `${Emojis.snowflake} Reason`
+            guildBanAdd: {
+                embed: {
+                    title: 'User banned',
+                    fields: {
+                        target: `${Emojis.snowflake} Victim`,
+                        executor: `${Emojis.snowflake} Executor`,
+                        reason: `${Emojis.snowflake} Reason`
+                    }
+                }
+            },
+            guildBanRemove: {
+                embed: {
+                    title: 'User unbanned',
+                    fields: {
+                        target: `${Emojis.snowflake} Blessed`,
+                        executor: `${Emojis.snowflake} Executor`,
+                        reason: `${Emojis.snowflake} Reason`
+                    }
+                }
+            },
+            guildRoleCreate: {
+                embed: {
+                    title: 'Role __{roleName: string}__ created',
+                    footer: 'Role created',
+                    unassigned: `${Emojis.cross} +{deniedCount: number} not granted`
+                }
+            },
+            guildRoleDelete: {
+                embed: {
+                    title: 'Role __{roleName: string}__ deleted',
+                    unassigned: `${Emojis.cross} +{deniedCount: number} not granted`,
+                    footer: 'Role deleted'
+                }
+            },
+            guildRoleUpdate: {
+                embed: {
+                    title: 'Role __{roleName: string}__ updated',
+                    footer: 'Role modified',
+                    fields: {
+                        roleChanged: {
+                            old: 'Old name',
+                            new: 'New name'
+                        },
+                        colorChanged: {
+                            old: 'Old color',
+                            new: 'New color'
+                        },
+                        mentionable: 'Mentionnable',
+                        hoist: 'Show separately',
+                        managed: 'Managed by Discord'
+                    },
+                    unassigned: `${Emojis.cross} +{deniedCount: number} not granted`
+                }
+            },
+            guildMemberAdd: {
+                embed: {
+                    title: `${Emojis.pikaHi} Welcome to the server {username:string}!`,
+                    description:
+                        'Hello and welcome to the server! We hope you will have a great time here! And we will do our best to make it so!',
+                    fields: {
+                        created: `${Emojis.snowflake} Account created`
+                    },
+                    footer: 'Member joined'
+                }
+            },
+            guildMemberRemove: {
+                embed: {
+                    description: 'Weaklings Die. Big Deal.',
+                    fields: {
+                        member: `${Emojis.snowflake} Member`,
+                        creation: `${Emojis.snowflake} Creation`,
+                        joined: `${Emojis.snowflake} Joined`,
+                        left: `${Emojis.snowflake} Left`
+                    },
+                    footer: 'Member left'
+                }
+            },
+            guildMemberUpdate: {
+                embed: {
+                    description: '<@{username:string}> has a new look!',
+                    fields: {
+                        nickname: {
+                            old: 'Old nickname',
+                            new: 'New nickname'
+                        },
+                        roles: {
+                            old: 'Old roles',
+                            new: 'New roles'
                         }
-                    }
-                },
-                guildBanRemove: {
-                    embed: {
-                        title: 'User unbanned',
-                        fields: {
-                            target: `${Emojis.snowflake} Blessed`,
-                            executor: `${Emojis.snowflake} Executor`,
-                            reason: `${Emojis.snowflake} Reason`
-                        }
-                    }
-                },
-                guildRoleCreate: {
-                    embed: {
-                        title: 'Role __{roleName: string}__ created',
-                        footer: {
-                            text: 'Role created'
-                        },
-                        unassigned: `${Emojis.cross} +{deniedCount: number} not granted`
-                    }
-                },
-                guildRoleDelete: {
-                    embed: {
-                        title: 'Role __{roleName: string}__ deleted',
-                        unassigned: `${Emojis.cross} +{deniedCount: number} not granted`,
-                        footer: {
-                            text: 'Role deleted'
-                        }
-                    }
-                },
-                guildRoleUpdate: {
-                    embed: {
-                        title: 'Role __{roleName: string}__ updated',
-                        footer: {
-                            text: 'Role modified'
-                        },
-                        fields: {
-                            roleChanged: {
-                                old: 'Old name',
-                                new: 'New name'
-                            },
-                            colorChanged: {
-                                old: 'Old color',
-                                new: 'New color'
-                            },
-                            mentionable: 'Mentionnable',
-                            hoist: 'Show separately',
-                            managed: 'Managed by Discord'
-                        },
-                        unassigned: `${Emojis.cross} +{deniedCount: number} not granted`
-                    }
-                },
-                guildMemberAdd: {
-                    embed: {
-                        title: `${Emojis.pikaHi} Welcome to the server {username:string}!`,
-                        description:
-                            'Hello and welcome to the server! We hope you will have a great time here! And we will do our best to make it so!',
-                        fields: {
-                            created: `${Emojis.snowflake} Account created`
-                        },
-                        footer: { text: 'Member joined' }
-                    }
-                },
-                guildMemberRemove: {
-                    embed: {
-                        description: 'Weaklings Die. Big Deal.',
-                        fields: {
-                            member: `${Emojis.snowflake} Member`,
-                            creation: `${Emojis.snowflake} Creation`,
-                            joined: `${Emojis.snowflake} Joined`,
-                            left: `${Emojis.snowflake} Left`
-                        },
-                        footer: {
-                            text: 'Member left'
-                        }
-                    }
-                },
-                guildMemberUpdate: {
-                    embed: {
-                        description: '<@{username:string}> has a new look!',
-                        footer: {
-                            text: 'Member modified'
-                        },
-                        fields: {
-                            nickname: {
-                                old: 'Old nickname',
-                                new: 'New nickname'
-                            },
-                            roles: {
-                                old: 'Old roles',
-                                new: 'New roles'
-                            }
-                        }
-                    }
-                },
-                messageBulkDelete: {
-                    messages: '> <@{id: string}>: {count: number} messages',
-                    embed: {
-                        description:
-                            '{amount: number} messages deleted in <#{channelId: string}>\n{usersDeleted: string}',
-                        footer: { text: 'Bulk deletion' }
-                    }
-                },
-                messageDelete: {
-                    embed: {
-                        description:
-                            'Message from <@{userId:string}> deleted in <#{channelId: string}>, [show channel]({url: string})',
-                        fields: {
-                            message: 'Deleted message'
-                        },
-                        footer: { text: 'Message deleted' }
-                    }
-                },
-                messageUpdate: {
-                    embed: {
-                        description:
-                            'Message from <@{userId:string}> edited in <#{channelId: string}>, [show message]({url: string})',
-                        fields: {
-                            oldMessage: 'Old message',
-                            newMessage: 'New message'
-                        },
-                        footer: { text: 'Message edited' }
-                    }
+                    },
+                    footer: 'Member modified'
+                }
+            },
+            messageBulkDelete: {
+                messages: '> <@{id: string}>: {count: number} messages',
+                embed: {
+                    description:
+                        '{amount: number} messages deleted in <#{channelId: string}>\n{usersDeleted: string}',
+                    footer: 'Bulk deletion'
+                }
+            },
+            messageDelete: {
+                embed: {
+                    description:
+                        'Message from <@{userId:string}> deleted in <#{channelId: string}>, [show channel]({url: string})',
+                    fields: {
+                        message: 'Deleted message'
+                    },
+                    footer: 'Message deleted'
+                }
+            },
+            messageUpdate: {
+                embed: {
+                    description:
+                        'Message from <@{userId:string}> edited in <#{channelId: string}>, [show message]({url: string})',
+                    fields: {
+                        oldMessage: 'Old message',
+                        newMessage: 'New message'
+                    },
+                    footer: 'Message edited'
                 }
             },
             categories: {

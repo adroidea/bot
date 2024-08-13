@@ -8,17 +8,18 @@ import {
     PermissionsBitField,
     userMention
 } from 'discord.js';
-import { Colors, Emojis } from '../../../../utils/consts';
 import {
     canSendMessage,
     getTextChannel,
     hasBotPermission,
     warnOwnerNoPermissions
 } from '../../../../utils/bot.util';
+import { Colors } from '../../../../utils/consts';
 import { CustomErrors } from '../../../../utils/errors';
 import { IAuditLogsModule } from 'adroi.d.ea';
 import { addAuthor } from '../../../../utils/embeds.util';
-import guildService from '../../../../services/guild.service';
+import { getOneGuildCache } from '../../../core/tasks/createCache.cron';
+import { loadLL } from '../../../../i18n/formatters';
 
 export default {
     name: Events.GuildBanAdd,
@@ -36,26 +37,28 @@ export default {
             warnOwnerNoPermissions(ban.guild, permissions);
         }
 
-        const fetchedLogs = await ban.guild.fetchAuditLogs({
-            limit: 1,
-            type: AuditLogEvent.MemberBanAdd
-        });
+        const guild = getOneGuildCache(ban.guild.id);
+        if (!guild) return;
 
-        const {
-            modules: {
-                auditLogs: { guildBanAdd }
-            }
-        } = await guildService.getOrCreateGuild(ban.guild);
+        const { guildBanAdd } = guild.modules.auditLogs;
 
         const logChannel = getTextChannel(ban.guild, guildBanAdd.channelId);
 
         if (shouldIgnoreBanAdd(guildBanAdd, logChannel)) return;
 
+        const fetchedLogs = await ban.guild.fetchAuditLogs({
+            limit: 1,
+            type: AuditLogEvent.MemberBanAdd
+        });
+
+        const LL = await loadLL(guild.locale);
+        const locale = LL.modules.auditLogs.guildBanAdd;
+
         const embed = new EmbedBuilder()
             .setThumbnail(ban.user.avatarURL())
-            .setTitle("Ban d'un utilisateur")
+            .setTitle(locale.embed.title())
             .addFields({
-                name: `${Emojis.snowflake} Victime`,
+                name: locale.embed.fields.target(),
                 value: userMention(ban.user.id),
                 inline: true
             })
@@ -72,7 +75,7 @@ export default {
             embed.addFields([
                 { name: '\u200B', value: '\u200B', inline: true },
                 {
-                    name: `${Emojis.snowflake} Bourreau`,
+                    name: locale.embed.fields.executor(),
                     value: userMention(executor.id),
                     inline: true
                 }
@@ -81,7 +84,7 @@ export default {
 
         if (ban.reason)
             embed.addFields({
-                name: `${Emojis.snowflake} Raison`,
+                name: locale.embed.fields.reason(),
                 value: ban.reason,
                 inline: false
             });
