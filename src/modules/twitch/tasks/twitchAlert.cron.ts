@@ -7,7 +7,7 @@ import {
     randomizeArray
 } from '../../../utils/twitch.util';
 import { Colors } from '../../../utils/consts';
-import  client  from '../../../client';
+import client from '../../../client';
 import cron from 'node-cron';
 import { getGuildsCache } from '../../core/tasks/createCache.cron';
 import { getTextChannel } from '../../../utils/bot.util';

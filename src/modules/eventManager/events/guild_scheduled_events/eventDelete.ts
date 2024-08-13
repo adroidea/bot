@@ -5,11 +5,11 @@ import guildService from '../../../../services/guild.service';
 
 export default {
     name: Events.GuildScheduledEventDelete,
-    async execute(client: Client, event: GuildScheduledEvent) {
+    async execute(_: Client, event: GuildScheduledEvent) {
         const guildSettings: IGuild = await guildService.getOrCreateGuild(event.guild!);
 
-        //const eventManagement = guildSettings.modules.eventManagement;
-        //if (!eventManagement.enabled) return;
+        const { eventManager } = guildSettings.modules;
+        if (!eventManager.enabled) return;
         eventCanceled(event);
     }
 };

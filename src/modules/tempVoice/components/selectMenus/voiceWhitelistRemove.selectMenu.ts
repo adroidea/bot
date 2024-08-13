@@ -70,8 +70,7 @@ export default {
         }
 
         guildService.updateGuild(interaction.guild!, {
-            [`modules.tempVoice.userSettings.${interaction.user.id}.trustedUsers`]:
-                trustedUsers
+            [`modules.tempVoice.userSettings.${interaction.user.id}.trustedUsers`]: trustedUsers
         });
 
         const newEmbed = new EmbedBuilder()

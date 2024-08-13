@@ -63,10 +63,8 @@ export default {
         }
 
         guildService.updateGuild(interaction.guild!, {
-            [`modules.tempVoice.userSettings.${interaction.user.id}.trustedUsers`]:
-                newTrustedUsers,
-            [`modules.tempVoice.userSettings.${interaction.user.id}.blockedUsers`]:
-                blockedUsers
+            [`modules.tempVoice.userSettings.${interaction.user.id}.trustedUsers`]: newTrustedUsers,
+            [`modules.tempVoice.userSettings.${interaction.user.id}.blockedUsers`]: blockedUsers
         });
 
         const newEmbed = new EmbedBuilder()

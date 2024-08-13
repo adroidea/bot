@@ -3,7 +3,7 @@ import { i18nObject, isLocale } from './i18n-util';
 import type { FormattersInitializer } from 'typesafe-i18n';
 import { loadLocaleAsync } from './i18n-util.async';
 
-export const initFormatters: FormattersInitializer<Locales, Formatters> = (locale: Locales) => {
+export const initFormatters: FormattersInitializer<Locales, Formatters> = (/*locale: Locales*/) => {
     const formatters: Formatters = {
         // add your formatter functions here
     };

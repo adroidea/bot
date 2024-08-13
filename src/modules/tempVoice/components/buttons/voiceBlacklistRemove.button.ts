@@ -14,8 +14,7 @@ export default {
     },
     async execute(interaction: ButtonInteraction, guildSettings: IGuild) {
         getorCreateUserSettings(interaction.member as GuildMember, guildSettings);
-        const { blockedUsers } =
-            guildSettings.modules.tempVoice.userSettings[interaction.user.id];
+        const { blockedUsers } = guildSettings.modules.tempVoice.userSettings[interaction.user.id];
 
         if (blockedUsers.length === 0) {
             return interaction.reply({

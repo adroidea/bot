@@ -14,7 +14,7 @@ export const getGuildsCache = (): IGuild[] => {
 };
 
 export const getOneGuildCache = (guildId: string): IGuild | undefined => {
-    return guildsCache.find((guild) => guild.id === guildId);
+    return guildsCache.find(guild => guild.id === guildId);
 };
 
 export default function (): cron.ScheduledTask {

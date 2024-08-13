@@ -29,7 +29,7 @@ export default {
         const embed = new EmbedBuilder()
             .setTitle(locale.embed.title({ roleName: role.name }))
             .setFooter({
-                text: locale.embed.footer(),
+                text: locale.embed.footer()
             })
             .setTimestamp();
 

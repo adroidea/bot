@@ -8,7 +8,7 @@ import {
 } from 'discord.js';
 import { CustomErrors } from './errors';
 import { Emojis } from './consts';
-import  client  from '../client';
+import client from '../client';
 
 export const hasBotPermission = (guild: Guild, permissionsFlag: bigint[]) => {
     const channels = guild.channels.cache.filter(

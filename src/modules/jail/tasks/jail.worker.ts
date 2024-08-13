@@ -1,7 +1,7 @@
 import { Guild, GuildMember } from 'discord.js';
 import { Worker as BullWorker } from 'bullmq';
 import client from '../../../client';
-import {  connection } from '../../../..';
+import { connection } from '../../../..';
 import logger from '../../../utils/logger';
 
 const connectionOptions = {

@@ -8,4 +8,3 @@ export const jailSchema = new mongoose.Schema<IJailModule>({
     maxTime: Number,
     customMessage: String
 });
-

@@ -5,7 +5,7 @@ const connectionOptions = {
     connection,
     defaultJobOptions: {
         removeOnComplete: true,
-        removeOnFail: 1000,
+        removeOnFail: 1000
     }
 };
 
