@@ -8,38 +8,36 @@ assignees: ''
 ---
 
 ### Description
-[Replace the empty checkboxes [ ] below with checked ones [x] accordingly.]
 - [ ] I have searched open and closed issues for duplicates
 - [ ] I am submitting a bug report for existing functionality that does not work as intended
 
-[Describe here the issue that you are experiencing.]
+_Describe here the issue that you are experiencing._
 
 ### Which module is this issue related to?
-[Choose the module that this issue is related to. You can delete the ones that are not applicable.]
-- [ ] 📦 Core
-- [ ] 📜 Audit Logs
-- [ ] 📅 EventManager
-- [ ] ⛓️ Jail
-- [ ] 🎉 Party
-- [ ] ❓ Question of the Day
-- [ ] 🎤 tempVoice
-- [ ] 📺 Twitch notifications
+_Choose the module that this issue is related to. You can delete the ones that are not applicable._
+- 📦 Core
+- 📜 Audit Logs
+- 📅 EventManager
+- ⛓️ Jail
+- 🎉 Party
+- ❓ Question of the Day
+- 🎤 tempVoice
+- 📺 Twitch notifications
 
 ### Steps to Reproduce
-[Every steps if applicable]
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
 ### Expected behavior
-[What is supposed to happen]
+_What is supposed to happen_
 
 ### Frequency
-[First Occurrence / Sometimes / Always]
+_First Occurrence / Sometimes / Always_
 
 ### Additional context
-[Anything useful, like what did you try to fix it, etc.]
+_Anything useful, like what did you try to fix it, etc._
 
 ### Attachments
-If applicable, please consider attaching screenshots, videos or any pertinent files to assist in the investigation.
+_If applicable, please consider attaching screenshots, videos or any pertinent files to assist in the investigation._
