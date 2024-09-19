@@ -114,6 +114,10 @@ The voice owner can :
 - Some memes stuff like "hello there" and some private jokes
 ![hello_there](/assets/hello_there.png)
 
+# 📈 Stats
+
+![Alt](https://repobeats.axiom.co/api/embed/52ea7cf05c902d0251d7111a79182ee478c4bc2d.svg "Repobeats analytics image")
+
 # 🏗️ Development
 
 env: 
