@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 
 ❄️ EventManager: Module now in beta - [[#5](https://github.com/adroidea/bot/issues/5)]
 
+❄️ Core: Added a link to the changelog in the help command
+
 ### 🧱 Changed
 
 ❄️ EventManager: Renamed ScheduledEvents into EventManager
