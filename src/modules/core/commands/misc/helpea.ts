@@ -43,7 +43,7 @@ export default {
             .setDescription(`${commandsList}`)
             .addFields({
                 name: 'version',
-                value: `v${version}`
+                value: `[v${version}](https://github.com/adroidea/bot/blob/main/CHANGELOG.md)`
             })
             .setFooter({
                 text: `< > = optionnel | [ ] = requis | (A ne pas inclure dans les commandes)`
