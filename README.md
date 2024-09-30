@@ -128,6 +128,10 @@ The voice owner can :
 
 - Auto Add a custom role when a friend goes live and removes it once they stop
 
+# 📈 Stats
+
+![Alt](https://repobeats.axiom.co/api/embed/52ea7cf05c902d0251d7111a79182ee478c4bc2d.svg "Repobeats analytics image")
+
 # 🏗️ Development
 
 env: 
